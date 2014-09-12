@@ -1,1 +1,0 @@
-/media/HDD1/DEV/Projet/C-cpp/git/SFML-book/build/01_Introduction/CMakeFiles/01_Introduction.dir
