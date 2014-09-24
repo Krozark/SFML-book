@@ -30,5 +30,6 @@ set(CMAKE_CXX_FLAGS "${DEFINES} ${WARNING} ${FLAGS}")
 
 # add the subdirectories
 add_subdirectory(01_Introduction)
+add_subdirectory(02_Game_Archi)
 #build exemples
 
