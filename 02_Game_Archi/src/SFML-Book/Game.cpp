@@ -7,7 +7,7 @@ sf::Time TimePerFrame = sf::seconds(1.f/MAX_FPS);
 
 namespace book
 {
-    Game::Game() : _window(sf::VideoMode(800, 600),"01_Introduction")
+    Game::Game() : _window(sf::VideoMode(800, 600),"02_Game_Archi")
     {
         _window.setFramerateLimit(MAX_FPS);
     }

@@ -3,29 +3,44 @@
 
 int main(int argc,char* argv[])
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600),"01_Test_install"); //< the window use for the display
+    //the window use for the display
+    sf::RenderWindow window(sf::VideoMode(400,400),"01_Introduction");
+    //set the maximum frame per second
     window.setFramerateLimit(60);
 
+    //construct a circle
+    sf::CircleShape circle(150);
+    //set his color
+    circle.setFillColor(sf::Color::Blue);
+    //set his position
+    circle.setPosition(10, 20);
+
+    //main loop
     while (window.isOpen())
     {
         //to store the events
         sf::Event event;
+        //process events
         while(window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)//Close window
+            //Close window
+            if (event.type == sf::Event::Closed)
                 window.close();
-            else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape)//keyboard input
-                    window.close();
+            //keyboard input : Escape is press
+            else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape)
+                window.close();
         }
 
         //Clear screen
         window.clear();
 
+        //draw the cirle
+        window.draw(circle);
+
         //Update the window
         window.display();
 
     }
-
 
     return 0;
 }
