@@ -16,11 +16,11 @@ namespace book
     class Game
     {
         public:
-            //non capyable class
+            //non copyable class
             Game(const Game&) = delete;
             Game& operator=(const Game&) = delete;
 
-            Game(); //< constuctor
+            Game(); //< constructor
 
             void run(); //< run the game
 
@@ -31,7 +31,7 @@ namespace book
             void render();//< draw all the stuff
 
             sf::RenderWindow _window; //< the window use to display the game
-
+            sf::CircleShape  _player;
     };
 }
 #endif

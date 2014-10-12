@@ -7,9 +7,12 @@ sf::Time TimePerFrame = sf::seconds(1.f/MAX_FPS);
 
 namespace book
 {
-    Game::Game() : _window(sf::VideoMode(800, 600),"02_Game_Archi")
+    Game::Game() : _window(sf::VideoMode(800, 600),"02_Game_Archi"), _player(150)
     {
         _window.setFramerateLimit(MAX_FPS);
+        _player.setFillColor(sf::Color::Blue);
+        //set his position
+        _player.setPosition(10, 20);
     }
 
     void Game::run()
@@ -69,7 +72,7 @@ namespace book
         _window.clear();
 
         //Draw
-        //_window.draw(_board);
+        _window.draw(_player);
 
         //Update the window
         _window.display();
