@@ -23,8 +23,6 @@ namespace book
             
             void update(sf::Time deltaTime);
 
-        protected:
-
         private:
              virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
