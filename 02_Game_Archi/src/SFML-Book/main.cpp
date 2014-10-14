@@ -3,7 +3,7 @@
 int main(int argc,char* argv[])
 {
     book::Game game;
-    game.runWithFixedTimeSteps();
+    game.runWithMinimumTimeSteps();
 
     return 0;
 }

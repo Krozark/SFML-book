@@ -24,6 +24,7 @@ namespace book
 
             void runWithFixedTimeSteps(int frame_per_seconds=60);
             void runWithVariableTimeSteps();
+            void runWithMinimumTimeSteps(int minimal_frame_per_seconds=30);
 
         private:
 

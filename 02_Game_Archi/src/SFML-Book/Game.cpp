@@ -52,6 +52,28 @@ namespace book
         }
     }
 
+    void Game::runWithMinimumTimeSteps(int minimal_frame_per_seconds)
+    {
+        sf::Clock clock;
+        sf::Time timeSinceLastUpdate;
+        sf::Time TimePerFrame = sf::seconds(1.f/minimal_frame_per_seconds);
+
+        while (_window.isOpen())
+        {
+            processEvents();
+
+            timeSinceLastUpdate = clock.restart();
+            while (timeSinceLastUpdate > TimePerFrame)
+            {
+                timeSinceLastUpdate -= TimePerFrame;
+                update(TimePerFrame);
+            }
+
+            update(timeSinceLastUpdate);
+            render();
+        }
+    }
+
     void Game::processEvents()
     {
         //to store the events
