@@ -1,9 +1,5 @@
 #include <SFML-Book/Game.hpp>
 
-#include <iostream>
-
-
-
 namespace book
 {
     Game::Game() : _window(sf::VideoMode(800, 600),"02_Game_Archi")
