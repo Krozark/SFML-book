@@ -22,7 +22,8 @@ namespace book
 
             Game(); //< constructor
 
-            void run(); //< run the game
+            void runWithFixedTimeSteps(int frame_per_seconds=60);
+            void runWithVariableTimeSteps();
 
         private:
 

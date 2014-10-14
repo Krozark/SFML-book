@@ -1,42 +1,53 @@
 #include <SFML-Book/Game.hpp>
 
-#define MAX_FPS 60
+#include <iostream>
 
-sf::Time TimePerFrame = sf::seconds(1.f/MAX_FPS);
 
 
 namespace book
 {
     Game::Game() : _window(sf::VideoMode(800, 600),"02_Game_Archi"), _player(150)
     {
-        _window.setFramerateLimit(MAX_FPS);
         _player.setFillColor(sf::Color::Blue);
         //set his position
         _player.setPosition(10, 20);
     }
 
-    void Game::run()
+    void Game::runWithFixedTimeSteps(int frame_per_seconds)
     {
-        //main loop
         sf::Clock clock;
         sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
+        sf::Time TimePerFrame = sf::seconds(1.f/frame_per_seconds);
+
         while (_window.isOpen())
         {
-            //Process events
             processEvents();
+
+            bool repaint = false;
 
             //fix time delta between frames
             timeSinceLastUpdate += clock.restart();
             while (timeSinceLastUpdate > TimePerFrame)
             {
                 timeSinceLastUpdate -= TimePerFrame;
-                processEvents();
-                //do some updates
+                repaint = true;
                 update(TimePerFrame);
             }
+            
+            if(repaint)
+                render();
+        }
+    }
 
-            //draw stuff
+    void Game::runWithVariableTimeSteps()
+    {
+        sf::Clock clock;
+
+        while (_window.isOpen())
+        {
+            processEvents();
+            update(clock.restart());
             render();
         }
     }
@@ -64,6 +75,8 @@ namespace book
     
     void Game::update(sf::Time deltaTime)
     {
+        static int i = 0;
+        std::cout<<i++<<std::endl;
     }
 
     void Game::render()
