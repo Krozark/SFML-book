@@ -4,6 +4,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <SFML-Book/Player.hpp>
+
 /**
  * \brief namespace for the book
  */
@@ -24,7 +26,7 @@ namespace book
 
             void runWithFixedTimeSteps(int frame_per_seconds=60);
             void runWithVariableTimeSteps();
-            void runWithMinimumTimeSteps(int minimal_frame_per_seconds=30);
+            void runWithMinimumTimeSteps(int minimum_frame_per_seconds=30);
 
         private:
 
@@ -33,7 +35,7 @@ namespace book
             void render();//< draw all the stuff
 
             sf::RenderWindow _window; //< the window use to display the game
-            sf::CircleShape  _player;
+            book::Player _player;
     };
 }
 #endif

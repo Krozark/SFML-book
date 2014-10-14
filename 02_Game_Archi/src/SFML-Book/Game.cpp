@@ -6,11 +6,9 @@
 
 namespace book
 {
-    Game::Game() : _window(sf::VideoMode(800, 600),"02_Game_Archi"), _player(150)
+    Game::Game() : _window(sf::VideoMode(800, 600),"02_Game_Archi")
     {
-        _player.setFillColor(sf::Color::Blue);
-        //set his position
-        _player.setPosition(10, 20);
+        _player.setPosition(100,100);
     }
 
     void Game::runWithFixedTimeSteps(int frame_per_seconds)
@@ -90,6 +88,18 @@ namespace book
                 {
                     _window.close();
                 }
+                else if(event.key.code == sf::Keyboard::Up)
+                {
+                    _player.addSpeed();
+                }
+                else if (event.key.code == sf::Keyboard::Left)
+                {
+                    _player.rotate(-5);
+                }
+                else if (event.key.code == sf::Keyboard::Right)
+                {
+                    _player.rotate(5);
+                }
             }
         }
     }
@@ -97,8 +107,7 @@ namespace book
     
     void Game::update(sf::Time deltaTime)
     {
-        static int i = 0;
-        std::cout<<i++<<std::endl;
+        _player.update(deltaTime);
     }
 
     void Game::render()
