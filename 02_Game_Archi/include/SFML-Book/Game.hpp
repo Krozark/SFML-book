@@ -36,6 +36,7 @@ namespace book
 
             sf::RenderWindow _window; //< the window use to display the game
             book::Player _player;
+
     };
 }
 #endif

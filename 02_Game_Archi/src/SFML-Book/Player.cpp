@@ -1,5 +1,5 @@
 #include <SFML-Book/Player.hpp>
-#include <cmath>
+#include <cmath> //sin, cos
 
 namespace book
 {
@@ -9,6 +9,7 @@ namespace book
         _shape.setOrigin(16,16);
     }
 
+    //need of deltaTime
     void Player::addSpeed()
     {
         float angle = _shape.getRotation() / 180 * M_PI - M_PI / 2;

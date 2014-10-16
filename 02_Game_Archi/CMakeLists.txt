@@ -8,12 +8,16 @@ set(CHAPTER_NAME 02_Game_Archi)
 
 #FILES
 set(FILES_HEADER
+    ${INCROOT}/Action.hpp
+    ${INCROOT}/ActionTaget.hpp
     ${INCROOT}/Game.hpp
     ${INCROOT}/Player.hpp
     ${INCROOT}/Player.tpl
 )
 
 set(FILES_SRC
+    ${SRCROOT}/Action.cpp
+    ${SRCROOT}/ActionTaget.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Player.cpp
     ${SRCROOT}/main.cpp
