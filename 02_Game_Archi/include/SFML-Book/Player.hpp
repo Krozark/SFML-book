@@ -17,17 +17,17 @@ namespace book
             template<typename ... Args>
             void setPosition(Args&& ... args);
 
-            void addSpeed();
-
-            void rotate(float angle);
-            
             void update(sf::Time deltaTime);
+
+            bool is_moving;
+            int rotation;
 
         private:
              virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
             sf::RectangleShape  _shape;
             sf::Vector2f        _velocity;
+            
     };
 }
 #include <SFML-Book/Player.tpl>

@@ -20,6 +20,8 @@ namespace book
             void bind(const book::Action& action,const std::function<void(const sf::Event&)>& callback);
             void unbind(const book::Action& action);
 
+            void map(const std::string Key,const Action& action);
+
         private:
             std::list<std::pair<book::Action,std::function<void(const sf::Event&)>>> _events_real_time;
             std::list<std::pair<book::Action,std::function<void(const sf::Event&)>>> _events_poll;

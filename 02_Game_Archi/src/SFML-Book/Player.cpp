@@ -7,24 +7,27 @@ namespace book
     {
         _shape.setFillColor(sf::Color::Blue);
         _shape.setOrigin(16,16);
-    }
-
-    //need of deltaTime
-    void Player::addSpeed()
-    {
-        float angle = _shape.getRotation() / 180 * M_PI - M_PI / 2;
-
-        _velocity += sf::Vector2f(std::cos(angle),std::sin(angle)) * 5.f;
-    }
-
-    void Player::rotate(float angle)
-    {
-        _shape.rotate(angle);
+        is_moving = false;
+        rotation = 0;
     }
 
     void Player::update(sf::Time deltaTime)
     {
-        _shape.move(deltaTime.asSeconds() * _velocity);
+        float seconds = deltaTime.asSeconds();
+
+        if(rotation != 0)
+        {
+            float angle = (rotation>0?1:-1)*180*seconds;
+            _shape.rotate(angle);
+        }
+        
+        if(is_moving)
+        { 
+            float angle = _shape.getRotation() / 180 * M_PI - M_PI / 2;
+            _velocity += sf::Vector2f(std::cos(angle),std::sin(angle)) * 30.f * seconds;
+        }
+
+        _shape.move(seconds * _velocity);
     }
 
    void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
