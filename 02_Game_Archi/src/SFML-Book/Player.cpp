@@ -15,10 +15,8 @@ namespace book
     {
         _is_moving = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
         _rotation = 0;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            _rotation = -1;
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            _rotation = 1;
+        _rotation-= sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+        _rotation+= sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
     }
 
     void Player::update(sf::Time deltaTime)

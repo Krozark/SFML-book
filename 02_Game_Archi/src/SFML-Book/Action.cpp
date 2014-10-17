@@ -50,32 +50,32 @@ namespace book
             }break;*/
             case sf::Event::EventType::KeyPressed:
             {
-                if(_type & Type::Press and _event.type == sf::Event::EventType::KeyPressed)
+                if(_type & Type::Pressed and _event.type == sf::Event::EventType::KeyPressed)
                     res = event.key.code == _event.key.code;
             }break;
             case sf::Event::EventType::KeyReleased:
             {
-                if(_type & Type::Release and _event.type == sf::Event::EventType::KeyPressed)
+                if(_type & Type::Released and _event.type == sf::Event::EventType::KeyPressed)
                     res = event.key.code == _event.key.code;
             }break;
             case sf::Event::EventType::MouseButtonPressed:
             {
-                if(_type & Type::Press and _event.type == sf::Event::EventType::MouseButtonPressed)
+                if(_type & Type::Pressed and _event.type == sf::Event::EventType::MouseButtonPressed)
                     res = event.mouseButton.button == _event.mouseButton.button;
             }break;
             case sf::Event::EventType::MouseButtonReleased:
             {
-                if(_type & Type::Release and _event.type == sf::Event::EventType::MouseButtonPressed)
+                if(_type & Type::Released and _event.type == sf::Event::EventType::MouseButtonPressed)
                     res = event.mouseButton.button == _event.mouseButton.button;
             }break;
             /*case sf::Event::EventType::JoystickButtonPressed:
             {
-                if(_type & Type::Press and _event.type == sf::Event::EventType::JoystickButtonPressed)
+                if(_type & Type::Pressed and _event.type == sf::Event::EventType::JoystickButtonPressed)
                     res = event.joystickButton.button == _event.joystickButton.button;
             }break;
             case sf::Event::EventType::JoystickButtonReleased:
             {
-                if(_type & Type::Release and _event.type == sf::Event::EventType::JoystickButtonPressed)
+                if(_type & Type::Releaseed and _event.type == sf::Event::EventType::JoystickButtonPressed)
                     res = event.joystickButton.button == _event.joystickButton.button;
             }break;*/
             default: break;
@@ -96,17 +96,17 @@ namespace book
         bool res = false;
         if(_event.type == sf::Event::EventType::KeyPressed)
         {
-            if(_type & Type::Press)
+            if(_type & Type::Pressed)
                 res = sf::Keyboard::isKeyPressed(_event.key.code);
         }
         else if (_event.type == sf::Event::EventType::MouseButtonPressed)
         {
-            if(_type & Type::Press)
+            if(_type & Type::Pressed)
                 res = sf::Mouse::isButtonPressed(_event.mouseButton.button);
         }
         else if (_event.type == sf::Event::EventType::JoystickButtonPressed)
         {
-            if(_type & Type::Press)
+            if(_type & Type::Pressed)
                 res = sf::Joystick::isButtonPressed(0,_event.joystickButton.button);
         }
         return res;
