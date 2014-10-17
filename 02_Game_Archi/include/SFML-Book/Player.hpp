@@ -17,16 +17,19 @@ namespace book
             template<typename ... Args>
             void setPosition(Args&& ... args);
 
-            void update(sf::Time deltaTime);
+            void processEvents();
 
-            bool is_moving;
-            int rotation;
+            void update(sf::Time deltaTime);
+            
 
         private:
              virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
             sf::RectangleShape  _shape;
             sf::Vector2f        _velocity;
+
+            bool _is_moving;
+            int _rotation;
             
     };
 }

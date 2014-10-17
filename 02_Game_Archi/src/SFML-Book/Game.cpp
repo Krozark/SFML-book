@@ -72,7 +72,6 @@ namespace book
     {
         //to store the events
         sf::Event event;
-
         //events loop
         while(_window.pollEvent(event))
         {
@@ -81,38 +80,11 @@ namespace book
             else if (event.type == sf::Event::KeyPressed) //keyboard input
             {
                 if (event.key.code == sf::Keyboard::Escape)
-                {
                     _window.close();
-                }
-                else if(event.key.code == sf::Keyboard::Up)
-                {
-                    _player.is_moving = true;
-                }
-                else if (event.key.code == sf::Keyboard::Left)
-                {
-                    _player.rotation = -1;
-                }
-                else if (event.key.code == sf::Keyboard::Right)
-                {
-                    _player.rotation = 1;
-                }
-            }
-            else if (event.type == sf::Event::KeyReleased)
-            {
-                if(event.key.code == sf::Keyboard::Up)
-                {
-                    _player.is_moving = false;
-                }
-                else if (event.key.code == sf::Keyboard::Left)
-                {
-                    _player.rotation = 0;
-                }
-                else if (event.key.code == sf::Keyboard::Right)
-                {
-                    _player.rotation = 0;
-                }
             }
         }
+
+        _player.processEvents();
     }
 
     

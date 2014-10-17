@@ -4,27 +4,37 @@
 namespace book
 {
     Player::Player() : _shape(sf::Vector2f(32,32))
+                       ,_is_moving(false)
+                       ,_rotation(0)
     {
         _shape.setFillColor(sf::Color::Blue);
         _shape.setOrigin(16,16);
-        is_moving = false;
-        rotation = 0;
+    }
+    
+    void Player::processEvents()
+    {
+        _is_moving = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+        _rotation = 0;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            _rotation = -1;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            _rotation = 1;
     }
 
     void Player::update(sf::Time deltaTime)
     {
         float seconds = deltaTime.asSeconds();
 
-        if(rotation != 0)
+        if(_rotation != 0)
         {
-            float angle = (rotation>0?1:-1)*180*seconds;
+            float angle = _rotation*180*seconds;
             _shape.rotate(angle);
         }
         
-        if(is_moving)
+        if(_is_moving)
         { 
             float angle = _shape.getRotation() / 180 * M_PI - M_PI / 2;
-            _velocity += sf::Vector2f(std::cos(angle),std::sin(angle)) * 30.f * seconds;
+            _velocity += sf::Vector2f(std::cos(angle),std::sin(angle)) * 60.f * seconds;
         }
 
         _shape.move(seconds * _velocity);
