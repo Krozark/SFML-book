@@ -104,11 +104,11 @@ namespace book
             if(_type & Type::Pressed)
                 res = sf::Mouse::isButtonPressed(_event.mouseButton.button);
         }
-        else if (_event.type == sf::Event::EventType::JoystickButtonPressed)
+        /*else if (_event.type == sf::Event::EventType::JoystickButtonPressed)
         {
             if(_type & Type::Pressed)
                 res = sf::Joystick::isButtonPressed(0,_event.joystickButton.button);
-        }
+        }*/
         return res;
     }
 }

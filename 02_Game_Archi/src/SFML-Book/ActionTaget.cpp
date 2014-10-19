@@ -30,7 +30,7 @@ namespace book
         }
     }
 
-    void ActionTaget::bind(const book::Action& action,const std::function<void(const sf::Event&)>& callback)
+    void ActionTaget::bind(const book::Action& action,const FuncType& callback)
     {
         if(action._type & Action::Type::RealTime)
             _events_real_time.emplace_back(action,callback);
@@ -41,7 +41,7 @@ namespace book
 
     void ActionTaget::unbind(const book::Action& action)
     {
-        auto remove_func = [&action](const std::pair<book::Action,std::function<void(const sf::Event&)>>& pair) -> bool
+        auto remove_func = [&action](const std::pair<book::Action,FuncType>& pair) -> bool
         {
             return pair.first == action;
         };
