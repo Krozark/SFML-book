@@ -28,7 +28,8 @@ namespace book
         private:
              virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-            sf::RectangleShape  _shape;
+            sf::Sprite          _ship;
+            sf::Texture         _texture;
             sf::Vector2f        _velocity;
 
             bool _is_moving;
