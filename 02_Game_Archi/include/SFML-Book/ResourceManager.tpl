@@ -1,0 +1,6 @@
+namespace book
+{
+    ResourceManager::ResourceManager()
+    {
+    }
+}
