@@ -1,24 +1,28 @@
 #include <SFML-Book/Player.hpp>
+#include <SFML-Book/ActionMap.hpp>
 #include <cmath> //sin, cos
 
 namespace book
 {
-    Player::Player() : _shape(sf::Vector2f(32,32))
+    ActionMap<int> Player::_player_inputs;
+
+    Player::Player() : ActionTarget(_player_inputs)
+                       ,_shape(sf::Vector2f(32,32))
                        ,_is_moving(false)
                        ,_rotation(0)
     {
         _shape.setFillColor(sf::Color::Blue);
         _shape.setOrigin(16,16);
 
-        bind(Action(sf::Keyboard::Up),[this](const sf::Event&){
+        bind(PlayerInputs::Up,[this](const sf::Event&){
              _is_moving = true;
         });
 
-        bind(Action(sf::Keyboard::Left),[this](const sf::Event&){
+        bind(PlayerInputs::Left,[this](const sf::Event&){
              _rotation-= 1;
          });
 
-        bind(Action(sf::Keyboard::Right),[this](const sf::Event&){
+        bind(PlayerInputs::Right,[this](const sf::Event&){
              _rotation+= 1;
          });
     }
@@ -47,6 +51,13 @@ namespace book
         }
 
         _shape.move(seconds * _velocity);
+    }
+
+    void Player::setDefaultsInputs()
+    {
+        _player_inputs.map(PlayerInputs::Up,Action(sf::Keyboard::Up));
+        _player_inputs.map(PlayerInputs::Right,Action(sf::Keyboard::Right));
+        _player_inputs.map(PlayerInputs::Left,Action(sf::Keyboard::Left));
     }
 
    void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

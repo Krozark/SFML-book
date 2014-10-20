@@ -7,7 +7,7 @@
 
 namespace book
 {
-    class Player : public sf::Drawable , public ActionTarget
+    class Player : public sf::Drawable , public ActionTarget<int>
     {
         public:
             Player(const Player&) = delete;
@@ -21,8 +21,10 @@ namespace book
             void processEvents();
 
             void update(sf::Time deltaTime);
-            
 
+            enum PlayerInputs {Up,Left,Right};
+            static void setDefaultsInputs();
+            
         private:
              virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -31,7 +33,8 @@ namespace book
 
             bool _is_moving;
             int _rotation;
-            
+
+            static ActionMap<int> _player_inputs;
     };
 }
 #include <SFML-Book/Player.tpl>

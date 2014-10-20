@@ -1,32 +1,38 @@
 #ifndef BOOK_ACTIONTAGET_HPP
 #define BOOK_ACTIONTAGET_HPP
 
+#include <SFML-Book/ActionMap.hpp>
+
 #include <functional> //function
 #include <utility> //pair
 #include <list> //list
 
-#include <SFML-Book/Action.hpp>
-
 namespace book
 {
+    template<typename T>
     class ActionTarget
     {
         public:
+            ActionTarget(const ActionTarget<T>&) = delete;
+            ActionTarget<T>& operator=(const ActionTarget<T>&) = delete;
+
             using FuncType = std::function<void(const sf::Event&)>;
 
-            ActionTarget();
+            ActionTarget(const ActionMap<T>& map);
 
             bool processEvent(const sf::Event& event)const;
             void processEvents()const;
 
-            void bind(const book::Action& action,const FuncType& callback);
-            void unbind(const book::Action& action);
-
-            //void map(const std::string Key,const Action& action);
+            void bind(const T& key,const FuncType& callback);
+            void unbind(const T& key);
 
         private:
-            std::list<std::pair<book::Action,FuncType>> _events_real_time;
-            std::list<std::pair<book::Action,FuncType>> _events_poll;
+            std::list<std::pair<T,FuncType>> _events_real_time;
+            std::list<std::pair<T,FuncType>> _events_poll;
+
+            const ActionMap<T>& _action_map;
     };
 }
+#include <SFML-Book/ActionTarget.tpl>
+
 #endif

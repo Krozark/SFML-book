@@ -32,7 +32,7 @@ namespace book
 
 
         private:
-            friend class ActionTarget;
+            template<typename> friend class ActionTarget;
             sf::Event _event;
             int _type;
     };

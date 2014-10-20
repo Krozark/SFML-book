@@ -10,6 +10,9 @@ set(CHAPTER_NAME 02_Game_Archi)
 set(FILES_HEADER
     ${INCROOT}/Action.hpp
     ${INCROOT}/ActionTarget.hpp
+    ${INCROOT}/ActionTarget.tpl
+    ${INCROOT}/ActionMap.hpp
+    ${INCROOT}/ActionMap.tpl
     ${INCROOT}/Game.hpp
     ${INCROOT}/Player.hpp
     ${INCROOT}/Player.tpl
@@ -17,7 +20,6 @@ set(FILES_HEADER
 
 set(FILES_SRC
     ${SRCROOT}/Action.cpp
-    ${SRCROOT}/ActionTarget.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Player.cpp
     ${SRCROOT}/main.cpp
