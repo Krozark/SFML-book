@@ -9,12 +9,12 @@
 
 namespace book
 {
-    class ActionTaget
+    class ActionTarget
     {
         public:
             using FuncType = std::function<void(const sf::Event&)>;
 
-            ActionTaget();
+            ActionTarget();
 
             bool processEvent(const sf::Event& event)const;
             void processEvents()const;

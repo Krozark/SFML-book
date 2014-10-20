@@ -1,12 +1,12 @@
-#include <SFML-Book/ActionTaget.hpp>
+#include <SFML-Book/ActionTarget.hpp>
 
 namespace book
 {
-    ActionTaget::ActionTaget()
+    ActionTarget::ActionTarget()
     {
     }
 
-    bool ActionTaget::processEvent(const sf::Event& event)const
+    bool ActionTarget::processEvent(const sf::Event& event)const
     {
         bool res = false;
         for(auto& action : _events_poll)
@@ -21,7 +21,7 @@ namespace book
         return res;
     }
 
-    void ActionTaget::processEvents()const
+    void ActionTarget::processEvents()const
     {
         for(auto& action : _events_real_time)
         {
@@ -30,7 +30,7 @@ namespace book
         }
     }
 
-    void ActionTaget::bind(const book::Action& action,const FuncType& callback)
+    void ActionTarget::bind(const book::Action& action,const FuncType& callback)
     {
         if(action._type & Action::Type::RealTime)
             _events_real_time.emplace_back(action,callback);
@@ -39,7 +39,7 @@ namespace book
 
     }
 
-    void ActionTaget::unbind(const book::Action& action)
+    void ActionTarget::unbind(const book::Action& action)
     {
         auto remove_func = [&action](const std::pair<book::Action,FuncType>& pair) -> bool
         {

@@ -2,12 +2,12 @@
 #define BOOK_PLAYER_HPP
 
 #include <SFML/Graphics.hpp>
-#include <SFML-Book/ActionTaget.hpp>
+#include <SFML-Book/ActionTarget.hpp>
 
 
 namespace book
 {
-    class Player : public sf::Drawable , public ActionTaget
+    class Player : public sf::Drawable , public ActionTarget
     {
         public:
             Player(const Player&) = delete;

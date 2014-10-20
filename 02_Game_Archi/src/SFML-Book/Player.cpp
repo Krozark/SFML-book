@@ -11,22 +11,23 @@ namespace book
         _shape.setOrigin(16,16);
 
         bind(Action(sf::Keyboard::Up),[this](const sf::Event&){
-             _is_moving = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+             _is_moving = true;
         });
 
         bind(Action(sf::Keyboard::Left),[this](const sf::Event&){
-             _rotation-= sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+             _rotation-= 1;
          });
 
         bind(Action(sf::Keyboard::Right),[this](const sf::Event&){
-             _rotation+= sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+             _rotation+= 1;
          });
     }
     
     void Player::processEvents()
     {
+        _is_moving = false;
         _rotation = 0;
-        ActionTaget::processEvents();
+        ActionTarget::processEvents();
     }
 
     void Player::update(sf::Time deltaTime)
