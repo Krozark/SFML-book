@@ -45,14 +45,11 @@ namespace book
         {
             return pair.first == action;
         };
+
         if(action._type & Action::Type::RealTime)
-        {
             _events_real_time.remove_if(remove_func);
-        }
         else
-        {
             _events_poll.remove_if(remove_func);
-        }
     }
 
 }

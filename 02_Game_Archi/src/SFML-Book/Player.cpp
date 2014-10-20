@@ -9,14 +9,24 @@ namespace book
     {
         _shape.setFillColor(sf::Color::Blue);
         _shape.setOrigin(16,16);
+
+        bind(Action(sf::Keyboard::Up),[this](const sf::Event&){
+             _is_moving = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+        });
+
+        bind(Action(sf::Keyboard::Left),[this](const sf::Event&){
+             _rotation-= sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+         });
+
+        bind(Action(sf::Keyboard::Right),[this](const sf::Event&){
+             _rotation+= sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+         });
     }
     
     void Player::processEvents()
     {
-        _is_moving = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
         _rotation = 0;
-        _rotation-= sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-        _rotation+= sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+        ActionTaget::processEvents();
     }
 
     void Player::update(sf::Time deltaTime)

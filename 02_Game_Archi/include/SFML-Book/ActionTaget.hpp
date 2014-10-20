@@ -12,12 +12,13 @@ namespace book
     class ActionTaget
     {
         public:
+            using FuncType = std::function<void(const sf::Event&)>;
+
             ActionTaget();
 
             bool processEvent(const sf::Event& event)const;
             void processEvents()const;
 
-            using FuncType = std::function<void(const sf::Event&)>;
             void bind(const book::Action& action,const FuncType& callback);
             void unbind(const book::Action& action);
 
