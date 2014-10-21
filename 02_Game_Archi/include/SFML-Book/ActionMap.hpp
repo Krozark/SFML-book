@@ -14,7 +14,7 @@ namespace book
             ActionMap(const ActionMap<T>&) = delete;
             ActionMap<T>& operator=(const ActionMap<T>&) = delete;
 
-            ActionMap();
+            ActionMap() = default;
 
             void map(const T& key,const Action& action);
             const Action& get(const T& key)const;

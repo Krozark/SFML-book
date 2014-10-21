@@ -16,12 +16,15 @@ set(FILES_HEADER
     ${INCROOT}/Game.hpp
     ${INCROOT}/Player.hpp
     ${INCROOT}/Player.tpl
+    ${INCROOT}/ResourceManager.hpp
+    ${INCROOT}/ResourceManager.tpl
 )
 
 set(FILES_SRC
     ${SRCROOT}/Action.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Player.cpp
+
     ${SRCROOT}/main.cpp
 )
 

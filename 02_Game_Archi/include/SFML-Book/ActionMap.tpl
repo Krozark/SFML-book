@@ -1,9 +1,5 @@
 namespace book
 {
-    template<typename T>
-    ActionMap<T>::ActionMap()
-    {
-    }
 
     template<typename T>
     void ActionMap<T>::map(const T& key,const Action& action)
