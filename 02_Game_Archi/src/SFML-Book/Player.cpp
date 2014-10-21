@@ -1,28 +1,26 @@
 #include <SFML-Book/Player.hpp>
-#include <SFML-Book/ActionMap.hpp>
 #include <cmath> //sin, cos
+
+#include <SFML-Book/Configuration.hpp> //Configuration
 
 namespace book
 {
-    ActionMap<int> Player::_player_inputs;
-
-    Player::Player() : ActionTarget(_player_inputs)
+    Player::Player() : ActionTarget(Configuration::player_inputs)
                        ,_is_moving(false)
                        ,_rotation(0)
     {
-        _texture.loadFromFile("media/Player/Ship.png");
-        _ship.setTexture(_texture);
+        _ship.setTexture(Configuration::textures.get(Configuration::Textures::Player));
         _ship.setOrigin(49.5,37.5);
 
-        bind(PlayerInputs::Up,[this](const sf::Event&){
+        bind(Configuration::PlayerInputs::Up,[this](const sf::Event&){
              _is_moving = true;
         });
 
-        bind(PlayerInputs::Left,[this](const sf::Event&){
+        bind(Configuration::PlayerInputs::Left,[this](const sf::Event&){
              _rotation-= 1;
          });
 
-        bind(PlayerInputs::Right,[this](const sf::Event&){
+        bind(Configuration::PlayerInputs::Right,[this](const sf::Event&){
              _rotation+= 1;
          });
     }
@@ -51,13 +49,6 @@ namespace book
         }
 
         _ship.move(seconds * _velocity);
-    }
-
-    void Player::setDefaultsInputs()
-    {
-        _player_inputs.map(PlayerInputs::Up,Action(sf::Keyboard::Up));
-        _player_inputs.map(PlayerInputs::Right,Action(sf::Keyboard::Right));
-        _player_inputs.map(PlayerInputs::Left,Action(sf::Keyboard::Left));
     }
 
    void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

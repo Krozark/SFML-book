@@ -14,7 +14,6 @@ namespace book
     /**
      * \brief A class to manage the game
      */
-            
     class Game
     {
         public:

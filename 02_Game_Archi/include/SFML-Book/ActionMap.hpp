@@ -7,7 +7,7 @@
 
 namespace book
 {
-    template<typename T>
+    template<typename T = int>
     class ActionMap
     {
         public:

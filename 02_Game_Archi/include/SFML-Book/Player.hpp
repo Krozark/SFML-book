@@ -2,8 +2,8 @@
 #define BOOK_PLAYER_HPP
 
 #include <SFML/Graphics.hpp>
-#include <SFML-Book/ActionTarget.hpp>
 
+#include <SFML-Book/ActionTarget.hpp> //ActionTarget
 
 namespace book
 {
@@ -22,20 +22,15 @@ namespace book
 
             void update(sf::Time deltaTime);
 
-            enum PlayerInputs {Up,Left,Right};
-            static void setDefaultsInputs();
-            
         private:
              virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
             sf::Sprite          _ship;
-            sf::Texture         _texture;
             sf::Vector2f        _velocity;
 
             bool _is_moving;
             int _rotation;
 
-            static ActionMap<int> _player_inputs;
     };
 }
 #include <SFML-Book/Player.tpl>
