@@ -21,7 +21,7 @@ namespace book
             Game(const Game&) = delete;
             Game& operator=(const Game&) = delete;
 
-            Game(); //< constructor
+            Game(int X=800, int Y=600); //< constructor
 
             void runWithFixedTimeSteps(int frame_per_seconds=60);
             void runWithVariableTimeSteps();
@@ -35,6 +35,9 @@ namespace book
 
             sf::RenderWindow _window; //< the window use to display the game
             book::Player _player;
+
+            const int _x;
+            const int _y;
 
     };
 }

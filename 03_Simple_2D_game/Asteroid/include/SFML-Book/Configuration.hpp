@@ -23,6 +23,7 @@ namespace book
 
             static void initialize();
 
+
         private:
 
             static void initTextures();

@@ -14,6 +14,8 @@ set(FILES_HEADER
     ${INCROOT}/ActionMap.hpp
     ${INCROOT}/ActionMap.tpl
     ${INCROOT}/Configuration.hpp
+    ${INCROOT}/Entity.hpp
+    ${INCROOT}/Entity.tpl
     ${INCROOT}/Game.hpp
     ${INCROOT}/Player.hpp
     ${INCROOT}/Player.tpl
@@ -24,6 +26,7 @@ set(FILES_HEADER
 set(FILES_SRC
     ${SRCROOT}/Action.cpp
     ${SRCROOT}/Configuration.cpp
+    ${SRCROOT}/Entity.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Player.cpp
 

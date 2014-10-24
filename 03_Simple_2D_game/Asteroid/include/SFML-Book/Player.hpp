@@ -18,6 +18,8 @@ namespace book
             template<typename ... Args>
             void setPosition(Args&& ... args);
 
+            const sf::Vector2f& getPosition()const;
+
             void processEvents();
 
             void update(sf::Time deltaTime);

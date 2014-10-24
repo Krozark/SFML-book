@@ -24,6 +24,11 @@ namespace book
              _rotation+= 1;
          });
     }
+
+    const sf::Vector2f& Player::getPosition()const
+    {
+        return _ship.getPosition();
+    }
     
     void Player::processEvents()
     {
@@ -45,7 +50,7 @@ namespace book
         if(_is_moving)
         { 
             float angle = _ship.getRotation() / 180 * M_PI - M_PI / 2;
-            _velocity += sf::Vector2f(std::cos(angle),std::sin(angle)) * 60.f * seconds;
+            _velocity += sf::Vector2f(std::cos(angle),std::sin(angle)) * 300.f * seconds;
         }
 
         _ship.move(seconds * _velocity);

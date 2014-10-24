@@ -1,8 +1,11 @@
 #include <SFML-Book/Game.hpp>
+#include <SFML-Book/Configuration.hpp>
 
 namespace book
 {
-    Game::Game() : _window(sf::VideoMode(800, 600),"03_Asteroid")
+    Game::Game(int X, int Y) : _window(sf::VideoMode(X,Y),"03_Asteroid"),
+    _x(X),
+    _y(Y)
     {
         _player.setPosition(100,100);
     }
@@ -91,6 +94,26 @@ namespace book
     void Game::update(sf::Time deltaTime)
     {
         _player.update(deltaTime);
+
+        sf::Vector2f player_pos = _player.getPosition();
+
+        if(player_pos.x < 0)
+        {
+            player_pos.x = _x;
+            player_pos.y = _y - player_pos.y;
+        }
+        else if (player_pos.x > _x)
+        {
+            player_pos.x = 0;
+            player_pos.y = _y - player_pos.y;
+        }
+
+        if(player_pos.y < 0)
+            player_pos.y = _y;
+        else if(player_pos.y > _y)
+            player_pos.y = 0;
+
+        _player.setPosition(player_pos);
     }
 
     void Game::render()
