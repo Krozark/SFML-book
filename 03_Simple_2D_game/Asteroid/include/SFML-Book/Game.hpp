@@ -28,16 +28,20 @@ namespace book
 
             void initLevel();
 
+
         private:
 
             void processEvents();//< Process events
             void update(sf::Time deltaTime); //< do some updates
             void render();//< draw all the stuff
 
+            void reset();
+
             sf::RenderWindow _window; //< the window use to display the game
             World _world;
 
             sf::Time            _next_saucer;
+            sf::Text   _txt;
     };
 }
 #endif

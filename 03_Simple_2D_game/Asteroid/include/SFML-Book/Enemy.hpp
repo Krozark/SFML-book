@@ -17,8 +17,6 @@ namespace book
 
             virtual void onDestroy();
 
-        protected:
-            sf::Vector2f        _impulse;
     };
 }
 #endif

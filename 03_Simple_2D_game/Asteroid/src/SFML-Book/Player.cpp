@@ -56,11 +56,12 @@ namespace book
 
     void Player::goToHyperspace()
     {
-        _velocity = sf::Vector2f(0,0);
+        _impulse = sf::Vector2f(0,0);
         _is_moving = false;
         _rotation = 0;
-
         setPosition(random(0,_world.getX()),random(0,_world.getY()));
+        _world.add(Configuration::Sounds::Jump);
+
     }
 
     void Player::onDestroy()
@@ -93,9 +94,9 @@ namespace book
         if(_is_moving)
         { 
             float angle = _sprite.getRotation() / 180 * M_PI - M_PI / 2;
-            _velocity += sf::Vector2f(std::cos(angle),std::sin(angle)) * 300.f * seconds;
+            _impulse += sf::Vector2f(std::cos(angle),std::sin(angle)) * 300.f * seconds;
         }
 
-        _sprite.move(seconds * _velocity);
+        _sprite.move(seconds * _impulse);
     }
 }

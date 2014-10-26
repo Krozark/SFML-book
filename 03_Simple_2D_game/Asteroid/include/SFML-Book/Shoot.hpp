@@ -16,7 +16,6 @@ namespace book
             virtual void update(sf::Time deltaTime);
 
         protected:
-            sf::Vector2f        _impulse;
             sf::Time            _duration;
     };
 

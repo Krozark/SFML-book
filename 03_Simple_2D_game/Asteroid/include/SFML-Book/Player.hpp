@@ -27,8 +27,6 @@ namespace book
 
         private:
 
-            sf::Vector2f        _velocity;
-
             bool _is_moving;
             int _rotation;
 

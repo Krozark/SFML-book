@@ -25,6 +25,8 @@ namespace book
             void add(Entity* entity);
             void remove(Entity* entity);
 
+            void clear();
+
             void add(Configuration::Sounds sound_id);
 
             bool isCollide(const Entity& other);
@@ -33,6 +35,8 @@ namespace book
 
             int getX()const;
             int getY()const;
+
+            const std::list<Entity*> getEntities()const;
 
         private:
             std::list<Entity*>  _entities; 

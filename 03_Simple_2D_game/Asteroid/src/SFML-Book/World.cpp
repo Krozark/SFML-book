@@ -10,13 +10,7 @@ namespace book
 
     World::~World()
     {
-        for(Entity* entity :_entities)
-            delete entity;
-        _entities.clear();
-
-        for(Entity* entity :_entities_tmp)
-            delete entity;
-        _entities_tmp.clear();
+        clear();
     }
 
     void World::add(Entity* entity)
@@ -27,6 +21,19 @@ namespace book
     void World::remove(Entity* entity)
     {
         _entities.remove(entity);
+    }
+
+    void World::clear()
+    {
+        for(Entity* entity :_entities)
+            delete entity;
+        _entities.clear();
+
+        for(Entity* entity :_entities_tmp)
+            delete entity;
+        _entities_tmp.clear();
+
+        _sounds.clear();
     }
 
     void World::add(Configuration::Sounds sound_id)
@@ -57,6 +64,11 @@ namespace book
     int World::getY()const
     {
         return _y;
+    }
+
+    const std::list<Entity*> World::getEntities()const
+    {
+        return _entities;
     }
 
     void World::update(sf::Time deltaTime)

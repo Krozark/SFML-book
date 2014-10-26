@@ -4,6 +4,7 @@
 #include <SFML-Book/Enemy.hpp> //Enemy
 #include <SFML-Book/Player.hpp> //Player
 #include <SFML-Book/Saucer.hpp> //Saucer
+#include <SFML-Book/Meteor.hpp> //Meteor
 
 #include <SFML-Book/random.hpp> //random
 #include <cmath>
@@ -63,7 +64,7 @@ namespace book
 
     bool ShootSaucer::isCollide(const Entity& other)const
     {
-        if(dynamic_cast<const Player*>(&other) != nullptr)
+        if(dynamic_cast<const Player*>(&other) or dynamic_cast<const Meteor*>(&other))
         {
             return Collision::circleTest(_sprite,other._sprite);
         }

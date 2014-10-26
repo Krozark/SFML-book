@@ -56,6 +56,7 @@ namespace book
                 Explosion1,
                 Explosion2,
                 Explosion3,
+                Jump,
             };
             static ResourceManager<sf::SoundBuffer,int> sounds;
 
@@ -67,14 +68,17 @@ namespace book
             static ActionMap<int> player_inputs;
 
             static void initialize();
+            static void reset();
 
-            static int level;
-            static int lives;
+            static bool isGameOver();
+
 
             static void addScore(int s);
             static int getScore();
 
             static book::Player* player;
+            static int level;
+            static int lives;
 
             static void draw(sf::RenderTarget& target);
 

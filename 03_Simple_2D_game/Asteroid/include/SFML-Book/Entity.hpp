@@ -39,6 +39,8 @@ namespace book
             friend class ShootSaucer;
             sf::Sprite          _sprite;
 
+            sf::Vector2f        _impulse;
+
             World& _world;
 
             bool _alive;

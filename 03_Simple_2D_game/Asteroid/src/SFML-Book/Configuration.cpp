@@ -29,24 +29,36 @@ namespace book
         initPlayerInputs();
 
         rand_init();
-        level = 1;
-        lives = 3;
-
-        _score = 0;
         _txt_score.setFont(fonts.get(Fonts::Gui));
         _txt_score.setCharacterSize(24);
-        _txt_score.setString("0");
 
         _spr_life.setTexture(textures.get(Textures::PlayerLife));
 
         musics.get(Musics::Theme).setLoop(true);
         musics.get(Musics::Theme).play();
+
+        lives = level = _score = -1;
+
+    }
+
+    void Configuration::reset()
+    {
+        level = 1;
+        lives = 3;
+
+        _score = 0;
+        _txt_score.setString("0");
+    }
+
+    bool Configuration::isGameOver()
+    {
+        return lives < 0;
     }
 
     void Configuration::addScore(int s)
     {
         int old_score = _score;
-        _score += s;
+        _score += s*level;
         lives += _score/10000 - old_score/10000;
         _txt_score.setString(std::to_string(_score));
     }
@@ -112,6 +124,8 @@ namespace book
         sounds.load(Sounds::Explosion1,"media/sounds/explosion1.flac");
         sounds.load(Sounds::Explosion2,"media/sounds/explosion2.flac");
         sounds.load(Sounds::Explosion3,"media/sounds/explosion3.flac");
+        //others
+        sounds.load(Sounds::Jump,"media/sounds/hyperspace.flac");
     }
     void Configuration::initMusics()
     {

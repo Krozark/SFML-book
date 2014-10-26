@@ -9,7 +9,13 @@ namespace book
 {
     Game::Game(int X, int Y) : _window(sf::VideoMode(X,Y),"03_Asteroid"), _world(X,Y)
     {
-        _next_saucer = sf::seconds(book::random(5.f,6.f - Configuration::level*2));
+        _txt.setFont(Configuration::fonts.get(Configuration::Fonts::Gui));
+        _txt.setCharacterSize(70);
+        _txt.setString("Press any Key to start");
+
+        sf::FloatRect size = _txt.getGlobalBounds();
+        _txt.setOrigin(size.width/2,size.height/2);
+        _txt.setPosition(X/2,Y/2);
     }
 
     void Game::run(int minimum_frame_per_seconds)
@@ -17,8 +23,6 @@ namespace book
         sf::Clock clock;
         sf::Time timeSinceLastUpdate;
         sf::Time TimePerFrame = sf::seconds(1.f/minimum_frame_per_seconds);
-
-        initLevel();
 
         while (_window.isOpen())
         {
@@ -72,36 +76,47 @@ namespace book
                     _window.close();
             }
 
-            if(Configuration::player != nullptr)
-                Configuration::player->processEvent(event);
+            if(Configuration::isGameOver())
+            {
+                if (event.type == sf::Event::KeyPressed) //keyboard input
+                    reset();
+            }
+            else
+            {
+                if(Configuration::player != nullptr)
+                    Configuration::player->processEvent(event);
+            }
         }
-
-        if(Configuration::player != nullptr)
+        if(not Configuration::isGameOver() and Configuration::player != nullptr)
             Configuration::player->processEvents();
     }
 
     
     void Game::update(sf::Time deltaTime)
     {
-        _world.update(deltaTime);
-        if(Configuration::player == nullptr)
-        {
-            Configuration::player = new Player(_world);
-            Configuration::player->setPosition(_world.getX()/2,_world.getY()/2);
-            _world.add(Configuration::player);
-        }
-        _next_saucer -= deltaTime;
 
-        if(_next_saucer < sf::Time::Zero)
+        if(not Configuration::isGameOver())
         {
-            Saucer::newSaucer(_world);
-            _next_saucer = sf::seconds(book::random(5.f,60.f - Configuration::level*2));
-        }
+            _world.update(deltaTime);
+            if(Configuration::player == nullptr)
+            {
+                Configuration::player = new Player(_world);
+                Configuration::player->setPosition(_world.getX()/2,_world.getY()/2);
+                _world.add(Configuration::player);
+            }
+            _next_saucer -= deltaTime;
 
-        if(_world.size() == 1)
-        {
-            ++Configuration::level;
-            initLevel();
+            if(_next_saucer < sf::Time::Zero)
+            {
+                Saucer::newSaucer(_world);
+                _next_saucer = sf::seconds(book::random(5.f,60.f - Configuration::level*2));
+            }
+
+            if(_world.size() <= 1)
+            {
+                ++Configuration::level;
+                initLevel();
+            }
         }
     }
 
@@ -111,12 +126,28 @@ namespace book
         _window.clear();
 
         //Draw
-        _window.draw(_world);
+        if(Configuration::isGameOver())
+        {
+            _window.draw(_txt);
+        }
+        else
+        {
+            _window.draw(_world);
 
-        Configuration::draw(_window);
+            Configuration::draw(_window);
+        }
 
         //Update the window
         _window.display();
+    }
+
+    void Game::reset()
+    {
+        _next_saucer = sf::seconds(book::random(5.f,6.f - Configuration::level*2));
+        _world.clear();
+        Configuration::player = nullptr;
+        Configuration::reset();
+        initLevel();
     }
 
 
