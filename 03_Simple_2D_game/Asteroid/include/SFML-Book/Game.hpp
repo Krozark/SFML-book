@@ -5,6 +5,8 @@
 #include <SFML/Graphics.hpp>
 
 #include <SFML-Book/Player.hpp>
+#include <SFML-Book/Saucer.hpp>
+#include <SFML-Book/World.hpp>
 
 /**
  * \brief namespace for the book
@@ -23,9 +25,9 @@ namespace book
 
             Game(int X=800, int Y=600); //< constructor
 
-            void runWithFixedTimeSteps(int frame_per_seconds=60);
-            void runWithVariableTimeSteps();
-            void runWithMinimumTimeSteps(int minimum_frame_per_seconds=30);
+            void run(int minimum_frame_per_seconds=30);
+
+            void initLevel();
 
         private:
 
@@ -34,10 +36,10 @@ namespace book
             void render();//< draw all the stuff
 
             sf::RenderWindow _window; //< the window use to display the game
-            book::Player _player;
+            World _world;
+            
 
-            const int _x;
-            const int _y;
+
 
     };
 }

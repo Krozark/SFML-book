@@ -16,19 +16,27 @@ set(FILES_HEADER
     ${INCROOT}/Configuration.hpp
     ${INCROOT}/Entity.hpp
     ${INCROOT}/Entity.tpl
+    ${INCROOT}/Enemy.hpp
     ${INCROOT}/Game.hpp
+    ${INCROOT}/Meteor.hpp
     ${INCROOT}/Player.hpp
-    ${INCROOT}/Player.tpl
+    ${INCROOT}/random.hpp
     ${INCROOT}/ResourceManager.hpp
     ${INCROOT}/ResourceManager.tpl
+    ${INCROOT}/Saucer.hpp
+    ${INCROOT}/World.hpp
 )
 
 set(FILES_SRC
     ${SRCROOT}/Action.cpp
     ${SRCROOT}/Configuration.cpp
     ${SRCROOT}/Entity.cpp
+    ${SRCROOT}/Enemy.cpp
     ${SRCROOT}/Game.cpp
+    ${SRCROOT}/Meteor.cpp
     ${SRCROOT}/Player.cpp
+    ${SRCROOT}/Saucer.cpp
+    ${SRCROOT}/World.cpp
 
     ${SRCROOT}/main.cpp
 )

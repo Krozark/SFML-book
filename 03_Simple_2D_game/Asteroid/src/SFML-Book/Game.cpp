@@ -3,57 +3,18 @@
 
 namespace book
 {
-    Game::Game(int X, int Y) : _window(sf::VideoMode(X,Y),"03_Asteroid"),
-    _x(X),
-    _y(Y)
+    Game::Game(int X, int Y) : _window(sf::VideoMode(X,Y),"03_Asteroid"), _world(X,Y)
     {
-        _player.setPosition(100,100);
+        _world.add(Configuration::player);
     }
 
-    void Game::runWithFixedTimeSteps(int frame_per_seconds)
-    {
-        sf::Clock clock;
-        sf::Time timeSinceLastUpdate = sf::Time::Zero;
-
-        sf::Time TimePerFrame = sf::seconds(1.f/frame_per_seconds);
-
-        while (_window.isOpen())
-        {
-            processEvents();
-
-            bool repaint = false;
-
-            //fix time delta between frames
-            timeSinceLastUpdate += clock.restart();
-            while (timeSinceLastUpdate > TimePerFrame)
-            {
-                timeSinceLastUpdate -= TimePerFrame;
-                repaint = true;
-                update(TimePerFrame);
-            }
-            
-            if(repaint)
-                render();
-        }
-    }
-
-    void Game::runWithVariableTimeSteps()
-    {
-        sf::Clock clock;
-
-        while (_window.isOpen())
-        {
-            processEvents();
-            update(clock.restart());
-            render();
-        }
-    }
-
-    void Game::runWithMinimumTimeSteps(int minimum_frame_per_seconds)
+    void Game::run(int minimum_frame_per_seconds)
     {
         sf::Clock clock;
         sf::Time timeSinceLastUpdate;
         sf::Time TimePerFrame = sf::seconds(1.f/minimum_frame_per_seconds);
+
+        initLevel();
 
         while (_window.isOpen())
         {
@@ -68,6 +29,27 @@ namespace book
 
             update(timeSinceLastUpdate);
             render();
+        }
+    }
+
+    void Game::initLevel()
+    {
+        Configuration::player->setPosition(100,100);
+
+        int nb_meteors;
+        switch(Configuration::level)
+        {
+            case 1 : nb_meteors = 4;break;
+            case 2 : nb_meteors = 5;break;
+            case 3 : nb_meteors = 7;break;
+            case 4 : nb_meteors = 9;break;
+            default : nb_meteors = 11;break;
+        }
+        for(int i = 0; i<nb_meteors;++i)
+        {
+            Meteor* meteor = BigMeteor;
+            meteor.setPosition(random(0.f,_x),random(0.f,_y));
+            _world.add(meteor);
         }
     }
 
@@ -87,33 +69,13 @@ namespace book
             }
         }
 
-        _player.processEvents();
+        Configuration::player->processEvents();
     }
 
     
     void Game::update(sf::Time deltaTime)
     {
-        _player.update(deltaTime);
-
-        sf::Vector2f player_pos = _player.getPosition();
-
-        if(player_pos.x < 0)
-        {
-            player_pos.x = _x;
-            player_pos.y = _y - player_pos.y;
-        }
-        else if (player_pos.x > _x)
-        {
-            player_pos.x = 0;
-            player_pos.y = _y - player_pos.y;
-        }
-
-        if(player_pos.y < 0)
-            player_pos.y = _y;
-        else if(player_pos.y > _y)
-            player_pos.y = 0;
-
-        _player.setPosition(player_pos);
+        _world.update(deltaTime);
     }
 
     void Game::render()
@@ -122,7 +84,7 @@ namespace book
         _window.clear();
 
         //Draw
-        _window.draw(_player);
+        _window.draw(_world);
 
         //Update the window
         _window.display();

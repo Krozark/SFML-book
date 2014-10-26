@@ -8,6 +8,7 @@
 
 namespace book
 {
+    class Player;
     class Configuration
     {
         public:
@@ -15,7 +16,7 @@ namespace book
             Configuration(const Configuration&) = delete;
             Configuration& operator=(const Configuration&) = delete;
 
-            enum Textures : int {Player};
+            enum Textures : int {Player,BigSaucer,SmallSaucer};
             static ResourceManager<sf::Texture,int> textures;
 
             enum PlayerInputs : int {Up,Left,Right};
@@ -23,6 +24,10 @@ namespace book
 
             static void initialize();
 
+            static int score;
+            static int level;
+
+            static book::Player* player;
 
         private:
 
