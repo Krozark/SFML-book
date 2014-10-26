@@ -30,10 +30,11 @@ namespace book
     void Saucer::newSaucer(World& world)
     {
         Saucer* res = nullptr;
-        //if(book::random(0,1) < Configuration::score - 40000)
+        if(book::random(0.f,1.f) > Configuration::getScore()/ 40000.f)
+            res = new BigSaucer(world);
+        else
           res = new SmallSaucer(world);
-        //else
-//          res = new BigSaucer(world);
+
         world.add(res);
     }
 
@@ -52,7 +53,7 @@ namespace book
 
     SmallSaucer::SmallSaucer(World& world) : Saucer(Configuration::Textures::SmallSaucer,world)
     {        
-            _time_since_last_shoot = sf::Time::Zero;
+        _time_since_last_shoot = sf::Time::Zero;
     }
 
     int SmallSaucer::getPoints()const

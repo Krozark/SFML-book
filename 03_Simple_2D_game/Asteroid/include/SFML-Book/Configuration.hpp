@@ -17,6 +17,7 @@ namespace book
             Configuration& operator=(const Configuration&) = delete;
 
             enum Textures : int {Player,
+                PlayerLife,
                 BigSaucer,
                 SmallSaucer,
                 BigMeteor1,
@@ -32,8 +33,10 @@ namespace book
                 ShootPlayer,
                 ShootSaucer,
             };
-
             static ResourceManager<sf::Texture,int> textures;
+
+            enum Fonts : int {Gui};
+            static ResourceManager<sf::Font,int> fonts;
 
             enum PlayerInputs : int {Up,
                 Left,
@@ -44,15 +47,23 @@ namespace book
 
             static void initialize();
 
-            static int score;
             static int level;
             static int lives;
 
+            static void addScore(int s);
+            static int getScore();
+
             static book::Player* player;
 
+            static void draw(sf::RenderTarget& target);
+
         private:
+            static int _score;
+            static sf::Text   _txt_score;
+            static sf::Sprite _spr_life;
 
             static void initTextures();
+            static void initFonts();
 
             static void initPlayerInputs();
     };

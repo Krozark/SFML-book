@@ -51,7 +51,7 @@ namespace book
 
         sf::Vector2f pos = Configuration::player->getPosition() - from.getPosition();
 
-        float accuracy_lost = book::random(-1.f,1.f)*M_PI/((200+Configuration::score)/100.f);
+        float accuracy_lost = book::random(-1.f,1.f)*M_PI/((200+Configuration::getScore())/100.f);
         float angle_rad = std::atan2(pos.y,pos.x) + accuracy_lost;
         float angle_deg = angle_rad * 180 / M_PI;
 

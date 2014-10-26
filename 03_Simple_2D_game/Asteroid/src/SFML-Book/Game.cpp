@@ -104,6 +104,8 @@ namespace book
         //Draw
         _window.draw(_world);
 
+        Configuration::draw(_window);
+
         //Update the window
         _window.display();
     }

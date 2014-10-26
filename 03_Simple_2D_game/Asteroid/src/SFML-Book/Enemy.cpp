@@ -5,6 +5,6 @@ namespace book
     void Enemy::onDestroy()
     {
         Entity::onDestroy();
-        Configuration::score += getPoints();
+        Configuration::addScore(getPoints());
     }
 }

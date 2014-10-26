@@ -5,26 +5,61 @@
 namespace book
 {
     ResourceManager<sf::Texture,int> Configuration::textures;
+     ResourceManager<sf::Font,int> Configuration::fonts;
     ActionMap<int> Configuration::player_inputs;
-    int Configuration::score;
     int Configuration::level;
     int Configuration::lives;
+
     book::Player* Configuration::player = nullptr;
+
+    int Configuration::_score;
+    sf::Text   Configuration::_txt_score;
+    sf::Sprite Configuration::_spr_life;
 
     void Configuration::initialize()
     {
         initTextures();
+        initFonts();
         initPlayerInputs();
 
         rand_init();
-        score = 0;
         level = 1;
         lives = 3;
+
+        _score = 0;
+        _txt_score.setFont(fonts.get(Fonts::Gui));
+        _txt_score.setCharacterSize(24);
+        _txt_score.setString("0");
+
+        _spr_life.setTexture(textures.get(Textures::PlayerLife));
+    }
+
+    void Configuration::addScore(int s)
+    {
+        _score += s;
+        _txt_score.setString(std::to_string(_score));
+    }
+
+    int Configuration::getScore()
+    {
+        return _score;
+    }
+
+    void Configuration::draw(sf::RenderTarget& target)
+    {
+        target.draw(_txt_score);
+        for(int i = 0;i< lives;++i)
+        {
+            _spr_life.setPosition(40*i,40);
+            target.draw(_spr_life);
+        }
     }
 
     void Configuration::initTextures()
     {
+        //player
         textures.load(Textures::Player,"media/Player/Ship.png");
+        textures.load(Textures::PlayerLife,"media/Player/life.png");
         //saucers
         textures.load(Textures::BigSaucer,"media/Saucer/Big.png");
         textures.load(Textures::SmallSaucer,"media/Saucer/Small.png");
@@ -44,6 +79,11 @@ namespace book
         //lasers
         textures.load(Textures::ShootPlayer,"media/Shoot/Player.png");
         textures.load(Textures::ShootSaucer,"media/Shoot/Saucer.png");
+    }
+
+    void Configuration::initFonts()
+    {
+        fonts.load(Fonts::Gui,"media/font/trs-million.ttf");
     }
 
     void Configuration::initPlayerInputs()
