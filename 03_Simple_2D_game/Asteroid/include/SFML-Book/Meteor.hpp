@@ -42,6 +42,7 @@ namespace book
         public :
             SmallMeteor(World& world);
             virtual int getPoints()const;
+            virtual void onDestroy();
     };
 }
 #endif

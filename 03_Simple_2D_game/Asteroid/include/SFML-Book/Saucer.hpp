@@ -18,6 +18,8 @@ namespace book
             static void newSaucer(World& world);
             
             virtual void update(sf::Time deltaTime);
+
+            virtual void onDestroy();
     };
 
     class BigSaucer : public Saucer

@@ -2,6 +2,7 @@
 #define BOOK_CONFIGURATION_HPP
 
 #include <SFML/Graphics.hpp> //Texture
+#include <SFML/Audio.hpp> //SoundBuffer
 
 #include <SFML-Book/ResourceManager.hpp> //ResourceManager
 #include <SFML-Book/ActionMap.hpp> //ActionMap
@@ -43,6 +44,25 @@ namespace book
                 Right,
                 Shoot,
             };
+
+            enum Sounds : int {
+                LaserPlayer,
+                LaserEnemy,
+                SaucerSpawn1,
+                SaucerSpawn2,
+                Boom,
+                Boom2,
+                Explosion1,
+                Explosion2,
+                Explosion3,
+            };
+            static ResourceManager<sf::SoundBuffer,int> sounds;
+
+            enum Musics : int {
+                Theme
+            };
+            static ResourceManager<sf::Music,int> musics;
+
             static ActionMap<int> player_inputs;
 
             static void initialize();
@@ -64,6 +84,8 @@ namespace book
 
             static void initTextures();
             static void initFonts();
+            static void initSounds();
+            static void initMusics();
 
             static void initPlayerInputs();
     };

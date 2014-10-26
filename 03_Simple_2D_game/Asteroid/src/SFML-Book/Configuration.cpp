@@ -5,7 +5,10 @@
 namespace book
 {
     ResourceManager<sf::Texture,int> Configuration::textures;
-     ResourceManager<sf::Font,int> Configuration::fonts;
+    ResourceManager<sf::Font,int> Configuration::fonts;
+    ResourceManager<sf::SoundBuffer,int> Configuration::sounds;
+    ResourceManager<sf::Music,int> Configuration::musics;
+
     ActionMap<int> Configuration::player_inputs;
     int Configuration::level;
     int Configuration::lives;
@@ -20,6 +23,9 @@ namespace book
     {
         initTextures();
         initFonts();
+        initSounds();
+        initMusics();
+
         initPlayerInputs();
 
         rand_init();
@@ -32,11 +38,16 @@ namespace book
         _txt_score.setString("0");
 
         _spr_life.setTexture(textures.get(Textures::PlayerLife));
+
+        musics.get(Musics::Theme).setLoop(true);
+        musics.get(Musics::Theme).play();
     }
 
     void Configuration::addScore(int s)
     {
+        int old_score = _score;
         _score += s;
+        lives += _score/10000 - old_score/10000;
         _txt_score.setString(std::to_string(_score));
     }
 
@@ -84,6 +95,27 @@ namespace book
     void Configuration::initFonts()
     {
         fonts.load(Fonts::Gui,"media/font/trs-million.ttf");
+    }
+
+    void Configuration::initSounds()
+    {
+        //laser
+        sounds.load(Sounds::LaserPlayer,"media/sounds/laser1.ogg");
+        sounds.load(Sounds::LaserEnemy,"media/sounds/laser2.ogg");
+        //saucers
+        sounds.load(Sounds::SaucerSpawn1,"media/sounds/spawn1.flac");
+        sounds.load(Sounds::SaucerSpawn2,"media/sounds/spawn2.flac");
+        // Boom
+        sounds.load(Sounds::Boom,"media/sounds/boom.flac");
+        sounds.load(Sounds::Boom2,"media/sounds/boom2.flac");
+        // Explosion
+        sounds.load(Sounds::Explosion1,"media/sounds/explosion1.flac");
+        sounds.load(Sounds::Explosion2,"media/sounds/explosion2.flac");
+        sounds.load(Sounds::Explosion3,"media/sounds/explosion3.flac");
+    }
+    void Configuration::initMusics()
+    {
+        musics.load(Musics::Theme,"media/musics/theme.ogg");
     }
 
     void Configuration::initPlayerInputs()

@@ -2,7 +2,11 @@
 #define BOOK_WORLD_HPP
 
 #include <SFML/Graphics.hpp> //Drawable
+#include <SFML/Audio.hpp> //Drawable
 #include <list> //list
+#include <memory>
+
+#include <SFML-Book/Configuration.hpp>
 
 namespace book
 {
@@ -21,12 +25,16 @@ namespace book
             void add(Entity* entity);
             void remove(Entity* entity);
 
+            void add(Configuration::Sounds sound_id);
+
             int getX()const;
             int getY()const;
 
         private:
             std::list<Entity*>  _entities; 
             std::list<Entity*>  _entities_tmp; 
+            std::list<std::unique_ptr<sf::Sound>> _sounds;
+
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
             const int _x;

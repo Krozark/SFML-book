@@ -44,6 +44,7 @@ namespace book
         if(_time_since_last_shoot > sf::seconds(0.3))
         {
             _world.add(new ShootPlayer(*this));
+            _world.add(Configuration::Sounds::LaserPlayer);
             _time_since_last_shoot = sf::Time::Zero;
         }
     }
@@ -53,6 +54,7 @@ namespace book
         Configuration::player = nullptr;
         _alive = false;
         Configuration::lives--;
+        _world.add(Configuration::Sounds::Boom);
     }
 
     void Player::processEvents()
@@ -70,7 +72,7 @@ namespace book
 
         if(_rotation != 0)
         {
-            float angle = _rotation*180*seconds;
+            float angle = _rotation*250*seconds;
             _sprite.rotate(angle);
         }
         

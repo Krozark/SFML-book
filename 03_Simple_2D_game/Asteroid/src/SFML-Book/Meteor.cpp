@@ -40,7 +40,7 @@ namespace book
 
     void BigMeteor::onDestroy()
     {
-        Enemy::onDestroy();
+        Meteor::onDestroy();
         
         int nb = book::random(2,3);
         for(int i=0;i<nb;++i)
@@ -49,6 +49,7 @@ namespace book
             meteor->setPosition(getPosition());
             _world.add(meteor);
         }
+        _world.add(Configuration::Sounds::Explosion1);
     }
 
     /************ MediumMeteor ****************/
@@ -65,7 +66,7 @@ namespace book
 
     void MediumMeteor::onDestroy()
     {
-        Enemy::onDestroy();
+        Meteor::onDestroy();
         
         int nb = book::random(2,3);
         for(int i=0;i<nb;++i)
@@ -74,6 +75,7 @@ namespace book
             meteor->setPosition(getPosition());
             _world.add(meteor);
         }
+        _world.add(Configuration::Sounds::Explosion2);
     }
 
     /************ SmallMeteor ****************/
@@ -86,6 +88,12 @@ namespace book
     int SmallMeteor::getPoints()const
     {
         return 100;
+    }
+
+    void SmallMeteor::onDestroy()
+    {
+        Meteor::onDestroy();
+        _world.add(Configuration::Sounds::Explosion3);
     }
 
 }

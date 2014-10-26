@@ -29,6 +29,14 @@ namespace book
         _entities.remove(entity);
     }
 
+    void World::add(Configuration::Sounds sound_id)
+    {
+        std::unique_ptr<sf::Sound> sound(new sf::Sound(Configuration::sounds.get(sound_id)));
+        sound->setAttenuation(0);
+        sound->play();
+        _sounds.emplace_back(std::move(sound));
+    }
+
     int World::getX()const
     {
         return _x;
@@ -100,6 +108,10 @@ namespace book
             else
                 ++it;
         }
+
+        _sounds.remove_if([](const std::unique_ptr<sf::Sound>& sound) -> bool {
+                return sound->getStatus() != sf::SoundSource::Status::Playing;
+            });
     }
 
     void World::draw(sf::RenderTarget& target, sf::RenderStates states) const

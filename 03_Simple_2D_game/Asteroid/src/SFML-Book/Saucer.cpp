@@ -26,6 +26,11 @@ namespace book
         
         _sprite.move(seconds * sf::Vector2f(300,100));
     }
+    void Saucer::onDestroy()
+    {
+        Enemy::onDestroy();
+        _world.add(Configuration::Sounds::Boom2);
+    }
 
     void Saucer::newSaucer(World& world)
     {
@@ -42,6 +47,7 @@ namespace book
 
     BigSaucer::BigSaucer(World& world) : Saucer(Configuration::Textures::BigSaucer,world)
     {
+        _world.add(Configuration::Sounds::SaucerSpawn1);
     }
 
     int BigSaucer::getPoints()const
@@ -54,6 +60,7 @@ namespace book
     SmallSaucer::SmallSaucer(World& world) : Saucer(Configuration::Textures::SmallSaucer,world)
     {        
         _time_since_last_shoot = sf::Time::Zero;
+        _world.add(Configuration::Sounds::SaucerSpawn2);
     }
 
     int SmallSaucer::getPoints()const
@@ -71,6 +78,7 @@ namespace book
             if(Configuration::player != nullptr)
             {
                 _world.add(new ShootSaucer(*this));
+                _world.add(Configuration::Sounds::LaserEnemy);
             }
             _time_since_last_shoot = sf::Time::Zero;
         }
