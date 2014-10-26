@@ -21,6 +21,8 @@ namespace book
 
             void shoot();
 
+            void goToHyperspace();
+
             virtual void onDestroy();
 
         private:

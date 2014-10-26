@@ -72,6 +72,9 @@ namespace book
                 if (event.key.code == sf::Keyboard::Escape)
                     _window.close();
             }
+
+            if(Configuration::player != nullptr)
+                Configuration::player->processEvent(event);
         }
 
         if(Configuration::player != nullptr)

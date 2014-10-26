@@ -123,6 +123,7 @@ namespace book
         player_inputs.map(PlayerInputs::Up,Action(sf::Keyboard::Up));
         player_inputs.map(PlayerInputs::Right,Action(sf::Keyboard::Right));
         player_inputs.map(PlayerInputs::Left,Action(sf::Keyboard::Left));
+        player_inputs.map(PlayerInputs::Hyperspace,Action(sf::Keyboard::Down,Action::Type::Pressed));
         player_inputs.map(PlayerInputs::Shoot,Action(sf::Keyboard::Space));
     }
 }

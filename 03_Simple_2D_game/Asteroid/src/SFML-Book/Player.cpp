@@ -5,6 +5,7 @@
 #include <SFML-Book/Collision.hpp> //Collision
 #include <SFML-Book/World.hpp> //World
 #include <SFML-Book/Shoot.hpp> //ShootPlayer
+#include <SFML-Book/random.hpp> //random
 
 namespace book
 {
@@ -28,6 +29,10 @@ namespace book
         bind(Configuration::PlayerInputs::Shoot,[this](const sf::Event&){
              shoot();
          });
+
+        bind(Configuration::PlayerInputs::Hyperspace,[this](const sf::Event&){
+             goToHyperspace();
+         });
     }
 
     bool Player::isCollide(const Entity& other)const
@@ -47,6 +52,15 @@ namespace book
             _world.add(Configuration::Sounds::LaserPlayer);
             _time_since_last_shoot = sf::Time::Zero;
         }
+    }
+
+    void Player::goToHyperspace()
+    {
+        _velocity = sf::Vector2f(0,0);
+        _is_moving = false;
+        _rotation = 0;
+
+        setPosition(random(0,_world.getX()),random(0,_world.getY()));
     }
 
     void Player::onDestroy()

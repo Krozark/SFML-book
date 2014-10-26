@@ -43,6 +43,7 @@ namespace book
                 Left,
                 Right,
                 Shoot,
+                Hyperspace
             };
 
             enum Sounds : int {
