@@ -11,11 +11,14 @@ namespace book
             Enemy(const Enemy&) = delete;
             Enemy& operator=(const Enemy&) = delete;
 
-            using Entity::Entity;
+            Enemy(Configuration::Textures tex_id,World& world);
 
             virtual int getPoints()const = 0;
 
             virtual void onDestroy();
+
+        protected:
+            sf::Vector2f        _impulse;
     };
 }
 #endif

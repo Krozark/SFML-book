@@ -37,6 +37,18 @@ namespace book
         _sounds.emplace_back(std::move(sound));
     }
 
+    bool World::isCollide(const Entity& other)
+    {
+        for(Entity* entity_ptr : _entities)
+            if(other.isCollide(*entity_ptr))
+                return true;
+        return false;
+    }
+    int World::size()
+    {
+        return _entities.size() + _entities_tmp.size();
+    }
+
     int World::getX()const
     {
         return _x;

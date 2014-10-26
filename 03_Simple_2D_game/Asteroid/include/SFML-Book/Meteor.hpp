@@ -11,13 +11,11 @@ namespace book
             Meteor(const Meteor&) = delete;
             Meteor& operator=(const Meteor&) = delete;
 
-            Meteor(Configuration::Textures tex_id,World& world);
+            using Enemy::Enemy;
 
             virtual bool isCollide(const Entity& other)const;
             virtual void update(sf::Time deltaTime);
 
-        protected:
-            sf::Vector2f        _impulse;
             
     };
 

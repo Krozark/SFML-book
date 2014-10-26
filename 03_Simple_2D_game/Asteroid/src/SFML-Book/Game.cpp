@@ -38,7 +38,6 @@ namespace book
 
     void Game::initLevel()
     {
-
         int nb_meteors;
         switch(Configuration::level)
         {
@@ -51,11 +50,11 @@ namespace book
         for(int i = 0; i<nb_meteors;++i)
         {
             Meteor* meteor = new BigMeteor(_world);
-            meteor->setPosition(random(0.f,(float)_world.getX()),random(0.f,(float)_world.getY()));
+            do{
+                meteor->setPosition(random(0.f,(float)_world.getX()),random(0.f,(float)_world.getY()));
+            }while(_world.isCollide(*meteor));
             _world.add(meteor);
         }
-
-
     }
 
     void Game::processEvents()
@@ -97,6 +96,12 @@ namespace book
         {
             Saucer::newSaucer(_world);
             _next_saucer = sf::seconds(book::random(5.f,60.f - Configuration::level*2));
+        }
+
+        if(_world.size() == 1)
+        {
+            ++Configuration::level;
+            initLevel();
         }
     }
 

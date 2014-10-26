@@ -5,12 +5,6 @@
 
 namespace book
 {
-    Meteor::Meteor(Configuration::Textures tex_id,World& world) : Enemy(tex_id,world)
-    {
-        float angle = book::random(0.f,2.f*M_PI);
-        _impulse = sf::Vector2f(std::cos(angle),std::sin(angle));
-    }
-
     bool Meteor::isCollide(const Entity& other)const
     {
         //not a meteor

@@ -27,6 +27,10 @@ namespace book
 
             void add(Configuration::Sounds sound_id);
 
+            bool isCollide(const Entity& other);
+
+            int size();
+
             int getX()const;
             int getY()const;
 

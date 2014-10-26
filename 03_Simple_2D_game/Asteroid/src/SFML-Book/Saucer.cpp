@@ -24,7 +24,7 @@ namespace book
         //sf::Vector2f impulse = sf::Vector2f(std::cos(angle),std::sin(angle)) * 300.f;
         //_sprite.move(seconds * impulse);
         
-        _sprite.move(seconds * sf::Vector2f(300,100));
+        _sprite.move(seconds * _impulse);
     }
     void Saucer::onDestroy()
     {
