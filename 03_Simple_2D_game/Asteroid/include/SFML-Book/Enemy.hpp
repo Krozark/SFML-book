@@ -14,6 +14,8 @@ namespace book
             using Entity::Entity;
 
             virtual int getPoints()const = 0;
+
+            virtual void onDestroy();
     };
 }
 #endif

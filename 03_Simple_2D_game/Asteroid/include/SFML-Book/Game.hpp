@@ -5,7 +5,6 @@
 #include <SFML/Graphics.hpp>
 
 #include <SFML-Book/Player.hpp>
-#include <SFML-Book/Saucer.hpp>
 #include <SFML-Book/World.hpp>
 
 /**
@@ -23,7 +22,7 @@ namespace book
             Game(const Game&) = delete;
             Game& operator=(const Game&) = delete;
 
-            Game(int X=800, int Y=600); //< constructor
+            Game(int X=1600, int Y=900); //< constructor
 
             void run(int minimum_frame_per_seconds=30);
 
@@ -37,10 +36,7 @@ namespace book
 
             sf::RenderWindow _window; //< the window use to display the game
             World _world;
-            
-
-
-
+            sf::Time            _next_saucer;
     };
 }
 #endif

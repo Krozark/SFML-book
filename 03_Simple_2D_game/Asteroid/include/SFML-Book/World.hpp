@@ -21,9 +21,12 @@ namespace book
             void add(Entity* entity);
             void remove(Entity* entity);
 
+            int getX()const;
+            int getY()const;
 
         private:
             std::list<Entity*>  _entities; 
+            std::list<Entity*>  _entities_tmp; 
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
             const int _x;

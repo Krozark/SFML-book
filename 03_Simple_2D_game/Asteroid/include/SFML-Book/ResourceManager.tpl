@@ -1,7 +1,6 @@
 #include <stdexcept> //runtime_error
 #include <utility> //forward
 
-
 namespace book
 {
     template<typename RESOURCE,typename IDENTIFIER>
@@ -11,7 +10,8 @@ namespace book
         std::unique_ptr<RESOURCE> ptr(new RESOURCE);
         if(not ptr->loadFromFile(std::forward<Args>(args)...))
             throw std::runtime_error("Impossible to load file");
-        _map.emplace(id,std::move(ptr));
+        if(_map.emplace(id,std::move(ptr)).second == false)
+            throw std::runtime_error("Impossible to emplace in map. Object already load?");
     }
 
     template<typename RESOURCE,typename IDENTIFIER>
@@ -30,7 +30,8 @@ namespace book
 
         if(not ptr->openFromFile(std::forward<Args>(args)...))
             throw std::runtime_error("Impossible to load file");
-        _map.emplace(id,std::move(ptr));
+        if(_map.emplace(id,std::move(ptr)).second == false)
+            throw std::runtime_error("Impossible to emplace in map. Object aleardy load?");
     };
 
     template<typename IDENTIFIER>

@@ -15,26 +15,27 @@ namespace book
 
             virtual bool isCollide(const Entity& other)const;
 
-            static Saucer* newSaucer();
+            static void newSaucer(World& world);
             
             virtual void update(sf::Time deltaTime);
-
-        private:
     };
 
     class BigSaucer : public Saucer
     {
         public:
-            BigSaucer();
+            BigSaucer(World& world);
             virtual int getPoints()const;
     };
 
     class SmallSaucer : public Saucer
     {
         public :
-            SmallSaucer();
+            SmallSaucer(World& world);
             virtual int getPoints()const;
             virtual void update(sf::Time deltaTime);
+
+        private:
+            sf::Time            _time_since_last_shoot;
     };
 
 }

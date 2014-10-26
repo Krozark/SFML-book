@@ -13,20 +13,37 @@ namespace book
         for(Entity* entity :_entities)
             delete entity;
         _entities.clear();
+
+        for(Entity* entity :_entities_tmp)
+            delete entity;
+        _entities_tmp.clear();
     }
 
     void World::add(Entity* entity)
     {
-        _entities.push_back(entity);
+        _entities_tmp.push_back(entity);
     }
 
     void World::remove(Entity* entity)
     {
+        _entities.remove(entity);
+    }
 
+    int World::getX()const
+    {
+        return _x;
+    }
+
+    int World::getY()const
+    {
+        return _y;
     }
 
     void World::update(sf::Time deltaTime)
     {
+        if(_entities_tmp.size() > 0)
+            _entities.merge(_entities_tmp);
+
         for(Entity* entity_ptr : _entities)
         {
             Entity& entity = *entity_ptr;
@@ -52,6 +69,36 @@ namespace book
                 pos.y = 0;
 
             entity.setPosition(pos);
+        }
+
+
+        const auto end = _entities.end();
+        for(auto it_i = _entities.begin(); it_i != end; ++it_i)
+        {
+            Entity& entity_i = **it_i;
+            auto it_j = it_i;
+            it_j++;
+            for(; it_j != end;++it_j)
+            {
+                Entity& entity_j = **it_j;
+
+                if(entity_i.isAlive() and entity_i.isCollide(entity_j))
+                    entity_i.onDestroy();
+
+                if(entity_j.isAlive() and entity_j.isCollide(entity_i))
+                    entity_j.onDestroy();
+            }
+        }
+
+        for(auto it = _entities.begin(); it != _entities.end();)
+        {
+            if(not (*it)->isAlive())
+            {
+                delete *it;
+                it = _entities.erase(it);
+            }
+            else
+                ++it;
         }
     }
 

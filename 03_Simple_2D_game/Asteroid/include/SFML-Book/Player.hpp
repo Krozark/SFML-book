@@ -12,20 +12,25 @@ namespace book
             Player(const Player&) = delete;
             Player& operator=(const Player&) = delete;
 
-            Player();
+            Player(World& world);
 
             virtual bool isCollide(const Entity& other)const;
             virtual void update(sf::Time deltaTime);
 
             void processEvents();
 
-            void shoot()const;
+            void shoot();
+
+            virtual void onDestroy();
 
         private:
+
             sf::Vector2f        _velocity;
 
             bool _is_moving;
             int _rotation;
+
+            sf::Time            _time_since_last_shoot;
     };
 }
 #endif

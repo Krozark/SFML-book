@@ -14,6 +14,7 @@ set(FILES_HEADER
     ${INCROOT}/ActionMap.hpp
     ${INCROOT}/ActionMap.tpl
     ${INCROOT}/Configuration.hpp
+    ${INCROOT}/Collision.hpp
     ${INCROOT}/Entity.hpp
     ${INCROOT}/Entity.tpl
     ${INCROOT}/Enemy.hpp
@@ -24,18 +25,21 @@ set(FILES_HEADER
     ${INCROOT}/ResourceManager.hpp
     ${INCROOT}/ResourceManager.tpl
     ${INCROOT}/Saucer.hpp
+    ${INCROOT}/Shoot.hpp
     ${INCROOT}/World.hpp
 )
 
 set(FILES_SRC
     ${SRCROOT}/Action.cpp
     ${SRCROOT}/Configuration.cpp
+    ${SRCROOT}/Collision.cpp
     ${SRCROOT}/Entity.cpp
     ${SRCROOT}/Enemy.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Meteor.cpp
     ${SRCROOT}/Player.cpp
     ${SRCROOT}/Saucer.cpp
+    ${SRCROOT}/Shoot.cpp
     ${SRCROOT}/World.cpp
 
     ${SRCROOT}/main.cpp

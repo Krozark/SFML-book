@@ -1,11 +1,15 @@
 #include <SFML-Book/Game.hpp>
 #include <SFML-Book/Configuration.hpp>
+#include <SFML-Book/random.hpp>
+
+#include <SFML-Book/Meteor.hpp>
+#include <SFML-Book/Saucer.hpp>
 
 namespace book
 {
     Game::Game(int X, int Y) : _window(sf::VideoMode(X,Y),"03_Asteroid"), _world(X,Y)
     {
-        _world.add(Configuration::player);
+        _next_saucer = sf::seconds(book::random(5.f,6.f - Configuration::level*2));
     }
 
     void Game::run(int minimum_frame_per_seconds)
@@ -34,7 +38,6 @@ namespace book
 
     void Game::initLevel()
     {
-        Configuration::player->setPosition(100,100);
 
         int nb_meteors;
         switch(Configuration::level)
@@ -47,10 +50,11 @@ namespace book
         }
         for(int i = 0; i<nb_meteors;++i)
         {
-            Meteor* meteor = BigMeteor;
-            meteor.setPosition(random(0.f,_x),random(0.f,_y));
+            Meteor* meteor = new BigMeteor(_world);
+            meteor->setPosition(random(0.f,(float)_world.getX()),random(0.f,(float)_world.getY()));
             _world.add(meteor);
         }
+
     }
 
     void Game::processEvents()
@@ -69,13 +73,27 @@ namespace book
             }
         }
 
-        Configuration::player->processEvents();
+        if(Configuration::player != nullptr)
+            Configuration::player->processEvents();
     }
 
     
     void Game::update(sf::Time deltaTime)
     {
         _world.update(deltaTime);
+        if(Configuration::player == nullptr)
+        {
+            Configuration::player = new Player(_world);
+            Configuration::player->setPosition(_world.getX()/2,_world.getY()/2);
+            _world.add(Configuration::player);
+        }
+        _next_saucer -= deltaTime;
+
+        if(_next_saucer < sf::Time::Zero)
+        {
+            Saucer::newSaucer(_world);
+            _next_saucer = sf::seconds(book::random(5.f,60.f - Configuration::level*2));
+        }
     }
 
     void Game::render()

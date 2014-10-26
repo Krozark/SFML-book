@@ -2,10 +2,13 @@
 #include <cmath> //sin, cos
 
 #include <SFML-Book/Configuration.hpp> //Configuration
+#include <SFML-Book/Collision.hpp> //Collision
+#include <SFML-Book/World.hpp> //World
+#include <SFML-Book/Shoot.hpp> //ShootPlayer
 
 namespace book
 {
-    Player::Player() : Entity(Configuration::Textures::Player)
+    Player::Player(World& world) : Entity(Configuration::Textures::Player,world)
                        ,ActionTarget(Configuration::player_inputs)
                        ,_is_moving(false)
                        ,_rotation(0)
@@ -21,15 +24,35 @@ namespace book
         bind(Configuration::PlayerInputs::Right,[this](const sf::Event&){
              _rotation+= 1;
          });
+
+        bind(Configuration::PlayerInputs::Shoot,[this](const sf::Event&){
+             shoot();
+         });
     }
 
     bool Player::isCollide(const Entity& other)const
     {
+        if(dynamic_cast<const ShootPlayer*>(&other) == nullptr)
+        {
+            return Collision::circleTest(_sprite,other._sprite);
+        }
         return false;
     }
 
-    void Player::shoot()const
+    void Player::shoot()
     {
+        if(_time_since_last_shoot > sf::seconds(0.3))
+        {
+            _world.add(new ShootPlayer(*this));
+            _time_since_last_shoot = sf::Time::Zero;
+        }
+    }
+
+    void Player::onDestroy()
+    {
+        Configuration::player = nullptr;
+        _alive = false;
+        Configuration::lives--;
     }
 
     void Player::processEvents()
@@ -42,6 +65,8 @@ namespace book
     void Player::update(sf::Time deltaTime)
     {
         float seconds = deltaTime.asSeconds();
+
+        _time_since_last_shoot += deltaTime;
 
         if(_rotation != 0)
         {
