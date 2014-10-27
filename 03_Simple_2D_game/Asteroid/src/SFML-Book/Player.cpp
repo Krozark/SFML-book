@@ -57,8 +57,6 @@ namespace book
     void Player::goToHyperspace()
     {
         _impulse = sf::Vector2f(0,0);
-        _is_moving = false;
-        _rotation = 0;
         setPosition(random(0,_world.getX()),random(0,_world.getY()));
         _world.add(Configuration::Sounds::Jump);
 

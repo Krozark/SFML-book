@@ -23,7 +23,6 @@ namespace book
             void update(sf::Time deltaTime);
 
             void add(Entity* entity);
-            void remove(Entity* entity);
 
             void clear();
 

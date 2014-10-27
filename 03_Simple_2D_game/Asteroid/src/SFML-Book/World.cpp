@@ -3,8 +3,7 @@
 
 namespace book
 {
-    World::World(float x,float y): _x(x),
-    _y(y)
+    World::World(float x,float y): _x(x),_y(y)
     {
     }
 
@@ -16,11 +15,6 @@ namespace book
     void World::add(Entity* entity)
     {
         _entities_tmp.push_back(entity);
-    }
-
-    void World::remove(Entity* entity)
-    {
-        _entities.remove(entity);
     }
 
     void World::clear()
