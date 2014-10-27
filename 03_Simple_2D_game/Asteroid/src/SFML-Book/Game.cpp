@@ -1,9 +1,10 @@
 #include <SFML-Book/Game.hpp>
+
 #include <SFML-Book/Configuration.hpp>
 #include <SFML-Book/random.hpp>
-
 #include <SFML-Book/Meteor.hpp>
 #include <SFML-Book/Saucer.hpp>
+#include <SFML-Book/Player.hpp>
 
 namespace book
 {

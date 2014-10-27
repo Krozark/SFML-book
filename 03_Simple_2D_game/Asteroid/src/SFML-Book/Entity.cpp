@@ -1,5 +1,4 @@
 #include <SFML-Book/Entity.hpp>
-#include <SFML-Book/World.hpp>
 
 namespace book
 {

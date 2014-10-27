@@ -3,8 +3,6 @@
 
 #include <SFML-Book/Configuration.hpp>
 
-#include <SFML-Book/Entity.hpp>
-
 int main(int argc,char* argv[])
 {
     book::Configuration::initialize();

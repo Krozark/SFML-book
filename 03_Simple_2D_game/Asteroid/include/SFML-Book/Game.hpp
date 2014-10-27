@@ -4,7 +4,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-#include <SFML-Book/Player.hpp>
 #include <SFML-Book/World.hpp>
 
 /**

@@ -1,5 +1,4 @@
 #include <SFML-Book/Configuration.hpp>
-#include <SFML-Book/Player.hpp> //Player
 #include <SFML-Book/random.hpp> //rand_init
 
 namespace book
