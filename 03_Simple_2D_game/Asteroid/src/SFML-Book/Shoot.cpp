@@ -5,6 +5,7 @@
 #include <SFML-Book/Player.hpp> //Player
 #include <SFML-Book/Saucer.hpp> //Saucer
 #include <SFML-Book/Meteor.hpp> //Meteor
+#include <SFML-Book/World.hpp> //World
 
 #include <SFML-Book/random.hpp> //random
 #include <cmath>
@@ -32,6 +33,7 @@ namespace book
 
         setPosition(from.getPosition());
         _sprite.setRotation(from._sprite.getRotation());
+        _world.add(Configuration::Sounds::LaserPlayer);
     }
 
     bool ShootPlayer::isCollide(const Entity& other)const
@@ -60,6 +62,7 @@ namespace book
 
         setPosition(from.getPosition());
         _sprite.setRotation(angle_deg + 90);
+        _world.add(Configuration::Sounds::LaserEnemy);
     }
 
     bool ShootSaucer::isCollide(const Entity& other)const

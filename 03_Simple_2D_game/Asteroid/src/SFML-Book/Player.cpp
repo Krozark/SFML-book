@@ -49,7 +49,6 @@ namespace book
         if(_time_since_last_shoot > sf::seconds(0.3))
         {
             _world.add(new ShootPlayer(*this));
-            _world.add(Configuration::Sounds::LaserPlayer);
             _time_since_last_shoot = sf::Time::Zero;
         }
     }
