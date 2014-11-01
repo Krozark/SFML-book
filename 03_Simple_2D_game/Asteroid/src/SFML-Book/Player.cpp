@@ -64,8 +64,8 @@ namespace book
 
     void Player::onDestroy()
     {
+        Entity::onDestroy();
         Configuration::player = nullptr;
-        _alive = false;
         Configuration::lives--;
         _world.add(Configuration::Sounds::Boom);
     }

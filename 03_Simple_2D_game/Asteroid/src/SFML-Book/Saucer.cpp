@@ -59,10 +59,6 @@ namespace book
             _impulse += sf::Vector2f(std::cos(angle_rad),std::sin(angle_rad)) * 100.f * seconds;
         }
 
-        //float angle = _sprite.getRotation() / 180 * M_PI - M_PI / 2;
-        //sf::Vector2f impulse = sf::Vector2f(std::cos(angle),std::sin(angle)) * 300.f;
-        //_sprite.move(seconds * impulse);
-        
         _sprite.move(seconds * _impulse);
     }
     void Saucer::onDestroy()
