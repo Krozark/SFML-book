@@ -114,10 +114,7 @@ namespace book
         if(_time_since_last_shoot > sf::seconds(1.5))
         {
             if(Configuration::player != nullptr)
-            {
                 _world.add(new ShootSaucer(*this));
-                _world.add(Configuration::Sounds::LaserEnemy);
-            }
             _time_since_last_shoot = sf::Time::Zero;
         }
     }
