@@ -5,20 +5,15 @@
 #include <SFML/Graphics.hpp>
 
 #include <string>
-
-#define MAX_FPS 60
+#include <cmath>
 
 namespace book
 {
-
-sf::Time TimePerFrame = sf::seconds(1.f/MAX_FPS);
 
 
 Game::Game() : _window(sf::VideoMode(800, 600),"SFML Tetris"),_board()
 {
     rand_init();
-    //limit the number of FPS
-    _window.setFramerateLimit(MAX_FPS);
 
     //create the tertis board with default values
     _board.setPosition(10,10);
@@ -26,30 +21,24 @@ Game::Game() : _window(sf::VideoMode(800, 600),"SFML Tetris"),_board()
 
     newPiece();
 }
-
-void Game::run()
+void Game::run(int minimum_frame_per_seconds)
 {
-    //main loop
     sf::Clock clock;
-    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    sf::Time timeSinceLastUpdate;
+    sf::Time TimePerFrame = sf::seconds(1.f/minimum_frame_per_seconds);
 
     while (_window.isOpen())
     {
-        //Process events
-        //processEvents();
+        processEvents();
 
-        //fix time delta between frames
-        timeSinceLastUpdate += clock.restart();
+        timeSinceLastUpdate = clock.restart();
         while (timeSinceLastUpdate > TimePerFrame)
         {
             timeSinceLastUpdate -= TimePerFrame;
-            processEvents();
-            //do some updates
             update(TimePerFrame);
         }
 
-
-        //draw stuff
+        update(timeSinceLastUpdate);
         render();
     }
 }
@@ -109,11 +98,23 @@ void Game::processEvents()
 void Game::update(sf::Time deltaTime)
 {
     //update stats
-    _stats.addLines(_board.clearLines(*_current_piece));
-
-    if((not _board.isFallen(*_current_piece)) and  (_current_piece->getTimeSinceLastMove() > sf::seconds(1.f)))
-        newPiece();
-
+    if(not _board.isGameOver(*_current_piece))
+    {
+        _stats.addLines(_board.clearLines(*_current_piece));
+        next_fall += deltaTime;
+        if((not _board.isFallen(*_current_piece)) and  (_current_piece->getTimeSinceLastMove() > sf::seconds(1.f)))
+            newPiece();
+        sf::Time max_time = sf::seconds(std::max(0.1,0.6-0.005*_stats.getLvl()));
+        while(next_fall > max_time)
+        {
+            next_fall -= max_time;
+            _board.move(*_current_piece,0,1);
+        } 
+    }
+    else
+    {
+        _stats.gameOver();
+    }
 }
 
 void Game::render()
@@ -121,8 +122,10 @@ void Game::render()
     //Clear screen
     _window.clear();
 
-    //Draw
-    _window.draw(_board);
+    if(not _board.isGameOver(*_current_piece))
+    {
+        _window.draw(_board);
+    }
     _window.draw(_stats);
 
     //Update the window
@@ -131,7 +134,6 @@ void Game::render()
 
 void Game::newPiece()
 {
-    //TODO _board.isGameOver()
     _current_piece.reset(new Piece((Piece::Tetrimino_Types)random(0,Piece::Tetrimino_Types::SIZE-1),0));
     _board.spawn(*_current_piece);
 }

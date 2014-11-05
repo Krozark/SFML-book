@@ -18,7 +18,7 @@ namespace book
 
             Game(); //< constuctor
 
-            void run(); //< run the game
+            void run(int minimum_frame_per_seconds);
 
         private:
 
@@ -32,6 +32,7 @@ namespace book
             std::unique_ptr<Piece> _current_piece; //< the current piece
             Board _board; //< the game board
             Stats _stats; //< stats printer
+            sf::Time next_fall;
 
     };
 }

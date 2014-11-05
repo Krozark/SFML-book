@@ -155,12 +155,18 @@ bool Board::rotateRight(Piece& piece)
     return rotate(piece,rotation);
 }
 
-bool Board::isGameOver()const
+bool Board::isGameOver(const Piece& piece)
 {
+    bool res = false;
+    clear(piece);
     for(int x=0;x<_columns;++x)
         if(_grid_content[x] != CELL_EMPTY)
-            return true;
-    return false;
+        {
+            res = true;
+            break;
+        }
+    draw(piece);
+    return res;
 }
 
 bool Board::rotate(Piece& piece,int rotation)

@@ -36,7 +36,7 @@ namespace book
             bool rotateLeft(Piece& piece);
             bool rotateRight(Piece& piece);
 
-            bool isGameOver()const;
+            bool isGameOver(const Piece& piece);
             int clearLines(const Piece& piece); //< clear all possible lines
 
         private:

@@ -11,6 +11,10 @@ namespace book
             Stats();
 
             void addLines(int lines);
+            unsigned int getLvl()const;
+            void reset();
+
+            void gameOver();
 
         private:
             virtual void draw(sf::RenderTarget& target,sf::RenderStates states=sf::RenderStates::Default) const override; //< draw override from Drawable
@@ -19,9 +23,12 @@ namespace book
             unsigned int _nb_score;
             unsigned int _nb_lvl;
 
+            bool _is_game_over;
+
             sf::Text _text_rows;
             sf::Text _text_score;
             sf::Text _text_lvl;
+            sf::Text _text_game_over;
 
             sf::Font _font;
     };
