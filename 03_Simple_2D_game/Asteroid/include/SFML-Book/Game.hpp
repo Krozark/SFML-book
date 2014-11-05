@@ -39,7 +39,7 @@ namespace book
             sf::RenderWindow _window; //< the window use to display the game
             World _world;
 
-            sf::Time            _next_saucer;
+            sf::Time   _next_saucer;
             sf::Text   _txt;
     };
 }

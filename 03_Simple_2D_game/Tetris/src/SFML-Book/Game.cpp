@@ -83,11 +83,11 @@ void Game::processEvents()
                 _board.drop(*_current_piece);
                 newPiece();
             }
-            else if (event.key.code == sf::Keyboard::A)
+            else if (event.key.code == sf::Keyboard::S)
             {
                 _board.rotateRight(*_current_piece);
             }
-            else if (event.key.code == sf::Keyboard::U)
+            else if (event.key.code == sf::Keyboard::D)
             {
                 _board.rotateLeft(*_current_piece);
             }

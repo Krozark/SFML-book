@@ -86,9 +86,7 @@ void Stats::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(_text_lvl,states);
     }
     else
-    {
         target.draw(_text_game_over,states);
-    }
 }
 
 }
