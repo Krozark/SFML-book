@@ -1,0 +1,29 @@
+#ifndef STATS_HPP
+#define STATS_HPP
+
+#include <SFML/Graphics.hpp>
+
+namespace book
+{
+    class Stats : public sf::Transformable,public sf::Drawable
+    {
+        public:
+            Stats();
+
+            void addLines(int lines);
+
+        private:
+            virtual void draw(sf::RenderTarget& target,sf::RenderStates states=sf::RenderStates::Default) const override; //< draw override from Drawable
+
+            unsigned int _nb_rows;
+            unsigned int _nb_score;
+            unsigned int _nb_lvl;
+
+            sf::Text _text_rows;
+            sf::Text _text_score;
+            sf::Text _text_lvl;
+
+            sf::Font _font;
+    };
+}
+#endif
