@@ -12,7 +12,6 @@ namespace book
 
             void addLines(int lines);
             unsigned int getLvl()const;
-            void reset();
 
             void gameOver();
 

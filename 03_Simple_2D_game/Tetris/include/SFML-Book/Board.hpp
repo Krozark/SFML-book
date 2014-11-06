@@ -36,7 +36,7 @@ namespace book
             bool rotateLeft(Piece& piece);
             bool rotateRight(Piece& piece);
 
-            bool isGameOver(const Piece& piece);
+            bool isGameOver();
             int clearLines(const Piece& piece); //< clear all possible lines
 
         private:
@@ -58,6 +58,8 @@ namespace book
             const int _lines;
             const int _cell_x;
             const int _cell_y;
+
+            bool _is_game_over;
 
             sf::VertexArray _grid;//< grid borders
             int* _grid_content;//< lines * columns

@@ -12,7 +12,8 @@ Board::Board(int columns,int lines,int cell_x,int cell_y):
     _lines(lines),
     _cell_x(cell_x),
     _cell_y(cell_y),
-    _grid_content(nullptr)
+    _grid_content(nullptr),
+    _is_game_over(false)
 {
     //build the grid content and set it to empty(0)
     _grid_content = new int[_lines*_columns];
@@ -72,6 +73,13 @@ void Board::spawn(Piece& piece)
     //set piece spawn origin
     piece.setPosition(_columns/2,0);
     //add it in the grid
+    clear(piece);
+    for(int x=0;x<_columns;++x)
+        if(_grid_content[x] != CELL_EMPTY)
+        {
+            _is_game_over = true;
+            break;
+        }
     draw(piece);
 }
 
@@ -155,18 +163,9 @@ bool Board::rotateRight(Piece& piece)
     return rotate(piece,rotation);
 }
 
-bool Board::isGameOver(const Piece& piece)
+bool Board::isGameOver()
 {
-    bool res = false;
-    clear(piece);
-    for(int x=0;x<_columns;++x)
-        if(_grid_content[x] != CELL_EMPTY)
-        {
-            res = true;
-            break;
-        }
-    draw(piece);
-    return res;
+    return _is_game_over;
 }
 
 bool Board::rotate(Piece& piece,int rotation)
@@ -276,7 +275,6 @@ void Board::flood(int grid_x,int grid_y,int piece_x,int piece_y,Piece::Tetrimino
     flood(grid_x+1, grid_y, piece_x+1, piece_y, type, rotation, visited, flag);
     flood(grid_x, grid_y+1, piece_x, piece_y+1, type, rotation, visited, flag);
     flood(grid_x-1, grid_y, piece_x-1, piece_y, type, rotation, visited, flag);
-
 }
 
 

@@ -19,7 +19,7 @@ namespace book
 
             enum Tetrimino_Types {O=0,I,S,Z,L,J,T,SIZE}; //< different kind of pieces
             static const sf::Color Tetrimino_colors[Tetrimino_Types::SIZE]; //< different colors for each kind of piece
-            static const char Tetrimino_Pieces[Tetrimino_Types::SIZE][NB_ROTATIONS][MATRIX_SIZE][MATRIX_SIZE];//< store all the differents shapes
+            static const char Tetrimino_Pieces[Tetrimino_Types::SIZE][NB_ROTATIONS][MATRIX_SIZE][MATRIX_SIZE];//< store all the different shapes
 
             /** Not capyable **/
 

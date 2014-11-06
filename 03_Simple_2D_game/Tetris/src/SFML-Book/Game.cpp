@@ -98,7 +98,7 @@ void Game::processEvents()
 void Game::update(sf::Time deltaTime)
 {
     //update stats
-    if(not _board.isGameOver(*_current_piece))
+    if(not _board.isGameOver())
     {
         _stats.addLines(_board.clearLines(*_current_piece));
         next_fall += deltaTime;
@@ -122,7 +122,7 @@ void Game::render()
     //Clear screen
     _window.clear();
 
-    if(not _board.isGameOver(*_current_piece))
+    if(not _board.isGameOver())
     {
         _window.draw(_board);
     }
