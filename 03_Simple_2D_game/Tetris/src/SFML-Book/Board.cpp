@@ -12,8 +12,8 @@ Board::Board(int columns,int lines,int cell_x,int cell_y):
     _lines(lines),
     _cell_x(cell_x),
     _cell_y(cell_y),
-    _grid_content(nullptr),
-    _is_game_over(false)
+    _is_game_over(false),
+    _grid_content(nullptr)
 {
     //build the grid content and set it to empty(0)
     _grid_content = new int[_lines*_columns];
