@@ -9,8 +9,6 @@ namespace book
 
     b2Body* create_box(b2World& world,int pos_x,int pos_y, int size_x,int size_y,b2BodyType type = b2_dynamicBody)
     {
-
-
         b2BodyDef bodyDef;
         bodyDef.position.Set(converter::pixel_to_meters<double>(pos_x),converter::pixel_to_meters<double>(pos_y));
         bodyDef.type = type;
@@ -68,9 +66,9 @@ int main(int argc,char* argv[])
     b2Vec2 gravity(0.f, 9.8f);
     b2World world(gravity);
 
-    std::list<b2Body*> bodys;
+    std::list<b2Body*> bodies;
 
-    bodys.emplace_back(book::create_box(world,400,590,800,20,b2_staticBody));
+    bodies.emplace_back(book::create_box(world,400,590,800,20,b2_staticBody));
 
     while(window.isOpen())
     {
@@ -84,12 +82,12 @@ int main(int argc,char* argv[])
         {
             int x = sf::Mouse::getPosition(window).x;
             int y = sf::Mouse::getPosition(window).y;
-            bodys.emplace_back(book::create_box(world,x,y,32,32));
+            bodies.emplace_back(book::create_box(world,x,y,32,32));
         }
         book::display_world(world,window);
     }
 
-    for(b2Body* body : bodys)
+    for(b2Body* body : bodies)
     {
         delete static_cast<sf::RectangleShape*>(body->GetUserData());
         world.DestroyBody(body);
