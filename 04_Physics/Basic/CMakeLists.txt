@@ -8,11 +8,15 @@ set(CHAPTER_NAME 04_Basic)
 
 #FILES
 set(FILES_HEADER
+    ${INCROOT}/converter.hpp
 )
 
 set(FILES_SRC
     ${SRCROOT}/main.cpp
 )
+
+find_library(LIB_BOX2D Box2D)
+set(LIBS ${LIBS} ${LIB_BOX2D})
 
 
 add_executable(${CHAPTER_NAME} ${FILES_HEADER} ${FILES_SRC})
