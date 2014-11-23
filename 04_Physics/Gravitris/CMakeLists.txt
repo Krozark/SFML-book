@@ -8,11 +8,28 @@ set(CHAPTER_NAME 04_Gravitris)
 
 #FILES
 set(FILES_HEADER
+    ${INCROOT}/Action.hpp
+    ${INCROOT}/ActionMap.hpp
+    ${INCROOT}/ActionMap.tpl
+    ${INCROOT}/ActionTarget.hpp
+    ${INCROOT}/ActionTarget.tpl
+    ${INCROOT}/Configuration.hpp
     ${INCROOT}/converter.hpp
+    ${INCROOT}/Game.hpp
+    ${INCROOT}/random.hpp
+    ${INCROOT}/ResourceManager.hpp
+    ${INCROOT}/ResourceManager.tpl
+    ${INCROOT}/World.hpp
 )
 
 set(FILES_SRC
+    ${SRCROOT}/Action.cpp
+    ${SRCROOT}/Configuration.cpp
+    ${SRCROOT}/Game.cpp
+    ${SRCROOT}/World.cpp
+
     ${SRCROOT}/main.cpp
+
 )
 
 
