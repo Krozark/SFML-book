@@ -15,9 +15,6 @@ set(FILES_SRC
     ${SRCROOT}/main.cpp
 )
 
-find_library(LIB_BOX2D Box2D)
-set(LIBS ${LIBS} ${LIB_BOX2D})
-
 
 add_executable(${CHAPTER_NAME} ${FILES_HEADER} ${FILES_SRC})
 target_link_libraries(${CHAPTER_NAME} ${LIBS})

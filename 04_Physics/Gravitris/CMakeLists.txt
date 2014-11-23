@@ -8,6 +8,7 @@ set(CHAPTER_NAME 04_Gravitris)
 
 #FILES
 set(FILES_HEADER
+    ${INCROOT}/converter.hpp
 )
 
 set(FILES_SRC
