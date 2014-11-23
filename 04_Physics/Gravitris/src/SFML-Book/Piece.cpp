@@ -2,7 +2,6 @@
 
 #include <SFML-Book/converter.hpp>
 
-#define BOOK_BOX_SIZE 32
 
 namespace book
 {
@@ -22,6 +21,7 @@ namespace book
 
         bodyDef.position.Set(book::converter::pixel_to_meters<double>(pos_x),book::converter::pixel_to_meters<double>(pos_y));
         bodyDef.type = b2_dynamicBody;
+        bodyDef.angle = converter::deg_to_rad(rotation);
 
         _body = world.CreateBody(&bodyDef);
 
@@ -45,15 +45,15 @@ namespace book
             {
                 create_part(0,1,rotation,type);
                 create_part(1,1,rotation,type);
+                create_part(1,0,rotation,type);
                 create_part(2,0,rotation,type);
-                create_part(3,0,rotation,type);
             }break;
             case Tetrimino_Types::Z :
             {
                 create_part(0,0,rotation,type);
                 create_part(1,0,rotation,type);
+                create_part(1,1,rotation,type);
                 create_part(2,1,rotation,type);
-                create_part(3,1,rotation,type);
             }break;
             case Tetrimino_Types::L :
             {

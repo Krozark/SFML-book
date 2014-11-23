@@ -6,6 +6,7 @@
 
 namespace book
 {
+    constexpr int BOOK_BOX_SIZE = 32;
     class Piece : public sf::Drawable
     {
         public:
