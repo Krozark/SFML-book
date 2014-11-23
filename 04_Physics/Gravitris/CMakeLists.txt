@@ -16,6 +16,7 @@ set(FILES_HEADER
     ${INCROOT}/Configuration.hpp
     ${INCROOT}/converter.hpp
     ${INCROOT}/Game.hpp
+    ${INCROOT}/Piece.hpp
     ${INCROOT}/random.hpp
     ${INCROOT}/ResourceManager.hpp
     ${INCROOT}/ResourceManager.tpl
@@ -26,6 +27,7 @@ set(FILES_SRC
     ${SRCROOT}/Action.cpp
     ${SRCROOT}/Configuration.cpp
     ${SRCROOT}/Game.cpp
+    ${SRCROOT}/Piece.cpp
     ${SRCROOT}/World.cpp
 
     ${SRCROOT}/main.cpp

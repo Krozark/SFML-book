@@ -14,7 +14,7 @@ namespace book
             Game(const Game&) = delete;
             Game& operator=(const Game&) = delete;
 
-            Game(int x,int y); //< constuctor
+            Game(int x,int y,int word_x=10,int word_y=20); //< constuctor
 
             void run(int minimum_frame_per_seconds=30,int phyiscs_frame_per_seconds=60);
 

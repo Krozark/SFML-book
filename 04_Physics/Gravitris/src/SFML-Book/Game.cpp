@@ -2,7 +2,7 @@
 
 namespace book
 {
-    Game::Game(int X, int Y) : _window(sf::VideoMode(X,Y),"04_Gravitris"), _world(X,Y)
+    Game::Game(int X, int Y,int word_x,int word_y) : _window(sf::VideoMode(X,Y),"04_Gravitris"), _world(word_x,word_y)
     {
     }
 

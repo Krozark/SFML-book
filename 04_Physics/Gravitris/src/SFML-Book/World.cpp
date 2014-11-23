@@ -1,19 +1,24 @@
 #include <SFML-Book/World.hpp>
 #include <SFML-Book/Configuration.hpp>
 #include <SFML-Book/converter.hpp>
+#include <SFML-Book/Piece.hpp>
 
 namespace book
 {
     World::World(int size_x,int size_y) : ActionTarget(Configuration::player_inputs),_physical_world(b2Vec2(0.f, 9.8f))
     {
+        bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){
+             new Piece(_physical_world,100,100,Piece::Tetrimino_Types::J,0);
+        });        
     }
 
     World::~World()
     {
         for (b2Body* body=_physical_world.GetBodyList(); body!=nullptr; body=body->GetNext())
         {
-            //delete static_cast<sf::RectangleShape*>(body->GetUserData());
-            _physical_world.DestroyBody(body);
+            b2Body* next = body->GetNext();
+            delete static_cast<Piece*>(body->GetUserData());
+            body = next;
         }
     }
 
@@ -21,16 +26,8 @@ namespace book
     {
         for (b2Body* body=_physical_world.GetBodyList(); body!=nullptr; body=body->GetNext())
         {
-            int pos_x = converter::meters_to_pixels(body->GetPosition().x);
-            int pos_y = converter::meters_to_pixels(body->GetPosition().y);
-            float deg = converter::rad_to_deg(body->GetAngle());
-
-            for(b2Fixture* fixture = body->GetFixtureList(); fixture != nullptr;fixture=fixture->GetNext())
-            {
-                sf::Shape* shape = static_cast<sf::Shape*>(fixture->GetUserData());
-                shape->setPosition(pos_x,pos_y);
-                shape->setRotation(deg);
-            } 
+            Piece* piece = static_cast<Piece*>(body->GetUserData());
+            piece->update();
         }
     }
 
@@ -43,13 +40,10 @@ namespace book
 
     void World::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        /*for (b2Body* body=_physical_world.GetBodyList(); body!=nullptr; body=body->GetNext())
-        {   
-            for(b2Fixture* fixture = body->GetFixtureList(); fixture != nullptr;fixture=fixture->GetNext())
-            {
-                sf::Shape* shape = static_cast<sf::Shape*>(fixture->GetUserData());
-                render.draw(*shape);
-            }
-        }*/
+        for (const b2Body* body=_physical_world.GetBodyList(); body!=nullptr; body=body->GetNext())
+        {
+            Piece* piece = static_cast<Piece*>(body->GetUserData());
+            target.draw(*piece,states);
+        }
     }
 }
