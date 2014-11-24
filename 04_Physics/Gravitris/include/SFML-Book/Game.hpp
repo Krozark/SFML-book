@@ -4,10 +4,12 @@
 #include <SFML/Window.hpp>
 
 #include <SFML-Book/World.hpp>
+#include <SFML-Book/ActionTarget.hpp>
 
 namespace book
 {
-    class Game
+    class Piece;
+    class Game: public ActionTarget<int>
     {
         public:
             //not capyable class
@@ -25,6 +27,7 @@ namespace book
             void render();//< draw all the stuff
 
             sf::RenderWindow _window; //< the window use to display the game
+            Piece* _current_piece;
 
             World _world;
     };

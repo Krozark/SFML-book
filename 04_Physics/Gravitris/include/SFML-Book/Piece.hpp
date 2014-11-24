@@ -7,6 +7,7 @@
 namespace book
 {
     constexpr int BOOK_BOX_SIZE = 32;
+    constexpr int BOOK_BOX_SIZE_2 = BOOK_BOX_SIZE / 2;
     class Piece : public sf::Drawable
     {
         public:
@@ -25,7 +26,7 @@ namespace book
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-            b2Fixture* create_part(int pos_x,int pos_y,float rotation,Tetrimino_Types type); ///< position is relaive to the piece int the matric coordonate (0 to 3)
+            b2Fixture* create_part(int pos_x,int pos_y,Tetrimino_Types type); ///< position is relaive to the piece int the matric coordonate (0 to 3)
 
             b2Body * _body;
             b2World& _world;

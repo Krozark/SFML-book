@@ -1,9 +1,13 @@
 #include <SFML-Book/Game.hpp>
+#include <SFML-Book/Configuration.hpp>
 
 namespace book
 {
-    Game::Game(int X, int Y,int word_x,int word_y) : _window(sf::VideoMode(X,Y),"04_Gravitris"), _world(word_x,word_y)
+    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"04_Gravitris"),_current_piece(nullptr), _world(word_x,word_y)
     {
+        bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){        
+             _current_piece = _world.newPiece();
+        });
     }
 
     void Game::run(int minimum_frame_per_seconds, int physics_frame_per_seconds)
@@ -54,9 +58,9 @@ namespace book
                     _window.close();
             }
 
-            _world.processEvent(event);
+            ActionTarget::processEvent(event);
         }
-        _world.processEvents();
+        ActionTarget::processEvents();
     }
 
     void Game::render()

@@ -2,14 +2,13 @@
 #define BOOK_WORLD_HPP
 
 #include <SFML/Graphics.hpp> //Drawable
-#include <SFML-Book/ActionTarget.hpp>
 
 #include <Box2D/Box2D.h>
 
 namespace book
 {
     class Piece;
-    class World : public sf::Drawable, public ActionTarget<int>
+    class World : public sf::Drawable
     {
         public:
             World(const World&) = delete;
@@ -21,13 +20,14 @@ namespace book
             void update(sf::Time deltaTime);
             void update_physics(sf::Time deltaTime);
 
+            Piece* newPiece();
+
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
             b2World _physical_world;
 
             void create_wall(int pos_x, int pos_y, int size_x, int size_y);
 
-            Piece* _current_piece;
 
             const int _x;
             const int _y;
