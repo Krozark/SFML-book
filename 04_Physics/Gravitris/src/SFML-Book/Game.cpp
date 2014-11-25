@@ -70,5 +70,8 @@ namespace book
         _window.draw(_world);
 
         _window.display();
+#ifdef BOOK_DEBUG
+        _world.displayDebug();
+#endif
     }
 }

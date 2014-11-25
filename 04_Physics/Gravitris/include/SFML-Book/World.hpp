@@ -5,6 +5,8 @@
 
 #include <Box2D/Box2D.h>
 
+#include <SFML-Book/DebugDraw.hpp>
+
 namespace book
 {
     class Piece;
@@ -22,12 +24,18 @@ namespace book
 
             Piece* newPiece();
 
+#ifdef BOOK_DEBUG
+            void displayDebug();
+#endif
+
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
             b2World _physical_world;
+#ifdef BOOK_DEBUG
+            DebugDraw _debugDraw;
+#endif
 
             void create_wall(int pos_x, int pos_y, int size_x, int size_y);
-
 
             const int _x;
             const int _y;

@@ -5,12 +5,16 @@
 
 namespace book
 {
-    World::World(int size_x,int size_y) : _physical_world(b2Vec2(0.f, 9.8f)), _x(size_x), _y(size_y)
+    World::World(int size_x,int size_y) : _physical_world(b2Vec2(0.f, 9.8f)),_x(size_x), _y(size_y)
     {
         
         create_wall(0,0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
         create_wall(BOOK_BOX_SIZE*_x,0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
         create_wall(0,BOOK_BOX_SIZE*_y,BOOK_BOX_SIZE*(_x+1),BOOK_BOX_SIZE);
+
+#ifdef BOOK_DEBUG
+        _physical_world.SetDebugDraw(&_debugDraw);
+#endif
     }
 
     World::~World()
@@ -68,6 +72,15 @@ namespace book
             }
         }
     }
+
+#ifdef BOOK_DEBUG
+    void World::displayDebug()
+    {
+        _debugDraw.clear();
+        _physical_world.DrawDebugData();
+        _debugDraw.display();
+    }
+#endif
 
     void World::create_wall(int pos_x, int pos_y,int size_x,int size_y)
     {

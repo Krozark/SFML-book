@@ -15,6 +15,7 @@ set(FILES_HEADER
     ${INCROOT}/ActionTarget.tpl
     ${INCROOT}/Configuration.hpp
     ${INCROOT}/converter.hpp
+    ${INCROOT}/DebugDraw.hpp
     ${INCROOT}/Game.hpp
     ${INCROOT}/Piece.hpp
     ${INCROOT}/random.hpp
@@ -26,6 +27,7 @@ set(FILES_HEADER
 set(FILES_SRC
     ${SRCROOT}/Action.cpp
     ${SRCROOT}/Configuration.cpp
+    ${SRCROOT}/DebugDraw.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Piece.cpp
     ${SRCROOT}/World.cpp

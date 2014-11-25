@@ -27,10 +27,7 @@ namespace book
 
         _body = world.CreateBody(&bodyDef);
 
-        create_part(0,0,type);
-        create_part(0,1,type);
-
-        /*switch(type)
+        switch(type)
         {
             case Tetrimino_Types::O :
             {
@@ -82,7 +79,7 @@ namespace book
                 create_part(2,0,type);
             }break;
             default:break;
-        }*/
+        }
 
         _body->SetUserData(this);
         update();
@@ -93,7 +90,7 @@ namespace book
         //destroy shapes
         for(b2Fixture* fixture=_body->GetFixtureList();fixture!=nullptr;fixture=fixture->GetNext())
         {
-            sf::RectangleShape* shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
+            sf::ConvexShape* shape = static_cast<sf::ConvexShape*>(fixture->GetUserData());
             fixture->SetUserData(nullptr);
             delete shape;
         }
@@ -116,9 +113,10 @@ namespace book
 
         b2Fixture* fixture = _body->CreateFixture(&fixtureDef);
 
-        sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(BOOK_BOX_SIZE,BOOK_BOX_SIZE));
-        //shape->setOrigin(BOOK_BOX_SIZE_2,BOOK_BOX_SIZE_2);
+        sf::ConvexShape* shape = new sf::ConvexShape((unsigned int)b2shape.GetVertexCount());
         shape->setFillColor(Tetrimino_colors[type]);
+        shape->setOutlineThickness(1.0f);
+        shape->setOutlineColor(sf::Color(128,128,128));
 
         fixture->SetUserData(shape);
 
@@ -127,25 +125,20 @@ namespace book
 
     void Piece::update()
     {
-        float deg = converter::rad_to_deg<double>(_body->GetAngle());
-
-        std::cout<<"=========="<<std::endl;
-        std::cout<<converter::meters_to_pixels<double>(_body->GetPosition().x)<<":"<<converter::meters_to_pixels<double>(_body->GetPosition().y)<<std::endl;
+        const b2Transform& xf = _body->GetTransform();
 
         for(b2Fixture* fixture = _body->GetFixtureList(); fixture != nullptr;fixture=fixture->GetNext())
         {
-            b2Vec2 pos = static_cast<b2PolygonShape*>(fixture->GetShape())->m_centroid;
-            std::cout<<converter::meters_to_pixels<double>(pos.x)<<":"<<converter::meters_to_pixels<double>(pos.y)<<std::endl;
+            sf::ConvexShape* shape = static_cast<sf::ConvexShape*>(fixture->GetUserData());
 
-            pos+= _body->GetPosition(); 
-
-            double pos_x = converter::meters_to_pixels<double>(pos.x)/* - BOOK_BOX_SIZE_2*/;
-            double pos_y = converter::meters_to_pixels<double>(pos.y)/* - BOOK_BOX_SIZE_2*/;
-            std::cout<<pos_x<<" "<<pos_y<<std::endl;
-
-            sf::RectangleShape* shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
-            shape->setPosition(pos_x,pos_y);
-            shape->setRotation(deg);
+            const b2PolygonShape* b2shape = static_cast<b2PolygonShape*>(fixture->GetShape());
+            const uint32 count = b2shape->GetVertexCount();
+            for(uint32 i=0;i<count;++i)
+            {
+                b2Vec2 vertex = b2Mul(xf,b2shape->m_vertices[i]);
+                shape->setPoint(i,sf::Vector2f(converter::meters_to_pixels(vertex.x),
+                                                converter::meters_to_pixels(vertex.y)));
+            }
         } 
     }
 
@@ -153,7 +146,7 @@ namespace book
     {
         for(const b2Fixture* fixture=_body->GetFixtureList();fixture!=nullptr;fixture=fixture->GetNext())
         {
-            sf::RectangleShape* shape = static_cast<sf::RectangleShape*>(fixture->GetUserData());
+            sf::ConvexShape* shape = static_cast<sf::ConvexShape*>(fixture->GetUserData());
             if(shape)
                 target.draw(*shape,states);
         }
