@@ -44,8 +44,10 @@ namespace book
 
     void Configuration::initPlayerInputs()
     {
-        player_inputs.map(PlayerInputs::TurnRight,Action(sf::Keyboard::Right));
-        player_inputs.map(PlayerInputs::TurnLeft,Action(sf::Keyboard::Left));
-        player_inputs.map(PlayerInputs::HardDrop,Action(sf::Keyboard::Down,Action::Type::Released));
+        player_inputs.map(PlayerInputs::TurnRight,Action(sf::Keyboard::Up));
+        player_inputs.map(PlayerInputs::TurnLeft,Action(sf::Keyboard::Down));
+        player_inputs.map(PlayerInputs::MoveLeft,Action(sf::Keyboard::Left));
+        player_inputs.map(PlayerInputs::MoveRight,Action(sf::Keyboard::Right));
+        player_inputs.map(PlayerInputs::HardDrop,Action(sf::Keyboard::Space,Action::Type::Released));
     }
 }

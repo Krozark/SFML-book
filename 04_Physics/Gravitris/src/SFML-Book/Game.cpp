@@ -1,5 +1,6 @@
 #include <SFML-Book/Game.hpp>
 #include <SFML-Book/Configuration.hpp>
+#include <SFML-Book/Piece.hpp>
 
 namespace book
 {
@@ -7,6 +8,25 @@ namespace book
     {
         bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){        
              _current_piece = _world.newPiece();
+        });
+
+        bind(Configuration::PlayerInputs::TurnLeft,[this](const sf::Event&){        
+             if(_current_piece)
+                _current_piece->rotate(-90);
+        });
+        bind(Configuration::PlayerInputs::TurnRight,[this](const sf::Event&){        
+             if(_current_piece)
+                 _current_piece->rotate(90);
+        });
+
+        bind(Configuration::PlayerInputs::MoveLeft,[this](const sf::Event&){        
+             if(_current_piece)
+                 _current_piece->moveX(-1);
+        });
+
+        bind(Configuration::PlayerInputs::MoveRight,[this](const sf::Event&){        
+             if(_current_piece)
+                 _current_piece->moveX(1);
         });
     }
 

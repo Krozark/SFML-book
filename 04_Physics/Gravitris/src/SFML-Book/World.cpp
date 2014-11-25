@@ -5,12 +5,12 @@
 
 namespace book
 {
-    World::World(int size_x,int size_y) : _physical_world(b2Vec2(0.f, 9.8f)),_x(size_x), _y(size_y)
+    World::World(int size_x,int size_y) : _physical_world(b2Vec2(0.f, 1.5f)),_x(size_x), _y(size_y)
     {
         
         create_wall(0,0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
-        create_wall(BOOK_BOX_SIZE*_x,0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
-        create_wall(0,BOOK_BOX_SIZE*_y,BOOK_BOX_SIZE*(_x+1),BOOK_BOX_SIZE);
+        create_wall(BOOK_BOX_SIZE*(_x+0.2),0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
+        create_wall(0,BOOK_BOX_SIZE*_y,BOOK_BOX_SIZE*(_x+1.2),BOOK_BOX_SIZE);
 
 #ifdef BOOK_DEBUG
         _physical_world.SetDebugDraw(&_debugDraw);
@@ -53,7 +53,7 @@ namespace book
     
     Piece* World::newPiece()
     {
-        return new Piece(_physical_world,_x/2*BOOK_BOX_SIZE,100,static_cast<Piece::Tetrimino_Types>(random(0,Piece::Tetrimino_Types::SIZE-1)),random(0.f,360.f));
+        return new Piece(_physical_world,_x/2*BOOK_BOX_SIZE,0,static_cast<Piece::Tetrimino_Types>(random(0,Piece::Tetrimino_Types::SIZE-1)),random(0.f,360.f));
     }
 
     void World::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -97,8 +97,8 @@ namespace book
 
         b2FixtureDef fixtureDef;
         fixtureDef.density = 1.0;
-        fixtureDef.friction = 0.9;
-        fixtureDef.restitution= 0.2;
+        fixtureDef.friction = 0.8;
+        fixtureDef.restitution= 0.1;
         fixtureDef.shape = &b2shape;
 
         b2Body* body = _physical_world.CreateBody(&bodyDef);

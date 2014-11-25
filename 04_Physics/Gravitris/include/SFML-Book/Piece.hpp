@@ -23,6 +23,9 @@ namespace book
 
             void update();
 
+            void rotate(float angle);
+            void moveX(int direction);
+
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

@@ -23,6 +23,8 @@ namespace book
             enum PlayerInputs : int {
                 TurnLeft,
                 TurnRight,
+                MoveLeft,
+                MoveRight,
                 HardDrop,
             };
 

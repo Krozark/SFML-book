@@ -142,6 +142,17 @@ namespace book
         } 
     }
 
+    void Piece::rotate(float angle)
+    {
+        _body->ApplyTorque((float32)converter::deg_to_rad(angle),true);
+        _body->SetAngularVelocity((float32)converter::deg_to_rad(angle));
+    }
+
+    void Piece::moveX(int direction)
+    {
+        _body->ApplyForceToCenter(b2Vec2(converter::pixel_to_meters(90*direction),0),true);
+    }
+
     void Piece::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         for(const b2Fixture* fixture=_body->GetFixtureList();fixture!=nullptr;fixture=fixture->GetNext())
