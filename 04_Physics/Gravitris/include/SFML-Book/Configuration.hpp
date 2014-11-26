@@ -7,6 +7,7 @@
 #include <SFML-Book/ResourceManager.hpp> //ResourceManager
 #include <SFML-Book/ActionMap.hpp> //ActionMap
 
+//#define BOOK_DEBUG
 namespace book
 {
     class Player;

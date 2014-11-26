@@ -6,6 +6,7 @@
 #include <Box2D/Box2D.h>
 
 #include <SFML-Book/DebugDraw.hpp>
+#include <SFML-Book/Configuration.hpp>
 
 namespace book
 {
@@ -27,6 +28,7 @@ namespace book
 #ifdef BOOK_DEBUG
             void displayDebug();
 #endif
+            int clearLines();
 
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
