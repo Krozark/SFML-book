@@ -2,6 +2,8 @@
 #include <SFML-Book/Configuration.hpp>
 #include <SFML-Book/Piece.hpp>
 
+#include <iostream>
+
 namespace book
 {
     Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"04_Gravitris"),_current_piece(nullptr), _world(word_x,word_y)
@@ -10,56 +12,71 @@ namespace book
              _current_piece = _world.newPiece();
         });
 
-        bind(Configuration::PlayerInputs::TurnLeft,[this](const sf::Event&){        
-             if(_current_piece)
-                _current_piece->rotate(-90);
+        bind(Configuration::PlayerInputs::TurnLeft,[this](const sf::Event&){
+             _rotate_direction-=1;
         });
         bind(Configuration::PlayerInputs::TurnRight,[this](const sf::Event&){        
-             if(_current_piece)
-                 _current_piece->rotate(90);
+             _rotate_direction+=1;
         });
 
         bind(Configuration::PlayerInputs::MoveLeft,[this](const sf::Event&){        
-             if(_current_piece)
-                 _current_piece->moveX(-1);
+             _move_direction-=1;
         });
 
         bind(Configuration::PlayerInputs::MoveRight,[this](const sf::Event&){        
-             if(_current_piece)
-                 _current_piece->moveX(1);
+             _move_direction+=1;
         });
     }
 
     void Game::run(int minimum_frame_per_seconds, int physics_frame_per_seconds)
     {
         sf::Clock clock;
-        sf::Time timeSinceLastUpdate;
-        const sf::Time TimePerFrame = sf::seconds(1.f/minimum_frame_per_seconds);
-
-        sf::Time timeSinceLastUpdatePhysics;
-        const sf::Time TimePerFramePhysics = sf::seconds(1.f/physics_frame_per_seconds);
+        const sf::Time timePerFrame = sf::seconds(1.f/minimum_frame_per_seconds);
+        const sf::Time timePerFramePhysics = sf::seconds(1.f/physics_frame_per_seconds);
 
         while (_window.isOpen())
         {
-
             sf::Time time = clock.restart();
-            timeSinceLastUpdatePhysics += time;
-            timeSinceLastUpdate += time;
-
-            while (timeSinceLastUpdatePhysics > TimePerFramePhysics)
-            {
-                _world.update_physics(TimePerFramePhysics);
-                timeSinceLastUpdatePhysics -= TimePerFramePhysics;
-            }
 
             processEvents();
-            if(timeSinceLastUpdate > TimePerFrame)
-            {
-                _world.update(TimePerFrame);
-                timeSinceLastUpdate = sf::Time::Zero;
-            }
+
+            update_physics(time,timePerFramePhysics);
+            update(time,timePerFrame);
 
             render();
+        }
+    }
+    void Game::update(const sf::Time& deltaTime,const sf::Time& timePerFrame)
+    {
+        static sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
+        timeSinceLastUpdate+=deltaTime;
+
+        if(timeSinceLastUpdate > timePerFrame)
+        {
+            if(_current_piece != nullptr)
+            {
+                std::cout<<_rotate_direction<<" "<<_move_direction<<std::endl;
+                _current_piece->rotate(_rotate_direction*3000);
+                _current_piece->moveX(_move_direction*5000);
+            }
+            _world.update(timePerFrame);
+            timeSinceLastUpdate = sf::Time::Zero;
+        }
+        _rotate_direction=0;
+        _move_direction=0;
+    }
+
+    void Game::update_physics(const sf::Time& deltaTime,const sf::Time& timePerFrame)
+    {
+        static sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
+        timeSinceLastUpdate+=deltaTime;
+
+        while (timeSinceLastUpdate > timePerFrame)
+        {
+            _world.update_physics(timePerFrame);
+            timeSinceLastUpdate -= timePerFrame;
         }
     }
 

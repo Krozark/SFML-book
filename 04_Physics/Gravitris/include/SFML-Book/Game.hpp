@@ -23,13 +23,19 @@ namespace book
         private:
 
             void processEvents();//< Process events
-            void update_physics(const sf::Time& deltaTime); //< do some updates
+            void update(const sf::Time& deltaTime,const sf::Time& timePerFrame);
+            void update_physics(const sf::Time& deltaTime,const sf::Time& timePerFrame); //< do some updates
             void render();//< draw all the stuff
 
             sf::RenderWindow _window; //< the window use to display the game
+
+            int _move_direction;
+            int _rotate_direction;
+            
             Piece* _current_piece;
 
             World _world;
     };
 }
+
 #endif
