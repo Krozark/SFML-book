@@ -5,6 +5,7 @@
 
 #include <SFML-Book/World.hpp>
 #include <SFML-Book/ActionTarget.hpp>
+#include <SFML-Book/Stats.hpp>
 
 namespace book
 {
@@ -35,6 +36,8 @@ namespace book
             Piece* _current_piece;
 
             World _world;
+
+            Stats _stats;
     };
 }
 

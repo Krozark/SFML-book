@@ -28,7 +28,9 @@ namespace book
 #ifdef BOOK_DEBUG
             void displayDebug();
 #endif
-            int clearLines();
+            int clearLines(bool& del,const Piece& current);
+
+            void updateGravity(int level);
 
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

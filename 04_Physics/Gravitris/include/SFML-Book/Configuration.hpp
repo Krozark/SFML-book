@@ -39,10 +39,6 @@ namespace book
             static void initialize();
 
         private:
-            static int _score;
-            static sf::Text   _txt_score;
-            static sf::Sprite _spr_life;
-
             static void initTextures();
             static void initFonts();
             static void initSounds();

@@ -2,8 +2,6 @@
 #include <SFML-Book/Configuration.hpp>
 #include <SFML-Book/Piece.hpp>
 
-#include <iostream>
-
 namespace book
 {
     Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"04_Gravitris"),_current_piece(nullptr), _world(word_x,word_y)
@@ -26,6 +24,8 @@ namespace book
         bind(Configuration::PlayerInputs::MoveRight,[this](const sf::Event&){        
              _move_direction+=1;
         });
+
+        _stats.setPosition(BOOK_BOX_SIZE*(word_x+3),BOOK_BOX_SIZE);
     }
 
     void Game::run(int minimum_frame_per_seconds, int physics_frame_per_seconds)
@@ -56,9 +56,12 @@ namespace book
         {
             if(_current_piece != nullptr)
             {
-                std::cout<<_rotate_direction<<" "<<_move_direction<<std::endl;
                 _current_piece->rotate(_rotate_direction*3000);
                 _current_piece->moveX(_move_direction*5000);
+                bool new_piece;
+                _stats.addLines(_world.clearLines(new_piece,*_current_piece));
+                if(new_piece)
+                    _current_piece = _world.newPiece();
             }
             _world.update(timePerFrame);
             timeSinceLastUpdate = sf::Time::Zero;
@@ -72,6 +75,8 @@ namespace book
         static sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
         timeSinceLastUpdate+=deltaTime;
+
+        _world.updateGravity(_stats.getLevel());
 
         while (timeSinceLastUpdate > timePerFrame)
         {
@@ -104,7 +109,11 @@ namespace book
     {
         _window.clear();
 
-        _window.draw(_world);
+        if(not _stats.isGameOver())
+        {
+            _window.draw(_world);
+        }
+        _window.draw(_stats);
 
         _window.display();
 #ifdef BOOK_DEBUG

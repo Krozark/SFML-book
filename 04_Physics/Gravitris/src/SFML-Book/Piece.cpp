@@ -153,6 +153,11 @@ namespace book
         _body->ApplyForceToCenter(b2Vec2(converter::pixel_to_meters(direction),0),true);
     }
 
+    b2Body* Piece::getBody()const
+    {
+        return _body;
+    }
+
     void Piece::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         for(const b2Fixture* fixture=_body->GetFixtureList();fixture!=nullptr;fixture=fixture->GetNext())

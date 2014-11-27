@@ -26,6 +26,8 @@ namespace book
             void rotate(float angle);
             void moveX(int direction);
 
+            b2Body* getBody()const;
+
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

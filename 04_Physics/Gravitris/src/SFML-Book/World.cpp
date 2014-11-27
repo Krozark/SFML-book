@@ -42,8 +42,6 @@ namespace book
                 piece->update();
             }
         }
-
-        clearLines();
     }
 
     class __AABB_callback : public b2QueryCallback
@@ -59,10 +57,11 @@ namespace book
             }
     };
 
-    int World::clearLines()
+    int World::clearLines(bool& del,const Piece& current)
     {
         int nb_lines = 0;
         __AABB_callback callback;
+        del = false;
 
         for(int y=0;y<=_y;++y)
         {
@@ -78,6 +77,7 @@ namespace book
                 for(b2Fixture* fixture : callback.fixtures)
                 {
                     b2Body* body = fixture->GetBody();
+                    del |= body == current.getBody();
                     if(body->GetFixtureList()->GetNext() != nullptr)
                     {
                         sf::ConvexShape* shape = static_cast<sf::ConvexShape*>(fixture->GetUserData());
@@ -99,9 +99,15 @@ namespace book
         return nb_lines;
     }
 
+    void World::updateGravity(int level)
+    {
+        _physical_world.SetGravity(b2Vec2(0,1.5+(level/2.0)));
+    }
+
     void World::update_physics(sf::Time deltaTime)
     {
         float seconds = deltaTime.asSeconds();
+
 
         _physical_world.Step(seconds,8,3);
     }

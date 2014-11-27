@@ -21,6 +21,7 @@ set(FILES_HEADER
     ${INCROOT}/random.hpp
     ${INCROOT}/ResourceManager.hpp
     ${INCROOT}/ResourceManager.tpl
+    ${INCROOT}/Stats.hpp
     ${INCROOT}/World.hpp
 )
 
@@ -30,6 +31,7 @@ set(FILES_SRC
     ${SRCROOT}/DebugDraw.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Piece.cpp
+    ${SRCROOT}/Stats.cpp
     ${SRCROOT}/World.cpp
 
     ${SRCROOT}/main.cpp
