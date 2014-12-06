@@ -1,6 +1,8 @@
 #ifndef BOOK_WORLD_HPP
 #define BOOK_WORLD_HPP
 
+#include <list>
+
 #include <SFML/Graphics.hpp> //Drawable
 
 #include <Box2D/Box2D.h>
@@ -31,6 +33,9 @@ namespace book
             int clearLines(bool& del,const Piece& current);
 
             void updateGravity(int level);
+            void add(Configuration::Sounds sound_id);            
+
+            bool isGameOver()const;
 
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -43,6 +48,9 @@ namespace book
 
             const int _x;
             const int _y;
+
+            std::list<std::unique_ptr<sf::Sound>> _sounds;
+
     };
 }
 #endif

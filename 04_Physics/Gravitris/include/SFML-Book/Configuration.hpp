@@ -29,6 +29,14 @@ namespace book
                 HardDrop,
             };
 
+            enum Sounds : int {
+                Spawn,
+                Explosion,
+                LevelUp,
+            };
+            static ResourceManager<sf::SoundBuffer,int> sounds;
+
+
             enum Musics : int {
                 Theme
             };

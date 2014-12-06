@@ -42,6 +42,10 @@ namespace book
                 piece->update();
             }
         }
+        _sounds.remove_if([](const std::unique_ptr<sf::Sound>& sound) -> bool {
+                return sound->getStatus() != sf::SoundSource::Status::Playing;
+            });
+
     }
 
     class __AABB_callback : public b2QueryCallback
@@ -96,6 +100,8 @@ namespace book
             }
             callback.fixtures.clear();
         }
+        if(nb_lines > 0)
+            add(Configuration::Sounds::Explosion);
         return nb_lines;
     }
 
@@ -103,6 +109,28 @@ namespace book
     {
         _physical_world.SetGravity(b2Vec2(0,1.5+(level/2.0)));
     }
+
+    void World::add(Configuration::Sounds sound_id)
+    {
+        std::unique_ptr<sf::Sound> sound(new sf::Sound(Configuration::sounds.get(sound_id)));
+        sound->setAttenuation(0);
+        sound->play();
+        _sounds.emplace_back(std::move(sound));
+    }
+
+    bool World::isGameOver()const
+    {
+        for (const b2Body* body=_physical_world.GetBodyList(); body!=nullptr; body=body->GetNext())
+        {
+            if(body->GetType() == b2_staticBody)
+                continue;
+            if(body->GetPosition().y < 0)
+                return true;
+        }
+        return false;
+    };
+
+
 
     void World::update_physics(sf::Time deltaTime)
     {
@@ -115,7 +143,8 @@ namespace book
     
     Piece* World::newPiece()
     {
-        return new Piece(_physical_world,_x/2*BOOK_BOX_SIZE,0,static_cast<Piece::Tetrimino_Types>(random(0,Piece::Tetrimino_Types::SIZE-1)),random(0.f,360.f));
+        add(Configuration::Sounds::Spawn);
+        return new Piece(_physical_world,_x/2*BOOK_BOX_SIZE,BOOK_BOX_SIZE,static_cast<Piece::Tetrimino_Types>(random(0,Piece::Tetrimino_Types::SIZE-1)),random(0.f,360.f));
     }
 
     void World::draw(sf::RenderTarget& target, sf::RenderStates states) const

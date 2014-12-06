@@ -5,9 +5,9 @@ namespace book
 {
     ResourceManager<sf::Font,int> Configuration::fonts;
     ResourceManager<sf::Music,int> Configuration::musics;
+    ResourceManager<sf::SoundBuffer,int> Configuration::sounds;
 
     ActionMap<int> Configuration::player_inputs;
-
 
     void Configuration::initialize()
     {
@@ -36,6 +36,9 @@ namespace book
 
     void Configuration::initSounds()
     {
+        sounds.load(Sounds::Spawn,"media/sounds/spawn.flac");
+        sounds.load(Sounds::Explosion,"media/sounds/explosion.flac");
+        sounds.load(Sounds::LevelUp,"media/sounds/levelup.flac");
     }
     void Configuration::initMusics()
     {

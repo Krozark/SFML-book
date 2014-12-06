@@ -8,6 +8,7 @@ namespace book
     {
         bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){        
              _current_piece = _world.newPiece();
+             timeSinceLastFall = sf::Time::Zero;
         });
 
         bind(Configuration::PlayerInputs::TurnLeft,[this](const sf::Event&){
@@ -26,6 +27,8 @@ namespace book
         });
 
         _stats.setPosition(BOOK_BOX_SIZE*(word_x+3),BOOK_BOX_SIZE);
+
+        _current_piece = _world.newPiece();
     }
 
     void Game::run(int minimum_frame_per_seconds, int physics_frame_per_seconds)
@@ -40,8 +43,11 @@ namespace book
 
             processEvents();
 
-            update_physics(time,timePerFramePhysics);
-            update(time,timePerFrame);
+            if(not _stats.isGameOver())
+            {
+                update_physics(time,timePerFramePhysics);
+                update(time,timePerFrame);
+            }
 
             render();
         }
@@ -51,6 +57,7 @@ namespace book
         static sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
         timeSinceLastUpdate+=deltaTime;
+        timeSinceLastFall+=deltaTime;
 
         if(timeSinceLastUpdate > timePerFrame)
         {
@@ -58,12 +65,23 @@ namespace book
             {
                 _current_piece->rotate(_rotate_direction*3000);
                 _current_piece->moveX(_move_direction*5000);
+
                 bool new_piece;
-                _stats.addLines(_world.clearLines(new_piece,*_current_piece));
-                if(new_piece)
+                {
+                    int old_level =_stats.getLevel();
+                    _stats.addLines(_world.clearLines(new_piece,*_current_piece));
+                    if(_stats.getLevel() != old_level)
+                        _world.add(Configuration::Sounds::LevelUp);
+                }
+
+                if(new_piece or timeSinceLastFall.asSeconds() > std::max(1.0,10-_stats.getLevel()*0.2))
+                {
                     _current_piece = _world.newPiece();
+                    timeSinceLastFall = sf::Time::Zero;
+                }
             }
             _world.update(timePerFrame);
+            _stats.setGameOver(_world.isGameOver());
             timeSinceLastUpdate = sf::Time::Zero;
         }
         _rotate_direction=0;

@@ -38,6 +38,8 @@ namespace book
             World _world;
 
             Stats _stats;
+
+            sf::Time timeSinceLastFall;
     };
 }
 
