@@ -21,7 +21,7 @@ namespace book
 
     World::~World()
     {
-        for (b2Body* body=_physical_world.GetBodyList(); body!=nullptr; body=body->GetNext())
+        for (b2Body* body=_physical_world.GetBodyList(); body!=nullptr;)
         {
             b2Body* next = body->GetNext();
             if(body->GetType() == b2_dynamicBody)
