@@ -34,5 +34,6 @@ add_subdirectory(01_Introduction)
 add_subdirectory(02_Game_Archi)
 add_subdirectory(03_Simple_2D_game)
 add_subdirectory(04_Physics)
+add_subdirectory(05_GUI)
 #build exemples
 
