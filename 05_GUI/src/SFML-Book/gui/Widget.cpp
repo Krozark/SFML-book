@@ -30,29 +30,18 @@ namespace book
             return _position;
         }
 
-        /*void Widget::setSize(const sf::Vector2f& size)
-        {
-            _size = size;
-        }
-
-        void Widget::setSize(float x,float y)
-        {
-            _size.x = x;
-            _size.y = y;
-        }
-
-        const sf::Vector2f& Widget::getSize()const
-        {
-            return _size;
-        }*/
-
-
         void Widget::processEvent(const sf::Event& event)
         {
         }
 
         void Widget::processEvents()
         {
+        }
+
+        void Widget::updateShape()
+        {
+            if(_parent)
+                _parent->updateShape();
         }
 
         sf::Vector2f Widget::getGlobalPosition()const

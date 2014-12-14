@@ -39,7 +39,7 @@ namespace book
                 sf::Text _text;
                 sf::RectangleShape _shape;
 
-                void updateShape();
+                void updateShape()override;
                 virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
         };
     }

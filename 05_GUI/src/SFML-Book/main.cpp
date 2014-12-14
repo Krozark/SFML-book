@@ -16,9 +16,10 @@ int main(int argc,char* argv[])
 
     book::gui::VLayout layout;
     book::gui::Button button("Test");
-    button.on_click = [](const sf::Event&, book::gui::Button&){
+    button.on_click = [](const sf::Event&, book::gui::Button& button){
         std::cout<<"b1"<<std::endl;
     };
+
     layout.add(&button);
 
     book::gui::Frame frame(window);

@@ -30,6 +30,7 @@ namespace book
 
                 virtual void processEvent(const sf::Event& event);
                 virtual void processEvents();
+                virtual void updateShape();
 
                 sf::Vector2f getGlobalPosition()const;
 

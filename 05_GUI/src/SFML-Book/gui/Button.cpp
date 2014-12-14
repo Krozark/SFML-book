@@ -76,7 +76,8 @@ namespace book
             _shape.setSize(sf::Vector2f(char_size*2 + rect.width,char_size*2 + rect.height));
             _text.setPosition(char_size,char_size);
 
-            //_size = _shape.getSize();
+            Widget::updateShape();
+
         }
 
         void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
