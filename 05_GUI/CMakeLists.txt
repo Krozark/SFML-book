@@ -26,6 +26,13 @@ set(FILES_HEADER
     ${INCROOT}/ResourceManager.tpl
     ${INCROOT}/Stats.hpp
     ${INCROOT}/World.hpp
+
+    #gui
+    ${INCROOT}/gui/Button.hpp
+    ${INCROOT}/gui/Frame.hpp
+    ${INCROOT}/gui/Layout.hpp
+    ${INCROOT}/gui/VLayout.hpp
+    ${INCROOT}/gui/Widget.hpp
 )
 
 set(FILES_SRC
@@ -38,6 +45,13 @@ set(FILES_SRC
     ${SRCROOT}/World.cpp
 
     ${SRCROOT}/main.cpp
+
+    #gui
+    ${SRCROOT}/gui/Button.cpp
+    ${SRCROOT}/gui/Frame.cpp
+    ${SRCROOT}/gui/Layout.cpp
+    ${SRCROOT}/gui/VLayout.cpp
+    ${SRCROOT}/gui/Widget.cpp
 
 )
 
