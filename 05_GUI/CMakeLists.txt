@@ -30,6 +30,7 @@ set(FILES_HEADER
     #gui
     ${INCROOT}/gui/Button.hpp
     ${INCROOT}/gui/Frame.hpp
+    ${INCROOT}/gui/Gui.hpp
     ${INCROOT}/gui/Layout.hpp
     ${INCROOT}/gui/VLayout.hpp
     ${INCROOT}/gui/Widget.hpp
