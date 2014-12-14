@@ -10,8 +10,12 @@ namespace book
         Button::Button(const std::string& text,Layout* parent) : Widget(parent), on_click(defaultFunc)
         {
             _text.setFont(Configuration::fonts.get(Configuration::Fonts::Gui));
-            _shape.setFillColor(sf::Color(50,50,50));
+            setFillColor(sf::Color(50,50,50));
+            setOutlineThickness(5);
+            setOutlineColor(sf::Color(128,128,128));
+
             setText(text);
+            setTextColor(sf::Color(128,128,128));
         }
 
         void Button::setText(const std::string& text)
