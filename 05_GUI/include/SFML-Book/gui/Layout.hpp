@@ -20,6 +20,8 @@ namespace book
 
                 virtual sf::Vector2f getSize()const = 0;
 
+                void setSpace(float pixels);
+
             protected:
                 friend class Frame;
                 friend class Widget;
@@ -27,6 +29,8 @@ namespace book
                 virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos) = 0;
                 virtual void processEvents(const sf::Vector2f& parent_pos) = 0;
                 virtual void updateShape() = 0;
+
+                float _space;
         };
     }
 }

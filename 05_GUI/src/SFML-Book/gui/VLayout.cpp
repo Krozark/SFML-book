@@ -40,9 +40,9 @@ namespace book
                 sf::Vector2f size = widget->getSize();
                 if(size.x > max_x)
                     max_x = size.x;
-                y+= 5 + size.y;
+                y+= _space + size.y;
             }
-            return sf::Vector2f(max_x,y+5);
+            return sf::Vector2f(max_x,y+_space);
         }
 
         bool VLayout::processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)
@@ -80,7 +80,7 @@ namespace book
 
 
 
-            float pos_y = 5;
+            float pos_y = _space;
             if(_parent)
                 pos_y = (_parent->getSize().y - getSize().y)/2.f;
 
@@ -88,7 +88,7 @@ namespace book
             {
                 sf::Vector2f size = widget->getSize();
                 widget->setPosition((max_x-size.x)/2.0,pos_y);
-                pos_y += size.y + 5;
+                pos_y += size.y + _space;
             }
 
         }

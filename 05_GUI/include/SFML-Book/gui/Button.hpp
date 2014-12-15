@@ -24,6 +24,11 @@ namespace book
 
             protected:
                 virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)override;
+
+                enum Status {
+                    Hover = 1
+                };
+                int _status;
         };
     }
 }

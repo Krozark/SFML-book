@@ -25,6 +25,8 @@ int main(int argc,char* argv[])
     book::gui::Frame frame(window);
     frame.setLayout(layout);
 
+    layout->setSpace(25);
+
     while(window.isOpen())
     {
         window.clear();

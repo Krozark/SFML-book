@@ -6,11 +6,9 @@ namespace book
     {
         TextButton::TextButton(const std::string& text,Widget* parent) : Button(parent), _label(text,this)
         {
-            setTextColor(sf::Color(128,128,128));
-
-            setFillColor(sf::Color(50,50,50));
+            setFillColor(sf::Color(86,20,19));
             setOutlineThickness(5);
-            setOutlineColor(sf::Color(128,128,128));
+            setOutlineColor(sf::Color(146,20,19));
         }
 
         TextButton::~TextButton()
@@ -34,12 +32,14 @@ namespace book
 
         void TextButton::setFillColor(const sf::Color& color)
         {
-            _shape.setFillColor(color);
+            _fillColor = color;
+            _shape.setFillColor(_fillColor);
         }
 
         void TextButton::setOutlineColor(const sf::Color& color)
         {
-            _shape.setOutlineColor(color);
+            _outlineColor = color;
+            _shape.setOutlineColor(_outlineColor);
         }
 
         void TextButton::setOutlineThickness(float thickness)
@@ -69,6 +69,26 @@ namespace book
             states.transform.translate(_position);
             target.draw(_shape,states);
             target.draw(_label,states);
+        }
+
+        void TextButton::repaint()
+        {
+            if(_status & Status::Hover)
+            {
+                const float light = 1.4;
+
+                _shape.setOutlineColor(sf::Color(_outlineColor.r*light,
+                                                 _outlineColor.g*light,
+                                                 _outlineColor.b*light));
+                _shape.setFillColor(sf::Color(_fillColor.r*light,
+                                    _fillColor.b*light,
+                                    _fillColor.b*light));
+            }
+            else
+            {
+                _shape.setOutlineColor(_outlineColor);
+                _shape.setFillColor(_fillColor);
+            }
         }
     }
 }

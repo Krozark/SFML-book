@@ -11,7 +11,7 @@ namespace book
             _text.setFont(Configuration::fonts.get(Configuration::Fonts::Gui));
 
             setText(text);
-            setTextColor(sf::Color(128,128,128));
+            setTextColor(sf::Color(180,93,23));
         }
 
         Label::~Label()

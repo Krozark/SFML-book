@@ -42,5 +42,9 @@ namespace book
             if(_parent)
                 _parent->updateShape();
         }
+
+        void Widget::repaint()
+        {
+        }
     }
 }

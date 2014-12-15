@@ -34,6 +34,11 @@ namespace book
 
                 void updateShape()override;
                 virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+                sf::Color _fillColor;
+                sf::Color _outlineColor;
+
+                virtual void repaint() override;
         };
     }
 }
