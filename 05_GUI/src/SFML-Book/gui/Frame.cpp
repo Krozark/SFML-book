@@ -50,13 +50,8 @@ namespace book
 
         void Frame::processEvents()
         {
-            if(_layout)
-            {
-                _layout->processEvents();
-                sf::Event event;
-                while(_window.pollEvent(event))
-                    _layout->processEvent(event);
-            }
+            sf::Vector2f parent_pos(0,0);
+            processEvents(parent_pos);
         }
 
         void Frame::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -73,12 +68,27 @@ namespace book
             return _size;
         }
 
-        
-        void Frame::processEvent(const sf::Event& event)
+        bool Frame::processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)
         {
+            bool res = false;
+            const sf::Vector2f pos = _position + parent_pos;
             if(_layout)
-                _layout->processEvent(event);
+                res = _layout->processEvent(event,pos);
+            return res;
         }
+
+        void Frame::processEvents(const sf::Vector2f& parent_pos)
+        {
+            const sf::Vector2f pos = _position + parent_pos;
+            if(_layout)
+            {
+                _layout->processEvents(pos);
+                sf::Event event;
+                while(_window.pollEvent(event))
+                    _layout->processEvent(event,pos);
+            }
+        }
+
 
     }
 }

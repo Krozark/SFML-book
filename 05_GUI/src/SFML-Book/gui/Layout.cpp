@@ -13,13 +13,5 @@ namespace book
         Layout::~Layout()
         {
         }
-
-        sf::Vector2f Layout::getGlobalPosition()const
-        {
-            sf::Vector2f res;
-            if(_parent)
-                res += _parent->getGlobalPosition();
-            return res;
-        }
     }
 }

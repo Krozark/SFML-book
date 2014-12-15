@@ -7,7 +7,7 @@ namespace book
 {
     namespace gui
     {
-        class Frame : public Widget
+        class Frame : private Widget
         {
             public:
                 Frame(const Frame&) = delete;
@@ -21,8 +21,9 @@ namespace book
                 void setLayout(Layout* layout);
                 Layout* getLayout()const;
 
+                void processEvents();
+
                 void draw();
-                virtual void processEvents()override;
 
                 virtual sf::Vector2f getSize()const override;
 
@@ -35,7 +36,8 @@ namespace book
 
                 virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-                virtual void processEvent(const sf::Event& event)override;
+                virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)override;
+                virtual void processEvents(const sf::Vector2f& parent_pos)override;
         };
     }
 }

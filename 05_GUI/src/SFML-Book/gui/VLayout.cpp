@@ -45,16 +45,25 @@ namespace book
             return sf::Vector2f(max_x,y+5);
         }
 
-        void VLayout::processEvent(const sf::Event& event)
+        bool VLayout::processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)
         {
+            bool res = false;
             for(Widget* widget : _widgets)
-                widget->processEvent(event);
+            {
+                if(widget->processEvent(event,parent_pos))
+                {
+                    res = true;
+                    break;
+                }
+            }
+
+            return res;
         }
 
-        void VLayout::processEvents()
+        void VLayout::processEvents(const sf::Vector2f& parent_pos)
         {
             for(Widget* widget : _widgets)
-                widget->processEvents();
+                widget->processEvents(parent_pos);
         }
 
         void VLayout::updateShape()

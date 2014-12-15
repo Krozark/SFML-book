@@ -25,12 +25,9 @@ namespace book
 
                 Widget* _parent;
 
-                virtual void processEvent(const sf::Event& event) = 0;
-                virtual void processEvents() = 0;
+                virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos) = 0;
+                virtual void processEvents(const sf::Vector2f& parent_pos) = 0;
                 virtual void updateShape() = 0;
-
-                sf::Vector2f getGlobalPosition()const;
-
         };
     }
 }

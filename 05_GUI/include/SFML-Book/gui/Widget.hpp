@@ -28,11 +28,10 @@ namespace book
                 friend class Layout;
                 friend class VLayout;
 
-                virtual void processEvent(const sf::Event& event);
-                virtual void processEvents();
-                virtual void updateShape();
+                virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos);
+                virtual void processEvents(const sf::Vector2f& parent_pos);
 
-                sf::Vector2f getGlobalPosition()const;
+                virtual void updateShape();
 
                 Layout* _parent;
                 sf::Vector2f _position;

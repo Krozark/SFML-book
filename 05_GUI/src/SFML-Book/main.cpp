@@ -15,7 +15,7 @@ int main(int argc,char* argv[])
     sf::RenderWindow window(sf::VideoMode(800,600),"04_Gravitris");
 
     book::gui::VLayout layout;
-    book::gui::Button button("Test");
+    book::gui::TextButton button("Test");
     button.on_click = [](const sf::Event&, book::gui::Button& button){
         std::cout<<"b1"<<std::endl;
     };

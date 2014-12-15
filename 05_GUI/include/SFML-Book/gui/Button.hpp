@@ -17,30 +17,12 @@ namespace book
                 using FuncType = std::function<void(const sf::Event& event,Button& self)>;
                 static FuncType defaultFunc;
 
-                Button(const std::string& text,Layout* parent=nullptr);
+                Button(Layout* parent=nullptr);
 
-                void setText(const std::string& text);
-                void setCharacterSize(unsigned int size);
-                void setTextColor(const sf::Color& color);
-
-                void setFillColor(const sf::Color& color);
-                void setOutlineColor(const sf::Color& color);
-                void setOutlineThickness(float thickness);
-
-                
                 FuncType on_click;
 
-                virtual sf::Vector2f getSize()const override;
-
             protected:
-                virtual void processEvent(const sf::Event& event)override;
-
-            private:
-                sf::Text _text;
-                sf::RectangleShape _shape;
-
-                void updateShape()override;
-                virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+                virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)override;
         };
     }
 }

@@ -30,11 +30,12 @@ namespace book
             return _position;
         }
 
-        void Widget::processEvent(const sf::Event& event)
+        bool Widget::processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)
         {
+            return false;
         }
 
-        void Widget::processEvents()
+        void Widget::processEvents(const sf::Vector2f& parent_pos)
         {
         }
 
@@ -43,14 +44,5 @@ namespace book
             if(_parent)
                 _parent->updateShape();
         }
-
-        sf::Vector2f Widget::getGlobalPosition()const
-        {
-            sf::Vector2f res = _position;
-            if(_parent)
-                res += _parent->getGlobalPosition();
-            return res;
-        }
-
     }
 }
