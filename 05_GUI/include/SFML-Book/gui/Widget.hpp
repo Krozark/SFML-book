@@ -7,15 +7,13 @@ namespace book
 {
     namespace gui
     {
-        class Layout;
-
         class Widget : public sf::Drawable
         {
             public:
                 Widget(const Widget&) = delete;
                 Widget& operator=(const Widget&) = delete;
 
-                Widget(Layout* parent=nullptr);
+                Widget(Widget* parent=nullptr);
                 virtual ~Widget();
 
                 void setPosition(const sf::Vector2f& pos);
@@ -25,7 +23,6 @@ namespace book
                 virtual sf::Vector2f getSize()const = 0;
 
             protected:
-                friend class Layout;
                 friend class VLayout;
 
                 virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos);
@@ -33,7 +30,7 @@ namespace book
 
                 virtual void updateShape();
 
-                Layout* _parent;
+                Widget* _parent;
                 sf::Vector2f _position;
         };
     }

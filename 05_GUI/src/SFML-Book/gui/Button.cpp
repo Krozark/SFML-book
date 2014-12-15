@@ -6,7 +6,11 @@ namespace book
     {
         Button::FuncType Button::defaultFunc = [](const sf::Event&,Button&)->void{};
 
-        Button::Button(Layout* parent) : Widget(parent), on_click(defaultFunc)
+        Button::Button(Widget* parent) : Widget(parent), on_click(defaultFunc)
+        {
+        }
+
+        Button::~Button()
         {
         }
 

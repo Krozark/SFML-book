@@ -17,7 +17,8 @@ namespace book
                 using FuncType = std::function<void(const sf::Event& event,Button& self)>;
                 static FuncType defaultFunc;
 
-                Button(Layout* parent=nullptr);
+                Button(Widget* parent=nullptr);
+                virtual ~Button();
 
                 FuncType on_click;
 

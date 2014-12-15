@@ -3,12 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <SFML-Book/gui/Widget.hpp>
+
 namespace book
 {
     namespace gui
     {
-        class Widget;
-        class Layout : public sf::Drawable
+        class Layout : protected Widget /*public sf::Drawable*/
         {
             public:
                 Layout(const Layout&) = delete;
@@ -22,8 +23,6 @@ namespace book
             protected:
                 friend class Frame;
                 friend class Widget;
-
-                Widget* _parent;
 
                 virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos) = 0;
                 virtual void processEvents(const sf::Vector2f& parent_pos) = 0;

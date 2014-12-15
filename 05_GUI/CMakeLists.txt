@@ -31,6 +31,7 @@ set(FILES_HEADER
     ${INCROOT}/gui/Button.hpp
     ${INCROOT}/gui/Frame.hpp
     ${INCROOT}/gui/Gui.hpp
+    ${INCROOT}/gui/Label.hpp
     ${INCROOT}/gui/Layout.hpp
     ${INCROOT}/gui/TextButton.hpp
     ${INCROOT}/gui/VLayout.hpp
@@ -51,6 +52,7 @@ set(FILES_SRC
     #gui
     ${SRCROOT}/gui/Button.cpp
     ${SRCROOT}/gui/Frame.cpp
+    ${SRCROOT}/gui/Label.cpp
     ${SRCROOT}/gui/Layout.cpp
     ${SRCROOT}/gui/TextButton.cpp
     ${SRCROOT}/gui/VLayout.cpp

@@ -14,16 +14,16 @@ int main(int argc,char* argv[])
 
     sf::RenderWindow window(sf::VideoMode(800,600),"04_Gravitris");
 
-    book::gui::VLayout layout;
-    book::gui::TextButton button("Test");
-    button.on_click = [](const sf::Event&, book::gui::Button& button){
-        std::cout<<"b1"<<std::endl;
+    book::gui::VLayout* layout = new book::gui::VLayout;
+    book::gui::TextButton*  button = new book::gui::TextButton("close");
+    button->on_click = [&window](const sf::Event&, book::gui::Button& button){
+        window.close();
     };
 
-    layout.add(&button);
+    layout->add(button);
 
     book::gui::Frame frame(window);
-    frame.setLayout(&layout);
+    frame.setLayout(layout);
 
     while(window.isOpen())
     {

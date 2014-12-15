@@ -1,20 +1,16 @@
 #include <SFML-Book/gui/TextButton.hpp>
 
-#include <SFML-Book/Configuration.hpp>
-
 namespace book
 {
     namespace gui
     {
-        TextButton::TextButton(const std::string& text,Layout* parent) : Button(parent)
+        TextButton::TextButton(const std::string& text,Widget* parent) : Button(parent), _label(text,this)
         {
-            _text.setFont(Configuration::fonts.get(Configuration::Fonts::Gui));
+            setTextColor(sf::Color(128,128,128));
+
             setFillColor(sf::Color(50,50,50));
             setOutlineThickness(5);
             setOutlineColor(sf::Color(128,128,128));
-
-            setText(text);
-            setTextColor(sf::Color(128,128,128));
         }
 
         TextButton::~TextButton()
@@ -23,19 +19,17 @@ namespace book
 
         void TextButton::setText(const std::string& text)
         {
-            _text.setString(text);
-            updateShape();
+            _label.setText(text);
         }
 
         void TextButton::setCharacterSize(unsigned int size)
         {
-            _text.setCharacterSize(size);
-            updateShape();
+            _label.setCharacterSize(size);
         }
 
         void TextButton::setTextColor(const sf::Color& color)
         {
-            _text.setColor(color);
+            _label.setTextColor(color);
         }
 
         void TextButton::setFillColor(const sf::Color& color)
@@ -61,20 +55,20 @@ namespace book
         
         void TextButton::updateShape()
         {
-            sf::FloatRect rect = _text.getLocalBounds();
-            unsigned int char_size = _text.getCharacterSize();
-            _shape.setSize(sf::Vector2f(char_size*2 + rect.width,char_size*2 + rect.height));
-            _text.setPosition(char_size,char_size);
+            sf::Vector2f label_size = _label.getSize();
+            unsigned int char_size = _label.getCharacterSize();
+
+            _shape.setSize(sf::Vector2f(char_size*2 + label_size.x ,char_size*2 + label_size.y));
+            _label.setPosition(char_size,char_size);
 
             Widget::updateShape();
-
         }
 
         void TextButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
         {
             states.transform.translate(_position);
             target.draw(_shape,states);
-            target.draw(_text,states);
+            target.draw(_label,states);
         }
     }
 }

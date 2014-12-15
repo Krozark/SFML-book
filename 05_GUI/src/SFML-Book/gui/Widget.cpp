@@ -1,12 +1,10 @@
 #include <SFML-Book/gui/Widget.hpp>
 
-#include <SFML-Book/gui/Layout.hpp>
-
 namespace book
 {
     namespace gui
     {
-        Widget::Widget(Layout* parent) : _parent(parent)
+        Widget::Widget(Widget* parent) : _parent(parent)
         {
         }
 

@@ -71,13 +71,18 @@ namespace book
             float max_x = (_parent?_parent->getSize().x:0);
             for(Widget* widget : _widgets)
             {
-                float widget_x = widget->getSize().x;
+                sf::Vector2f size = widget->getSize();
+                float widget_x = size.x;
+
                 if(widget_x > max_x)
                     max_x = widget_x;
             }
 
 
+
             float pos_y = 5;
+            if(_parent)
+                pos_y = (_parent->getSize().y - getSize().y)/2.f;
 
             for(Widget* widget : _widgets)
             {

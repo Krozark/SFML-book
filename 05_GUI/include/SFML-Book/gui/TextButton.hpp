@@ -2,6 +2,7 @@
 #define BOOK_GUI_TEXTBUTTON_HPP
 
 #include <SFML-Book/gui/Button.hpp>
+#include <SFML-Book/gui/Label.hpp>
 
 namespace book
 {
@@ -13,7 +14,7 @@ namespace book
                 TextButton(const TextButton&) = delete;
                 TextButton& operator=(const TextButton&) = delete;
 
-                TextButton(const std::string& text, Layout* parent=nullptr);
+                TextButton(const std::string& text, Widget* parent=nullptr);
 
                 virtual ~TextButton();
 
@@ -28,8 +29,8 @@ namespace book
                 virtual sf::Vector2f getSize()const override;
 
             private:
-                sf::Text _text;
                 sf::RectangleShape _shape;
+                Label _label;
 
                 void updateShape()override;
                 virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

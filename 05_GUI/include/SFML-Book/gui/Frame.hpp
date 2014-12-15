@@ -7,6 +7,7 @@ namespace book
 {
     namespace gui
     {
+        class Layout;
         class Frame : private Widget
         {
             public:
@@ -31,8 +32,6 @@ namespace book
             private:
                 Layout* _layout;
                 sf::RenderWindow& _window;
-
-                sf::Vector2f _size;
 
                 virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

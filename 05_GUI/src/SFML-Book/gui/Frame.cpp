@@ -1,12 +1,12 @@
 #include <SFML-Book/gui/Frame.hpp>
+
 #include <SFML-Book/gui/Layout.hpp>
 
 namespace book
 {
     namespace gui
     {
-        
-        Frame::Frame(sf::RenderWindow& window,float size_x,float size_y) : Widget(nullptr), _layout(nullptr), _window(window), _size(size_x,size_y)
+        Frame::Frame(sf::RenderWindow& window,float size_x,float size_y) : Widget(nullptr), _layout(nullptr), _window(window)
         {
         }
 
@@ -65,7 +65,8 @@ namespace book
 
         sf::Vector2f Frame::getSize()const
         {
-            return _size;
+            sf::Vector2u size = _window.getSize();
+            return sf::Vector2f(size.x,size.y);
         }
 
         bool Frame::processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)
