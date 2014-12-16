@@ -21,8 +21,7 @@ namespace book
                 void setSpace(float pixels);
 
             protected:
-                friend class Frame;
-                friend class Widget;
+                friend class Container;
 
                 float _space;
         };

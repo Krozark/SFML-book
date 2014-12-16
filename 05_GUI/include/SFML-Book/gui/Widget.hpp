@@ -23,6 +23,7 @@ namespace book
                 virtual sf::Vector2f getSize()const = 0;
 
             protected:
+                friend class Containers;
                 friend class VLayout;
 
                 virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos);
