@@ -16,7 +16,7 @@ namespace book
 
         Label::~Label()
         {
-        };
+        }
 
         void Label::setText(const std::string& text)
         {

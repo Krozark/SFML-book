@@ -30,7 +30,6 @@ namespace book
             private:
                 Layout* _layout;
 
-
         };
     }
 }

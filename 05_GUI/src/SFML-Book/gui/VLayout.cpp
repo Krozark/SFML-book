@@ -47,17 +47,13 @@ namespace book
 
         bool VLayout::processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)
         {
-            bool res = false;
             for(Widget* widget : _widgets)
             {
                 if(widget->processEvent(event,parent_pos))
-                {
-                    res = true;
-                    break;
-                }
+                    return true;
             }
 
-            return res;
+            return false;
         }
 
         void VLayout::processEvents(const sf::Vector2f& parent_pos)
@@ -77,8 +73,6 @@ namespace book
                 if(widget_x > max_x)
                     max_x = widget_x;
             }
-
-
 
             float pos_y = _space;
             if(_parent)

@@ -9,7 +9,7 @@ namespace book
 {
     namespace gui
     {
-        class Layout : protected Widget /*public sf::Drawable*/
+        class Layout : protected Widget
         {
             public:
                 Layout(const Layout&) = delete;
