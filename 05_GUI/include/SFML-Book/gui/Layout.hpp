@@ -26,10 +26,6 @@ namespace book
                 friend class Frame;
                 friend class Widget;
 
-                virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos) = 0;
-                virtual void processEvents(const sf::Vector2f& parent_pos) = 0;
-                virtual void updateShape() = 0;
-
                 float _space;
         };
     }
