@@ -91,6 +91,8 @@ namespace book
                 pos_y += size.y + _space;
             }
 
+            Widget::updateShape();
+
         }
 
         void VLayout::draw(sf::RenderTarget& target, sf::RenderStates states) const
