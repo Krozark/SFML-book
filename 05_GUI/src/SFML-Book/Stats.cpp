@@ -6,8 +6,18 @@
 namespace book
 {
 
-Stats::Stats() : _nb_rows(0), _nb_score(0), _nb_lvl(0), _is_game_over(false)
+Stats::Stats()
 {
+   reset();
+}
+
+void Stats::reset()
+{
+    _nb_rows = 0;
+    _nb_score = 0;
+    _nb_lvl = 0;
+    _is_game_over = false;
+
     _text_rows.setFont(Configuration::fonts.get(Configuration::Fonts::Gui));
     _text_rows.setString("rows : 0");
     _text_rows.setCharacterSize(FONT_SIZE);

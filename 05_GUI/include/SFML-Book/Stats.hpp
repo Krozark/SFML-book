@@ -18,6 +18,8 @@ namespace book
 
             int getLevel()const;
 
+            void reset();
+
         private:
             virtual void draw(sf::RenderTarget& target,sf::RenderStates states=sf::RenderStates::Default) const override; //< draw override from Drawable
 

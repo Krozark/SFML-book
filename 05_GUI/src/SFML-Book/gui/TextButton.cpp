@@ -71,24 +71,22 @@ namespace book
             target.draw(_label,states);
         }
 
-        void TextButton::repaint()
+        void TextButton::onMouseEntered()
         {
-            if(_status & Status::Hover)
-            {
-                const float light = 1.4;
+            const float light = 1.4;
 
-                _shape.setOutlineColor(sf::Color(_outlineColor.r*light,
-                                                 _outlineColor.g*light,
-                                                 _outlineColor.b*light));
-                _shape.setFillColor(sf::Color(_fillColor.r*light,
-                                    _fillColor.b*light,
-                                    _fillColor.b*light));
-            }
-            else
-            {
-                _shape.setOutlineColor(_outlineColor);
-                _shape.setFillColor(_fillColor);
-            }
+            _shape.setOutlineColor(sf::Color(_outlineColor.r*light,
+                                             _outlineColor.g*light,
+                                             _outlineColor.b*light));
+            _shape.setFillColor(sf::Color(_fillColor.r*light,
+                                          _fillColor.b*light,
+                                          _fillColor.b*light));
+        }
+
+        void TextButton::onMouseLeft()
+        {
+            _shape.setOutlineColor(_outlineColor);
+            _shape.setFillColor(_fillColor);
         }
     }
 }

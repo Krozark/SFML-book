@@ -130,7 +130,16 @@ namespace book
         return false;
     };
 
-
+    void World::reset()
+    {
+        for (b2Body* body=_physical_world.GetBodyList(); body!=nullptr;)
+        {
+            b2Body* next = body->GetNext();
+            if(body->GetType() == b2_dynamicBody)
+                delete static_cast<Piece*>(body->GetUserData());
+            body = next;
+        }
+    }
 
     void World::update_physics(sf::Time deltaTime)
     {

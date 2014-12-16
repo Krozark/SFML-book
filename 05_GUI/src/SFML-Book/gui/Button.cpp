@@ -54,11 +54,21 @@ namespace book
                     _status|=Status::Hover;
                 }
 
-                if(old_status != _status)
-                    repaint();
+                if((old_status & Status::Hover) and not (_status & Status::Hover))
+                    onMouseLeft();
+                else if(not (old_status & Status::Hover) and (_status & Status::Hover))
+                    onMouseEntered();
 
             }
             return res;
+        }
+
+        void Button::onMouseEntered()
+        {
+        }
+
+        void Button::onMouseLeft()
+        {
         }
     }
 }

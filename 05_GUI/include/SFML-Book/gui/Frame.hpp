@@ -8,7 +8,7 @@ namespace book
     namespace gui
     {
         class Layout;
-        class Frame : private Widget
+        class Frame : public Widget
         {
             public:
                 Frame(const Frame&) = delete;
@@ -23,6 +23,7 @@ namespace book
                 Layout* getLayout()const;
 
                 void processEvents();
+                bool processEvent(const sf::Event& event);
 
                 void draw();
 

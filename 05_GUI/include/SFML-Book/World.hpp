@@ -37,6 +37,8 @@ namespace book
 
             bool isGameOver()const;
 
+            void reset();
+
         private:
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
             b2World _physical_world;

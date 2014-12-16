@@ -32,8 +32,6 @@ namespace book
 
                 Widget* _parent;
                 sf::Vector2f _position;
-
-                virtual void repaint();
         };
     }
 }

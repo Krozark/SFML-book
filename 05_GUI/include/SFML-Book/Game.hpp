@@ -7,6 +7,8 @@
 #include <SFML-Book/ActionTarget.hpp>
 #include <SFML-Book/Stats.hpp>
 
+#include <SFML-Book/gui/Gui.hpp>
+
 namespace book
 {
     class Piece;
@@ -26,6 +28,9 @@ namespace book
             void processEvents();//< Process events
             void update(const sf::Time& deltaTime,const sf::Time& timePerFrame);
             void update_physics(const sf::Time& deltaTime,const sf::Time& timePerFrame); //< do some updates
+            void initGui();
+            void initGame();
+
             void render();//< draw all the stuff
 
             sf::RenderWindow _window; //< the window use to display the game
@@ -40,6 +45,17 @@ namespace book
             Stats _stats;
 
             sf::Time timeSinceLastFall;
+
+            gui::Frame _mainMenu;
+            gui::Frame _pauseMenu;
+
+            enum Status {
+                StatusMainMenu,
+                StatusGame,
+                StatusConfiguration,
+                StatusPaused,
+                StatusExit
+            } _status;
     };
 }
 

@@ -38,7 +38,8 @@ namespace book
                 sf::Color _fillColor;
                 sf::Color _outlineColor;
 
-                virtual void repaint() override;
+                virtual void onMouseEntered()override;
+                virtual void onMouseLeft()override;
         };
     }
 }
