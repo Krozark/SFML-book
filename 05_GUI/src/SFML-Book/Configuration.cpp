@@ -8,6 +8,7 @@ namespace book
     ResourceManager<sf::SoundBuffer,int> Configuration::sounds;
 
     ActionMap<int> Configuration::player_inputs;
+    ActionMap<int> Configuration::gui_inputs;
 
     void Configuration::initialize()
     {
@@ -17,6 +18,7 @@ namespace book
         initMusics();
 
         initPlayerInputs();
+        initGuiInputs();
 
         rand_init();
 
@@ -52,5 +54,10 @@ namespace book
         player_inputs.map(PlayerInputs::MoveLeft,Action(sf::Keyboard::Left));
         player_inputs.map(PlayerInputs::MoveRight,Action(sf::Keyboard::Right));
         player_inputs.map(PlayerInputs::HardDrop,Action(sf::Keyboard::Space,Action::Type::Released));
+    }
+
+    void Configuration::initGuiInputs()
+    {
+        gui_inputs.map(GuiInputs::Escape,Action(sf::Keyboard::Escape,Action::Type::Pressed));
     }
 }

@@ -2,17 +2,20 @@
 #define BOOK_GUI_FRAME_HPP
 
 #include <SFML-Book/gui/Widget.hpp>
+#include <SFML-Book/ActionTarget.hpp>
 
 namespace book
 {
     namespace gui
     {
         class Layout;
-        class Frame : public Widget
+        class Frame : public Widget, protected ActionTarget<int>
         {
             public:
                 Frame(const Frame&) = delete;
                 Frame& operator=(const Frame&) = delete;
+
+                using ActionTarget<int>::FuncType;
                 
                 Frame(sf::RenderWindow& window);
                 Frame(sf::RenderWindow& window,float size_x,float size_y);
@@ -24,6 +27,11 @@ namespace book
 
                 void processEvents();
                 bool processEvent(const sf::Event& event);
+
+                void bind(int key,const FuncType& callback);
+                void unbind(int key);
+
+
 
                 void draw();
 

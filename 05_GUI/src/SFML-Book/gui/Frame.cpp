@@ -1,12 +1,13 @@
 #include <SFML-Book/gui/Frame.hpp>
 
 #include <SFML-Book/gui/Layout.hpp>
+#include <SFML-Book/Configuration.hpp>
 
 namespace book
 {
     namespace gui
     {
-        Frame::Frame(sf::RenderWindow& window,float size_x,float size_y) : Widget(nullptr), _layout(nullptr), _window(window)
+        Frame::Frame(sf::RenderWindow& window,float size_x,float size_y) : Widget(nullptr), ActionTarget(Configuration::gui_inputs),_layout(nullptr), _window(window)
         {
         }
 
@@ -60,6 +61,16 @@ namespace book
             return processEvent(event,parent_pos);
         }
 
+        void Frame::bind(int key,const FuncType& callback)
+        {
+            ActionTarget::bind(key,callback);
+        }
+
+        void Frame::unbind(int key)
+        {
+            ActionTarget::unbind(key);
+        }
+
         void Frame::draw(sf::RenderTarget& target, sf::RenderStates states) const
         {
             if(_layout)
@@ -74,14 +85,15 @@ namespace book
 
         bool Frame::processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)
         {
-            bool res = false;
-            if(_layout)
+            bool res = ActionTarget::processEvent(event);
+            if(not res and _layout)
                 res = _layout->processEvent(event,parent_pos);
             return res;
         }
 
         void Frame::processEvents(const sf::Vector2f& parent_pos)
         {
+            ActionTarget::processEvents();
             if(_layout)
             {
                 _layout->processEvents(parent_pos);

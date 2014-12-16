@@ -28,6 +28,7 @@ namespace book
 
 
         _stats.setPosition(BOOK_BOX_SIZE*(word_x+3),BOOK_BOX_SIZE);
+
         initGui();
 
     }
@@ -131,6 +132,10 @@ namespace book
             layout->add(exit);
 
             _mainMenu.setLayout(layout);
+
+            _mainMenu.bind(Configuration::GuiInputs::Escape,[this](const sf::Event& event){
+                               this->_window.close();
+                           });
         }
         //_pauseMenu
         {
@@ -148,6 +153,10 @@ namespace book
             layout->add(exit);
 
             _pauseMenu.setLayout(layout);
+
+            _pauseMenu.bind(Configuration::GuiInputs::Escape,[this](const sf::Event& event){
+                _status = StatusGame;
+            });
         }
     }
 
@@ -170,24 +179,9 @@ namespace book
         {
             if (event.type == sf::Event::Closed)//Close window
                 _window.close();
-            else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape)
+            else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape and _status == Status::StatusGame)
             {
-                switch(_status)
-                {
-                    case StatusMainMenu:
-                    {
-                        _window.close();
-                    }break;
-                    case StatusGame:
-                    {
-                        _status = StatusPaused;
-                    }break;
-                    case StatusPaused :
-                    {
-                        _status = StatusGame;
-                    }break;
-                    default : break;
-                }
+                _status = StatusPaused;
             }
             else
             {
