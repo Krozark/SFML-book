@@ -18,8 +18,6 @@ namespace book
                 Layout(Widget* parent=nullptr);
                 virtual ~Layout();
 
-                virtual sf::Vector2f getSize()const = 0;
-
                 void setSpace(float pixels);
 
             protected:
