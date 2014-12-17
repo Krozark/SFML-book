@@ -42,7 +42,7 @@ namespace book
                     max_x = size.x;
                 y+= _space + size.y;
             }
-            return sf::Vector2f(max_x,y+_space);
+            return sf::Vector2f(max_x + _space*2,y+_space);
         }
 
         bool VLayout::processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)

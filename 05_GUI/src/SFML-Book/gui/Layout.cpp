@@ -23,7 +23,7 @@ namespace book
                 updateShape();
             }
             else
-                throw std::invalid_argument("pixel value muste be >= 0");
+                throw std::invalid_argument("pixel value must be >= 0");
         }
     }
 }
