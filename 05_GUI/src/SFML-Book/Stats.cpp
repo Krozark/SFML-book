@@ -74,10 +74,10 @@ void Stats::addLines(int lines)
         
         switch (lines)
         {
-            case 1 : _nb_score += 40 * (_nb_lvl+1);break;
-            case 2 : _nb_score += 100 * (_nb_lvl+1);break;
-            case 3 : _nb_score += 300 * (_nb_lvl+1);break;
-            default : _nb_score += 1200 * (_nb_lvl+1);break;
+            case 1 : _nb_score += 40 * ( _initial_lvl+_nb_lvl+1);break;
+            case 2 : _nb_score += 100 * ( _initial_lvl+_nb_lvl+1);break;
+            case 3 : _nb_score += 300 * ( _initial_lvl+_nb_lvl+1);break;
+            default : _nb_score += 1200 * ( _initial_lvl+_nb_lvl+1);break;
         }
 
         _nb_lvl = _initial_lvl + (_nb_rows / 10);
