@@ -17,6 +17,7 @@ void Stats::reset()
     _nb_score = 0;
     _nb_lvl = 0;
     _is_game_over = false;
+    _initial_lvl = 0;
 
     _text_rows.setFont(Configuration::fonts.get(Configuration::Fonts::Gui));
     _text_rows.setString("rows : 0");
@@ -29,9 +30,9 @@ void Stats::reset()
     _text_score.setPosition(0,FONT_SIZE + 1);
 
     _text_lvl.setFont(Configuration::fonts.get(Configuration::Gui));
-    _text_lvl.setString("lvl : 0");
     _text_lvl.setCharacterSize(FONT_SIZE);
     _text_lvl.setPosition(0,(FONT_SIZE + 1)*2);
+    setLevel(0);
 
     _text_game_over.setFont(Configuration::fonts.get(Configuration::Gui));
     _text_game_over.setString("Game Over");
@@ -49,9 +50,15 @@ void Stats::setGameOver(bool g)
     _is_game_over = g;
 }
 
+void Stats::setLevel(int lvl)
+{
+    _initial_lvl = lvl;
+    _text_lvl.setString("lvl : "+std::to_string(lvl));
+}
+
 int Stats::getLevel()const
 {
-    return _nb_lvl;
+    return _initial_lvl + _nb_lvl;
 }
 
 void Stats::addLines(int lines)
@@ -73,7 +80,7 @@ void Stats::addLines(int lines)
             default : _nb_score += 1200 * (_nb_lvl+1);break;
         }
 
-        _nb_lvl = _nb_rows / 10;
+        _nb_lvl = _initial_lvl + (_nb_rows / 10);
 
         //update the lvl
         _text_lvl.setString("lvl : "+std::to_string(_nb_lvl));

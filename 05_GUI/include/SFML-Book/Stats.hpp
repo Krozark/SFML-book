@@ -17,6 +17,7 @@ namespace book
             void setGameOver(bool);
 
             int getLevel()const;
+            void setLevel(int lvl);
 
             void reset();
 
@@ -26,6 +27,8 @@ namespace book
             unsigned int _nb_rows;
             unsigned int _nb_score;
             unsigned int _nb_lvl;
+
+            unsigned int _initial_lvl;
 
             bool _is_game_over;
 

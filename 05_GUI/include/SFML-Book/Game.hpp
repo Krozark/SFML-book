@@ -9,6 +9,8 @@
 
 #include <SFML-Book/gui/Gui.hpp>
 
+#include <SFGUI/SFGUI.hpp>
+
 namespace book
 {
     class Piece;
@@ -47,6 +49,7 @@ namespace book
             sf::Time timeSinceLastFall;
 
             gui::Frame _mainMenu;
+            gui::Frame _configurationMenu;
             gui::Frame _pauseMenu;
 
             enum Status {
@@ -56,6 +59,10 @@ namespace book
                 StatusPaused,
                 StatusExit
             } _status;
+
+            sfg::SFGUI _sfgui;
+
+            sfg::Desktop _sfg_desktop;
     };
 }
 

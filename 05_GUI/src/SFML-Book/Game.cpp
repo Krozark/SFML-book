@@ -2,9 +2,11 @@
 #include <SFML-Book/Configuration.hpp>
 #include <SFML-Book/Piece.hpp>
 
+#include <sstream>
+
 namespace book
 {
-    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"05_GUi"),_current_piece(nullptr), _world(word_x,word_y), _mainMenu(_window),_pauseMenu(_window),_status(Status::StatusMainMenu)
+    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"05_GUi"),_current_piece(nullptr), _world(word_x,word_y), _mainMenu(_window),_configurationMenu(_window),_pauseMenu(_window),_status(Status::StatusMainMenu)
     {
         bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){        
              _current_piece = _world.newPiece();
@@ -158,6 +160,47 @@ namespace book
                 _status = StatusGame;
             });
         }
+        
+        //configuration
+        {
+            auto title = sfg::Label::Create("Enter your starting level");
+            auto level = sfg::Entry::Create();
+            auto error = sfg::Label::Create();
+            auto button = sfg::Button::Create( "Ok" );
+            button->GetSignal( sfg::Button::OnLeftClick ).Connect(
+              [level,error,this](){
+                int lvl = 0;
+	            std::stringstream sstr(static_cast<std::string>(level->GetText()));
+	            sstr >> lvl;
+                if(lvl < 1 or lvl > 100)
+                    error->SetText("Enter a number from 1 to 100.");
+                else
+                {
+                    error->SetText("");
+                    initGame();
+                    _stats.setLevel(lvl); 
+                    _status = Status::StatusGame;
+                }
+              }
+            );
+
+            auto table = sfg::Table::Create();
+            table->SetRowSpacings(10);
+
+            table->Attach(title,sf::Rect<sf::Uint32>(0,0,1,1));
+            table->Attach(level,sf::Rect<sf::Uint32>(0,1,1,1));
+            table->Attach(button,sf::Rect<sf::Uint32>(0,2,1,1));
+            table->Attach(error,sf::Rect<sf::Uint32>(0,3,1,1));
+
+            table->SetAllocation(sf::FloatRect((_window.getSize().x-300)/2,
+                                                (_window.getSize().y-200)/2,
+                                                300,200));
+            _sfg_desktop.Add(table);
+
+            _configurationMenu.bind(Configuration::GuiInputs::Escape,[this](const sf::Event& event){
+                _status = StatusMainMenu;
+            });
+        }
     }
 
     void Game::initGame()
@@ -195,6 +238,11 @@ namespace book
                     {
                         ActionTarget::processEvent(event);
                     }break;
+                    case StatusConfiguration :
+                    {
+                        _configurationMenu.processEvent(event);
+                        _sfg_desktop.HandleEvent(event);
+                    }break;
                     case StatusPaused :
                     {
                         _pauseMenu.processEvent(event);
@@ -213,6 +261,10 @@ namespace book
             case StatusGame :
             {
                 ActionTarget::processEvents();
+            }break;
+            case StatusConfiguration :
+            {
+                _configurationMenu.processEvents();
             }break;
             case StatusPaused :
             {
@@ -241,6 +293,12 @@ namespace book
 #ifdef BOOK_DEBUG
                 _world.displayDebug();
 #endif
+            }break;
+            case StatusConfiguration:
+            {
+                _sfg_desktop.Update(0.0);
+                _sfgui.Display(_window);
+                _window.draw(_configurationMenu);
             }break;
             case StatusPaused :
             {
