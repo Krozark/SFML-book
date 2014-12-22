@@ -11,6 +11,8 @@
 
 #include <SFGUI/SFGUI.hpp>
 
+#include <SFML/System.hpp>
+
 namespace book
 {
     class Piece;
@@ -29,7 +31,7 @@ namespace book
 
             void processEvents();//< Process events
             void update(const sf::Time& deltaTime,const sf::Time& timePerFrame);
-            void update_physics(const sf::Time& deltaTime,const sf::Time& timePerFrame); //< do some updates
+            void update_physics(); //< do some updates
             void initGui();
             void initGame();
 
@@ -63,6 +65,11 @@ namespace book
             sfg::SFGUI _sfgui;
 
             sfg::Desktop _sfg_desktop;
+
+            sf::Thread _physics_thread;
+            sf::Mutex _mutex;
+            bool _is_running;
+            int _physics_frame_per_seconds;
     };
 }
 

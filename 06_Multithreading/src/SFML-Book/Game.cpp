@@ -6,9 +6,10 @@
 
 namespace book
 {
-    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"06_Multithreading"),_current_piece(nullptr), _world(word_x,word_y), _mainMenu(_window),_configurationMenu(_window),_pauseMenu(_window),_status(Status::StatusMainMenu)
+    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"06_Multithreading"),_current_piece(nullptr), _world(word_x,word_y), _mainMenu(_window),_configurationMenu(_window),_pauseMenu(_window),_status(Status::StatusMainMenu), _physics_thread(&Game::update_physics,this),_is_running(true)
     {
         bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){        
+             sf::Lock lock(_mutex);
              _current_piece = _world.newPiece();
              timeSinceLastFall = sf::Time::Zero;
         });
@@ -39,7 +40,9 @@ namespace book
     {
         sf::Clock clock;
         const sf::Time timePerFrame = sf::seconds(1.f/minimum_frame_per_seconds);
-        const sf::Time timePerFramePhysics = sf::seconds(1.f/physics_frame_per_seconds);
+        _physics_frame_per_seconds = physics_frame_per_seconds;
+
+        _physics_thread.launch();
 
         while (_window.isOpen())
         {
@@ -49,12 +52,13 @@ namespace book
 
             if(_status == StatusGame and not _stats.isGameOver())
             {
-                update_physics(time,timePerFramePhysics);
                 update(time,timePerFrame);
             }
 
             render();
         }
+        _is_running = false;
+        _physics_thread.wait();
     }
     void Game::update(const sf::Time& deltaTime,const sf::Time& timePerFrame)
     {
@@ -65,6 +69,7 @@ namespace book
 
         if(timeSinceLastUpdate > timePerFrame)
         {
+            sf::Lock lock(_mutex);
             if(_current_piece != nullptr)
             {
                 _current_piece->rotate(_rotate_direction*3000);
@@ -92,18 +97,28 @@ namespace book
         _move_direction=0;
     }
 
-    void Game::update_physics(const sf::Time& deltaTime,const sf::Time& timePerFrame)
+    void Game::update_physics()
     {
-        static sf::Time timeSinceLastUpdate = sf::Time::Zero;
+        sf::Clock clock;
+        const sf::Time timePerFrame = sf::seconds(1.f/_physics_frame_per_seconds);
+        sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-        timeSinceLastUpdate+=deltaTime;
-
-        _world.updateGravity(_stats.getLevel());
-
-        while (timeSinceLastUpdate > timePerFrame)
+        while (_is_running)
         {
-            _world.update_physics(timePerFrame);
-            timeSinceLastUpdate -= timePerFrame;
+            sf::Lock lock(_mutex);
+
+            timeSinceLastUpdate+= clock.restart();
+
+            _world.updateGravity(_stats.getLevel());
+
+            while (timeSinceLastUpdate > timePerFrame)
+            {
+
+                if(_status == StatusGame and not _stats.isGameOver())
+                    _world.update_physics(timePerFrame);
+
+                timeSinceLastUpdate -= timePerFrame;
+            }
         }
     }
 
@@ -205,6 +220,7 @@ namespace book
 
     void Game::initGame()
     {
+        sf::Lock lock(_mutex);
         timeSinceLastFall = sf::Time::Zero;
 
         _stats.reset();
@@ -287,12 +303,15 @@ namespace book
             case StatusGame :
             {
                 if(not _stats.isGameOver())
+                {
+                    sf::Lock lock(_mutex);
                     _window.draw(_world);
+#ifdef BOOK_DEBUG
+                    _world.displayDebug();
+#endif
+                }
                 _window.draw(_stats);
 
-#ifdef BOOK_DEBUG
-                _world.displayDebug();
-#endif
             }break;
             case StatusConfiguration:
             {
@@ -303,7 +322,10 @@ namespace book
             case StatusPaused :
             {
                 if(not _stats.isGameOver())
+                {
+                    sf::Lock lock(_mutex);
                     _window.draw(_world);
+                }
                 _window.draw(_pauseMenu);
             }break;
             default : break;
