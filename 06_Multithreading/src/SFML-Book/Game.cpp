@@ -6,7 +6,7 @@
 
 namespace book
 {
-    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"05_GUI"),_current_piece(nullptr), _world(word_x,word_y), _mainMenu(_window),_configurationMenu(_window),_pauseMenu(_window),_status(Status::StatusMainMenu)
+    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"06_Multithreading"),_current_piece(nullptr), _world(word_x,word_y), _mainMenu(_window),_configurationMenu(_window),_pauseMenu(_window),_status(Status::StatusMainMenu)
     {
         bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){        
              _current_piece = _world.newPiece();
