@@ -41,5 +41,6 @@ add_subdirectory(03_Simple_2D_game)
 add_subdirectory(04_Physics)
 add_subdirectory(05_GUI)
 add_subdirectory(06_Multithreading)
+add_subdirectory(07_2D_iso_game)
 #build exemples
 
