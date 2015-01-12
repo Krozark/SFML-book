@@ -36,10 +36,14 @@ int main(int argc,char* argv[])
         }
         viewer.processEvents();
 
+        float deltaTime = clock.restart().asSeconds();
+        viewer.update(deltaTime);
+
         window.draw(viewer);
         
         window.display();
 
+        window.setTitle("Example Tile ("+std::to_string(int(1/deltaTime))+")");
         ++nb_loops;
     }
 

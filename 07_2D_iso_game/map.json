@@ -9,6 +9,7 @@
     [
         {
             "content" : "tile",
+            "z" : 0,
             "texture" : 
             [
                 {
@@ -22,6 +23,7 @@
         },
         {
             "content" : "sprite",
+            "z" : 2,
             "datas" : 
             [
                 {
