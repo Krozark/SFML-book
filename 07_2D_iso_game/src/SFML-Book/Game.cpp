@@ -56,6 +56,8 @@ namespace book
             else if(_level)
                 _level->processEvent(event);
         }
+        if(_level)
+            _level->processEvents();
     }
 
     
@@ -70,11 +72,12 @@ namespace book
     void Game::render()
     {
         _window.clear();
-        _window.display();
 
         if(_level)
         {
             _level->draw(_window);
         }
+
+        _window.display();
     }
 }

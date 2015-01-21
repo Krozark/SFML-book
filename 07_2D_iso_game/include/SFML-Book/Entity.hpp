@@ -17,7 +17,7 @@ namespace book
             sf::Vector2i getPosition()const;
 
         private:
-            void draw(sf::RenderTarget& target, const sf::RenderStates& states)const override;
+            virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const override;
     };
 }
 #endif

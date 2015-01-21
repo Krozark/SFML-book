@@ -11,7 +11,7 @@ namespace book
     {
         return {0,0};
     }
-    void Entity::draw(sf::RenderTarget& target, const sf::RenderStates& states)const
-        {
-        }
+    void Entity::draw(sf::RenderTarget& target,sf::RenderStates states)const
+    {
+    }
 }
