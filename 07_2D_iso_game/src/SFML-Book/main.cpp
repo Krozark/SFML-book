@@ -6,20 +6,20 @@
 int main(int argc,char* argv[])
 {
     sf::RenderWindow window(sf::VideoMode(1600,900),"07 2D iso game");
+    window.setFramerateLimit(65);
 
-    sfutils::VMap* map = sfutils::createMapFromFile("./map.json");
+    sfutils::VMap* map = sfutils::createMapFromFile("./media/map.json");
     if(not map)
     {
         std::cerr<<"unable to load map"<<std::endl;
         return 0;
     }
+    map->loadFromFile("./media/map2.json");
 
-    sfutils::MapViewer viewer(*map);
+    sfutils::MapViewer viewer(window,*map);
     viewer.setSize(1600,900);
 
     sf::Clock clock;
-
-    unsigned int nb_loops = 0;
 
     while (window.isOpen())
     {
@@ -44,10 +44,7 @@ int main(int argc,char* argv[])
         window.display();
 
         window.setTitle("Example Tile ("+std::to_string(int(1/deltaTime))+")");
-        ++nb_loops;
     }
-
-    std::cout<<"Average FPS : "<<nb_loops/clock.getElapsedTime().asSeconds()<<" for "<<nb_loops<<" loops"<<std::endl;
 
     return 0;
 };
