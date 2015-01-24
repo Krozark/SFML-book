@@ -66,7 +66,9 @@ namespace book
             if(event.type == sf::Event::MouseButtonReleased and event.mouseButton.button == sf::Mouse::Button::Left)
             {
                 sf::Vector2i coord = _viewer.mapPixelToCoords(event.mouseButton.x,event.mouseButton.y);
-                std::cout<<"pickup on "<<coord.x<<" "<<coord.y<<std::endl;
+                std::list<Entity*> pick = _entites_layer->getByCoords(coord,*_map);
+                std::cout<<"pickup on "<<coord.x<<" "<<coord.y<<" : "<<pick.size()<<std::endl;
+
             }
             else if(event.type == sf::Event::MouseMoved)
             {

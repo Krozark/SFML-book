@@ -11,5 +11,6 @@ namespace book
     class Team;
 
     std::uint32_t makeMain(sfutils::EntityManager<Entity>& manager,sfutils::Layer<sfutils::HexaIso,Entity*>& layer,Team* team);
+
 }
 #endif

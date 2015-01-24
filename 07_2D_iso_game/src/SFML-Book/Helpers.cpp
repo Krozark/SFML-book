@@ -12,9 +12,16 @@ namespace book
         Entity& e= manager.get(id);
         //add animation
         CompSkin& skin = *e.component<CompSkin>().get();
-        skin._animations.emplace(CompSkin::Stand,&Configuration::animations.get(Configuration::AnimMain));
+        sfutils::Animation& animation = Configuration::animations.get(Configuration::AnimMain);
+
+        skin._animations.emplace(CompSkin::Stand,&animation);
         skin._sprite.setAnimation(skin._animations.at(CompSkin::Stand));
-        
+
+        //resize to map size
+        sf::IntRect rec = animation.getRect(0);
+        skin._sprite.setOrigin(rec.width*0.5,rec.height*0.7);
+        skin._sprite.setScale(0.1,0.1);
+
         //add team
         e.add<CompTeam>(team);
 
