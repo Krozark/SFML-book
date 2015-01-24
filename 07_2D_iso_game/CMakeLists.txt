@@ -16,16 +16,29 @@ set(CHAPTER_NAME 07_2D_iso_game)
 #FILES
 set(FILES_HEADER
     ${INCROOT}/Configuration.hpp
-    ${INCROOT}/Entity.hpp
     ${INCROOT}/Game.hpp
     ${INCROOT}/Level.hpp
+    ${INCROOT}/Team.hpp
+
+    ${INCROOT}/Entity.hpp
+    ${INCROOT}/Component.hpp
+    ${INCROOT}/System.hpp
+
+    ${INCROOT}/Helpers.hpp
+
 )
 
 set(FILES_SRC
     ${SRCROOT}/Configuration.cpp
-    ${SRCROOT}/Entity.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Level.cpp
+    ${SRCROOT}/Team.cpp
+
+    ${SRCROOT}/Entity.cpp
+    ${SRCROOT}/Component.cpp
+    ${SRCROOT}/System.cpp
+
+    ${SRCROOT}/Helpers.cpp
 
     ${SRCROOT}/main.cpp
 )

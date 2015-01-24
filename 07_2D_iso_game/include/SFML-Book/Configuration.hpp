@@ -13,14 +13,21 @@ namespace book
             Configuration() = delete;
 
             enum Textures : int {
-                Eye
+                TexMain,
+                //WormsEgg,
+                //Worm1,
+                //Worm2,
+                //Worm3,
+                //EyeEgg,
+                TexEye
             };
 
             static sfutils::ResourceManager<sf::Texture,int> textures;
 
             enum Animations: int {
-                EyeLeft,
-                EyeRight
+                AnimMain,
+                AnimEyeLeft,
+                AnimEyeRight
             };
 
             static sfutils::ResourceManager<sfutils::Animation,int> animations;

@@ -4,6 +4,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
+#include <SFML-utils/es/Application.hpp>
 #include <SFML-utils/Map.hpp>
 
 #include <SFML-Book/Entity.hpp>
@@ -11,7 +12,7 @@
 
 namespace book
 {
-    class Level
+    class Level : private sfutils::Application<Entity>
     {
         public:
             Level(const Level&) = delete;
@@ -34,9 +35,7 @@ namespace book
 
             sf::ConvexShape* _mouse_light;
             sfutils::Layer<sfutils::HexaIso,sf::ConvexShape>* _mouse_layer;
-            sfutils::Layer<sfutils::HexaIso,Entity*>* _entities_layer;
-
-            sfutils::EntityManager<Entity> _manager;
+            sfutils::Layer<sfutils::HexaIso,Entity*>* _entites_layer;
     };
 }
 #endif

@@ -4,6 +4,8 @@
 #include <stdexcept>
 
 #include <SFML-Book/Configuration.hpp>
+#include <SFML-Book/Helpers.hpp>
+#include <SFML-Book/System.hpp>
 
 namespace book
 {
@@ -11,7 +13,7 @@ namespace book
         _map(sfutils::createMapFromFile(filename)),
         _viewer(window,*_map),
         _mouse_layer(new sfutils::Layer<sfutils::HexaIso,sf::ConvexShape>("ConvexShape",1)),
-        _entities_layer(new sfutils::Layer<sfutils::HexaIso,Entity*>("Entity",2))
+        _entites_layer(new sfutils::Layer<sfutils::HexaIso,Entity*>("Entity",2))
     {
         if(_map == nullptr)
         {
@@ -28,26 +30,26 @@ namespace book
         {
             for(int i=0;i<4;++i)
             {
-                uint32_t id = _manager.create(&Configuration::animations.get(Configuration::Animations::EyeLeft));
-                Entity* e = _entities_layer->add(_manager.getPtr(id));
-                //e->setPosition(_map->mapCoordsToPixel(i,i));
+                uint32_t id = makeMain(entites,*_entites_layer,nullptr);
+                Entity* e = entites.getPtr(id);
+                e->setPosition(_map->mapCoordsToPixel(i,i));
+
             }
-            _map->add(_entities_layer);
+            _map->add(_entites_layer);
         }
 
-
+        systems.add<SysSkin>();
 
     }
     Level::~Level()
     {
         delete _map;
-        delete _mouse_layer;
-        delete _entities_layer;
     }
 
     void Level::update(sf::Time deltaTime)
     {
         _viewer.update(deltaTime.asSeconds());
+        systems.updateAll(deltaTime);
     }
 
     void Level::processEvents()

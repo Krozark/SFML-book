@@ -8,16 +8,19 @@ namespace book
 {
     class Entity : public sfutils::Entity<Entity>, public sf::Drawable
     {
+
         public:
             Entity(const Entity&) = delete;
             Entity& operator=(const Entity&) = delete;
 
-            Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id,sfutils::Animation* animation=nullptr);
+            Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id);
 
-            sf::Vector2i getPosition()const;
+            sf::Vector2f getPosition()const;
+            void setPosition(const sf::Vector2f& pos);
 
         private:
             virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const override;
     };
+
 }
 #endif
