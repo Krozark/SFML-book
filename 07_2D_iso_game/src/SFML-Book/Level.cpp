@@ -97,6 +97,7 @@ namespace book
     {
         std::uint32_t id = entites.create(*_entites_layer);
         Entity& e = entites.get(id);
+        e.init();
         e.setPosition(_map->mapCoordsToPixel(coord));
         return e;
     }

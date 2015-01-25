@@ -25,7 +25,7 @@ namespace book
         if(team)
         {
             entity.add<CompTeam>(team);
-            entity.component<CompSkin>()->_sprite.setColor(team->getColor());
+            entity.component<CompSkin>()->_sprite.setColor(team->gui.getColor());
         }
     }
 

@@ -7,8 +7,12 @@ namespace book
 {
     Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id, sfutils::Layer<sfutils::HexaIso,Entity*>& layer) : sfutils::Entity<Entity>(manager,id), _layer(layer)
     {
-        manager->addComponent<CompSkin>(id);
-        layer.add(this);
+    }
+
+    void Entity::init()
+    {
+        add<CompSkin>();
+        _layer.add(this);
     }
 
     Entity::~Entity()

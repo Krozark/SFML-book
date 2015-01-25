@@ -17,6 +17,8 @@ namespace book
             Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id,sfutils::Layer<sfutils::HexaIso,Entity*>& layer);
             ~Entity();
 
+            void init();
+
             sf::Vector2f getPosition()const;
             void setPosition(const sf::Vector2f& pos);
 

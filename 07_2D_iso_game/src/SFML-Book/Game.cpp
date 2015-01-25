@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <SFML-Book/Helpers.hpp>
+#include <SFML-Book/Component.hpp>
 
 namespace book
 {
@@ -11,6 +12,14 @@ namespace book
 
         onPickup = [this](Level::Param& param){
             std::cout<<"pickup on "<<param.coord.x<<" "<<param.coord.y<<std::endl;
+            if(param.entity.has<CompTeam>())
+            {
+                CompTeam::Handle team = param.entity.component<CompTeam>();
+                if(team->_team->id() == _team->id())
+                {
+                    _team->gui.setSelected(param.entity.id(),param.entity.getManager());
+                }
+            }
         };
 
         _team = new Team(_window,1,sf::Color(255,255,255,255));
@@ -81,13 +90,13 @@ namespace book
             {
                 bool used = false;
                 if(_team)
-                    used = _team->processEvent(event);
+                    used = _team->gui.processEvent(event);
                 if(_level and not used)
                     used = _level->processEvent(event);
             }
         }
         if(_team)
-            _team->processEvents();
+            _team->gui.processEvents();
         if(_level)
             _level->processEvents();
     }
@@ -95,6 +104,8 @@ namespace book
     
     void Game::update(sf::Time deltaTime)
     {
+        if(_team)
+            _team->gui.update(deltaTime);
         if(_level)
             _level->update(deltaTime);
     }
@@ -106,7 +117,7 @@ namespace book
         if(_level)
             _level->draw(_window);
         if(_team)
-            _team->draw(_window);
+            _team->gui.draw(_window);
 
         _window.display();
     }

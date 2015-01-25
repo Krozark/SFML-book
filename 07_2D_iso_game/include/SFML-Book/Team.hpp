@@ -14,20 +14,17 @@ namespace book
 
             Team(sf::RenderWindow& window,int id,const sf::Color& color=sf::Color::White);
 
-
             void addGold(int amount);
-            const sf::Color& getColor()const;
 
-            bool processEvent(sf::Event& event);
-            void processEvents();
-            void draw(sf::RenderTarget& target);
+            int id()const;
+
+            TeamGui gui;
 
         private:
             int _id;
             int _points;
             int _gold;
 
-            TeamGui _gui;
 
     };
 }

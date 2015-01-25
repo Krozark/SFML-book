@@ -3,7 +3,7 @@
 
 namespace book
 {
-    Team::Team(sf::RenderWindow& window,int id,const sf::Color& color) : _id(id), _points(0), _gold(0), _gui(window,color)
+    Team::Team(sf::RenderWindow& window,int id,const sf::Color& color) : gui(window,color),_id(id), _points(0), _gold(0)
     {
     }
 
@@ -12,27 +12,12 @@ namespace book
         if(amount > 0)
         {
             _gold += amount;
-            _gui.setGold(_gold);
+            gui.setGold(_gold);
         }
     }
 
-    const sf::Color& Team::getColor()const
+    int Team::id()const
     {
-        return _gui.getColor();
-    }
-
-    bool Team::processEvent(sf::Event& event)
-    {
-        return _gui.processEvent(event);
-    }
-
-    void Team::processEvents()
-    {
-        _gui.processEvents();
-    }
-
-    void Team::draw(sf::RenderTarget& target)
-    {
-        _gui.draw(target);
+        return _id;
     }
 }
