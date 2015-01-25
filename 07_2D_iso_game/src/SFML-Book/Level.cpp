@@ -31,13 +31,14 @@ namespace book
         _map->add(_entites_layer);
 
         systems.add<SysAIMain>();
-        systems.add<SysAIWarrior>();
+        systems.add<SysAIWarrior>(*this);
         systems.add<SysAIDefender>();
         systems.add<SysAISpawner>(*this);
-        systems.add<SysAIWalker>();
-        systems.add<SysAIFlyer>();
+        systems.add<SysAIWalker>(*this);
+        systems.add<SysAIFlyer>(*this);
         systems.add<SysSkin>();
         systems.add<SysHp>();
+
 
     }
     Level::~Level()
@@ -49,7 +50,8 @@ namespace book
     void Level::update(sf::Time deltaTime)
     {
         _viewer.update(deltaTime.asSeconds());
-        systems.updateAll(deltaTime);
+        Application::update(deltaTime);
+        _entites_layer->sort();
     }
 
     void Level::processEvents()
@@ -66,7 +68,7 @@ namespace book
             if(event.type == sf::Event::MouseButtonReleased and event.mouseButton.button == sf::Mouse::Button::Left)
             {
                 sf::Vector2i coord = _viewer.mapPixelToCoords(event.mouseButton.x,event.mouseButton.y);
-                std::list<Entity*> pick = _entites_layer->getByCoords(coord,*_map);
+                std::list<Entity*> pick = getByCoords(coord);
                 for(Entity* e : pick)
                 {
                     Param p(coord,*e,*_entites_layer,*_map);
@@ -116,5 +118,16 @@ namespace book
     sf::Vector2f Level::mapCoordsToPixel(const sf::Vector2i& pos)const
     {
         return _map->mapCoordsToPixel(pos);
+    }
+
+    std::list<Entity*> Level::getByCoords(const sf::Vector2i& coord)const
+    {
+        return _entites_layer->getByCoords(coord,*_map);
+    }
+
+    //TODO A* or dijtra
+    std::list<sf::Vector2i> Level::getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const
+    {
+        return _map->getPath(origin,dest);
     }
 }

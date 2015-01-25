@@ -16,7 +16,9 @@ namespace book
 
     struct SysAIWarrior : sfutils::System<SysAIWarrior,Entity>
     {
+        explicit SysAIWarrior(Level& level);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+        Level& _level;
     };
 
     struct SysAIDefender : sfutils::System<SysAIDefender,Entity>
@@ -34,12 +36,16 @@ namespace book
 
     struct SysAIWalker : sfutils::System<SysAISpawner,Entity>
     {
+        explicit SysAIWalker(Level& level);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+        Level& _level;
     };
 
     struct SysAIFlyer : sfutils::System<SysAIFlyer,Entity>
     {
+        explicit SysAIFlyer(Level& level);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+        Level& _level;
     };
 
     struct SysSkin : sfutils::System<SysSkin,Entity>

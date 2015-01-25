@@ -50,6 +50,9 @@ namespace book
             Entity& createEntity(const sf::Vector2i& coord);
             sf::Vector2i mapPixelToCoords(const sf::Vector2f& pos)const;
             sf::Vector2f mapCoordsToPixel(const sf::Vector2i& pos)const;
+            std::list<Entity*> getByCoords(const sf::Vector2i& coord)const;
+            std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
+
 
         private:
             friend class Game;

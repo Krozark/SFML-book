@@ -29,6 +29,8 @@ namespace book
         const int _hitPoint;
         const sf::Time _delta;
         sf::Time _elapsed;
+        
+        std::uint32_t _target;
     };
 
     struct CompAIDefender : sfutils::Component<CompAIDefender,Entity>
@@ -57,6 +59,7 @@ namespace book
         explicit CompAIWalker(float speed);
 
         const float _speed;
+        std::list<sf::Vector2i> _pathToTake;
     };
 
     struct CompAIFlyer : sfutils::Component<CompAIFlyer,Entity>
@@ -64,6 +67,7 @@ namespace book
         explicit CompAIFlyer(float speed);
 
         const float _speed;
+        std::list<sf::Vector2i> _pathToTake;
     };
 
     struct CompTeam : sfutils::Component<CompTeam,Entity>
@@ -93,7 +97,7 @@ namespace book
     {
         explicit CompHp(int hp);
 
-        const int _hp;
+        int _hp;
     };
     
 

@@ -29,10 +29,12 @@ namespace book
             void update(sf::Time deltaTime);
             void render();
 
+            void initTeam(Team* team,const sf::Vector2i& pos);
+
             sf::RenderWindow _window;
             
             Level* _level;
-            Team* _team;
+            Team* _myTeam;
             Team* _team2;
 
             Level::FuncType onPickup;

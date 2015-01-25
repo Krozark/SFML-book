@@ -1,5 +1,4 @@
 #include <SFML-Book/Game.hpp>
-#include <iostream>
 
 #include <SFML-Book/Helpers.hpp>
 #include <SFML-Book/Component.hpp>
@@ -11,19 +10,21 @@ namespace book
         _window.setFramerateLimit(65);
 
         onPickup = [this](Level::Param& param){
-            std::cout<<"pickup on "<<param.coord.x<<" "<<param.coord.y<<std::endl;
             if(param.entity.has<CompTeam>())
             {
                 CompTeam::Handle team = param.entity.component<CompTeam>();
-                if(team->_team->id() == _team->id())
+                if(team->_team->id() == _myTeam->id())
                 {
-                    _team->gui.setSelected(param.entity.id(),param.entity.getManager());
+                    _myTeam->gui.setSelected(param.entity.id(),param.entity.getManager());
                 }
             }
         };
 
-        _team = new Team(_window,0,sf::Color(255,20,20,255));//red
-        _team2 = new Team(_window,1,sf::Color(20,20,255,255));//blue
+        _myTeam = new Team(_window,0,sf::Color(255,150,150,255));//red
+        _team2 = new Team(_window,1,sf::Color(150,150,255,255));//blue
+
+        _myTeam->addEnemy(_team2);
+        _team2->addEnemy(_myTeam);
 
     }
 
@@ -40,17 +41,8 @@ namespace book
             _level = new Level(_window,level);
             _level->onPickup = onPickup;
 
-            for(int i=0;i<4;++i)
-            {
-                Entity& e = _level->createEntity(sf::Vector2i(i,i));
-                makeAsWormEgg(e,_team);
-            }
-
-            for(int i=0;i<4;++i)
-            {
-                Entity& e = _level->createEntity(sf::Vector2i(10+i,10+i));
-                makeAsWormEgg(e,_team2);
-            }
+            initTeam(_myTeam,sf::Vector2i(10,10));
+            initTeam(_team2,sf::Vector2i(30,30));
 
         }catch(...)
         {
@@ -96,14 +88,14 @@ namespace book
             else
             {
                 bool used = false;
-                if(_team)
-                    used = _team->gui.processEvent(event);
+                if(_myTeam)
+                    used = _myTeam->gui.processEvent(event);
                 if(_level and not used)
                     used = _level->processEvent(event);
             }
         }
-        if(_team)
-            _team->gui.processEvents();
+        if(_myTeam)
+            _myTeam->gui.processEvents();
         if(_level)
             _level->processEvents();
     }
@@ -111,8 +103,8 @@ namespace book
     
     void Game::update(sf::Time deltaTime)
     {
-        if(_team)
-            _team->gui.update(deltaTime);
+        if(_myTeam)
+            _myTeam->gui.update(deltaTime);
         if(_level)
             _level->update(deltaTime);
     }
@@ -123,9 +115,18 @@ namespace book
 
         if(_level)
             _level->draw(_window);
-        if(_team)
-            _team->gui.draw(_window);
+        if(_myTeam)
+            _myTeam->gui.draw(_window);
 
         _window.display();
+    }
+
+    void Game::initTeam(Team* team,const sf::Vector2i& pos)
+    {
+        makeAsMain(_level->createEntity(pos),team);
+        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(-2,-2)),team);
+        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,2)),team);
+        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(-2,2)),team);
+        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,-2)),team);
     }
 }

@@ -14,6 +14,7 @@ namespace book
 
         //add team
         setTeam(entity,team);
+        team->setQgId(entity.id());
 
         //add AI
         entity.add<CompAIMain>(100,sf::seconds(10));
@@ -35,7 +36,7 @@ namespace book
         //add AI
         entity.add<CompAIWarrior>(50,sf::seconds(0.5));
         entity.add<CompHp>(500);
-        entity.add<CompAIFlyer>(2);
+        entity.add<CompAIFlyer>(100);
 
         entity.name = "Fly Eye";
     }
@@ -46,7 +47,7 @@ namespace book
         setAnimation(entity,Configuration::AnimWormEggStand,CompSkin::Stand,0.5,1,0.3,0.3);
 
         setTeam(entity,team);
-        entity.add<CompAISpawner>(makeAsWorm,1,sf::seconds(5));
+        entity.add<CompAISpawner>(makeAsWorm,1,sf::seconds(15));
         entity.add<CompHp>(200);
 
         entity.name = "Worm Egg";
