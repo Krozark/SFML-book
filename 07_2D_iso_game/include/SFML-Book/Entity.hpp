@@ -22,6 +22,8 @@ namespace book
             sf::Vector2f getPosition()const;
             void setPosition(const sf::Vector2f& pos);
 
+            std::string name;
+
         private:
             virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const override;
 

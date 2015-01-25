@@ -6,53 +6,57 @@
 namespace book
 {
     
-    TeamGui::TeamGui(sf::RenderWindow& window,const sf::Color& color) : _frameTop(window,Configuration::gui_inputs), _labelGold(nullptr), _frameLeft(window,Configuration::gui_inputs), _color(color), _entityId(0),_entityManager(nullptr)
+    TeamGui::TeamGui(sf::RenderWindow& window,const sf::Color& color) : _infoBar(window,Configuration::gui_inputs),
+    _labelGold(nullptr),
+    _selectBar(window,Configuration::gui_inputs),
+    _entityName(nullptr),
+    _entityId(0),
+    _entityManager(nullptr),
+    _color(color),
+    _status(Status::None)
     {
-        initTopBar();
-        initLeftBar();
+        initInfoBar();
+        initSelectingBar();
 
     }
 
     void TeamGui::update(sf::Time deltaTime)
     {
-        if(_entityManager)
+        Status old = _status;
+        if(_entityManager and _entityManager->isValid(_entityId))
         {
-            if(_entityManager->isValid(_entityId))
-            {
-                _sprite.update(deltaTime);
-            }
-            else
-            {
-                _entityManager = nullptr;
-                _entityId = 0;
-            }
+            _status = Status::Selecting;
+            _sprite.update(deltaTime);
         }
+
+        if(old == Status::Selecting and old != _status)
+            unSelect();
     }
     
     bool TeamGui::processEvent(sf::Event& event)
     {
-        bool res = _frameTop.processEvent(event);
-        if(not res and _entityManager and _entityManager->isValid(_entityId))
-            res = _frameLeft.processEvent(event);
+        bool res = _infoBar.processEvent(event);
+        if(_status == Status::Selecting)
+            res = _selectBar.processEvent(event);
         return res;
     }
 
     void TeamGui::processEvents()
     {
-        _frameTop.processEvents();
-        if(_entityManager and _entityManager->isValid(_entityId))
+        _infoBar.processEvents();
+        if(_status == Status::Selecting)
         {
-            _frameLeft.processEvents();
+            _selectBar.processEvents();
         }
     }
 
     void TeamGui::draw(sf::RenderTarget& window)
     {
-        window.draw(_frameTop);
+        window.draw(_infoBar);
 
-        if(_entityManager and _entityManager->isValid(_entityId))
+        if(_status == Status::Selecting)
         {
-            window.draw(_frameLeft);
+            window.draw(_selectBar);
             window.draw(_sprite);
         }
     }
@@ -80,44 +84,94 @@ namespace book
 
         sf::IntRect rect = _sprite.getAnimation()->getRect(0);
         _sprite.setScale(sf::Vector2f(90.f/rect.width,90.f/rect.height));
+
+        _entityName->setText(manager.get(id).name);
+
+        _status = Status::Selecting;
     }
 
-    void TeamGui::initTopBar()
+    void TeamGui::initInfoBar()
     {
-        _frameTop.setSize(sf::Vector2f(0,60));
-        _frameTop.setFillColor(sf::Color(_color.r,_color.b,_color.b,127));
+        _infoBar.setSize(sf::Vector2f(0,60));
+        _infoBar.setFillColor(sf::Color(_color.r,_color.b,_color.b,64));
 
         sfutils::HLayout* layout = new sfutils::HLayout;
-        _frameTop.setLayout(layout);
+        _infoBar.setLayout(layout);
+
+        {
+            sfutils::TextButton* button = new sfutils::TextButton("Build");
+            button->setCharacterSize(15);
+            button->setOutlineThickness(1);
+            button->on_click = [this](const sf::Event&, sfutils::Button& button){
+                _status = Status::Building;
+            };
+            layout->add(button);
+        }
 
         //init gold
-        _labelGold = new sfutils::Label("");
-        _labelGold->setCharacterSize(15);
-        _labelGold->setTextColor(sf::Color(216,171,44));//golden
-        layout->add(_labelGold);
-        setGold(0);
+        {
+            _labelGold = new sfutils::Label("");
+            _labelGold->setCharacterSize(20);
+            _labelGold->setTextColor(sf::Color(216,171,44));//golden
+            layout->add(_labelGold);
+            setGold(0);
+        }
+
+        {
+            sfutils::TextButton* button = new sfutils::TextButton("Exit");
+            button->setCharacterSize(15);
+            button->setOutlineThickness(1);
+            button->on_click = [this](const sf::Event&, sfutils::Button& button){
+                _status = Status::Exit;
+            };
+            layout->add(button);
+        }
 
     }
 
-    void TeamGui::initLeftBar()
+    void TeamGui::initSelectingBar()
     {
-        _frameLeft.setSize(sf::Vector2f(100,-60));
-        _frameLeft.setFillColor(sf::Color(_color.r,_color.b,_color.b,127));
-        _frameLeft.setPosition(0,60);
+        _selectBar.setSize(sf::Vector2f(100,300));
+        _selectBar.setFillColor(sf::Color(_color.r,_color.b,_color.b,64));
+        _selectBar.setPosition(0,60);
 
         sfutils::VLayout* layout = new sfutils::VLayout;
-        _frameLeft.setLayout(layout);
+        _selectBar.setLayout(layout);
 
-        _buttonDeleteEntity = new sfutils::TextButton("Delete");
-        _buttonDeleteEntity->setCharacterSize(20);
-        _buttonDeleteEntity->setOutlineThickness(1);
-        _buttonDeleteEntity->on_click = [this](const sf::Event&, sfutils::Button& button){
-            if(_entityManager and _entityManager->isValid(_entityId))
-            {
-                _entityManager->remove(_entityId);
-            }
-        };
+        {
+            _entityName = new sfutils::Label("???");
+            _entityName->setCharacterSize(15);
+            layout->add(_entityName);
+        }
 
-        layout->add(_buttonDeleteEntity);
+        {
+            sfutils::TextButton* button = new sfutils::TextButton("Delete");
+            button->setCharacterSize(15);
+            button->setOutlineThickness(1);
+            button->on_click = [this](const sf::Event&, sfutils::Button& button){
+                if(_status == Status::Selecting)
+                {
+                    _entityManager->remove(_entityId);
+                    unSelect();
+                }
+            };
+            layout->add(button);
+        }
+        {
+            sfutils::TextButton* close = new sfutils::TextButton("close");
+            close->setCharacterSize(15);
+            close->setOutlineThickness(1);
+            close->on_click = [this](const sf::Event&, sfutils::Button& button){
+                this->unSelect();
+            };
+            layout->add(close);
+        }
+    }
+
+    void TeamGui::unSelect()
+    {
+        _entityManager = nullptr;
+        _entityId = 0;
+        _status = Status::None;
     }
 }

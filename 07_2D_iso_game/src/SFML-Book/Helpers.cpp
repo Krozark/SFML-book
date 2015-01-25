@@ -18,6 +18,8 @@ namespace book
         //add AI
         entity.add<CompAIMain>(team,100,sf::seconds(10));
 
+        entity.name = "QG";
+
     }
 
     void setTeam(Entity& entity,Team* team)

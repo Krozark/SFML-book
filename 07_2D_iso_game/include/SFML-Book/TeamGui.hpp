@@ -27,20 +27,31 @@ namespace book
             void setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager);
 
         private:
-            sfutils::Frame _frameTop;
+            sfutils::Frame _infoBar;
             sfutils::Label* _labelGold;
 
-            sfutils::Frame _frameLeft;
+            sfutils::Frame _selectBar;
             sfutils::AnimatedSprite _sprite;
-            sfutils::TextButton* _buttonDeleteEntity;
+            sfutils::Label* _entityName;
 
-            sf::Color _color;
             std::uint32_t _entityId;
             sfutils::EntityManager<Entity>* _entityManager;
 
+            sf::Color _color;
 
-            void initTopBar();
-            void initLeftBar();
+
+
+            void initInfoBar();
+            void initSelectingBar();
+
+            enum Status {
+                None,
+                Selecting,
+                Building,
+                Exit
+            } _status;
+
+            void unSelect();
     };
 }
 #endif
