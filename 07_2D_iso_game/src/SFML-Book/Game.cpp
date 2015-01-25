@@ -20,8 +20,8 @@ namespace book
             }
         };
 
-        _myTeam = new Team(_window,0,sf::Color(255,150,150,255));//red
-        _team2 = new Team(_window,1,sf::Color(150,150,255,255));//blue
+        _myTeam = new Team(_window,0,sf::Color(255,170,170,255));//red
+        _team2 = new Team(_window,1,sf::Color(170,170,255,255));//blue
 
         _myTeam->addEnemy(_team2);
         _team2->addEnemy(_myTeam);

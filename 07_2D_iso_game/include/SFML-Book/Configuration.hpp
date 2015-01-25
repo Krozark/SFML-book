@@ -14,9 +14,9 @@ namespace book
 
             enum Textures : int {
                 TexMain,
-                TexWormsEgg,
-                TexWormsEggBirth,
-                //Worm1,
+                TexWormEgg,
+                TexWormEggBirth,
+                TexWorm,
                 //Worm2,
                 //Worm3,
                 //EyeEgg,
@@ -29,6 +29,8 @@ namespace book
                 AnimMainStand,
                 AnimWormEggStand,
                 AnimWormEggBirth,
+                AnimWormLeft,
+                AnimWormRight,
                 AnimEyeLeft,
                 AnimEyeRight,
             };

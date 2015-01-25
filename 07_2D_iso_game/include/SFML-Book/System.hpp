@@ -34,7 +34,7 @@ namespace book
         Level& _level;
     };
 
-    struct SysAIWalker : sfutils::System<SysAISpawner,Entity>
+    struct SysAIWalker : sfutils::System<SysAIWalker,Entity>
     {
         explicit SysAIWalker(Level& level);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;

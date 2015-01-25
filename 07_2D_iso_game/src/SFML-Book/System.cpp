@@ -59,6 +59,7 @@ namespace book
                         Entity& QG = manager.get(AI->_target);
                         sf::Vector2f QGPos = QG.component<CompSkin>()->_sprite.getPosition();
                         std::list<sf::Vector2i> path = _level.getPath(myPosition,_level.mapPixelToCoords(QGPos));
+                        path.pop_back();
 
                         if(begin->has<CompAIFlyer>())
                         {
@@ -158,7 +159,6 @@ end_search:
                             //create new
                             sf::Vector2f pos = skin->_sprite.getPosition();
                             sf::Vector2i coord = this->_level.mapPixelToCoords(pos);
-                            coord.y+=1;
                             Entity& newEntity = this->_level.createEntity(coord);
                             //init with callback
                             AI->_makeAs(newEntity,team->_team);
@@ -191,13 +191,14 @@ end_search:
                 sf::Vector2i CoordDest = AI->_pathToTake.front();
                 sf::Vector2f PosDest = _level.mapCoordsToPixel(CoordDest);
 
+
                 //calulation of the diriction to take
                 sf::Vector2f directon = PosDest - PosCurrent;
                 //calculation of the distance
                 const float distance = std::sqrt((directon.x*directon.x)+(directon.y*directon.y));
                 const float frameDistance = AI->_speed * seconds;
 
-                if(distance < frameDistance)
+                if(distance > frameDistance)
                 {
                     skin->_sprite.setPosition(PosCurrent + directon*(frameDistance/distance));
                 }

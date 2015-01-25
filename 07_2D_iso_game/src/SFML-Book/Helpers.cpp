@@ -10,7 +10,8 @@ namespace book
     void makeAsMain(Entity& entity,Team* team)
     {
         //add animation
-        setAnimation(entity,Configuration::AnimMainStand,CompSkin::Stand,0.5,0.7,0.17,0.17);
+        setAnimation(entity,Configuration::AnimMainStand,CompSkin::Spawn,0.5,0.7,0.25,0.25);
+        setAnimation(entity,Configuration::AnimMainStand,CompSkin::Stand,0.5,0.7,0.25,0.25);
 
         //add team
         setTeam(entity,team);
@@ -18,6 +19,7 @@ namespace book
 
         //add AI
         entity.add<CompAIMain>(100,sf::seconds(10));
+        entity.add<CompAISpawner>(makeAsEye,1,sf::seconds(5));
         entity.add<CompHp>(5000);
 
 
@@ -36,15 +38,15 @@ namespace book
         //add AI
         entity.add<CompAIWarrior>(50,sf::seconds(0.5));
         entity.add<CompHp>(500);
-        entity.add<CompAIFlyer>(100);
+        entity.add<CompAIFlyer>(200);
 
         entity.name = "Fly Eye";
     }
 
     void makeAsWormEgg(Entity& entity,Team* team)
     {
-        setAnimation(entity,Configuration::AnimWormEggBirth,CompSkin::Spawn,0.5,1,0.3,0.3);
-        setAnimation(entity,Configuration::AnimWormEggStand,CompSkin::Stand,0.5,1,0.3,0.3);
+        setAnimation(entity,Configuration::AnimWormEggBirth,CompSkin::Spawn,0.5,0.9,0.3,0.3);
+        setAnimation(entity,Configuration::AnimWormEggStand,CompSkin::Stand,0.5,0.9,0.3,0.3);
 
         setTeam(entity,team);
         entity.add<CompAISpawner>(makeAsWorm,1,sf::seconds(15));
@@ -55,7 +57,15 @@ namespace book
 
     void makeAsWorm(Entity& entity,Team* team)
     {
-        makeAsEye(entity,team); //TODO
+        setAnimation(entity,Configuration::AnimWormLeft,CompSkin::MoveLeft,0.5,0.8,0.4,0.4);
+        setAnimation(entity,Configuration::AnimWormRight,CompSkin::MoveRight,0.5,0.8,0.4,0.4);
+
+        setTeam(entity,team);
+
+        entity.add<CompAIWarrior>(10,sf::seconds(0.2));
+        entity.add<CompHp>(250);
+        entity.add<CompAIWalker>(100);
+
         entity.name = "Worm";
     }
 

@@ -16,8 +16,9 @@ namespace book
     void Configuration::initTextures()
     {
         textures.load(TexMain,"media/skins/main.png");
-        textures.load(TexWormsEgg,"media/skins/wormegg.png");
-        textures.load(TexWormsEggBirth,"media/skins/wormegg-birth.png");
+        textures.load(TexWormEgg,"media/skins/wormegg.png");
+        textures.load(TexWormEggBirth,"media/skins/wormegg-birth.png");
+        textures.load(TexWorm,"media/skins/worm.png");
         textures.load(TexEye,"media/skins/eye.png");
     }
 
@@ -26,9 +27,12 @@ namespace book
     {
         //QG
         animations.load(AnimMainStand,&textures.get(TexMain)).addFramesLine(5,1,0);
-        //Worm
-        animations.load(AnimWormEggStand,&textures.get(TexWormsEgg)).addFramesLine(4,1,0);
-        animations.load(AnimWormEggBirth,&textures.get(TexWormsEggBirth)).addFramesLine(2,1,0);
+        //Worm Egg
+        animations.load(AnimWormEggStand,&textures.get(TexWormEgg)).addFramesLine(4,1,0);
+        animations.load(AnimWormEggBirth,&textures.get(TexWormEggBirth)).addFramesLine(2,1,0);
+        //worm
+        animations.load(AnimWormLeft,&textures.get(TexWorm)).addFramesLine(3,2,0);
+        animations.load(AnimWormRight,&textures.get(TexWorm)).addFramesLine(3,2,1);
         //Eye
         animations.load(AnimEyeLeft,&textures.get(TexEye)).addFramesLine(4,2,0);
         animations.load(AnimEyeRight,&textures.get(TexEye)).addFramesLine(4,2,1);
