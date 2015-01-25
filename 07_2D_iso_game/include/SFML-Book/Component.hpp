@@ -12,8 +12,15 @@ namespace book
 {
     class Team;
 
+    //add some gold periodicly
     struct CompAIMain : sfutils::Component<CompAIMain,Entity>
     {
+        explicit CompAIMain(Team* team,int gold,const sf::Time& timeDelta);
+
+        Team* _team;
+        const int _gold_amount;
+        const sf::Time _delta;
+        sf::Time _elapsed;
     };
 
     struct CompAIWarrior : sfutils::Component<CompAIWarrior,Entity>
@@ -50,6 +57,14 @@ namespace book
 
         sfutils::AnimatedSprite _sprite; 
         std::unordered_map<int,sfutils::Animation*> _animations;
+    };
+
+    struct CompHp : sfutils::Component<CompHp,Entity>
+    {
+    };
+
+    struct CompLeveler : sfutils::Component<CompLeveler,Entity>
+    {
     };
 
 }

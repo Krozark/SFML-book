@@ -7,6 +7,11 @@
 
 namespace book
 {
+    struct SysAiMain : sfutils::System<SysAiMain,Entity>
+    {
+        virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+    };
+
     struct SysSkin : sfutils::System<SysSkin,Entity>
     {
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;

@@ -2,6 +2,7 @@
 #define BOOK_ENTITY_HPP
 
 #include <SFML-utils/ES.hpp>
+#include <SFML-utils/Map.hpp>
 #include <SFML-utils/Core.hpp>
 
 namespace book
@@ -13,13 +14,16 @@ namespace book
             Entity(const Entity&) = delete;
             Entity& operator=(const Entity&) = delete;
 
-            Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id);
+            Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id,sfutils::Layer<sfutils::HexaIso,Entity*>& layer);
+            ~Entity();
 
             sf::Vector2f getPosition()const;
             void setPosition(const sf::Vector2f& pos);
 
         private:
             virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const override;
+
+            sfutils::Layer<sfutils::HexaIso,Entity*>& _layer;
     };
 
 }

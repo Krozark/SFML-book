@@ -2,32 +2,44 @@
 #include <SFML-Book/Configuration.hpp>
 
 #include <SFML-Book/Component.hpp>
+#include <SFML-Book/Team.hpp>
 
 namespace book
 {
     
-    std::uint32_t makeMain(sfutils::EntityManager<Entity>& manager,sfutils::Layer<sfutils::HexaIso,Entity*>& layer,Team* team)
+    void makeAsMain(Entity& entity,Team* team)
     {
-        std::uint32_t id = manager.create(); 
-        Entity& e= manager.get(id);
         //add animation
-        CompSkin& skin = *e.component<CompSkin>().get();
-        sfutils::Animation& animation = Configuration::animations.get(Configuration::AnimMain);
+        setAnimation(entity,Configuration::AnimMain,CompSkin::Stand,0.5,0.7,0.17,0.17);
 
-        skin._animations.emplace(CompSkin::Stand,&animation);
-        skin._sprite.setAnimation(skin._animations.at(CompSkin::Stand));
+        //add team
+        setTeam(entity,team);
+
+        //add AI
+        entity.add<CompAIMain>(team,100,sf::seconds(10));
+
+    }
+
+    void setTeam(Entity& entity,Team* team)
+    {
+        if(team)
+        {
+            entity.add<CompTeam>(team);
+            entity.component<CompSkin>()->_sprite.setColor(team->getColor());
+        }
+    }
+
+    void setAnimation(Entity& entity,int animationId,int animationMap,float ox,float oy,float sx,float sy)
+    {
+        CompSkin& skin = *entity.component<CompSkin>().get();
+        sfutils::Animation& animation = Configuration::animations.get(animationId);
+
+        skin._animations.emplace(animationMap,&animation);
+        skin._sprite.setAnimation(skin._animations.at(animationMap));
 
         //resize to map size
         sf::IntRect rec = animation.getRect(0);
-        skin._sprite.setOrigin(rec.width*0.5,rec.height*0.7);
-        skin._sprite.setScale(0.1,0.1);
-
-        //add team
-        e.add<CompTeam>(team);
-
-        //add to layer
-        layer.add(&e);
-
-        return id;
+        skin._sprite.setOrigin(rec.width*ox,rec.height*oy);
+        skin._sprite.setScale(sx,sy);
     }
 }

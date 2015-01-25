@@ -19,6 +19,7 @@ set(FILES_HEADER
     ${INCROOT}/Game.hpp
     ${INCROOT}/Level.hpp
     ${INCROOT}/Team.hpp
+    ${INCROOT}/TeamGui.hpp
 
     ${INCROOT}/Entity.hpp
     ${INCROOT}/Component.hpp
@@ -33,6 +34,7 @@ set(FILES_SRC
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Level.cpp
     ${SRCROOT}/Team.cpp
+    ${SRCROOT}/TeamGui.cpp
 
     ${SRCROOT}/Entity.cpp
     ${SRCROOT}/Component.cpp

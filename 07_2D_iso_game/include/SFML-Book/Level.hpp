@@ -2,6 +2,8 @@
 #define BOOK_LEVEL_HPP
 
 #include <string>
+#include <functional>
+
 #include <SFML/Graphics.hpp>
 
 #include <SFML-utils/es/Application.hpp>
@@ -25,11 +27,31 @@ namespace book
 
             bool processEvent(sf::Event& event);
             void processEvents();
+            void draw(sf::RenderTarget& window);
 
-            void draw(sf::RenderWindow& window);
+            struct Param {
+                explicit Param(sf::Vector2i&,
+                               Entity&,
+                               sfutils::Layer<sfutils::HexaIso,Entity*>&,
+                               sfutils::VMap&);
 
+                sf::Vector2i& coord;
+                Entity& entity;
+                sfutils::Layer<sfutils::HexaIso,Entity*>& layer;
+                sfutils::VMap& map;
+            };
+
+            using FuncType = std::function<void(Param& param)>;
+            static FuncType defaultFunc;
+
+            FuncType onPickup;
+
+            sfutils::EntityManager<Entity>& entityManager();
+            Entity& createEntity(const sf::Vector2i& coord);
 
         private:
+            friend class Game;
+
             sfutils::VMap* _map;
             sfutils::MapViewer _viewer;
 

@@ -1,15 +1,16 @@
 #include <SFML-Book/Level.hpp>
 
-#include <iostream>
 #include <stdexcept>
 
 #include <SFML-Book/Configuration.hpp>
-#include <SFML-Book/Helpers.hpp>
 #include <SFML-Book/System.hpp>
 
 namespace book
 {
+    Level::FuncType Level::defaultFunc = [](Level::Param&){};
+
     Level::Level(sf::RenderWindow& window,const std::string& filename) : 
+        onPickup(defaultFunc),
         _map(sfutils::createMapFromFile(filename)),
         _viewer(window,*_map),
         _mouse_layer(new sfutils::Layer<sfutils::HexaIso,sf::ConvexShape>("ConvexShape",1)),
@@ -27,22 +28,15 @@ namespace book
             _map->add(_mouse_layer);
         }
 
-        {
-            for(int i=0;i<4;++i)
-            {
-                uint32_t id = makeMain(entites,*_entites_layer,nullptr);
-                Entity* e = entites.getPtr(id);
-                e->setPosition(_map->mapCoordsToPixel(i,i));
+        _map->add(_entites_layer);
 
-            }
-            _map->add(_entites_layer);
-        }
-
+        systems.add<SysAiMain>();
         systems.add<SysSkin>();
 
     }
     Level::~Level()
     {
+        entites.reset();
         delete _map;
     }
 
@@ -67,7 +61,11 @@ namespace book
             {
                 sf::Vector2i coord = _viewer.mapPixelToCoords(event.mouseButton.x,event.mouseButton.y);
                 std::list<Entity*> pick = _entites_layer->getByCoords(coord,*_map);
-                std::cout<<"pickup on "<<coord.x<<" "<<coord.y<<" : "<<pick.size()<<std::endl;
+                for(Entity* e : pick)
+                {
+                    Param p(coord,*e,*_entites_layer,*_map);
+                    onPickup(p);
+                }
 
             }
             else if(event.type == sf::Event::MouseMoved)
@@ -80,8 +78,26 @@ namespace book
         return res;
     }
 
-    void Level::draw(sf::RenderWindow& window)
+    void Level::draw(sf::RenderTarget& window)
     {
         _viewer.draw();
+    }
+
+    Level::Param::Param(sf::Vector2i& c,Entity& e,sfutils::Layer<sfutils::HexaIso,Entity*>& l,sfutils::VMap& m) : 
+        coord(c), entity(e),layer(l),map(m)
+    {
+    }
+
+    sfutils::EntityManager<Entity>& Level::entityManager()
+    {
+        return entites;
+    }
+
+    Entity& Level::createEntity(const sf::Vector2i& coord)
+    {
+        std::uint32_t id = entites.create(*_entites_layer);
+        Entity& e = entites.get(id);
+        e.setPosition(_map->mapCoordsToPixel(coord));
+        return e;
     }
 }

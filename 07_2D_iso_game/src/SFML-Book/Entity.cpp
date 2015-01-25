@@ -5,9 +5,15 @@ ES_INIT_ENTITY(book::Entity);
 
 namespace book
 {
-    Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id) : sfutils::Entity<Entity>(manager,id)
+    Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id, sfutils::Layer<sfutils::HexaIso,Entity*>& layer) : sfutils::Entity<Entity>(manager,id), _layer(layer)
     {
         manager->addComponent<CompSkin>(id);
+        layer.add(this);
+    }
+
+    Entity::~Entity()
+    {
+        _layer.remove(this);
     }
 
     sf::Vector2f Entity::getPosition()const

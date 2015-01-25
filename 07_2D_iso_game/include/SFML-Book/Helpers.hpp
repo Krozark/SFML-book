@@ -10,7 +10,10 @@ namespace book
 {
     class Team;
 
-    std::uint32_t makeMain(sfutils::EntityManager<Entity>& manager,sfutils::Layer<sfutils::HexaIso,Entity*>& layer,Team* team);
+    void makeAsMain(Entity& entity,Team* team);
+
+    void setTeam(Entity& entity,Team* team);
+    void setAnimation(Entity& entity,int animationId,int animationMap,float ox=0,float oy=0,float sx=1,float sy=1);
 
 }
 #endif

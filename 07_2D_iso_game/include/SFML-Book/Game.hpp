@@ -5,9 +5,11 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <SFML-Book/Team.hpp>
+#include <SFML-Book/Level.hpp>
+
 namespace book
 {
-    class Level;
     class Game
     {
         public:
@@ -30,6 +32,9 @@ namespace book
             sf::RenderWindow _window;
             
             Level* _level;
+            Team* _team;
+
+            Level::FuncType onPickup;
     };
 }
 #endif

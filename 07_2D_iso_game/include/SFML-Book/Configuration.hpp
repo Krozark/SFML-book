@@ -32,12 +32,19 @@ namespace book
 
             static sfutils::ResourceManager<sfutils::Animation,int> animations;
 
+            enum GuiInputs : int {
+                Escape
+            };
+            static sfutils::ActionMap<int> gui_inputs;
+
+
             static void initialize();
 
         private:
 
             static void initTextures();
             static void initAnimations();
+            static void initInputs();
     };
 }
 #endif
