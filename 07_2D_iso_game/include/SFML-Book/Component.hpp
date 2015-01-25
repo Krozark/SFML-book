@@ -15,9 +15,8 @@ namespace book
     //add some gold periodicly
     struct CompAIMain : sfutils::Component<CompAIMain,Entity>
     {
-        explicit CompAIMain(Team* team,int gold,const sf::Time& timeDelta);
+        explicit CompAIMain(int gold,const sf::Time& timeDelta);
 
-        Team* _team;
         const int _gold_amount;
         const sf::Time _delta;
         sf::Time _elapsed;
@@ -25,14 +24,46 @@ namespace book
 
     struct CompAIWarrior : sfutils::Component<CompAIWarrior,Entity>
     {
+        explicit CompAIWarrior(int hitPoint,const sf::Time& timeDelta);
+
+        const int _hitPoint;
+        const sf::Time _delta;
+        sf::Time _elapsed;
     };
 
     struct CompAIDefender : sfutils::Component<CompAIDefender,Entity>
     {
+        explicit CompAIDefender(int hitPoint,const sf::Time& timeDelta);
+
+        const int _hitPoint;
+        const sf::Time _delta;
+        sf::Time _elapsed;
     };
 
     struct CompAISpawner : sfutils::Component<CompAISpawner,Entity>
     {
+        typedef void (*FuncType)(Entity& entity,Team* team);
+
+        explicit CompAISpawner(FuncType makeAs,int number,const sf::Time& timeDelta);
+        
+        FuncType _makeAs;
+        const int _number;
+        const sf::Time _delta;
+        sf::Time _elapsed;
+    };
+
+    struct CompAIWalker : sfutils::Component<CompAIWalker,Entity>
+    {
+        explicit CompAIWalker(float speed);
+
+        const float _speed;
+    };
+
+    struct CompAIFlyer : sfutils::Component<CompAIFlyer,Entity>
+    {
+        explicit CompAIFlyer(float speed);
+
+        const float _speed;
     };
 
     struct CompTeam : sfutils::Component<CompTeam,Entity>
@@ -45,10 +76,9 @@ namespace book
     {
         enum AnimationId : int{
             Stand,
+            Spawn,
             MoveLeft,
             MoveRight,
-            SpawnLeft,
-            SpawnRight,
             HitLeft,
             HitRight
         };
@@ -61,9 +91,13 @@ namespace book
 
     struct CompHp : sfutils::Component<CompHp,Entity>
     {
-    };
+        explicit CompHp(int hp);
 
-    struct CompLeveler : sfutils::Component<CompLeveler,Entity>
+        const int _hp;
+    };
+    
+
+    struct CompUpgradable : sfutils::Component<CompUpgradable,Entity>
     {
     };
 

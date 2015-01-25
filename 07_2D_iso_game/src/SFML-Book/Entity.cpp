@@ -18,7 +18,7 @@ namespace book
 
     Entity::~Entity()
     {
-        _layer.remove(this);
+        _layer.remove(this,false);
     }
 
     sf::Vector2f Entity::getPosition()const

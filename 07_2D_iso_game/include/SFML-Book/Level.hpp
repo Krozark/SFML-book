@@ -48,6 +48,8 @@ namespace book
 
             sfutils::EntityManager<Entity>& entityManager();
             Entity& createEntity(const sf::Vector2i& coord);
+            sf::Vector2i mapPixelToCoords(const sf::Vector2f& pos)const;
+            sf::Vector2f mapCoordsToPixel(const sf::Vector2i& pos)const;
 
         private:
             friend class Game;

@@ -22,7 +22,8 @@ namespace book
             }
         };
 
-        _team = new Team(_window,1,sf::Color(255,255,255,255));
+        _team = new Team(_window,0,sf::Color(255,20,20,255));//red
+        _team2 = new Team(_window,1,sf::Color(20,20,255,255));//blue
 
     }
 
@@ -42,7 +43,13 @@ namespace book
             for(int i=0;i<4;++i)
             {
                 Entity& e = _level->createEntity(sf::Vector2i(i,i));
-                makeAsMain(e,_team);
+                makeAsWormEgg(e,_team);
+            }
+
+            for(int i=0;i<4;++i)
+            {
+                Entity& e = _level->createEntity(sf::Vector2i(10+i,10+i));
+                makeAsWormEgg(e,_team2);
             }
 
         }catch(...)

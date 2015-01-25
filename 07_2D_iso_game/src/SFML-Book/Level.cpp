@@ -30,8 +30,14 @@ namespace book
 
         _map->add(_entites_layer);
 
-        systems.add<SysAiMain>();
+        systems.add<SysAIMain>();
+        systems.add<SysAIWarrior>();
+        systems.add<SysAIDefender>();
+        systems.add<SysAISpawner>(*this);
+        systems.add<SysAIWalker>();
+        systems.add<SysAIFlyer>();
         systems.add<SysSkin>();
+        systems.add<SysHp>();
 
     }
     Level::~Level()
@@ -100,5 +106,15 @@ namespace book
         e.init();
         e.setPosition(_map->mapCoordsToPixel(coord));
         return e;
+    }
+
+    sf::Vector2i Level::mapPixelToCoords(const sf::Vector2f& pos)const
+    {
+        return _map->mapPixelToCoords(pos);
+    }
+
+    sf::Vector2f Level::mapCoordsToPixel(const sf::Vector2i& pos)const
+    {
+        return _map->mapCoordsToPixel(pos);
     }
 }

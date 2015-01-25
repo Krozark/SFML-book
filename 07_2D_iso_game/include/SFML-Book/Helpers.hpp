@@ -11,6 +11,9 @@ namespace book
     class Team;
 
     void makeAsMain(Entity& entity,Team* team);
+    void makeAsEye(Entity& entity,Team* team);
+    void makeAsWormEgg(Entity& entity,Team* team);
+    void makeAsWorm(Entity& entity,Team* team);
 
     void setTeam(Entity& entity,Team* team);
     void setAnimation(Entity& entity,int animationId,int animationMap,float ox=0,float oy=0,float sx=1,float sy=1);

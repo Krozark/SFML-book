@@ -14,7 +14,8 @@ namespace book
 
             enum Textures : int {
                 TexMain,
-                //WormsEgg,
+                TexWormsEgg,
+                TexWormsEggBirth,
                 //Worm1,
                 //Worm2,
                 //Worm3,
@@ -25,9 +26,11 @@ namespace book
             static sfutils::ResourceManager<sf::Texture,int> textures;
 
             enum Animations: int {
-                AnimMain,
+                AnimMainStand,
+                AnimWormEggStand,
+                AnimWormEggBirth,
                 AnimEyeLeft,
-                AnimEyeRight
+                AnimEyeRight,
             };
 
             static sfutils::ResourceManager<sfutils::Animation,int> animations;

@@ -33,6 +33,7 @@ namespace book
             
             Level* _level;
             Team* _team;
+            Team* _team2;
 
             Level::FuncType onPickup;
     };
