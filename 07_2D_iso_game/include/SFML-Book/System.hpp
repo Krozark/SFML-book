@@ -57,5 +57,10 @@ namespace book
     {
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
     };
+
+    struct SysEffect : sfutils::System<SysEffect,Entity>
+    {
+        virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+    };
 }
 #endif

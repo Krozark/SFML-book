@@ -11,6 +11,7 @@
 namespace book
 {
     class Team;
+    class Level;
 
     //add some gold periodicly
     struct CompAIMain : sfutils::Component<CompAIMain,Entity>
@@ -43,14 +44,17 @@ namespace book
 
     struct CompAISpawner : sfutils::Component<CompAISpawner,Entity>
     {
-        typedef void (*FuncType)(Entity& entity,Team* team);
+        using FuncType = std::function<void(Entity& entity,Team* team,Level& level)>;
+        typedef void (*FuncType_onSpawn)(Level& level,const sf::Vector2i& pos);
 
-        explicit CompAISpawner(FuncType makeAs,int number,const sf::Time& timeDelta);
+        explicit CompAISpawner(FuncType makeAs,int number,const sf::Time& timeDelta,FuncType_onSpawn onSpawn = [](Level&,const sf::Vector2i&){});
         
         FuncType _makeAs;
         const int _number;
         const sf::Time _delta;
         sf::Time _elapsed;
+        FuncType_onSpawn _OnSpawn;
+
     };
 
     struct CompAIWalker : sfutils::Component<CompAIWalker,Entity>
@@ -105,5 +109,8 @@ namespace book
     {
     };
 
+    struct CompEffect : sfutils::Component<CompEffect,Entity>
+    {
+    };
 }
 #endif

@@ -13,6 +13,7 @@ namespace book
             Configuration() = delete;
 
             enum Textures : int {
+                //entities
                 TexMain,
                 TexWormEgg,
                 TexWormEggBirth,
@@ -20,12 +21,20 @@ namespace book
                 //Worm2,
                 //Worm3,
                 //EyeEgg,
-                TexEye
+                TexEye,
+                //effects
+                TexBlood1,
+                TexBlood2,
+                TexBlood3,
+                TexBlood4,
+                TexFlash,
+                TexVoltage,
             };
 
             static sfutils::ResourceManager<sf::Texture,int> textures;
 
             enum Animations: int {
+                //entities
                 AnimMainStand,
                 AnimWormEggStand,
                 AnimWormEggBirth,
@@ -33,9 +42,32 @@ namespace book
                 AnimWormRight,
                 AnimEyeLeft,
                 AnimEyeRight,
+                //effects
+                AnimBlood1,
+                AnimBlood2,
+                AnimBlood3,
+                AnimBlood4,
+                AnimFlash,
+                AnimVoltage,
             };
 
             static sfutils::ResourceManager<sfutils::Animation,int> animations;
+
+            enum Sounds : int {
+                SoundHittedMain,
+
+                SoundHitWorm,
+                SoundHittedWorm,
+                SoundSpawnWormEgg,
+
+                //SoundHitEye,
+                SoundHittedEye,
+                SoundSpawnEye,
+
+                SoundGold,
+            };
+            static sfutils::ResourceManager<sf::SoundBuffer,int> sounds;
+
 
             enum GuiInputs : int {
                 Escape
@@ -51,7 +83,8 @@ namespace book
             static void initTextures();
             static void initAnimations();
             static void initInputs();
-
+            static void initSounds();
+            
             static void initGuiConfiguration();
     };
 }

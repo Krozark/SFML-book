@@ -10,6 +10,7 @@
 #include <SFML-utils/Map.hpp>
 
 #include <SFML-Book/Entity.hpp>
+#include <SFML-Book/Configuration.hpp>
 
 
 namespace book
@@ -47,14 +48,19 @@ namespace book
             FuncType onPickup;
 
             sfutils::EntityManager<Entity>& entityManager();
+            
             Entity& createEntity(const sf::Vector2i& coord);
+            void createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord);
+            void createSound(Configuration::Sounds sound_id,const sf::Vector2f& pos);
+
             sf::Vector2i mapPixelToCoords(const sf::Vector2f& pos)const;
             sf::Vector2f mapCoordsToPixel(const sf::Vector2i& pos)const;
+
             std::list<Entity*> getByCoords(const sf::Vector2i& coord)const;
+
             std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             int getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
-
 
         private:
             friend class Game;
@@ -65,6 +71,9 @@ namespace book
             sf::ConvexShape* _mouse_light;
             sfutils::Layer<sfutils::HexaIso,sf::ConvexShape>* _mouse_layer;
             sfutils::Layer<sfutils::HexaIso,Entity*>* _entites_layer;
+
+            std::list<std::unique_ptr<sf::Sound>> _sounds;
+            sf::Listener _listener;
     };
 }
 #endif

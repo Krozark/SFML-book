@@ -9,12 +9,20 @@
 namespace book
 {
     class Team;
+    class Level;
 
-    void makeAsMain(Entity& entity,Team* team);
-    void makeAsEye(Entity& entity,Team* team);
-    void makeAsWormEgg(Entity& entity,Team* team);
-    void makeAsWorm(Entity& entity,Team* team);
+    void makeAsMain(Entity& entity,Team* team,Level& level);
+    void makeAsEye(Entity& entity,Team* team,Level& level);
+    void makeAsWormEgg(Entity& entity,Team* team, Level& level);
+    void makeAsWorm(Entity& entity,Team* team, Level& level);
+    
+    //////////// EFFECTS ////////////////
+    void makeAsEffect(Entity& entity,int animation);
+    void makeAsBloodEffect(Entity& entity);
+    void makeAsFlashEffect(Entity& entity);
+    void makeAsVoltageEffect(Entity& entity);
 
+    ////////// UTILTS /////////////
     void setTeam(Entity& entity,Team* team);
     void setAnimation(Entity& entity,int animationId,int animationMap,float ox=0,float oy=0,float sx=1,float sy=1);
 

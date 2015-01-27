@@ -3,6 +3,7 @@
 #include <SFML-Book/Component.hpp>
 #include <SFML-Book/Team.hpp>
 #include <SFML-Book/Level.hpp>
+#include <SFML-Book/Helpers.hpp>
 
 namespace book
 {
@@ -117,6 +118,14 @@ end_search: //exit nesteed loops
                     CompHp::Handle hp = enemy.component<CompHp>();
                     hp->_hp -= AI->_hitPoint;
 
+                    Entity& me = **begin;
+
+                    if(enemy.onHitted != nullptr)
+                        enemy.onHitted(enemy,coord,me,myPosition,_level);
+                    if(me.onHit != nullptr)
+                        me.onHit(me,myPosition,enemy,coord,_level);
+                    
+
                     //win some gold
                     if(hp->_hp <=0)
                     {
@@ -197,7 +206,8 @@ end_search: //exit nesteed loops
                             sf::Vector2i coord = this->_level.mapPixelToCoords(pos);
                             Entity& newEntity = this->_level.createEntity(coord);
                             //init with callback
-                            AI->_makeAs(newEntity,team->_team);
+                            AI->_makeAs(newEntity,team->_team,this->_level);
+                            AI->_OnSpawn(this->_level,coord);
                         };
                     }
                 }
@@ -333,6 +343,23 @@ end_search: //exit nesteed loops
                 {
                     team->_team->removeQgId(begin->id());
                 }
+                begin->remove();
+            }
+        }
+    }
+    
+    ////////////////// EFFECTS //////////////////////
+    void SysEffect::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
+    {
+        CompEffect::Handle effect;
+        CompSkin::Handle skin;
+        auto view = manager.getByComponents(effect,skin);
+
+        auto end = view.end();
+        for(auto begin = view.begin();begin != end;++begin)
+        {
+            if(skin->_sprite.getStatus() != sfutils::AnimatedSprite::Status::Playing)
+            {
                 begin->remove();
             }
         }

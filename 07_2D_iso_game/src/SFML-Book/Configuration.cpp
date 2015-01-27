@@ -1,18 +1,24 @@
 #include <SFML-Book/Configuration.hpp>
 #include <SFML-utils/gui/Configuration.hpp>
 
+#include <SFML-Book/random.hpp>
+
 namespace book
 {
     sfutils::ResourceManager<sf::Texture,int> Configuration::textures;
     sfutils::ResourceManager<sfutils::Animation,int> Configuration::animations;
+    sfutils::ResourceManager<sf::SoundBuffer,int> Configuration::sounds;
     sfutils::ActionMap<int> Configuration::gui_inputs;
 
     void Configuration::initialize()
     {
+        rand_init();
         initGuiConfiguration();
+
         initTextures();
         initAnimations();
         initInputs();
+        initSounds();
     }
 
     void Configuration::setGuiColor(const sf::Color& color)
@@ -30,16 +36,30 @@ namespace book
 
     void Configuration::initTextures()
     {
+        //entities
         textures.load(TexMain,"media/skins/main.png");
         textures.load(TexWormEgg,"media/skins/wormegg.png");
         textures.load(TexWormEggBirth,"media/skins/wormegg-birth.png");
         textures.load(TexWorm,"media/skins/worm.png");
         textures.load(TexEye,"media/skins/eye.png");
+        //Worm2,
+        //Worm3,
+        //EyeEgg,
+        
+        //effects
+        textures.load(TexBlood1,"media/effects/blood1.png");
+        textures.load(TexBlood2,"media/effects/blood2.png");
+        textures.load(TexBlood3,"media/effects/blood3.png");
+        textures.load(TexBlood4,"media/effects/blood4.png");
+
+        textures.load(TexFlash,"media/effects/flash.png");
+        textures.load(TexVoltage,"media/effects/voltage.png");
     }
 
 
     void Configuration::initAnimations()
     {
+        //// Entities
         //QG
         animations.load(AnimMainStand,&textures.get(TexMain)).addFramesLine(5,1,0);
         //Worm Egg
@@ -51,11 +71,34 @@ namespace book
         //Eye
         animations.load(AnimEyeLeft,&textures.get(TexEye)).addFramesLine(4,2,0);
         animations.load(AnimEyeRight,&textures.get(TexEye)).addFramesLine(4,2,1);
+
+        ////effects
+        animations.load(AnimBlood1,&textures.get(TexBlood1)).addFramesLine(3,2,0).addFramesLine(3,2,1);
+        animations.load(AnimBlood2,&textures.get(TexBlood2)).addFramesLine(3,2,0).addFramesLine(3,2,1);
+        animations.load(AnimBlood3,&textures.get(TexBlood3)).addFramesLine(3,2,0).addFramesLine(3,2,1);
+        animations.load(AnimBlood4,&textures.get(TexBlood4)).addFramesLine(3,2,0).addFramesLine(3,2,1);
+
+        animations.load(AnimFlash,&textures.get(TexFlash)).addFramesLine(3,2,0).addFramesLine(3,2,1);
+        animations.load(AnimVoltage,&textures.get(TexVoltage)).addFramesLine(5,2,0).addFramesLine(5,2,1);
     }
 
     void Configuration::initInputs()
     {
         gui_inputs.map(GuiInputs::Escape,sfutils::Action(sf::Keyboard::Escape,sfutils::Action::Type::Pressed));
+    }
+
+    void Configuration::initSounds()
+    {
+        sounds.load(SoundHittedMain,"media/sounds/HittedMain.flac");
+
+        sounds.load(SoundHitWorm,"media/sounds/HitWorm.flac");
+        sounds.load(SoundHittedWorm,"media/sounds/HittedWorm.flac");
+        sounds.load(SoundSpawnWormEgg,"media/sounds/SpawnWormEgg.flac");
+
+        sounds.load(SoundHittedEye,"media/sounds/HittedEye.flac");
+        sounds.load(SoundSpawnEye,"media/sounds/SpawnEye.flac");
+        
+        //sounds.load(SoundGold,"media/sounds/Gold.flac");
     }
 
     void Configuration::initGuiConfiguration()

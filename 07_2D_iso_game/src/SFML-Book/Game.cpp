@@ -125,10 +125,10 @@ namespace book
 
     void Game::initTeam(Team* team,const sf::Vector2i& pos)
     {
-        makeAsMain(_level->createEntity(pos),team);
-        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(-2,-2)),team);
-        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,2)),team);
-        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(-2,2)),team);
-        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,-2)),team);
+        makeAsMain(_level->createEntity(pos),team,*_level);
+        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(-2,-2)),team,*_level);
+        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,2)),team,*_level);
+        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(-2,2)),team,*_level);
+        makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,-2)),team,*_level);
     }
 }

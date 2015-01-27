@@ -26,6 +26,7 @@ set(FILES_HEADER
     ${INCROOT}/System.hpp
 
     ${INCROOT}/Helpers.hpp
+    ${INCROOT}/random.hpp
 
 )
 

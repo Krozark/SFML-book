@@ -2,7 +2,6 @@
 
 #include <stdexcept>
 
-#include <SFML-Book/Configuration.hpp>
 #include <SFML-Book/System.hpp>
 
 namespace book
@@ -38,6 +37,7 @@ namespace book
         systems.add<SysAIFlyer>(*this);
         systems.add<SysSkin>();
         systems.add<SysHp>();
+        systems.add<SysEffect>();
 
 
     }
@@ -52,6 +52,15 @@ namespace book
         _viewer.update(deltaTime.asSeconds());
         Application::update(deltaTime);
         _entites_layer->sort();
+
+        sf::Vector2f pos = _viewer.getPosition();
+
+        sf::Listener::setPosition(pos.x,pos.x,_viewer.getZoom());
+
+        _sounds.remove_if([](const std::unique_ptr<sf::Sound>& sound) -> bool {
+              return sound->getStatus() != sf::SoundSource::Status::Playing;
+          });
+
     }
 
     void Level::processEvents()
@@ -109,6 +118,25 @@ namespace book
         e.setPosition(_map->mapCoordsToPixel(coord));
         return e;
     }
+    
+    void Level::createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord)
+    {
+        sf::Vector2f pos = _map->mapCoordsToPixel(coord);
+        createSound(sound_id,pos);
+    }
+
+    void Level::createSound(Configuration::Sounds sound_id,const sf::Vector2f& pos)
+    {
+        std::unique_ptr<sf::Sound> sound(new sf::Sound(Configuration::sounds.get(sound_id)));
+        sound->setPosition(pos.x,pos.y,0);
+        sound->setRelativeToListener(true);
+        sound->setVolume(100);
+        sound->setAttenuation(1);
+
+        sound->play();
+        _sounds.emplace_back(std::move(sound));
+    }
+
 
     sf::Vector2i Level::mapPixelToCoords(const sf::Vector2f& pos)const
     {
