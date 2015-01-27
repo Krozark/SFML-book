@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML-Book/TeamGui.hpp>
-#include <list>
+#include <vector>
 
 namespace book
 {
@@ -17,9 +17,11 @@ namespace book
 
             void addGold(int amount);
             void addEnemy(Team* team);
-            const std::list<Team*>& getEnemies()const;
-            void setQgId(std::uint32_t);
-            std::uint32_t getQgId();
+            const std::vector<Team*>& getEnemies()const;
+
+            void  addQgId(std::uint32_t);
+            const std::vector<std::uint32_t>& getQgIds()const;
+            void removeQgId(std::uint32_t id);
 
             int id()const;
 
@@ -30,9 +32,9 @@ namespace book
             int _id;
             int _points;
             int _gold;
-            std::uint32_t _QGId;
+            std::vector<std::uint32_t> _QGId;
 
-            std::list<Team*> _enemies;
+            std::vector<Team*> _enemies;
 
 
     };

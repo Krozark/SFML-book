@@ -33,12 +33,12 @@ namespace book
             sfutils::Frame _selectBar;
             sfutils::AnimatedSprite _sprite;
             sfutils::Label* _entityName;
+            sfutils::Label* _entityHp;
 
             std::uint32_t _entityId;
             sfutils::EntityManager<Entity>* _entityManager;
 
             sf::Color _color;
-
 
 
             void initInfoBar();
@@ -52,6 +52,7 @@ namespace book
             } _status;
 
             void unSelect();
+            void setHp(int current,int max);
     };
 }
 #endif

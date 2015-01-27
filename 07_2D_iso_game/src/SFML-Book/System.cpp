@@ -28,6 +28,17 @@ namespace book
     }
 
     ///////////////////// SYS AI WARRIOR ///////////////////////
+    bool isEnemy(const std::vector<Team*>& enemies,Team* t)
+    {
+        size_t size = enemies.size();
+        for(size_t i=0;i<size;++i)
+        {
+            if(enemies[i] == t)
+                return true;
+        }
+        return false;
+    }
+
     SysAIWarrior::SysAIWarrior(Level& level) : _level(level)
     {
     }
@@ -40,76 +51,101 @@ namespace book
         auto view = manager.getByComponents(AI,team,skin);
         auto end = view.end();
         
-        static sf::Vector2i neighbors[] = {{1,0},{1,1},{0,-1},{-1,0},{-1,1},{0,1}};
-        //return Hex(q + d[0], r + d[1])
-
         for(auto begin = view.begin();begin != end;++begin)
         {
-            if(team->_team != nullptr)
+            AI->_elapsed += dt;
+
+            std::vector<Team*> teamEnemies = team->_team->getEnemies();
+
+            //if no enemies
+            if(teamEnemies.size() <=0)
+                continue;
+
+            std::uint32_t id = std::uint32_t(-1);
+            const std::vector<std::uint32_t>& ids = teamEnemies[0]->getQgIds();
+
+            if(ids.size() <= 0)
+                continue;
+
+            id = ids[0];
+
+
+            const sf::Vector2i myPosition = _level.mapPixelToCoords(skin->_sprite.getPosition());
+            const int range = AI->_range;
+
+            //seach near me
+            for(int x =-range; x<=range;++x)
             {
-                auto teamEnemies = team->_team->getEnemies();
-                sf::Vector2i myPosition = _level.mapPixelToCoords(skin->_sprite.getPosition());
+                int m =std::min(range,-x+range);
 
-                if(AI->_target == std::uint32_t(-1)) //search new enemy
+                for(int y = std::max(-range,-x-range);y<=m;++y)
                 {
-                    if(teamEnemies.size()>0)
+                    std::list<Entity*> l = _level.getByCoords(myPosition + sf::Vector2i(x,y));
+                    for(Entity* e : l)
                     {
-                        AI->_target = teamEnemies.front()->getQgId();
-                        //update path
-                        Entity& QG = manager.get(AI->_target);
-                        sf::Vector2f QGPos = QG.component<CompSkin>()->_sprite.getPosition();
-                        std::list<sf::Vector2i> path = _level.getPath(myPosition,_level.mapPixelToCoords(QGPos));
-                        path.pop_back();
-
-                        if(begin->has<CompAIFlyer>())
+                        if(e->has<CompTeam>() and e->has<CompHp>()) //check its team
                         {
-                            begin->component<CompAIFlyer>()->_pathToTake = path;
-                        }
-                        else if(begin->has<CompAIWalker>())
-                        {
-                            begin->component<CompAIWalker>()->_pathToTake = path;
-                        }
-                    }
-                }
-                if(manager.isValid(AI->_target))
-                {
-                    Entity* enemie = nullptr;
-                    //look for enemies around my position
-                    for(auto& pos : neighbors)
-                    {
-                        std::list<Entity*> l = _level.getByCoords(myPosition + pos);
-                        for(Entity* e : l)
-                        {
-                            if(e->has<CompTeam>() and e->has<CompHp>()) //chack its team
+                            Team* t = e->component<CompTeam>()->_team;
+                            if( isEnemy(teamEnemies,t))
                             {
-                                Team* t = e->component<CompTeam>()->_team;
-                                for(Team* team : teamEnemies) //if team is enemy, save it
-                                {
-                                    if(t == team)
-                                    {
-                                        enemie = e;
-                                        goto end_search;
-                                    }
-                                }
+                                id = e->id();
+                                goto end_search;
                             }
                         }
                     }
-end_search:
-                    AI->_elapsed += dt;
-                    if(enemie != nullptr)
+                }
+            }
+end_search: //exit nesteed loops
+            if(not manager.isValid(id))
+            {
+                continue;
+            }
+
+
+            //update path
+            Entity& enemy = manager.get(id);
+            const sf::Vector2f pos = enemy.component<CompSkin>()->_sprite.getPosition();
+            const sf::Vector2i coord = _level.mapPixelToCoords(pos);
+            const int distance = _level.getDistance(myPosition,coord);
+
+            if(distance <= range) //next me
+            {
+                //shoot it
+                if(AI->_elapsed > AI->_delta)
+                {
+                    AI->_elapsed = sf::Time::Zero;
+                    CompHp::Handle hp = enemy.component<CompHp>();
+                    hp->_hp -= AI->_hitPoint;
+
+                    //win some gold
+                    if(hp->_hp <=0)
                     {
-                        //shoot it
-                        if(AI->_elapsed > AI->_delta)
-                        {
-                            AI->_elapsed = sf::Time::Zero;
-                            enemie->component<CompHp>()->_hp -= AI->_hitPoint;
-                        }
+                        team->_team->addGold(hp->_maxHp/50);
                     }
                 }
-                else
+                //no need to move more
+                if(begin->has<CompAIFlyer>())
                 {
-                    AI->_target = std::uint32_t(-1);
+                    begin->component<CompAIFlyer>()->_pathToTake = myPosition;
                 }
+                else if(begin->has<CompAIWalker>())
+                {
+                    begin->component<CompAIWalker>()->_pathToTake = myPosition;
+                }
+            }
+            else
+            {
+                sf::Vector2i path = _level.getPath1(myPosition,coord);
+                //move closer
+                if(begin->has<CompAIFlyer>())
+                {
+                    begin->component<CompAIFlyer>()->_pathToTake = path;
+                }
+                else if(begin->has<CompAIWalker>())
+                {
+                    begin->component<CompAIWalker>()->_pathToTake = path;
+                }
+
             }
         }
     }
@@ -183,14 +219,13 @@ end_search:
         const float seconds = dt.asSeconds();
         for(auto begin = view.begin();begin != end;++begin)
         {
-            if(AI->_pathToTake.size() > 0) //need to move
+            sf::Vector2f PosCurrent = skin->_sprite.getPosition();
+            sf::Vector2i CoordCurrent = _level.mapPixelToCoords(PosCurrent);
+
+            sf::Vector2i CoordDest = AI->_pathToTake;
+            if(CoordDest != CoordCurrent) //need to move
             {
-                sf::Vector2f PosCurrent = skin->_sprite.getPosition();
-                //sf::Vector2i CoordCurrent = _level.mapPixelToCoords(PosCurrent);
-
-                sf::Vector2i CoordDest = AI->_pathToTake.front();
                 sf::Vector2f PosDest = _level.mapCoordsToPixel(CoordDest);
-
 
                 //calulation of the diriction to take
                 sf::Vector2f directon = PosDest - PosCurrent;
@@ -205,7 +240,7 @@ end_search:
                 else
                 {
                     skin->_sprite.setPosition(PosDest);
-                    AI->_pathToTake.pop_front();
+                    AI->_pathToTake = CoordCurrent;
                 }
 
                 if(directon.x >0) //unpdate skin direction
@@ -234,14 +269,13 @@ end_search:
         const float seconds = dt.asSeconds();
         for(auto begin = view.begin();begin != end;++begin)
         {
-            if(AI->_pathToTake.size() > 0) //need to move
+            sf::Vector2f PosCurrent = skin->_sprite.getPosition();
+            sf::Vector2i CoordCurrent = _level.mapPixelToCoords(PosCurrent);
+
+            sf::Vector2i CoordDest = AI->_pathToTake;
+            if(CoordDest != CoordCurrent) //need to move
             {
-                sf::Vector2f PosCurrent = skin->_sprite.getPosition();
-                //sf::Vector2i CoordCurrent = _level.mapPixelToCoords(PosCurrent);
-
-                sf::Vector2i CoordDest = AI->_pathToTake.front();
                 sf::Vector2f PosDest = _level.mapCoordsToPixel(CoordDest);
-
 
                 //calulation of the diriction to take
                 sf::Vector2f directon = PosDest - PosCurrent;
@@ -256,7 +290,7 @@ end_search:
                 else
                 {
                     skin->_sprite.setPosition(PosDest);
-                    AI->_pathToTake.pop_front();
+                    AI->_pathToTake = CoordCurrent;
                 }
 
                 if(directon.x >0) //unpdate skin direction
@@ -283,7 +317,6 @@ end_search:
         }
     }
 
-
     ///////////////////// SYS AI HP ///////////////////////
     void SysHp::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
     {
@@ -293,7 +326,15 @@ end_search:
         for(auto begin = view.begin();begin != end;++begin)
         {
             if(hp->_hp <= 0)
+            {
+                CompAIMain::Handle AI = begin->component<CompAIMain>();
+                CompTeam::Handle team = begin->component<CompTeam>();
+                if(AI.isValid() and team.isValid())
+                {
+                    team->_team->removeQgId(begin->id());
+                }
                 begin->remove();
+            }
         }
     }
 }

@@ -130,4 +130,14 @@ namespace book
     {
         return _map->getPath(origin,dest);
     }
+
+    sf::Vector2i Level::getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const
+    {
+        return _map->getPath1(origin,dest);
+    }
+
+    int Level::getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const
+    {
+        return _map->getDistance(origin,dest);
+    }
 }

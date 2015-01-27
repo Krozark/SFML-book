@@ -2,6 +2,7 @@
 
 #include <SFML-Book/Helpers.hpp>
 #include <SFML-Book/Component.hpp>
+#include <SFML-Book/Configuration.hpp>
 
 namespace book
 {

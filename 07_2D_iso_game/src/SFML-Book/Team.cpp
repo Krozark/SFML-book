@@ -21,19 +21,36 @@ namespace book
         _enemies.emplace_back(team);
     }
 
-    const std::list<Team*>& Team::getEnemies()const
+    const std::vector<Team*>& Team::getEnemies()const
     {
         return _enemies;
     }
 
-    void Team::setQgId(std::uint32_t id)
+    void Team::addQgId(std::uint32_t id)
     {
-        _QGId = id;
+        _QGId.emplace_back(id);
     }
 
-    std::uint32_t Team::getQgId()
+    const std::vector<std::uint32_t>& Team::getQgIds()const
     {
         return _QGId;
+    }
+
+    void Team::removeQgId(std::uint32_t id)
+    {
+        size_t size = _QGId.size();
+        size_t i=0;
+        while(i<size)
+        {
+            if(_QGId[i] == id)
+            {
+                _QGId.erase(_QGId.begin()+i);
+                --size;
+            }
+            else
+            ++i;
+        }
+        isAlive = _QGId.size()>0;
     }
 
     int Team::id()const

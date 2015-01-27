@@ -6,7 +6,7 @@ namespace book
     {
     }
 
-    CompAIWarrior::CompAIWarrior(int hitPoint,const sf::Time& timeDelta) : _hitPoint(hitPoint), _delta(timeDelta), _elapsed(sf::Time::Zero), _target(-1)
+    CompAIWarrior::CompAIWarrior(int hitPoint,const sf::Time& timeDelta,int range) : _hitPoint(hitPoint), _delta(timeDelta), _elapsed(sf::Time::Zero), _range(range)
     {
     }
 
@@ -30,7 +30,7 @@ namespace book
     {
     }
 
-    CompHp::CompHp(int hp) : _hp(hp)
+    CompHp::CompHp(int hp) : _hp(hp), _maxHp(hp)
     {
     }
 }

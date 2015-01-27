@@ -15,7 +15,7 @@ namespace book
 
         //add team
         setTeam(entity,team);
-        team->setQgId(entity.id());
+        team->addQgId(entity.id());
 
         //add AI
         entity.add<CompAIMain>(100,sf::seconds(10));
@@ -36,7 +36,7 @@ namespace book
         setTeam(entity,team);
 
         //add AI
-        entity.add<CompAIWarrior>(50,sf::seconds(0.5));
+        entity.add<CompAIWarrior>(50,sf::seconds(0.5),1);
         entity.add<CompHp>(500);
         entity.add<CompAIFlyer>(200);
 
@@ -62,9 +62,9 @@ namespace book
 
         setTeam(entity,team);
 
-        entity.add<CompAIWarrior>(10,sf::seconds(0.2));
+        entity.add<CompAIWarrior>(10,sf::seconds(0.2),0);
         entity.add<CompHp>(250);
-        entity.add<CompAIWalker>(100);
+        entity.add<CompAIWalker>(70);
 
         entity.name = "Worm";
     }

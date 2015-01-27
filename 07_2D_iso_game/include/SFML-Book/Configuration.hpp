@@ -44,12 +44,15 @@ namespace book
 
 
             static void initialize();
+            static void setGuiColor(const sf::Color& color);
 
         private:
 
             static void initTextures();
             static void initAnimations();
             static void initInputs();
+
+            static void initGuiConfiguration();
     };
 }
 #endif

@@ -15,9 +15,12 @@ namespace book
     _color(color),
     _status(Status::None)
     {
+        Configuration::setGuiColor(sf::Color(color.r*0.4,
+                                             color.g*0.4,
+                                             color.b*0.4,
+                                             240));
         initInfoBar();
         initSelectingBar();
-
     }
 
     void TeamGui::update(sf::Time deltaTime)
@@ -27,7 +30,15 @@ namespace book
         {
             _status = Status::Selecting;
             _sprite.update(deltaTime);
+
+            CompHp::Handle hp = _entityManager->getComponent<CompHp>(_entityId);
+            if(hp.isValid())
+                setHp(hp->_hp,hp->_maxHp);
+            else
+                _entityHp->setText("HP: ?/?");
         }
+        else
+            _status = Status::None;
 
         if(old == Status::Selecting and old != _status)
             unSelect();
@@ -85,7 +96,8 @@ namespace book
         sf::IntRect rect = _sprite.getAnimation()->getRect(0);
         _sprite.setScale(sf::Vector2f(90.f/rect.width,90.f/rect.height));
 
-        _entityName->setText(manager.get(id).name);
+        Entity& e = manager.get(id);
+        _entityName->setText(e.name);
 
         _status = Status::Selecting;
     }
@@ -93,7 +105,7 @@ namespace book
     void TeamGui::initInfoBar()
     {
         _infoBar.setSize(sf::Vector2f(0,60));
-        _infoBar.setFillColor(sf::Color(_color.r,_color.b,_color.b,64));
+        _infoBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,64));
 
         sfutils::HLayout* layout = new sfutils::HLayout;
         _infoBar.setLayout(layout);
@@ -132,7 +144,7 @@ namespace book
     void TeamGui::initSelectingBar()
     {
         _selectBar.setSize(sf::Vector2f(100,300));
-        _selectBar.setFillColor(sf::Color(_color.r,_color.b,_color.b,64));
+        _selectBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,64));
         _selectBar.setPosition(0,60);
 
         sfutils::VLayout* layout = new sfutils::VLayout;
@@ -142,6 +154,12 @@ namespace book
             _entityName = new sfutils::Label("???");
             _entityName->setCharacterSize(15);
             layout->add(_entityName);
+        }
+
+        {
+            _entityHp = new sfutils::Label("");
+            _entityHp->setCharacterSize(15);
+            layout->add(_entityHp);
         }
 
         {
@@ -173,5 +191,9 @@ namespace book
         _entityManager = nullptr;
         _entityId = 0;
         _status = Status::None;
+    }
+    void TeamGui::setHp(int current,int max)
+    {
+        _entityHp->setText("HP: "+std::to_string(current)+"/"+std::to_string(max));
     }
 }
