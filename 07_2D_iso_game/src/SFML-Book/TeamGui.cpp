@@ -105,7 +105,7 @@ namespace book
     void TeamGui::initInfoBar()
     {
         _infoBar.setSize(sf::Vector2f(0,60));
-        _infoBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,64));
+        _infoBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
 
         sfutils::HLayout* layout = new sfutils::HLayout;
         _infoBar.setLayout(layout);
@@ -144,7 +144,7 @@ namespace book
     void TeamGui::initSelectingBar()
     {
         _selectBar.setSize(sf::Vector2f(100,300));
-        _selectBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,64));
+        _selectBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
         _selectBar.setPosition(0,60);
 
         sfutils::VLayout* layout = new sfutils::VLayout;

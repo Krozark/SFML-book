@@ -21,8 +21,9 @@ namespace book
             }
         };
 
-        _myTeam = new Team(_window,0,sf::Color(255,170,170,255));//red
-        _team2 = new Team(_window,1,sf::Color(170,170,255,255));//blue
+        _myTeam = new Team(_window,0,sf::Color(224,125,125,255));//red
+        //_myTeam = new Team(_window,0,sf::Color(193,142,111,255));//orange
+        _team2 = new Team(_window,1,sf::Color(125,197,224,255));//blue
 
         _myTeam->addEnemy(_team2);
         _team2->addEnemy(_myTeam);

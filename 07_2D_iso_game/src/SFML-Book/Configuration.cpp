@@ -22,9 +22,9 @@ namespace book
                                                                      color.g*1.4,
                                                                      color.b*1.4,
                                                                      color.a);
-        sfutils::gui::Configuration::Colors::label_text = sf::Color(color.r*2,
-                                                                     color.g*2,
-                                                                     color.b*2,
+        sfutils::gui::Configuration::Colors::label_text = sf::Color(color.r*0.3,
+                                                                     color.g*0.3,
+                                                                     color.b*0.3,
                                                                      color.a);
     }
 
