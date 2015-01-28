@@ -9,6 +9,8 @@ namespace book
     sfutils::ResourceManager<sfutils::Animation,int> Configuration::animations;
     sfutils::ResourceManager<sf::SoundBuffer,int> Configuration::sounds;
     sfutils::ActionMap<int> Configuration::gui_inputs;
+    sfutils::ActionMap<int> Configuration::map_inputs;
+
 
     void Configuration::initialize()
     {
@@ -19,6 +21,8 @@ namespace book
         initAnimations();
         initInputs();
         initSounds();
+
+        initEvents();
     }
 
     void Configuration::setGuiColor(const sf::Color& color)
@@ -108,4 +112,14 @@ namespace book
         //unsigned int Configuration::Sizes::button_outline_thickness = 5;
         //unsigned int Configuration::Sizes::layout_spacing = 10;
     }
+
+    void Configuration::initEvents()
+    {
+        map_inputs.map(MapInputs::MoveUp,sfutils::Action(sf::Keyboard::Up));
+        map_inputs.map(MapInputs::MoveDown,sfutils::Action(sf::Keyboard::Down));
+        map_inputs.map(MapInputs::MoveLeft,sfutils::Action(sf::Keyboard::Left));
+        map_inputs.map(MapInputs::MoveRight,sfutils::Action(sf::Keyboard::Right));
+        map_inputs.map(MapInputs::TakeScreen,sfutils::Action(sf::Keyboard::F1,sfutils::Action::Released));
+    }
+
 }

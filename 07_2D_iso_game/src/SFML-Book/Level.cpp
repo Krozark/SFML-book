@@ -1,8 +1,10 @@
 #include <SFML-Book/Level.hpp>
 
 #include <stdexcept>
+#include <ctime>
 
 #include <SFML-Book/System.hpp>
+
 
 namespace book
 {
@@ -11,24 +13,40 @@ namespace book
     Level::Level(sf::RenderWindow& window,const std::string& filename) : 
         onPickup(defaultFunc),
         _map(sfutils::createMapFromFile(filename)),
-        _viewer(window,*_map),
+        _viewer(window,*_map,Configuration::map_inputs),
         _mouse_layer(new sfutils::Layer<sfutils::HexaIso,sf::ConvexShape>("ConvexShape",1)),
         _entites_layer(new sfutils::Layer<sfutils::HexaIso,Entity*>("Entity",2))
     {
+        //Map
         if(_map == nullptr)
         {
             //do some error
             throw std::runtime_error("Impossible to load file " + filename);
         }
 
+
         {
             _mouse_light = _mouse_layer->add(_map->getShape());
             _mouse_light->setFillColor(sf::Color(255,255,255,64));
             _map->add(_mouse_layer);
         }
-
         _map->add(_entites_layer);
 
+        //Viewer
+        _viewer.bind(Configuration::MapInputs::TakeScreen,[&window](const sf::Event& event){
+             sf::Image screen = window.capture();
+
+             time_t rawtime;
+             struct tm * timeinfo;
+             char buffer[128];
+
+             std::time(&rawtime);
+             timeinfo = std::localtime(&rawtime);
+             std::strftime (buffer,128,"screen/%F_%T.png",timeinfo);
+             screen.saveToFile(std::string(buffer));
+         });
+        
+        //ES
         systems.add<SysAIMain>();
         systems.add<SysAIWarrior>(*this);
         systems.add<SysAIDefender>();

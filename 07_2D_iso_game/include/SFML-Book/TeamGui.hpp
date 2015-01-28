@@ -35,6 +35,8 @@ namespace book
             sfutils::Label* _entityName;
             sfutils::Label* _entityHp;
 
+            sfutils::Frame _buildBar;
+
             std::uint32_t _entityId;
             sfutils::EntityManager<Entity>* _entityManager;
 
@@ -43,6 +45,7 @@ namespace book
 
             void initInfoBar();
             void initSelectingBar();
+            void initBuildBar();
 
             enum Status {
                 None,

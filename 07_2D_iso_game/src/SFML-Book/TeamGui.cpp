@@ -6,10 +6,13 @@
 namespace book
 {
     
-    TeamGui::TeamGui(sf::RenderWindow& window,const sf::Color& color) : _infoBar(window,Configuration::gui_inputs),
+    TeamGui::TeamGui(sf::RenderWindow& window,const sf::Color& color) :
+    _infoBar(window,Configuration::gui_inputs),
     _labelGold(nullptr),
     _selectBar(window,Configuration::gui_inputs),
     _entityName(nullptr),
+    _entityHp(nullptr),
+    _buildBar(window,Configuration::gui_inputs),
     _entityId(0),
     _entityManager(nullptr),
     _color(color),
@@ -21,43 +24,74 @@ namespace book
                                              240));
         initInfoBar();
         initSelectingBar();
+        initBuildBar();
     }
 
     void TeamGui::update(sf::Time deltaTime)
     {
-        Status old = _status;
-        if(_entityManager and _entityManager->isValid(_entityId))
+        switch(_status)
         {
-            _status = Status::Selecting;
-            _sprite.update(deltaTime);
+            case Status::Selecting :
+            {
+                if(_entityManager and _entityManager->isValid(_entityId))
+                {
+                    _sprite.update(deltaTime);
 
-            CompHp::Handle hp = _entityManager->getComponent<CompHp>(_entityId);
-            if(hp.isValid())
-                setHp(hp->_hp,hp->_maxHp);
-            else
-                _entityHp->setText("HP: ?/?");
+                    CompHp::Handle hp = _entityManager->getComponent<CompHp>(_entityId);
+                    if(hp.isValid())
+                        setHp(hp->_hp,hp->_maxHp);
+                    else
+                        _entityHp->setText("HP: ?/?");
+                }
+                else
+                {
+                    _status = Status::None;
+                    unSelect();
+                }
+            }break;
+            case Status::Building :
+            {
+
+            }break;
+            default: break;
         }
-        else
-            _status = Status::None;
-
-        if(old == Status::Selecting and old != _status)
-            unSelect();
     }
     
     bool TeamGui::processEvent(sf::Event& event)
     {
         bool res = _infoBar.processEvent(event);
-        if(_status == Status::Selecting)
-            res = _selectBar.processEvent(event);
+        if(not res)
+        {
+            switch (_status)
+            {
+                case Status::Selecting :
+                {
+                    res = _selectBar.processEvent(event);
+                }break;
+                case Building :
+                {
+                    res = _buildBar.processEvent(event);
+                }break;
+                default: break;
+            }
+        }
         return res;
     }
 
     void TeamGui::processEvents()
     {
         _infoBar.processEvents();
-        if(_status == Status::Selecting)
+        switch (_status)
         {
-            _selectBar.processEvents();
+            case Status::Selecting :
+            {
+                _selectBar.processEvents();
+            }break;
+            case Building :
+            {
+                _buildBar.processEvents();
+            }break;
+            default: break;
         }
     }
 
@@ -65,10 +99,17 @@ namespace book
     {
         window.draw(_infoBar);
 
-        if(_status == Status::Selecting)
+        switch (_status)
         {
-            window.draw(_selectBar);
-            window.draw(_sprite);
+            case Status::Selecting :
+            {
+                window.draw(_selectBar);
+                window.draw(_sprite);
+            }break;
+            case Building :
+            {
+            }break;
+            default: break;
         }
     }
 
@@ -184,6 +225,10 @@ namespace book
             };
             layout->add(close);
         }
+    } 
+
+    void TeamGui::initBuildBar()
+    {
     }
 
     void TeamGui::unSelect()

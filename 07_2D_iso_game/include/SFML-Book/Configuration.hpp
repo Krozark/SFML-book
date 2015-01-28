@@ -74,6 +74,17 @@ namespace book
             };
             static sfutils::ActionMap<int> gui_inputs;
 
+            enum MapInputs {
+                MoveUp,
+                MoveDown,
+                MoveLeft,
+                MoveRight,
+                TakeScreen,
+            };
+
+            static sfutils::ActionMap<int> map_inputs;
+
+
 
             static void initialize();
             static void setGuiColor(const sf::Color& color);
@@ -84,6 +95,7 @@ namespace book
             static void initAnimations();
             static void initInputs();
             static void initSounds();
+            static void initEvents();
             
             static void initGuiConfiguration();
     };
