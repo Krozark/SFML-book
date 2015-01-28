@@ -13,7 +13,7 @@ namespace book
             Team(const Team&) = delete;
             Team& operator=(const Team&) = delete;
 
-            Team(sf::RenderWindow& window,int id,const sf::Color& color=sf::Color::White);
+            Team(int id,sf::RenderWindow& window);
 
             void addGold(int amount);
             void addEnemy(Team* team);
@@ -27,6 +27,8 @@ namespace book
 
             bool isAlive;
             TeamGui gui;
+
+            static const int MAX_TEAMS = 4;
 
         private:
             int _id;

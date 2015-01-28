@@ -3,7 +3,14 @@
 
 namespace book
 {
-    Team::Team(sf::RenderWindow& window,int id,const sf::Color& color) : isAlive(true),gui(window,color),_id(id), _points(0), _gold(0), _QGId(0)
+    sf::Color colors[] = {
+        sf::Color(224,125,125,255),
+        sf::Color(193,142,111,255),
+        sf::Color(125,197,224,255),
+        sf::Color(125,111,125,255)
+    };
+
+    Team::Team(int id,sf::RenderWindow& window) : isAlive(true),gui(window,colors[id]),_id(id), _points(0), _gold(0), _QGId(0)
     {
     }
 

@@ -8,6 +8,8 @@
 
 namespace book
 {
+    class Level;
+
     class TeamGui
     {
         public:
@@ -20,9 +22,11 @@ namespace book
             bool processEvent(sf::Event& event);
             void processEvents();
             void draw(sf::RenderTarget& window);
+
             
             void setGold(int amount);
             const sf::Color& getColor()const;
+            void setLevel(Level* level);
             
             void setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager);
 
@@ -41,7 +45,10 @@ namespace book
             sfutils::EntityManager<Entity>* _entityManager;
 
             sf::Color _color;
+            Level* _level;
 
+            std::vector<sf::ConvexShape*> _highlight;
+            sf::ConvexShape* _selectionLight;
 
             void initInfoBar();
             void initSelectingBar();

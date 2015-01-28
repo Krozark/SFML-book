@@ -21,9 +21,8 @@ namespace book
             }
         };
 
-        _myTeam = new Team(_window,0,sf::Color(224,125,125,255));//red
-        //_myTeam = new Team(_window,0,sf::Color(193,142,111,255));//orange
-        _team2 = new Team(_window,1,sf::Color(125,197,224,255));//blue
+        _myTeam = new Team(0,_window);
+        _team2 = new Team(1,_window);
 
         _myTeam->addEnemy(_team2);
         _team2->addEnemy(_myTeam);
@@ -125,6 +124,7 @@ namespace book
 
     void Game::initTeam(Team* team,const sf::Vector2i& pos)
     {
+        team->gui.setLevel(_level);
         makeAsMain(_level->createEntity(pos),team,*_level);
         makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(-2,-2)),team,*_level);
         makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,2)),team,*_level);

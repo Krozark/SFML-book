@@ -2,6 +2,7 @@
 
 #include <SFML-Book/Configuration.hpp>
 #include <SFML-Book/Component.hpp>
+#include <SFML-Book/Level.hpp>
 
 namespace book
 {
@@ -16,6 +17,8 @@ namespace book
     _entityId(0),
     _entityManager(nullptr),
     _color(color),
+    _level(nullptr),
+    _selectionLight(nullptr),
     _status(Status::None)
     {
         Configuration::setGuiColor(sf::Color(color.r*0.4,
@@ -38,14 +41,18 @@ namespace book
                     _sprite.update(deltaTime);
 
                     CompHp::Handle hp = _entityManager->getComponent<CompHp>(_entityId);
+
                     if(hp.isValid())
                         setHp(hp->_hp,hp->_maxHp);
                     else
                         _entityHp->setText("HP: ?/?");
+
+                    CompSkin::Handle skin = _entityManager->getComponent<CompSkin>(_entityId);
+                    _selectionLight->setPosition(skin->_sprite.getPosition());
+
                 }
                 else
                 {
-                    _status = Status::None;
                     unSelect();
                 }
             }break;
@@ -123,8 +130,33 @@ namespace book
         return _color;
     }
 
+    void TeamGui::setLevel(Level* level)
+    {
+        if(level != _level)
+        {
+            if(_level)
+            {
+                auto& layer = _level->getHighlightLayer();
+                if(_highlight.size()>0)
+                {
+
+                    size_t size = _highlight.size();
+                    for(size_t i=0;i<size;++i)
+                    {
+                        layer.remove(_highlight[i]);
+                    }
+                }
+            }
+            _highlight.clear();
+            unSelect();
+            _level = level;
+        }
+    }
+
     void TeamGui::setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager)
     {
+        unSelect();
+
         _entityId = id;
         _entityManager = &manager;
 
@@ -139,6 +171,14 @@ namespace book
 
         Entity& e = manager.get(id);
         _entityName->setText(e.name);
+
+
+        //hightlight
+        if(_level)
+        {
+            _selectionLight = _level->getHighlightLayer().add(_level->getShape());
+            _selectionLight->setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
+        }
 
         _status = Status::Selecting;
     }
@@ -235,7 +275,16 @@ namespace book
     {
         _entityManager = nullptr;
         _entityId = 0;
+
+        if(_selectionLight and _level)
+        {
+            auto& layer = _level->getHighlightLayer();
+            layer.remove(_selectionLight);
+            _selectionLight = nullptr;
+        }
+
         _status = Status::None;
+
     }
     void TeamGui::setHp(int current,int max)
     {

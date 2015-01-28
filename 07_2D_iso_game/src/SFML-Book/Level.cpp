@@ -14,8 +14,8 @@ namespace book
         onPickup(defaultFunc),
         _map(sfutils::createMapFromFile(filename)),
         _viewer(window,*_map,Configuration::map_inputs),
-        _mouse_layer(new sfutils::Layer<sfutils::HexaIso,sf::ConvexShape>("ConvexShape",1)),
-        _entites_layer(new sfutils::Layer<sfutils::HexaIso,Entity*>("Entity",2))
+        _mouse_layer(new sfutils::Layer<Level::GEOMETRY,sf::ConvexShape>("ConvexShape",1)),
+        _entites_layer(new sfutils::Layer<Level::GEOMETRY,Entity*>("Entity",2))
     {
         //Map
         if(_map == nullptr)
@@ -118,7 +118,7 @@ namespace book
         _viewer.draw();
     }
 
-    Level::Param::Param(sf::Vector2i& c,Entity& e,sfutils::Layer<sfutils::HexaIso,Entity*>& l,sfutils::VMap& m) : 
+    Level::Param::Param(sf::Vector2i& c,Entity& e,sfutils::Layer<Level::GEOMETRY,Entity*>& l,sfutils::VMap& m) : 
         coord(c), entity(e),layer(l),map(m)
     {
     }
@@ -126,6 +126,16 @@ namespace book
     sfutils::EntityManager<Entity>& Level::entityManager()
     {
         return entites;
+    }
+
+    sfutils::Layer<Level::GEOMETRY,sf::ConvexShape>& Level::getHighlightLayer()const
+    {
+        return *_mouse_layer;
+    }
+
+    const sf::ConvexShape Level::getShape()const
+    {
+        return _map->getShape();
     }
 
     Entity& Level::createEntity(const sf::Vector2i& coord)
