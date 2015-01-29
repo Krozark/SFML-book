@@ -35,11 +35,12 @@ namespace book
             sfutils::Label* _labelGold;
 
             sfutils::Frame _selectBar;
-            sfutils::AnimatedSprite _sprite;
             sfutils::Label* _entityName;
             sfutils::Label* _entityHp;
+            sfutils::AnimatedSprite _spriteInfo;
 
             sfutils::Frame _buildBar;
+            sfutils::AnimatedSprite _spriteBuild;
 
             std::uint32_t _entityId;
             sfutils::EntityManager<Entity>* _entityManager;
@@ -62,6 +63,7 @@ namespace book
             } _status;
 
             void unSelect();
+            void unBuild();
             void setHp(int current,int max);
     };
 }

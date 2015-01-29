@@ -28,6 +28,10 @@ namespace book
         initInfoBar();
         initSelectingBar();
         initBuildBar();
+
+        _spriteBuild.setAnimation(&Configuration::animations.get(Configuration::AnimWormEggBirth));
+        _spriteBuild.setScale(0.3,0.3);
+        _spriteBuild.setOrigin(256*0.5,256*0.9);
     }
 
     void TeamGui::update(sf::Time deltaTime)
@@ -38,7 +42,7 @@ namespace book
             {
                 if(_entityManager and _entityManager->isValid(_entityId))
                 {
-                    _sprite.update(deltaTime);
+                    _spriteInfo.update(deltaTime);
 
                     CompHp::Handle hp = _entityManager->getComponent<CompHp>(_entityId);
 
@@ -58,7 +62,7 @@ namespace book
             }break;
             case Status::Building :
             {
-
+                _spriteBuild.update(deltaTime);
             }break;
             default: break;
         }
@@ -78,6 +82,12 @@ namespace book
                 case Building :
                 {
                     res = _buildBar.processEvent(event);
+                    if(event.type == sf::Event::MouseMoved)
+                    {
+                        sf::Vector2i coord = _level->mapScreenToCoords(sf::Vector2i(event.mouseMove.x,event.mouseMove.y));
+                        sf::Vector2i pos = _level->mapCoordsToScreen(coord);
+                        _spriteBuild.setPosition(pos.x,pos.y);
+                    }
                 }break;
                 default: break;
             }
@@ -111,10 +121,13 @@ namespace book
             case Status::Selecting :
             {
                 window.draw(_selectBar);
-                window.draw(_sprite);
+                window.draw(_spriteInfo);
             }break;
             case Building :
             {
+                window.draw(_buildBar);
+                window.draw(_spriteBuild);
+
             }break;
             default: break;
         }
@@ -134,20 +147,7 @@ namespace book
     {
         if(level != _level)
         {
-            if(_level)
-            {
-                auto& layer = _level->getHighlightLayer();
-                if(_highlight.size()>0)
-                {
-
-                    size_t size = _highlight.size();
-                    for(size_t i=0;i<size;++i)
-                    {
-                        layer.remove(_highlight[i]);
-                    }
-                }
-            }
-            _highlight.clear();
+            unBuild();
             unSelect();
             _level = level;
         }
@@ -156,18 +156,19 @@ namespace book
     void TeamGui::setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager)
     {
         unSelect();
+        unBuild();
 
         _entityId = id;
         _entityManager = &manager;
 
-        _sprite = manager.getComponent<CompSkin>(id)->_sprite;
+        _spriteInfo = manager.getComponent<CompSkin>(id)->_sprite;
 
-        _sprite.setColor(sf::Color(255,255,255,255));
-        _sprite.setOrigin(0,0);
-        _sprite.setPosition(5,5);
+        _spriteInfo.setColor(sf::Color(255,255,255,255));
+        _spriteInfo.setOrigin(0,0);
+        _spriteInfo.setPosition(5,5);
 
-        sf::IntRect rect = _sprite.getAnimation()->getRect(0);
-        _sprite.setScale(sf::Vector2f(90.f/rect.width,90.f/rect.height));
+        sf::IntRect rect = _spriteInfo.getAnimation()->getRect(0);
+        _spriteInfo.setScale(sf::Vector2f(90.f/rect.width,90.f/rect.height));
 
         Entity& e = manager.get(id);
         _entityName->setText(e.name);
@@ -196,6 +197,7 @@ namespace book
             button->setCharacterSize(15);
             button->setOutlineThickness(1);
             button->on_click = [this](const sf::Event&, sfutils::Button& button){
+                unSelect();
                 _status = Status::Building;
             };
             layout->add(button);
@@ -269,6 +271,12 @@ namespace book
 
     void TeamGui::initBuildBar()
     {
+        _buildBar.setSize(sf::Vector2f(100,500));
+        _buildBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
+        _buildBar.setPosition(0,60);
+
+        sfutils::VLayout* layout = new sfutils::VLayout;
+        _buildBar.setLayout(layout);
     }
 
     void TeamGui::unSelect()
@@ -286,6 +294,21 @@ namespace book
         _status = Status::None;
 
     }
+
+    void TeamGui::unBuild()
+    {
+        size_t size = _highlight.size();
+        if(size>0 and _level)
+        {
+            auto& layer = _level->getHighlightLayer();
+            for(size_t i=0;i<size;++i)
+            {
+                layer.remove(_highlight[i]);
+            }
+        }
+        _highlight.clear();
+    }
+
     void TeamGui::setHp(int current,int max)
     {
         _entityHp->setText("HP: "+std::to_string(current)+"/"+std::to_string(max));

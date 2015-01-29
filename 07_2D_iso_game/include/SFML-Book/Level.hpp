@@ -61,6 +61,9 @@ namespace book
             sf::Vector2i mapPixelToCoords(const sf::Vector2f& pos)const;
             sf::Vector2f mapCoordsToPixel(const sf::Vector2i& pos)const;
 
+            sf::Vector2i mapCoordsToScreen(const sf::Vector2i& pos)const;
+            sf::Vector2i mapScreenToCoords(const sf::Vector2i& pos)const;
+
             std::list<Entity*> getByCoords(const sf::Vector2i& coord)const;
 
             std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;

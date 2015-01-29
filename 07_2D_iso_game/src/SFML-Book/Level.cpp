@@ -94,7 +94,7 @@ namespace book
         {
             if(event.type == sf::Event::MouseButtonReleased and event.mouseButton.button == sf::Mouse::Button::Left)
             {
-                sf::Vector2i coord = _viewer.mapPixelToCoords(event.mouseButton.x,event.mouseButton.y);
+                sf::Vector2i coord = _viewer.mapScreenToCoords(event.mouseButton.x,event.mouseButton.y);
                 std::list<Entity*> pick = getByCoords(coord);
                 for(Entity* e : pick)
                 {
@@ -105,7 +105,7 @@ namespace book
             }
             else if(event.type == sf::Event::MouseMoved)
             {
-                sf::Vector2i coord = _viewer.mapPixelToCoords(event.mouseMove.x,event.mouseMove.y);
+                sf::Vector2i coord = _viewer.mapScreenToCoords(event.mouseMove.x,event.mouseMove.y);
                 sf::Vector2f pos = _viewer.mapCoordsToPixel(coord.x,coord.y);
                 _mouse_light->setPosition(pos);
             }
@@ -174,6 +174,16 @@ namespace book
     sf::Vector2f Level::mapCoordsToPixel(const sf::Vector2i& pos)const
     {
         return _map->mapCoordsToPixel(pos);
+    }
+
+    sf::Vector2i Level::mapCoordsToScreen(const sf::Vector2i& pos)const
+    {
+        return _viewer.mapCoordsToScreen(pos);
+    }
+
+    sf::Vector2i Level::mapScreenToCoords(const sf::Vector2i& pos)const
+    {
+        return _viewer.mapScreenToCoords(pos);
     }
 
     std::list<Entity*> Level::getByCoords(const sf::Vector2i& coord)const
