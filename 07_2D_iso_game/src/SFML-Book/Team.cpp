@@ -5,8 +5,8 @@ namespace book
 {
     sf::Color colors[] = {
         sf::Color(224,125,125,255),
-        sf::Color(193,142,111,255),
         sf::Color(125,197,224,255),
+        sf::Color(193,142,111,255),
         sf::Color(125,111,125,255)
     };
 

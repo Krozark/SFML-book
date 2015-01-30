@@ -6,6 +6,16 @@
 #include <SFML-Book/Team.hpp>
 #include <SFML-Book/Helpers.hpp>
 
+#include <set>
+
+struct cmpVector2i
+{
+    bool operator()(const sf::Vector2i& a,const sf::Vector2i& b)const
+    {
+        return (a.y < b.y) or (a.y == b.y and a.x < b.x);
+    };
+};
+
 namespace book
 {
     
@@ -101,9 +111,19 @@ namespace book
                         sf::Vector2i coord = _level->mapScreenToCoords(mouse);
                         if(_makeAs != nullptr and _level != nullptr)
                         {
-                            Entity& entity = _level->createEntity(coord);
-                            makeAsWormEgg(entity,&_team,*_level);
-                            setBuild();
+                            size_t size = _highlight.size();
+                            for(size_t i=0;i<size;++i)
+                            {
+                                sf::Vector2i shapeCoord = _level->mapPixelToCoords(_highlight[i]->getPosition());
+                                if(coord == shapeCoord)
+                                {
+                                    Entity& entity = _level->createEntity(coord);
+                                    makeAsWormEgg(entity,&_team,*_level);
+                                    setBuild();
+                                    break;
+                                }
+                            }
+                            
                         }
                     }
                 }break;
@@ -354,36 +374,37 @@ namespace book
         auto view = _level->entityManager().getByComponents(area,team,skin);
         auto end = view.end();
 
-        std::list<sf::Vector2i>pos_list;
+        std::set<sf::Vector2i,cmpVector2i>pos_set;
+        std::set<sf::Vector2i,cmpVector2i>pos_set_not_allow;
 
         for(auto begin = view.begin();begin != end;++begin)
         {
+            sf::Vector2f initPos = skin->_sprite.getPosition();
+            sf::Vector2i initCoords = _level->mapPixelToCoords(initPos);
+            pos_set_not_allow.emplace(initCoords); //romove all already used tile
+
             if(team->_team->id() == _team.id() and area->_range > 0)
             {
-                sf::Vector2f initPos = skin->_sprite.getPosition();
-                sf::Vector2i initCoords = _level->mapPixelToCoords(initPos);
+
 
                 int range = area->_range;
-                //int range = 1;
                 for(int x =-range; x<=range;++x)
                 {
                     int m = std::min(range,-x+range);
 
                     for(int y = std::max(-range,-x-range);y<=m;++y)
                     {
-                        pos_list.emplace_back(initCoords + sf::Vector2i(x,y));
+                        if(x != 0 or y != 0)
+                            pos_set.emplace(initCoords + sf::Vector2i(x,y));
                     }
                 }
             }
         }
 
-        pos_list.sort([](const sf::Vector2i a,const sf::Vector2i b)->bool{
-                      return (a.y < b.y) or (a.y == b.y and a.x < b.x);
-                  });
+        for(const sf::Vector2i& pos : pos_set_not_allow)
+            pos_set.erase(pos);
 
-        pos_list.unique();
-        
-        for(sf::Vector2i& pos : pos_list)
+        for(const sf::Vector2i& pos : pos_set)
         {
             sf::ConvexShape* shape = _level->getHighlightLayer().add(_level->getShape());
             shape->setFillColor(sf::Color(0,255,0,128));
