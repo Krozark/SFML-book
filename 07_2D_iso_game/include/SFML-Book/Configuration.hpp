@@ -86,6 +86,7 @@ namespace book
 
 
 
+
             static void initialize();
             static void setGuiColor(const sf::Color& color);
 

@@ -33,4 +33,8 @@ namespace book
     CompHp::CompHp(int hp) : _hp(hp), _maxHp(hp)
     {
     }
+
+    CompBuildArea::CompBuildArea(int range) : _range(range)
+    {
+    }
 }

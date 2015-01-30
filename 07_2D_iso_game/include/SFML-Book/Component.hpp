@@ -103,7 +103,7 @@ namespace book
         int _hp;
         const int _maxHp;
     };
-    
+
 
     struct CompUpgradable : sfutils::Component<CompUpgradable,Entity>
     {
@@ -111,6 +111,13 @@ namespace book
 
     struct CompEffect : sfutils::Component<CompEffect,Entity>
     {
+    };
+
+    struct CompBuildArea : sfutils::Component<CompBuildArea,Entity>
+    {
+        explicit CompBuildArea(int range);
+
+        int _range;
     };
 }
 #endif

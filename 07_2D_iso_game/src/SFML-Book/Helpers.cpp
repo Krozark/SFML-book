@@ -27,6 +27,7 @@ namespace book
                                     lvl.createSound(Configuration::SoundSpawnEye,pos);
                                   });
         entity.add<CompHp>(5000);
+        entity.add<CompBuildArea>(4);
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedMain,myCoord);
@@ -40,9 +41,6 @@ namespace book
 
     void makeAsEye(Entity& entity,Team* team,Level& level)
     {
-        sf::Vector2f pos = entity.component<CompSkin>()->_sprite.getPosition();
-
-
         //add animation
         setAnimation(entity,Configuration::AnimEyeLeft,CompSkin::MoveLeft,0.5,0.8,0.5,0.5);
         setAnimation(entity,Configuration::AnimEyeRight,CompSkin::MoveRight,0.5,0.8,0.5,0.5);
@@ -75,14 +73,13 @@ namespace book
                                     lvl.createSound(Configuration::SoundSpawnWormEgg,pos);
                                   });
         entity.add<CompHp>(200);
+        entity.add<CompBuildArea>(2);
 
         entity.name = "Worm Egg";
     }
 
     void makeAsWorm(Entity& entity,Team* team, Level& level)
     {
-        sf::Vector2f pos = entity.component<CompSkin>()->_sprite.getPosition();
-
         setAnimation(entity,Configuration::AnimWormLeft,CompSkin::MoveLeft,0.5,0.8,0.4,0.4);
         setAnimation(entity,Configuration::AnimWormRight,CompSkin::MoveRight,0.5,0.8,0.4,0.4);
 

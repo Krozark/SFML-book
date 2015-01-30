@@ -10,7 +10,7 @@ namespace book
         sf::Color(125,111,125,255)
     };
 
-    Team::Team(int id,sf::RenderWindow& window) : isAlive(true),gui(window,colors[id]),_id(id), _points(0), _gold(0), _QGId(0)
+    Team::Team(int id,sf::RenderWindow& window) : isAlive(true),gui(*this,window,colors[id]),_id(id), _points(0), _gold(0), _QGId(0)
     {
     }
 

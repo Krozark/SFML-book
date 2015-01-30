@@ -9,6 +9,7 @@
 namespace book
 {
     class Level;
+    class Team;
 
     class TeamGui
     {
@@ -16,7 +17,7 @@ namespace book
             TeamGui(const TeamGui&) = delete;
             TeamGui& operator=(const TeamGui&) = delete;
 
-            TeamGui(sf::RenderWindow& window,const sf::Color& color);
+            TeamGui(Team& team,sf::RenderWindow& window,const sf::Color& color);
 
             void update(sf::Time deltaTime);
             bool processEvent(sf::Event& event);
@@ -31,6 +32,8 @@ namespace book
             void setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager);
 
         private:
+            Team& _team;
+
             sfutils::Frame _infoBar;
             sfutils::Label* _labelGold;
 
@@ -41,6 +44,10 @@ namespace book
 
             sfutils::Frame _buildBar;
             sfutils::AnimatedSprite _spriteBuild;
+            static std::vector<sfutils::AnimatedSprite> _constructable;
+            
+            using FuncType = std::function<void(Entity& entity,Team* team, Level& level)>;
+            FuncType _makeAs;
 
             std::uint32_t _entityId;
             sfutils::EntityManager<Entity>* _entityManager;
@@ -64,6 +71,7 @@ namespace book
 
             void unSelect();
             void unBuild();
+            void setBuild();
             void setHp(int current,int max);
     };
 }

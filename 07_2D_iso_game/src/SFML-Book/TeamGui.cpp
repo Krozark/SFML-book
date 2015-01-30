@@ -3,17 +3,21 @@
 #include <SFML-Book/Configuration.hpp>
 #include <SFML-Book/Component.hpp>
 #include <SFML-Book/Level.hpp>
+#include <SFML-Book/Team.hpp>
+#include <SFML-Book/Helpers.hpp>
 
 namespace book
 {
     
-    TeamGui::TeamGui(sf::RenderWindow& window,const sf::Color& color) :
+    TeamGui::TeamGui(Team& team,sf::RenderWindow& window,const sf::Color& color) :
+    _team(team),
     _infoBar(window,Configuration::gui_inputs),
     _labelGold(nullptr),
     _selectBar(window,Configuration::gui_inputs),
     _entityName(nullptr),
     _entityHp(nullptr),
     _buildBar(window,Configuration::gui_inputs),
+    _makeAs(nullptr),
     _entityId(0),
     _entityManager(nullptr),
     _color(color),
@@ -32,6 +36,8 @@ namespace book
         _spriteBuild.setAnimation(&Configuration::animations.get(Configuration::AnimWormEggBirth));
         _spriteBuild.setScale(0.3,0.3);
         _spriteBuild.setOrigin(256*0.5,256*0.9);
+
+        _makeAs = makeAsWormEgg;
     }
 
     void TeamGui::update(sf::Time deltaTime)
@@ -84,9 +90,21 @@ namespace book
                     res = _buildBar.processEvent(event);
                     if(event.type == sf::Event::MouseMoved)
                     {
-                        sf::Vector2i coord = _level->mapScreenToCoords(sf::Vector2i(event.mouseMove.x,event.mouseMove.y));
+                        sf::Vector2i mouse = sf::Vector2i(event.mouseMove.x,event.mouseMove.y);
+                        sf::Vector2i coord = _level->mapScreenToCoords(mouse);
                         sf::Vector2i pos = _level->mapCoordsToScreen(coord);
                         _spriteBuild.setPosition(pos.x,pos.y);
+                    }
+                    else if(event.type == sf::Event::MouseButtonReleased )
+                    {
+                        sf::Vector2i mouse = sf::Vector2i(event.mouseButton.x,event.mouseButton.y);
+                        sf::Vector2i coord = _level->mapScreenToCoords(mouse);
+                        if(_makeAs != nullptr and _level != nullptr)
+                        {
+                            Entity& entity = _level->createEntity(coord);
+                            makeAsWormEgg(entity,&_team,*_level);
+                            setBuild();
+                        }
                     }
                 }break;
                 default: break;
@@ -155,33 +173,36 @@ namespace book
 
     void TeamGui::setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager)
     {
-        unSelect();
-        unBuild();
-
-        _entityId = id;
-        _entityManager = &manager;
-
-        _spriteInfo = manager.getComponent<CompSkin>(id)->_sprite;
-
-        _spriteInfo.setColor(sf::Color(255,255,255,255));
-        _spriteInfo.setOrigin(0,0);
-        _spriteInfo.setPosition(5,5);
-
-        sf::IntRect rect = _spriteInfo.getAnimation()->getRect(0);
-        _spriteInfo.setScale(sf::Vector2f(90.f/rect.width,90.f/rect.height));
-
-        Entity& e = manager.get(id);
-        _entityName->setText(e.name);
-
-
-        //hightlight
-        if(_level)
+        if(_status == Status::None or _status == Status::Selecting)
         {
-            _selectionLight = _level->getHighlightLayer().add(_level->getShape());
-            _selectionLight->setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
-        }
+            unSelect();
+            unBuild();
 
-        _status = Status::Selecting;
+            _entityId = id;
+            _entityManager = &manager;
+
+            _spriteInfo = manager.getComponent<CompSkin>(id)->_sprite;
+
+            _spriteInfo.setColor(sf::Color(255,255,255,255));
+            _spriteInfo.setOrigin(0,0);
+            _spriteInfo.setPosition(5,5);
+
+            sf::IntRect rect = _spriteInfo.getAnimation()->getRect(0);
+            _spriteInfo.setScale(sf::Vector2f(90.f/rect.width,90.f/rect.height));
+
+            Entity& e = manager.get(id);
+            _entityName->setText(e.name);
+
+
+            //hightlight
+            if(_level)
+            {
+                _selectionLight = _level->getHighlightLayer().add(_level->getShape());
+                _selectionLight->setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
+            }
+
+            _status = Status::Selecting;
+        }
     }
 
     void TeamGui::initInfoBar()
@@ -197,8 +218,7 @@ namespace book
             button->setCharacterSize(15);
             button->setOutlineThickness(1);
             button->on_click = [this](const sf::Event&, sfutils::Button& button){
-                unSelect();
-                _status = Status::Building;
+                setBuild();
             };
             layout->add(button);
         }
@@ -277,6 +297,16 @@ namespace book
 
         sfutils::VLayout* layout = new sfutils::VLayout;
         _buildBar.setLayout(layout);
+
+        {
+            sfutils::TextButton* close = new sfutils::TextButton("close");
+            close->setCharacterSize(15);
+            close->setOutlineThickness(1);
+            close->on_click = [this](const sf::Event&, sfutils::Button& button){
+                this->unBuild();
+            };
+            layout->add(close);
+        }
     }
 
     void TeamGui::unSelect()
@@ -307,6 +337,59 @@ namespace book
             }
         }
         _highlight.clear();
+
+        _status = Status::None;
+    }
+
+    void TeamGui::setBuild()
+    {
+        unSelect();
+        unBuild();
+        _status = Status::Building;
+
+        CompBuildArea::Handle area;
+        CompTeam::Handle team;
+        CompSkin::Handle skin;
+        
+        auto view = _level->entityManager().getByComponents(area,team,skin);
+        auto end = view.end();
+
+        std::list<sf::Vector2i>pos_list;
+
+        for(auto begin = view.begin();begin != end;++begin)
+        {
+            if(team->_team->id() == _team.id() and area->_range > 0)
+            {
+                sf::Vector2f initPos = skin->_sprite.getPosition();
+                sf::Vector2i initCoords = _level->mapPixelToCoords(initPos);
+
+                int range = area->_range;
+                //int range = 1;
+                for(int x =-range; x<=range;++x)
+                {
+                    int m = std::min(range,-x+range);
+
+                    for(int y = std::max(-range,-x-range);y<=m;++y)
+                    {
+                        pos_list.emplace_back(initCoords + sf::Vector2i(x,y));
+                    }
+                }
+            }
+        }
+
+        pos_list.sort([](const sf::Vector2i a,const sf::Vector2i b)->bool{
+                      return (a.y < b.y) or (a.y == b.y and a.x < b.x);
+                  });
+
+        pos_list.unique();
+        
+        for(sf::Vector2i& pos : pos_list)
+        {
+            sf::ConvexShape* shape = _level->getHighlightLayer().add(_level->getShape());
+            shape->setFillColor(sf::Color(0,255,0,128));
+            shape->setPosition(_level->mapCoordsToPixel(pos));
+            _highlight.emplace_back(shape);
+        }
     }
 
     void TeamGui::setHp(int current,int max)
