@@ -377,6 +377,9 @@ namespace book
         std::set<sf::Vector2i,cmpVector2i>pos_set;
         std::set<sf::Vector2i,cmpVector2i>pos_set_not_allow;
 
+        sf::Vector2i min = _level->getMinCoord();
+        sf::Vector2i max = _level->getMaxCoord();
+
         for(auto begin = view.begin();begin != end;++begin)
         {
             sf::Vector2f initPos = skin->_sprite.getPosition();
@@ -395,7 +398,14 @@ namespace book
                     for(int y = std::max(-range,-x-range);y<=m;++y)
                     {
                         if(x != 0 or y != 0)
-                            pos_set.emplace(initCoords + sf::Vector2i(x,y));
+                        {
+                            sf::Vector2i coord = initCoords + sf::Vector2i(x,y);
+                            if((coord.x >= min.x and coord.y >= min.y)
+                               and (coord.x <= max.y and coord.y <= max.y))
+                            {
+                                pos_set.emplace(coord);
+                            }
+                        }
                     }
                 }
             }

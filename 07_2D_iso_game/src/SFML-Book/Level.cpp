@@ -206,4 +206,14 @@ namespace book
     {
         return _map->getDistance(origin,dest);
     }
+
+    sf::Vector2i Level::getMinCoord()const
+    {
+        return sf::Vector2i(0,0);
+    }
+
+    sf::Vector2i Level::getMaxCoord()const
+    {
+        return sf::Vector2i(99,99);
+    }
 }

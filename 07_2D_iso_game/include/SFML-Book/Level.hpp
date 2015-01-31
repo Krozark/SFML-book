@@ -70,6 +70,9 @@ namespace book
             sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             int getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
 
+            sf::Vector2i getMinCoord()const;
+            sf::Vector2i getMaxCoord()const;
+
         private:
             friend class Game;
 
