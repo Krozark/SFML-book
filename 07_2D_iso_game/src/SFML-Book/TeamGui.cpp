@@ -78,7 +78,7 @@ namespace book
             {
                 if(_makeAs != nullptr)
                 {
-                    if(_gold_cost < _team._gold)
+                    if(_gold_cost <= _team._gold)
                     {
                         _spriteBuild.setColor(sf::Color::White);
                     }
@@ -120,7 +120,7 @@ namespace book
                         {
                             sf::Vector2i mouse = sf::Vector2i(event.mouseButton.x,event.mouseButton.y);
                             sf::Vector2i coord = _level->mapScreenToCoords(mouse);
-                            if(_makeAs != nullptr and _level != nullptr and _gold_cost < _team._gold)
+                            if(_makeAs != nullptr and _level != nullptr and _gold_cost <= _team._gold)
                             {
                                 size_t size = _highlight.size();
                                 for(size_t i=0;i<size;++i)
