@@ -34,5 +34,11 @@ namespace book
     void Entity::draw(sf::RenderTarget& target,sf::RenderStates states)const
     {
         target.draw(component<CompSkin>()->_sprite,states);
+
+        CompHp::Handle hp = component<CompHp>();
+        if(hp.isValid())
+        {
+            hp->draw(target,states);
+        }
     }
 }

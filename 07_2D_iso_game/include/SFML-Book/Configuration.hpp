@@ -60,7 +60,7 @@ namespace book
                 SoundHittedWorm,
                 SoundSpawnWormEgg,
 
-                //SoundHitEye,
+                SoundHitEye,
                 SoundHittedEye,
                 SoundSpawnEye,
 

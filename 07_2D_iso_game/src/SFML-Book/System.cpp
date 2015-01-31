@@ -345,6 +345,14 @@ end_search: //exit nesteed loops
                 }
                 begin->remove();
             }
+            else
+            {
+                CompSkin::Handle skin = begin->component<CompSkin>();
+                if(skin.isValid())
+                {
+                    hp->update(skin->_sprite.getPosition());
+                }
+            }
         }
     }
     

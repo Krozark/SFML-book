@@ -24,7 +24,6 @@ namespace book
         entity.add<CompAISpawner>(makeAsEye,1,sf::seconds(5),
                                   [](Level& lvl,const sf::Vector2i& pos){
                                     makeAsVoltageEffect(lvl.createEntity(pos));
-                                    lvl.createSound(Configuration::SoundSpawnEye,pos);
                                   });
         entity.add<CompHp>(5000);
         entity.add<CompBuildArea>(4);
@@ -45,6 +44,9 @@ namespace book
         setAnimation(entity,Configuration::AnimEyeLeft,CompSkin::MoveLeft,0.5,0.8,0.5,0.5);
         setAnimation(entity,Configuration::AnimEyeRight,CompSkin::MoveRight,0.5,0.8,0.5,0.5);
 
+        sf::Vector2f pos = entity.component<CompSkin>()->_sprite.getPosition();
+        level.createSound(Configuration::SoundSpawnEye,pos);
+
         //add team
         setTeam(entity,team);
 
@@ -56,6 +58,10 @@ namespace book
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedEye,myCoord);
             makeAsBloodEffect(lvl.createEntity(myCoord));
+        };
+
+        entity.onHit = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
+            lvl.createSound(Configuration::SoundHitEye,myCoord);
         };
 
         entity.name = "Fly Eye";
@@ -70,7 +76,6 @@ namespace book
         entity.add<CompAISpawner>(makeAsWorm,1,sf::seconds(15),
                                   [](Level& lvl,const sf::Vector2i& pos){
                                     makeAsFlashEffect(lvl.createEntity(pos));
-                                    lvl.createSound(Configuration::SoundSpawnWormEgg,pos);
                                   });
         entity.add<CompHp>(200);
         entity.add<CompBuildArea>(2);
@@ -83,6 +88,9 @@ namespace book
         setAnimation(entity,Configuration::AnimWormLeft,CompSkin::MoveLeft,0.5,0.8,0.4,0.4);
         setAnimation(entity,Configuration::AnimWormRight,CompSkin::MoveRight,0.5,0.8,0.4,0.4);
 
+        sf::Vector2f pos = entity.component<CompSkin>()->_sprite.getPosition();
+        level.createSound(Configuration::SoundSpawnWormEgg,pos);
+
         setTeam(entity,team);
 
         entity.add<CompAIWarrior>(10,sf::seconds(0.2),0);
@@ -92,6 +100,10 @@ namespace book
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedWorm,myCoord);
             makeAsBloodEffect(lvl.createEntity(myCoord));
+        };
+
+        entity.onHit = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
+            lvl.createSound(Configuration::SoundHitWorm,myCoord);
         };
 
         entity.name = "Worm";

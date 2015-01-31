@@ -100,8 +100,18 @@ namespace book
     {
         explicit CompHp(int hp);
 
+        void update(const sf::Vector2f& pos);
+
+        void draw(sf::RenderTarget& target,sf::RenderStates states);
+
+        sf::RectangleShape _shape_hp;
+        sf::RectangleShape _shape_max_hp;
+
         int _hp;
         const int _maxHp;
+
+        static const float _height;
+        static const float _width;
     };
 
 

@@ -93,14 +93,16 @@ namespace book
 
     void Configuration::initSounds()
     {
+        sf::Listener::setGlobalVolume(100);
         sounds.load(SoundHittedMain,"media/sounds/HittedMain.flac");
 
-        sounds.load(SoundHitWorm,"media/sounds/HitWorm.flac");
-        sounds.load(SoundHittedWorm,"media/sounds/HittedWorm.flac");
+        sounds.load(SoundHitWorm,"media/sounds/HitWorm.wav");
+        sounds.load(SoundHittedWorm,"media/sounds/HittedWorm.wav");
         sounds.load(SoundSpawnWormEgg,"media/sounds/SpawnWormEgg.flac");
 
-        sounds.load(SoundHittedEye,"media/sounds/HittedEye.flac");
-        sounds.load(SoundSpawnEye,"media/sounds/SpawnEye.flac");
+        sounds.load(SoundHitEye,"media/sounds/HitEye.wav");
+        sounds.load(SoundHittedEye,"media/sounds/HittedEye.wav");
+        sounds.load(SoundSpawnEye,"media/sounds/SpawnEye.wav");
         
         //sounds.load(SoundGold,"media/sounds/Gold.flac");
     }
