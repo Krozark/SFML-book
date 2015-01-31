@@ -61,7 +61,7 @@ namespace book
             lvl.createSound(Configuration::SoundHitEye,myCoord);
         };
 
-        entity.name = "Fly Eye";
+        entity.name = "Fleye";
     }
 
     void makeAsWormEgg(Entity& entity,Team* team,Level& level)

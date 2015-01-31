@@ -113,7 +113,7 @@ namespace book
                             sf::Vector2i pos = _level->mapCoordsToScreen(coord);
                             _spriteBuild.setPosition(pos.x,pos.y);
                         }
-                        else if(event.type == sf::Event::MouseButtonReleased )
+                        else if(event.type == sf::Event::MouseButtonPressed )
                         {
                             sf::Vector2i mouse = sf::Vector2i(event.mouseButton.x,event.mouseButton.y);
                             sf::Vector2i coord = _level->mapScreenToCoords(mouse);
