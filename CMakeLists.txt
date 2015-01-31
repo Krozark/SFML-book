@@ -22,7 +22,16 @@ find_library(LIB_SFML_SYSTEM sfml-system)
 find_library(LIB_SFML_GRAPHICS sfml-graphics)
 find_library(LIB_SFML_WINDOW sfml-window)
 find_library(LIB_SFML_AUDIO sfml-audio)
+
 set(LIBS ${LIB_SFML_SYSTEM} ${LIB_SFML_GRAPHICS} ${LIB_SFML_WINDOW} ${LIB_SFML_AUDIO})
+
+set_option(BOOK_BUILD_CHAPTER_1 TRUE BOOL "Build chapter 1")
+set_option(BOOK_BUILD_CHAPTER_2 TRUE BOOL "Build chapter 2")
+set_option(BOOK_BUILD_CHAPTER_3 TRUE BOOL "Build chapter 3")
+set_option(BOOK_BUILD_CHAPTER_4 TRUE BOOL "Build chapter 4. Require Box2d")
+set_option(BOOK_BUILD_CHAPTER_5 TRUE BOOL "Build chapter 5. Require Box2d and SFGUI")
+set_option(BOOK_BUILD_CHAPTER_6 TRUE BOOL "Build chapter 6. Require Box2d ans SFGUI")
+set_option(BOOK_BUILD_CHAPTER_7 TRUE BOOL "Build chapter 7")
 
 set(WARNING "-Wall")
 set(FLAGS "-g -std=c++0x")
@@ -37,12 +46,32 @@ set(LIB_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 
 # add the subdirectories
-add_subdirectory(01_Introduction)
-add_subdirectory(02_Game_Archi)
-add_subdirectory(03_Simple_2D_game)
-add_subdirectory(04_Physics)
-add_subdirectory(05_GUI)
-add_subdirectory(06_Multithreading)
-add_subdirectory(07_2D_iso_game)
+if(BOOK_BUILD_CHAPTER_1)
+    add_subdirectory(01_Introduction)
+endif()
+
+if(BOOK_BUILD_CHAPTER_2)
+    add_subdirectory(02_Game_Archi)
+endif()
+
+if(BOOK_BUILD_CHAPTER_3)
+    add_subdirectory(03_Simple_2D_game)
+endif()
+
+if(BOOK_BUILD_CHAPTER_4)
+    add_subdirectory(04_Physics)
+endif()
+
+if(BOOK_BUILD_CHAPTER_5)
+    add_subdirectory(05_GUI)
+endif()
+
+if(BOOK_BUILD_CHAPTER_6)
+    add_subdirectory(06_Multithreading)
+endif()
+
+if(BOOK_BUILD_CHAPTER_7)
+    add_subdirectory(07_2D_iso_game)
+endif()
 #build exemples
 
