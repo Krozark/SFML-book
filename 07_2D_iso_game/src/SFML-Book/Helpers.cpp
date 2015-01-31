@@ -73,7 +73,7 @@ namespace book
                                     lvl.createSound(Configuration::SoundSpawnWormEgg,pos);
                                   });
         entity.add<CompHp>(200);
-        entity.add<CompBuildArea>(20);
+        entity.add<CompBuildArea>(2);
 
         entity.name = "Worm Egg";
     }
