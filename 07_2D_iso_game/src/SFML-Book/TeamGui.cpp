@@ -27,6 +27,7 @@ namespace book
     _entityName(nullptr),
     _entityHp(nullptr),
     _buildBar(window,Configuration::gui_inputs),
+    _gold_cost(0),
     _makeAs(nullptr),
     _entityId(0),
     _entityManager(nullptr),
@@ -43,9 +44,6 @@ namespace book
         initSelectingBar();
         initBuildBar();
 
-        _spriteBuild.setAnimation(&Configuration::animations.get(Configuration::AnimWormEggBirth));
-        _spriteBuild.setScale(0.3,0.3);
-        _spriteBuild.setOrigin(256*0.5,256*0.9);
 
         _makeAs = makeAsWormEgg;
     }
@@ -80,6 +78,14 @@ namespace book
             {
                 if(_makeAs != nullptr)
                 {
+                    if(_gold_cost < _team._gold)
+                    {
+                        _spriteBuild.setColor(sf::Color::White);
+                    }
+                    else
+                    {
+                        _spriteBuild.setColor(sf::Color::Red);
+                    }
                     _spriteBuild.update(deltaTime);
                 }
             }break;
@@ -114,7 +120,7 @@ namespace book
                         {
                             sf::Vector2i mouse = sf::Vector2i(event.mouseButton.x,event.mouseButton.y);
                             sf::Vector2i coord = _level->mapScreenToCoords(mouse);
-                            if(_makeAs != nullptr and _level != nullptr)
+                            if(_makeAs != nullptr and _level != nullptr and _gold_cost < _team._gold)
                             {
                                 size_t size = _highlight.size();
                                 for(size_t i=0;i<size;++i)
@@ -125,6 +131,7 @@ namespace book
                                         Entity& entity = _level->createEntity(coord);
                                         makeAsWormEgg(entity,&_team,*_level);
                                         setBuild();
+                                        _team.addGold(-_gold_cost);
                                         break;
                                     }
                                 }
@@ -328,7 +335,15 @@ namespace book
         _buildBar.setLayout(layout);
 
         {//worms egg
-            //sfutils::SpriteButton* button = new sfutils::SpriteButton()
+            sfutils::SpriteButton* button = new sfutils::SpriteButton(Configuration::textures.get(Configuration::TexBuildWormEgg));
+            button->on_click = [this](const sf::Event& event,sfutils::Button& button){
+                _makeAs = makeAsWormEgg;
+                _spriteBuild.setAnimation(&Configuration::animations.get(Configuration::AnimWormEggBirth));
+                _spriteBuild.setScale(0.3,0.3);
+                _spriteBuild.setOrigin(256*0.5,256*0.9);
+                _gold_cost = Cost[EntityWormEgg];
+            };
+            layout->add(button);
         }
 
         {

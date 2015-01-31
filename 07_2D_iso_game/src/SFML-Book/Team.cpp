@@ -16,11 +16,8 @@ namespace book
 
     void Team::addGold(int amount)
     {
-        if(amount > 0)
-        {
-            _gold += amount;
-            gui.setGold(_gold);
-        }
+        _gold += amount;
+        gui.setGold(_gold);
     }
 
     void Team::addEnemy(Team* team)

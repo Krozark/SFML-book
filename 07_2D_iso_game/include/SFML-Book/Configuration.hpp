@@ -14,6 +14,7 @@ namespace book
 
             enum Textures : int {
                 TexCursor,
+                TexBuildWormEgg,
                 //entities
                 TexMain,
                 TexWormEgg,

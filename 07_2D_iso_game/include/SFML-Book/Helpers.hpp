@@ -26,5 +26,16 @@ namespace book
     void setTeam(Entity& entity,Team* team);
     void setAnimation(Entity& entity,int animationId,int animationMap,float ox=0,float oy=0,float sx=1,float sy=1);
 
+    enum Entities {
+        EntityMain,
+        EntityWormEgg,
+        SIZE
+    };
+
+    static int Cost[SIZE] = {
+        5000,
+        200
+    };
+
 }
 #endif

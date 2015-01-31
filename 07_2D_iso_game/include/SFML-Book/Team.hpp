@@ -31,6 +31,7 @@ namespace book
             static const int MAX_TEAMS = 4;
 
         private:
+            friend class TeamGui;
             int _id;
             int _points;
             int _gold;

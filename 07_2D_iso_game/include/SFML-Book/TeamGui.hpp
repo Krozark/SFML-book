@@ -44,7 +44,7 @@ namespace book
 
             sfutils::Frame _buildBar;
             sfutils::AnimatedSprite _spriteBuild;
-            static std::vector<sfutils::AnimatedSprite> _constructable;
+            int _gold_cost;
             
             using FuncType = std::function<void(Entity& entity,Team* team, Level& level)>;
             FuncType _makeAs;
