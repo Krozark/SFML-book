@@ -43,9 +43,6 @@ namespace book
         initInfoBar();
         initSelectingBar();
         initBuildBar();
-
-
-        _makeAs = makeAsWormEgg;
     }
 
     void TeamGui::update(sf::Time deltaTime)
@@ -129,9 +126,10 @@ namespace book
                                     if(coord == shapeCoord)
                                     {
                                         Entity& entity = _level->createEntity(coord);
-                                        makeAsWormEgg(entity,&_team,*_level);
-                                        setBuild();
+                                        _makeAs(entity,&_team,*_level);
                                         _team.addGold(-_gold_cost);
+
+                                        setBuild();
                                         break;
                                     }
                                 }
@@ -251,7 +249,7 @@ namespace book
 
         {
             sfutils::TextButton* button = new sfutils::TextButton("Build");
-            button->setCharacterSize(15);
+            button->setCharacterSize(20);
             button->setOutlineThickness(1);
             button->on_click = [this](const sf::Event&, sfutils::Button& button){
                 setBuild();
@@ -270,7 +268,7 @@ namespace book
 
         {
             sfutils::TextButton* button = new sfutils::TextButton("Exit");
-            button->setCharacterSize(15);
+            button->setCharacterSize(20);
             button->setOutlineThickness(1);
             button->on_click = [this](const sf::Event&, sfutils::Button& button){
                 _status = Status::Exit;
@@ -282,7 +280,7 @@ namespace book
 
     void TeamGui::initSelectingBar()
     {
-        _selectBar.setSize(sf::Vector2f(100,300));
+        _selectBar.setSize(sf::Vector2f(120,300));
         _selectBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
         _selectBar.setPosition(0,60);
 
@@ -291,13 +289,13 @@ namespace book
 
         {
             _entityName = new sfutils::Label("???");
-            _entityName->setCharacterSize(15);
+            _entityName->setCharacterSize(20);
             layout->add(_entityName);
         }
 
         {
             _entityHp = new sfutils::Label("");
-            _entityHp->setCharacterSize(15);
+            _entityHp->setCharacterSize(20);
             layout->add(_entityHp);
         }
 
@@ -327,28 +325,38 @@ namespace book
 
     void TeamGui::initBuildBar()
     {
-        _buildBar.setSize(sf::Vector2f(100,500));
+        _buildBar.setSize(sf::Vector2f(200,600));
         _buildBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
         _buildBar.setPosition(0,60);
 
         sfutils::VLayout* layout = new sfutils::VLayout;
         _buildBar.setLayout(layout);
 
+        for(Info& info : informations)
         {//worms egg
-            sfutils::SpriteButton* button = new sfutils::SpriteButton(Configuration::textures.get(Configuration::TexBuildWormEgg));
-            button->on_click = [this](const sf::Event& event,sfutils::Button& button){
-                _makeAs = makeAsWormEgg;
-                _spriteBuild.setAnimation(&Configuration::animations.get(Configuration::AnimWormEggBirth));
-                _spriteBuild.setScale(0.3,0.3);
-                _spriteBuild.setOrigin(256*0.5,256*0.9);
-                _gold_cost = Cost[EntityWormEgg];
+            sfutils::SpriteButton* button = new sfutils::SpriteButton(Configuration::textures.get(info.icon_id));
+            button->on_click = [this,info](const sf::Event& event,sfutils::Button& button){
+                this->_spriteBuild.setAnimation(&Configuration::animations.get(info.animation_id));
+
+                sf::IntRect rec = _spriteBuild.getAnimation()->getRect(0);
+                this->_spriteBuild.setOrigin(rec.width*0.5,rec.height*0.8);
+                this->_spriteBuild.setScale(0.3,0.3);
+
+                this->_gold_cost = info.cost;
+                this->_makeAs = info.makeAs;
             };
             layout->add(button);
+
+            sfutils::Label* desc = new sfutils::Label(info.name
+                                                      +"\nCost: "+std::to_string(info.cost)
+                                                      +"\n"+info.description);
+            desc->setCharacterSize(18);
+            layout->add(desc);
         }
 
         {
             sfutils::TextButton* close = new sfutils::TextButton("close");
-            close->setCharacterSize(15);
+            close->setCharacterSize(20);
             close->setOutlineThickness(1);
             close->on_click = [this](const sf::Event&, sfutils::Button& button){
                 this->unBuild();

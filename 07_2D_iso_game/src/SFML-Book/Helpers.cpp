@@ -1,5 +1,4 @@
 #include <SFML-Book/Helpers.hpp>
-#include <SFML-Book/Configuration.hpp>
 
 #include <SFML-Book/Component.hpp>
 #include <SFML-Book/Team.hpp>
@@ -33,8 +32,6 @@ namespace book
             makeAsVoltageEffect(lvl.createEntity(myCoord));
         };
 
-
-
         entity.name = "QG";
     }
 
@@ -51,7 +48,7 @@ namespace book
         setTeam(entity,team);
 
         //add AI
-        entity.add<CompAIWarrior>(50,sf::seconds(0.5),1);
+        entity.add<CompAIWarrior>(50,sf::seconds(0.7),1);
         entity.add<CompHp>(500);
         entity.add<CompAIFlyer>(200);
 
@@ -93,7 +90,7 @@ namespace book
 
         setTeam(entity,team);
 
-        entity.add<CompAIWarrior>(10,sf::seconds(0.2),0);
+        entity.add<CompAIWarrior>(10,sf::seconds(0.2),1);
         entity.add<CompHp>(250);
         entity.add<CompAIWalker>(70);
 
@@ -107,6 +104,28 @@ namespace book
         };
 
         entity.name = "Worm";
+    }
+
+    void makeAsCarnivor(Entity& entity,Team* team, Level& level)
+    {
+        setAnimation(entity,Configuration::AnimCarnivorStand,CompSkin::Stand,0.5,0.9,0.4,0.4);
+
+        setTeam(entity,team);
+
+        entity.add<CompAIWarrior>(100,sf::seconds(0.5),1);
+        entity.add<CompHp>(500);
+        entity.add<CompBuildArea>(2);
+
+        entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
+            //lvl.createSound(Configuration::SoundHittedWorm,myCoord);
+            makeAsBloodEffect(lvl.createEntity(myCoord));
+        };
+
+        entity.onHit = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
+            //lvl.createSound(Configuration::SoundHitWorm,myCoord);
+        };
+
+        entity.name = "Carnivor";
     }
 
     //////////// EFFECTS ////////////////

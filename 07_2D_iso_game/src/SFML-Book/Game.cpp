@@ -140,6 +140,6 @@ namespace book
         makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,2)),team,*_level);
         makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(-2,2)),team,*_level);
         makeAsWormEgg(_level->createEntity(pos+sf::Vector2i(2,-2)),team,*_level);
-        team->addGold(500);
+        team->addGold(10000);
     }
 }

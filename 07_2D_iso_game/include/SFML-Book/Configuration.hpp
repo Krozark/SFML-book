@@ -14,7 +14,9 @@ namespace book
 
             enum Textures : int {
                 TexCursor,
+                TexBuildMain,
                 TexBuildWormEgg,
+                TexBuildCarnivor,
                 //entities
                 TexMain,
                 TexWormEgg,
@@ -24,6 +26,7 @@ namespace book
                 //Worm3,
                 //EyeEgg,
                 TexEye,
+                TexCarnivor,
                 //effects
                 TexBlood1,
                 TexBlood2,
@@ -38,12 +41,16 @@ namespace book
             enum Animations: int {
                 //entities
                 AnimMainStand,
+
                 AnimWormEggStand,
                 AnimWormEggBirth,
                 AnimWormLeft,
                 AnimWormRight,
+
                 AnimEyeLeft,
                 AnimEyeRight,
+
+                AnimCarnivorStand,
                 //effects
                 AnimBlood1,
                 AnimBlood2,

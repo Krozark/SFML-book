@@ -41,13 +41,18 @@ namespace book
     void Configuration::initTextures()
     {
         textures.load(TexCursor,"media/gui/cursor.png");
+        textures.load(TexBuildMain,"media/gui/main.png");
         textures.load(TexBuildWormEgg,"media/gui/wormegg.png");
+        textures.load(TexBuildCarnivor,"media/gui/carnivor.png");
         //entities
         textures.load(TexMain,"media/skins/main.png");
         textures.load(TexWormEgg,"media/skins/wormegg.png");
         textures.load(TexWormEggBirth,"media/skins/wormegg-birth.png");
         textures.load(TexWorm,"media/skins/worm.png");
+
         textures.load(TexEye,"media/skins/eye.png");
+
+        textures.load(TexCarnivor,"media/skins/carnivor.png");
         //Worm2,
         //Worm3,
         //EyeEgg,
@@ -77,6 +82,8 @@ namespace book
         //Eye
         animations.load(AnimEyeLeft,&textures.get(TexEye)).addFramesLine(4,2,0);
         animations.load(AnimEyeRight,&textures.get(TexEye)).addFramesLine(4,2,1);
+
+        animations.load(AnimCarnivorStand,&textures.get(TexCarnivor)).addFramesLine(7,1,0);
 
         ////effects
         animations.load(AnimBlood1,&textures.get(TexBlood1)).addFramesLine(3,2,0).addFramesLine(3,2,1);
