@@ -78,7 +78,10 @@ namespace book
             }break;
             case Status::Building :
             {
-                _spriteBuild.update(deltaTime);
+                if(_makeAs != nullptr)
+                {
+                    _spriteBuild.update(deltaTime);
+                }
             }break;
             default: break;
         }
@@ -98,32 +101,35 @@ namespace book
                 case Building :
                 {
                     res = _buildBar.processEvent(event);
-                    if(event.type == sf::Event::MouseMoved)
+                    if(_makeAs != nullptr)
                     {
-                        sf::Vector2i mouse = sf::Vector2i(event.mouseMove.x,event.mouseMove.y);
-                        sf::Vector2i coord = _level->mapScreenToCoords(mouse);
-                        sf::Vector2i pos = _level->mapCoordsToScreen(coord);
-                        _spriteBuild.setPosition(pos.x,pos.y);
-                    }
-                    else if(event.type == sf::Event::MouseButtonReleased )
-                    {
-                        sf::Vector2i mouse = sf::Vector2i(event.mouseButton.x,event.mouseButton.y);
-                        sf::Vector2i coord = _level->mapScreenToCoords(mouse);
-                        if(_makeAs != nullptr and _level != nullptr)
+                        if(event.type == sf::Event::MouseMoved)
                         {
-                            size_t size = _highlight.size();
-                            for(size_t i=0;i<size;++i)
+                            sf::Vector2i mouse = sf::Vector2i(event.mouseMove.x,event.mouseMove.y);
+                            sf::Vector2i coord = _level->mapScreenToCoords(mouse);
+                            sf::Vector2i pos = _level->mapCoordsToScreen(coord);
+                            _spriteBuild.setPosition(pos.x,pos.y);
+                        }
+                        else if(event.type == sf::Event::MouseButtonReleased )
+                        {
+                            sf::Vector2i mouse = sf::Vector2i(event.mouseButton.x,event.mouseButton.y);
+                            sf::Vector2i coord = _level->mapScreenToCoords(mouse);
+                            if(_makeAs != nullptr and _level != nullptr)
                             {
-                                sf::Vector2i shapeCoord = _level->mapPixelToCoords(_highlight[i]->getPosition());
-                                if(coord == shapeCoord)
+                                size_t size = _highlight.size();
+                                for(size_t i=0;i<size;++i)
                                 {
-                                    Entity& entity = _level->createEntity(coord);
-                                    makeAsWormEgg(entity,&_team,*_level);
-                                    setBuild();
-                                    break;
+                                    sf::Vector2i shapeCoord = _level->mapPixelToCoords(_highlight[i]->getPosition());
+                                    if(coord == shapeCoord)
+                                    {
+                                        Entity& entity = _level->createEntity(coord);
+                                        makeAsWormEgg(entity,&_team,*_level);
+                                        setBuild();
+                                        break;
+                                    }
                                 }
+
                             }
-                            
                         }
                     }
                 }break;
@@ -164,7 +170,10 @@ namespace book
             case Building :
             {
                 window.draw(_buildBar);
-                window.draw(_spriteBuild);
+                if(_makeAs != nullptr)
+                {
+                    window.draw(_spriteBuild);
+                }
 
             }break;
             default: break;
@@ -318,6 +327,10 @@ namespace book
         sfutils::VLayout* layout = new sfutils::VLayout;
         _buildBar.setLayout(layout);
 
+        {//worms egg
+            //sfutils::SpriteButton* button = new sfutils::SpriteButton()
+        }
+
         {
             sfutils::TextButton* close = new sfutils::TextButton("close");
             close->setCharacterSize(15);
@@ -365,7 +378,9 @@ namespace book
     {
         unSelect();
         unBuild();
+
         _status = Status::Building;
+        _makeAs = nullptr;
 
         CompBuildArea::Handle area;
         CompTeam::Handle team;

@@ -40,6 +40,7 @@ namespace book
 
     void Configuration::initTextures()
     {
+        textures.load(TexCursor,"media/gui/cursor.png");
         //entities
         textures.load(TexMain,"media/skins/main.png");
         textures.load(TexWormEgg,"media/skins/wormegg.png");

@@ -13,6 +13,7 @@ namespace book
             Configuration() = delete;
 
             enum Textures : int {
+                TexCursor,
                 //entities
                 TexMain,
                 TexWormEgg,

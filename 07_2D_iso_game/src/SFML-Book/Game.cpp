@@ -6,7 +6,10 @@
 
 namespace book
 {
-    Game::Game(int X, int Y) : _window(sf::VideoMode(X,Y),"07 2D Iso Game"), _level(nullptr)
+    Game::Game(int X, int Y) : 
+        _window(sf::VideoMode(X,Y),"07 2D Iso Game"),
+        _cursor(Configuration::textures.get(Configuration::TexCursor)),
+        _level(nullptr)
     {
         _window.setFramerateLimit(65);
 
@@ -26,6 +29,8 @@ namespace book
 
         _myTeam->addEnemy(_team2);
         _team2->addEnemy(_myTeam);
+
+        _window.setMouseCursorVisible(false);
 
     }
 
@@ -108,6 +113,9 @@ namespace book
             _myTeam->gui.update(deltaTime);
         if(_level)
             _level->update(deltaTime);
+
+        sf::Vector2i mouse(sf::Mouse::getPosition(_window));
+        _cursor.setPosition(mouse.x,mouse.y);
     }
 
     void Game::render()
@@ -118,6 +126,8 @@ namespace book
             _level->draw(_window);
         if(_myTeam)
             _myTeam->gui.draw(_window);
+
+        _window.draw(_cursor);
 
         _window.display();
     }
