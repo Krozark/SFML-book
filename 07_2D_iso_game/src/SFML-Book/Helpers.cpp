@@ -90,7 +90,7 @@ namespace book
 
         setTeam(entity,team);
 
-        entity.add<CompAIWarrior>(10,sf::seconds(0.2),1);
+        entity.add<CompAIWarrior>(20,sf::seconds(0.5),1);
         entity.add<CompHp>(250);
         entity.add<CompAIWalker>(70);
 
