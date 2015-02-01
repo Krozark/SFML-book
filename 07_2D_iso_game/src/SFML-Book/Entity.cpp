@@ -5,7 +5,7 @@ ES_INIT_ENTITY(book::Entity);
 
 namespace book
 {
-    Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id, sfutils::Layer<sfutils::HexaIso,Entity*>& layer) : sfutils::Entity<Entity>(manager,id), onHit(nullptr), onHitted(nullptr), _layer(layer)
+    Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id, sfutils::Layer<Entity*>& layer) : sfutils::Entity<Entity>(manager,id), onHit(nullptr), onHitted(nullptr), _layer(layer)
     {
         name = "???";
     }

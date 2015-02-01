@@ -18,8 +18,6 @@ namespace book
     class Level : private sfutils::Application<Entity>
     {
         public:
-            using GEOMETRY = sfutils::HexaIso;
-
             Level(const Level&) = delete;
             Level& operator=(const Level&) = delete;
 
@@ -35,12 +33,12 @@ namespace book
             struct Param {
                 explicit Param(sf::Vector2i&,
                                Entity&,
-                               sfutils::Layer<GEOMETRY,Entity*>&,
+                               sfutils::Layer<Entity*>&,
                                sfutils::VMap&);
 
                 sf::Vector2i& coord;
                 Entity& entity;
-                sfutils::Layer<GEOMETRY,Entity*>& layer;
+                sfutils::Layer<Entity*>& layer;
                 sfutils::VMap& map;
             };
 
@@ -50,7 +48,7 @@ namespace book
             FuncType onPickup;
 
             sfutils::EntityManager<Entity>& entityManager();
-            sfutils::Layer<GEOMETRY,sf::ConvexShape>& getHighlightLayer()const;
+            sfutils::Layer<sf::ConvexShape>& getHighlightLayer()const;
             const sf::ConvexShape getShape()const;
 
             
@@ -80,8 +78,8 @@ namespace book
             sfutils::MapViewer _viewer;
 
             sf::ConvexShape* _mouse_light;
-            sfutils::Layer<GEOMETRY,sf::ConvexShape>* _mouse_layer;
-            sfutils::Layer<GEOMETRY,Entity*>* _entites_layer;
+            sfutils::Layer<sf::ConvexShape>* _mouse_layer;
+            sfutils::Layer<Entity*>* _entites_layer;
 
             std::list<std::unique_ptr<sf::Sound>> _sounds;
             sf::Listener _listener;
