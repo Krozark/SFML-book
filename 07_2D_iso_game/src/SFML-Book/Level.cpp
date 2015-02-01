@@ -12,7 +12,7 @@ namespace book
 
     Level::Level(sf::RenderWindow& window,const std::string& filename) : 
         onPickup(defaultFunc),
-        _map(sfutils::createMapFromFile(filename)),
+        _map(sfutils::VMap::createMapFromFile(filename)),
         _viewer(window,*_map,Configuration::map_inputs),
         _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1)),
         _entites_layer(new sfutils::Layer<Entity*>("Entity",2))
