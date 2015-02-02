@@ -21,11 +21,6 @@ namespace book
         Level& _level;
     };
 
-    struct SysAIDefender : sfutils::System<SysAIDefender,Entity>
-    {
-        virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
-    };
-
     struct SysAISpawner : sfutils::System<SysAISpawner,Entity>
     {
         explicit SysAISpawner(Level& level);

@@ -159,11 +159,6 @@ end_search: //exit nesteed loops
         }
     }
 
-    ///////////////////// SYS AI DEFENDER ///////////////////////
-    void SysAIDefender::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
-    {
-    }
-
     ///////////////////// SYS AI SPAWNER ///////////////////////
     SysAISpawner::SysAISpawner(Level& level) : _level(level)
     {

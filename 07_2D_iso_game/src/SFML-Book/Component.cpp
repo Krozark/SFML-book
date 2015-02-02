@@ -10,10 +10,6 @@ namespace book
     {
     }
 
-    CompAIDefender::CompAIDefender(int hitPoint,const sf::Time& timeDelta) : _hitPoint(hitPoint), _delta(timeDelta), _elapsed(sf::Time::Zero)
-    {
-    }
-
     CompAISpawner::CompAISpawner(CompAISpawner::FuncType makeAs,int number,const sf::Time& timeDelta, CompAISpawner::FuncType_onSpawn onSpawn) : _makeAs(makeAs), _number(number), _delta(timeDelta), _elapsed(sf::Time::Zero), _OnSpawn(onSpawn)
     {
     }

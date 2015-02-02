@@ -33,15 +33,6 @@ namespace book
         const int _range;
     };
 
-    struct CompAIDefender : sfutils::Component<CompAIDefender,Entity>
-    {
-        explicit CompAIDefender(int hitPoint,const sf::Time& timeDelta);
-
-        const int _hitPoint;
-        const sf::Time _delta;
-        sf::Time _elapsed;
-    };
-
     struct CompAISpawner : sfutils::Component<CompAISpawner,Entity>
     {
         using FuncType = std::function<void(Entity& entity,Team* team,Level& level)>;
