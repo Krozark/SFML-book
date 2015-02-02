@@ -112,7 +112,7 @@ end_search: //exit nesteed loops
             if(distance <= range) //next me
             {
                 //shoot it
-                if(AI->_elapsed > AI->_delta)
+                if(AI->_elapsed >= AI->_delta)
                 {
                     AI->_elapsed = sf::Time::Zero;
                     CompHp::Handle hp = enemy.component<CompHp>();
@@ -155,6 +155,91 @@ end_search: //exit nesteed loops
                     begin->component<CompAIWalker>()->_pathToTake = path;
                 }
 
+            }
+        }
+    }
+
+    ///////////////////// SYS AI DEFENDER ///////////////////////
+    SysAIDefender::SysAIDefender(Level& level) : _level(level)
+    {
+    }
+
+    void SysAIDefender::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
+    {
+        CompAIWarrior::Handle AI;
+        CompTeam::Handle team;
+        CompSkin::Handle skin;
+        auto view = manager.getByComponents(AI,team,skin);
+        auto end = view.end();
+        
+        for(auto begin = view.begin();begin != end;++begin)
+        {
+            AI->_elapsed += dt;
+            if(AI->_elapsed < AI->_delta)
+                continue;
+
+            std::vector<Team*> teamEnemies = team->_team->getEnemies();
+
+            //if no enemies
+            if(teamEnemies.size() <=0)
+                continue;
+
+            std::uint32_t id = std::uint32_t(-1);
+
+            const sf::Vector2i myPosition = _level.mapPixelToCoords(skin->_sprite.getPosition());
+            const int range = AI->_range;
+
+            //seach near me
+            for(int x =-range; x<=range;++x)
+            {
+                int m =std::min(range,-x+range);
+
+                for(int y = std::max(-range,-x-range);y<=m;++y)
+                {
+                    std::list<Entity*> l = _level.getByCoords(myPosition + sf::Vector2i(x,y));
+                    for(Entity* e : l)
+                    {
+                        if(e->has<CompTeam>() and e->has<CompHp>()) //check its team
+                        {
+                            Team* t = e->component<CompTeam>()->_team;
+                            if( isEnemy(teamEnemies,t))
+                            {
+                                id = e->id();
+                                goto end_search;
+                            }
+                        }
+                    }
+                }
+            }
+end_search: //exit nesteed loops
+            if(not manager.isValid(id))
+            {
+                continue;
+            }
+
+
+            //update path
+            Entity& enemy = manager.get(id);
+            const sf::Vector2f pos = enemy.component<CompSkin>()->_sprite.getPosition();
+            const sf::Vector2i coord = _level.mapPixelToCoords(pos);
+
+            //shoot it
+            AI->_elapsed = sf::Time::Zero;
+            CompHp::Handle hp = enemy.component<CompHp>();
+            hp->_hp -= AI->_hitPoint;
+
+            Entity& me = **begin;
+
+            if(enemy.onHitted != nullptr)
+                enemy.onHitted(enemy,coord,me,myPosition,_level);
+            if(me.onHit != nullptr)
+                me.onHit(me,myPosition,enemy,coord,_level);
+
+
+            //win some gold
+            if(hp->_hp <=0)
+            {
+                team->_team->addGold(hp->_maxHp/50);
             }
         }
     }

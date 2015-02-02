@@ -112,7 +112,7 @@ namespace book
 
         setTeam(entity,team);
 
-        entity.add<CompAIWarrior>(100,sf::seconds(0.5),1);
+        entity.add<CompAIWarrior>(120,sf::seconds(0.9),1);
         entity.add<CompHp>(500);
         entity.add<CompBuildArea>(2);
 
