@@ -17,18 +17,20 @@ namespace book
             if(param.entity.has<CompTeam>())
             {
                 CompTeam::Handle team = param.entity.component<CompTeam>();
-                if(team->_team->id() == _myTeam->id())
+                if(team->_team->id() == _team[_team_id]->id())
                 {
-                    _myTeam->gui.setSelected(param.entity.id(),param.entity.getManager());
+                    _team[_team_id]->gui.setSelected(param.entity.id(),param.entity.getManager());
                 }
             }
         };
 
-        _myTeam = new Team(0,_window);
-        _team2 = new Team(1,_window);
+        _team[0] = new Team(0,_window);
+        _team[1] = new Team(1,_window);
 
-        _myTeam->addEnemy(_team2);
-        _team2->addEnemy(_myTeam);
+        _team[0]->addEnemy(_team[1]);
+        _team[1]->addEnemy(_team[0]);
+
+        _team_id = 0;
 
         _window.setMouseCursorVisible(false);
 
@@ -47,8 +49,8 @@ namespace book
             _level = new Level(_window,level);
             _level->onPickup = onPickup;
 
-            initTeam(_myTeam,sf::Vector2i(10,10));
-            initTeam(_team2,sf::Vector2i(30,30));
+            initTeam(_team[0],sf::Vector2i(10,10));
+            initTeam(_team[1],sf::Vector2i(30,30));
 
         }catch(...)
         {
@@ -91,17 +93,19 @@ namespace book
                 _window.close();
             else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape)
                 _window.close();
+            else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Return)
+                _team_id = (_team_id +1) %2;
             else
             {
                 bool used = false;
-                if(_myTeam)
-                    used = _myTeam->gui.processEvent(event);
+                if(_team[_team_id])
+                    used = _team[_team_id]->gui.processEvent(event);
                 if(_level and not used)
                     used = _level->processEvent(event);
             }
         }
-        if(_myTeam)
-            _myTeam->gui.processEvents();
+        if(_team[_team_id])
+            _team[_team_id]->gui.processEvents();
         if(_level)
             _level->processEvents();
     }
@@ -109,8 +113,8 @@ namespace book
     
     void Game::update(sf::Time deltaTime)
     {
-        if(_myTeam)
-            _myTeam->gui.update(deltaTime);
+        if(_team[_team_id])
+            _team[_team_id]->gui.update(deltaTime);
         if(_level)
             _level->update(deltaTime);
 
@@ -124,8 +128,8 @@ namespace book
 
         if(_level)
             _level->draw(_window);
-        if(_myTeam)
-            _myTeam->gui.draw(_window);
+        if(_team[_team_id])
+            _team[_team_id]->gui.draw(_window);
 
         _window.draw(_cursor);
 

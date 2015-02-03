@@ -35,8 +35,8 @@ namespace book
             sf::Sprite _cursor;
             
             Level* _level;
-            Team* _myTeam;
-            Team* _team2;
+            int _team_id;
+            Team*_team[2];
 
             Level::FuncType onPickup;
     };
