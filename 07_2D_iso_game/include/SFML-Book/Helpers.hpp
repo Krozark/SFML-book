@@ -46,9 +46,9 @@ namespace book
     };
 
     static Info informations[SIZE] = {
-        {5000, "QG",makeAsMain, Configuration::TexBuildMain, Configuration::AnimMainStand,"Main bulding.\nGenerates gold.\nYou loose the game\nif you don't control\nany one of them."},
+        {5000, "GQ",makeAsMain, Configuration::TexBuildMain, Configuration::AnimMainStand,"Main building.\nGenerates gold.\nYou loose the game\nif you don't control\nany one of them."},
         {250, "Worm Egg",makeAsWormEgg,Configuration::TexBuildWormEgg, Configuration::AnimWormEggStand, "Spawn some worms"},
-        {300, "Carnivor",makeAsCarnivor, Configuration::TexBuildCarnivor, Configuration::AnimCarnivorStand, "Make hight domage"}
+        {300, "Carnivore",makeAsCarnivor, Configuration::TexBuildCarnivor, Configuration::AnimCarnivorStand, "Make hight damage"}
     };
 
 }
