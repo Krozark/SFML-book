@@ -48,8 +48,8 @@ namespace book
         
         //ES
         systems.add<SysAIMain>();
-        //systems.add<SysAIWarrior>(*this);
-        //systems.add<SysAIDefender>(*this);
+        systems.add<SysAIWarrior>(*this);
+        systems.add<SysAIDefender>(*this);
         systems.add<SysAISpawner>(*this);
         systems.add<SysAIWalker>(*this);
         systems.add<SysAIFlyer>(*this);
