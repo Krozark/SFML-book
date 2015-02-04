@@ -11,7 +11,7 @@ namespace book
         _cursor(Configuration::textures.get(Configuration::TexCursor)),
         _level(nullptr)
     {
-        _window.setFramerateLimit(65);
+        //_window.setFramerateLimit(65);
 
         onPickup = [this](Level::Param& param){
             if(param.entity.has<CompTeam>())
@@ -60,25 +60,33 @@ namespace book
         return res;
     }
 
-    void Game::run(int minimum_frame_per_seconds)
+    void Game::run(int frame_per_seconds)
     {
         sf::Clock clock;
         sf::Time timeSinceLastUpdate;
-        sf::Time TimePerFrame = sf::seconds(1.f/minimum_frame_per_seconds);
+        sf::Time TimePerFrame = sf::seconds(1.f/frame_per_seconds);
 
         while (_window.isOpen())
         {
-            processEvents();
 
-            timeSinceLastUpdate = clock.restart();
-            while (timeSinceLastUpdate > TimePerFrame)
+            bool repaint = false;
+
+            //fix time delta between frames
+            sf::Time delta = clock.restart();
+            timeSinceLastUpdate += delta;
+            if(timeSinceLastUpdate > TimePerFrame)
             {
+                processEvents();
                 timeSinceLastUpdate -= TimePerFrame;
+                repaint = true;
                 update(TimePerFrame);
             }
 
-            update(timeSinceLastUpdate);
-            render();
+            //std::cout<<"FPS: "<<1.0/delta.asSeconds()<<std::endl;
+
+            
+            if(repaint)
+                render();
         }
     }
 
@@ -120,6 +128,7 @@ namespace book
 
         sf::Vector2i mouse(sf::Mouse::getPosition(_window));
         _cursor.setPosition(mouse.x,mouse.y);
+
     }
 
     void Game::render()

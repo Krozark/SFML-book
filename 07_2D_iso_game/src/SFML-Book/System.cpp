@@ -56,6 +56,9 @@ namespace book
         {
             AI->_elapsed += dt;
 
+            if(AI->_elapsed < AI->_delta)
+                continue;
+
             std::vector<Team*> teamEnemies = team->_team->getEnemies();
 
             //if no enemies
@@ -112,25 +115,22 @@ end_search: //exit nesteed loops
             if(distance <= range) //next me
             {
                 //shoot it
-                if(AI->_elapsed >= AI->_delta)
+                AI->_elapsed = sf::Time::Zero;
+                CompHp::Handle hp = enemy.component<CompHp>();
+                hp->_hp -= AI->_hitPoint;
+
+                Entity& me = **begin;
+
+                if(enemy.onHitted != nullptr)
+                    enemy.onHitted(enemy,coord,me,myPosition,_level);
+                if(me.onHit != nullptr)
+                    me.onHit(me,myPosition,enemy,coord,_level);
+
+
+                //win some gold
+                if(hp->_hp <=0)
                 {
-                    AI->_elapsed = sf::Time::Zero;
-                    CompHp::Handle hp = enemy.component<CompHp>();
-                    hp->_hp -= AI->_hitPoint;
-
-                    Entity& me = **begin;
-
-                    if(enemy.onHitted != nullptr)
-                        enemy.onHitted(enemy,coord,me,myPosition,_level);
-                    if(me.onHit != nullptr)
-                        me.onHit(me,myPosition,enemy,coord,_level);
-                    
-
-                    //win some gold
-                    if(hp->_hp <=0)
-                    {
-                        team->_team->addGold(hp->_maxHp/50);
-                    }
+                    team->_team->addGold(hp->_maxHp/50);
                 }
                 //no need to move more
                 if(begin->has<CompAIFlyer>())
@@ -284,10 +284,13 @@ end_search: //exit nesteed loops
                             //create new
                             sf::Vector2f pos = skin->_sprite.getPosition();
                             sf::Vector2i coord = this->_level.mapPixelToCoords(pos);
-                            Entity& newEntity = this->_level.createEntity(coord);
-                            //init with callback
-                            AI->_makeAs(newEntity,team->_team,this->_level);
-                            AI->_OnSpawn(this->_level,coord);
+                            for(int i=0;i<AI->_number;++i)
+                            {
+                                Entity& newEntity = this->_level.createEntity(coord);
+                                //init with callback
+                                AI->_makeAs(newEntity,team->_team,this->_level);
+                                AI->_OnSpawn(this->_level,coord);
+                            }
                         };
                     }
                 }

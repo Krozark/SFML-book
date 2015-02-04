@@ -48,8 +48,8 @@ namespace book
         
         //ES
         systems.add<SysAIMain>();
-        systems.add<SysAIWarrior>(*this);
-        systems.add<SysAIDefender>(*this);
+        //systems.add<SysAIWarrior>(*this);
+        //systems.add<SysAIDefender>(*this);
         systems.add<SysAISpawner>(*this);
         systems.add<SysAIWalker>(*this);
         systems.add<SysAIFlyer>(*this);
@@ -78,6 +78,8 @@ namespace book
         _sounds.remove_if([](const std::unique_ptr<sf::Sound>& sound) -> bool {
               return sound->getStatus() != sf::SoundSource::Status::Playing;
           });
+
+        std::cout<<"Entities: "<<entites.size()<<std::endl;
 
     }
 

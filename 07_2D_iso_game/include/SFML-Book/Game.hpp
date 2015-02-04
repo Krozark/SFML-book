@@ -21,7 +21,7 @@ namespace book
 
             bool load(const std::string& level);
 
-            void run(int minimum_frame_per_seconds=30);
+            void run(int frame_per_seconds=60);
 
         private:
 
