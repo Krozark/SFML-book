@@ -19,7 +19,7 @@ namespace book
         team->addQgId(entity.id());
 
         //add AI
-        entity.add<CompAIMain>(100000,sf::seconds(10));
+        entity.add<CompAIMain>(100,sf::seconds(10));
         entity.add<CompAISpawner>(makeAsEye,1,sf::seconds(5),
                                   [](Level& lvl,const sf::Vector2i& pos){
                                     makeAsVoltageEffect(lvl.createEntity(pos));
