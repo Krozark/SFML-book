@@ -21,6 +21,7 @@ namespace book
         private:
             sf::TcpSocket _sockIn;
             sf::TcpSocket _sockOut;
+            sf::TcpListener _socketListener;
     };
 }
 #endif

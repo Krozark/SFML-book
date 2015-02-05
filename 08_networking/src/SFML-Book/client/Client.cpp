@@ -1,4 +1,7 @@
 #include <SFML-Book/client/Client.hpp>
+#include <SFML-Book/common/Funcids.hpp>
+
+#include <iostream>
 
 namespace book
 {
@@ -9,13 +12,44 @@ namespace book
     bool Client::connect(const sf::IpAddress& ip,unsigned short port,sf::Time timeout)
     {
         bool res = false;
+        std::cout<<"Connect to server"<<std::endl;
         if(_sockOut.connect(ip,port,timeout) == sf::Socket::Status::Done)
         {
-            res = true;
-            sf::Packet packet;
-            packet<<sf::Int32(42);
-            _sockOut.send(packet);
+            std::cout<<"Connected to server.\nCreating second connection ..."<<std::endl;
+            int retry = 100;
+            port+=10;
+            while(_socketListener.listen(port) != sf::Socket::Status::Done and retry > 0)
+            {
+                ++port;
+                --retry;
+            }
+
+            if(retry>0)
+            {
+                sf::Packet packet;
+                packet<<sf::Int32(FuncIds::IdHandler) << sf::Uint32(port);
+
+                std::cout<<"Send informations to server (port="<<port<<")"<<std::endl;
+                if(_sockOut.send(packet) == sf::Socket::Done)
+                {
+                    std::cout<<"Wait for server connection"<<std::endl;
+                    if(_socketListener.accept(_sockIn) == sf::Socket::Done)
+                    {
+                        std::cout<<"Connection Receive. All is good."<<std::endl;
+                        res = true;
+                    }
+                    else
+                        std::cout<<"Failed"<<std::endl;
+                }
+                else
+                    std::cout<<"Failed"<<std::endl;
+            }
+            else
+                std::cout<<"Failed"<<std::endl;
         }
+        else
+            std::cout<<"Failed"<<std::endl;
+
         return res;
     }
 }

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <SFML-Book/server/Client.hpp>
+#include <SFML-Book/common/Funcids.hpp>
 
 namespace book
 {
@@ -57,23 +58,60 @@ namespace book
             std::cout<<"Error whene initializing port "<<_port<<". Stopping server"<<std::endl;
             return;
         }
-        std::cout<<"Waiting for connections"<<std::endl;
 
         _currentClient = new Client;
         while(!stop)
         {
+            std::cout<<"Waiting for new connections"<<std::endl;
             if (_socketListener.accept(_currentClient->sockIn) == sf::Socket::Done)
             {
                 std::cout<<"New connection received from " << _currentClient->sockIn.getRemoteAddress()<<std::endl;
-                _clients.emplace_back(_currentClient);
-                _currentClient = new Client;
-            }
-            else
-            {
-                std::cout<<"Dafuck"<<std::endl;
+                if(connect(*_currentClient))
+                {
+                    std::cout<<"Client accepted"<<std::endl;
+                    _clients.emplace_back(_currentClient);
+                    _currentClient = new Client;
+                }
+                else
+                {
+                    std::cout<<"Client rejected"<<std::endl;
+                    _currentClient->sockIn.disconnect();
+                }
             }
         }
 
         std::cout<<"Stop Network service"<<std::endl;
+    }
+
+    bool Server::connect(Client& client)
+    {
+        bool res = false;
+        sf::Packet packet;
+        std::cout<<"Get datas"<<std::endl;
+        if(client.sockIn.receive(packet) == sf::Socket::Done)
+        {
+            sf::Int32 fid;
+
+            packet>>fid;
+            std::cout<<"Receive datas. Compare them to expected one"<<std::endl;
+            if(fid ==  FuncIds::IdHandler)
+            {
+                sf::Uint32 port;
+                packet>>port;
+                std::cout<<"Connect to given port ("<<port<<")"<<std::endl;
+                if(client.sockOut.connect(client.sockIn.getRemoteAddress(),port,sf::seconds(5)) == sf::Socket::Status::Done)
+                {
+                    std::cout<<"All is good"<<std::endl;
+                    res = true;
+                }
+                else
+                    std::cout<<"Failed"<<std::endl;
+            }
+            else
+                std::cout<<"Error. Fuction id is not IdHandler"<<std::endl;
+        }
+        else
+            std::cout<<"Failed"<<std::endl;
+        return res;
     }
 }

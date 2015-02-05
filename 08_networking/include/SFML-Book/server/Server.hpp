@@ -29,6 +29,8 @@ namespace book
             void runGame();
             void listen();
 
+            static bool connect(Client& client);
+
             sf::Thread _gameThread;
             sf::Thread _listenThread;
 
