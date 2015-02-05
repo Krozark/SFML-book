@@ -1,5 +1,5 @@
 
-#include <SFML-Book/Team.hpp>
+#include <SFML-Book/common/Team.hpp>
 
 namespace book
 {

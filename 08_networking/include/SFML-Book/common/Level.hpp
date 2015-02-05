@@ -9,9 +9,9 @@
 #include <SFML-utils/es/Application.hpp>
 #include <SFML-utils/Map.hpp>
 
-#include <SFML-Book/Entity.hpp>
-#include <SFML-Book/Configuration.hpp>
-#include <SFML-Book/std_hash.hpp>
+#include <SFML-Book/common/Entity.hpp>
+#include <SFML-Book/common/Configuration.hpp>
+#include <SFML-Book/common/std_hash.hpp>
 
 
 namespace book

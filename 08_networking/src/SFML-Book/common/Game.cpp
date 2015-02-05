@@ -1,8 +1,7 @@
-#include <SFML-Book/Game.hpp>
-
-#include <SFML-Book/Helpers.hpp>
-#include <SFML-Book/Component.hpp>
-#include <SFML-Book/Configuration.hpp>
+#include <SFML-Book/common/Game.hpp>
+#include <SFML-Book/common/Helpers.hpp>
+#include <SFML-Book/common/Component.hpp>
+#include <SFML-Book/common/Configuration.hpp>
 
 namespace book
 {

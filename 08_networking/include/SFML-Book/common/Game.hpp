@@ -5,8 +5,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-#include <SFML-Book/Team.hpp>
-#include <SFML-Book/Level.hpp>
+#include <SFML-Book/common/Team.hpp>
+#include <SFML-Book/common/Level.hpp>
 
 namespace book
 {

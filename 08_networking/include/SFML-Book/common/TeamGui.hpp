@@ -4,7 +4,7 @@
 #include <SFML-utils/Gui.hpp>
 #include <SFML-utils/ES.hpp>
 
-#include <SFML-Book/Entity.hpp>
+#include <SFML-Book/common/Entity.hpp>
 
 namespace book
 {

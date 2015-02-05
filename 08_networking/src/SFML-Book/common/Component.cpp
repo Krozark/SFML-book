@@ -1,4 +1,4 @@
-#include <SFML-Book/Component.hpp>
+#include <SFML-Book/common/Component.hpp>
 
 namespace book
 {

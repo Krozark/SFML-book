@@ -1,5 +1,5 @@
-#include <SFML-Book/Entity.hpp>
-#include <SFML-Book/Component.hpp>
+#include <SFML-Book/common/Entity.hpp>
+#include <SFML-Book/common/Component.hpp>
 
 ES_INIT_ENTITY(book::Entity);
 

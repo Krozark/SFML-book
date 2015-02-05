@@ -1,10 +1,10 @@
-#include <SFML-Book/Level.hpp>
+#include <SFML-Book/common/Level.hpp>
 
 #include <stdexcept>
 #include <ctime>
 
-#include <SFML-Book/System.hpp>
-#include <SFML-Book/Component.hpp>
+#include <SFML-Book/common/System.hpp>
+#include <SFML-Book/common/Component.hpp>
 
 
 namespace book

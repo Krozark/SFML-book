@@ -6,7 +6,7 @@
 
 #include <unordered_map>
 
-#include <SFML-Book/Entity.hpp>
+#include <SFML-Book/common/Entity.hpp>
 
 namespace book
 {

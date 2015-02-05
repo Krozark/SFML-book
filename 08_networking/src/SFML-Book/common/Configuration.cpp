@@ -1,7 +1,7 @@
-#include <SFML-Book/Configuration.hpp>
+#include <SFML-Book/common/Configuration.hpp>
 #include <SFML-utils/gui/Configuration.hpp>
 
-#include <SFML-Book/random.hpp>
+#include <SFML-Book/common/random.hpp>
 
 namespace book
 {

@@ -1,9 +1,8 @@
-#include <SFML-Book/System.hpp>
-
-#include <SFML-Book/Component.hpp>
-#include <SFML-Book/Team.hpp>
-#include <SFML-Book/Level.hpp>
-#include <SFML-Book/Helpers.hpp>
+#include <SFML-Book/common/System.hpp>
+#include <SFML-Book/common/Component.hpp>
+#include <SFML-Book/common/Team.hpp>
+#include <SFML-Book/common/Level.hpp>
+#include <SFML-Book/common/Helpers.hpp>
 
 namespace book
 {

@@ -4,8 +4,8 @@
 #include <SFML-utils/ES.hpp>
 #include <SFML-utils/Map.hpp>
 
-#include <SFML-Book/Entity.hpp>
-#include <SFML-Book/Configuration.hpp>
+#include <SFML-Book/common/Entity.hpp>
+#include <SFML-Book/common/Configuration.hpp>
 
 namespace book
 {

@@ -2,7 +2,7 @@
 #define BOOK_TEAM_HPP
 
 #include <SFML/Graphics.hpp>
-#include <SFML-Book/TeamGui.hpp>
+#include <SFML-Book/common/TeamGui.hpp>
 #include <vector>
 
 namespace book
