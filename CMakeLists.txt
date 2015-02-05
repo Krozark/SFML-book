@@ -31,7 +31,8 @@ set_option(BOOK_BUILD_CHAPTER_3 TRUE BOOL "Build chapter 3")
 set_option(BOOK_BUILD_CHAPTER_4 TRUE BOOL "Build chapter 4. Require Box2d")
 set_option(BOOK_BUILD_CHAPTER_5 TRUE BOOL "Build chapter 5. Require Box2d and SFGUI")
 set_option(BOOK_BUILD_CHAPTER_6 TRUE BOOL "Build chapter 6. Require Box2d ans SFGUI")
-set_option(BOOK_BUILD_CHAPTER_7 TRUE BOOL "Build chapter 7")
+set_option(BOOK_BUILD_CHAPTER_7 TRUE BOOL "Build chapter 7. Required SFML-utils")
+set_option(BOOK_BUILD_CHAPTER_8 TRUE BOOL "Build chapter 8. Required SFML-utils")
 
 set(WARNING "-Wall")
 set(FLAGS "-g -std=c++0x")
@@ -73,5 +74,8 @@ endif()
 if(BOOK_BUILD_CHAPTER_7)
     add_subdirectory(07_2D_iso_game)
 endif()
-#build exemples
+
+if(BOOK_BUILD_CHAPTER_8)
+    add_subdirectory(08_networking)
+endif()
 
