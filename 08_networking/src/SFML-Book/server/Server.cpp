@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include <SFML-Book/server/Client.hpp>
-#include <SFML-Book/common/Funcids.hpp>
+#include <SFML-Book/common/FuncIds.hpp>
 
 namespace book
 {

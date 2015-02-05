@@ -1,5 +1,5 @@
 #include <SFML-Book/client/Client.hpp>
-#include <SFML-Book/common/Funcids.hpp>
+#include <SFML-Book/common/FuncIds.hpp>
 
 #include <iostream>
 
