@@ -15,10 +15,7 @@ namespace book
             Entity(const Entity&) = delete;
             Entity& operator=(const Entity&) = delete;
 
-            Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id,sfutils::Layer<Entity*>& layer);
-            ~Entity();
-
-            void init();
+            Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id);
 
             sf::Vector2f getPosition()const;
             void setPosition(const sf::Vector2f& pos);
@@ -32,8 +29,6 @@ namespace book
 
         private:
             virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const override;
-
-            sfutils::Layer<Entity*>& _layer;
     };
 
 }

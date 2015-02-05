@@ -19,7 +19,7 @@ namespace book
         team->addQgId(entity.id());
 
         //add AI
-        entity.add<CompAIMain>(100,sf::seconds(10));
+        entity.add<CompAIMain>(100000,sf::seconds(10));
         entity.add<CompAISpawner>(makeAsEye,1,sf::seconds(5),
                                   [](Level& lvl,const sf::Vector2i& pos){
                                     makeAsVoltageEffect(lvl.createEntity(pos));
@@ -51,6 +51,7 @@ namespace book
         entity.add<CompAIWarrior>(50,sf::seconds(0.7),1);
         entity.add<CompHp>(500);
         entity.add<CompAIFlyer>(200);
+        //entity.component<CompAIFlyer>->_pathToTake = 
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedEye,myCoord);

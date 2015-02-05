@@ -11,6 +11,7 @@
 
 #include <SFML-Book/Entity.hpp>
 #include <SFML-Book/Configuration.hpp>
+#include <SFML-Book/std_hash.hpp>
 
 
 namespace book
@@ -53,6 +54,10 @@ namespace book
 
             
             Entity& createEntity(const sf::Vector2i& coord);
+            void destroyEntity(Entity& e);
+            void destroyEntity(std::uint32_t id);
+            void setPosition(Entity& e,const sf::Vector2i& old,const sf::Vector2i& n);
+
             void createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord);
             void createSound(Configuration::Sounds sound_id,const sf::Vector2f& pos);
 
@@ -62,7 +67,7 @@ namespace book
             sf::Vector2i mapCoordsToScreen(const sf::Vector2i& pos)const;
             sf::Vector2i mapScreenToCoords(const sf::Vector2i& pos)const;
 
-            std::list<Entity*> getByCoords(const sf::Vector2i& coord)const;
+            std::list<Entity*> getByCoords(const sf::Vector2i& coord);
 
             std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
@@ -77,9 +82,11 @@ namespace book
             sfutils::VMap* _map;
             sfutils::MapViewer _viewer;
 
+            std::unordered_map<sf::Vector2i,std::list<Entity*>> _byCoords;
+
             sf::ConvexShape* _mouse_light;
             sfutils::Layer<sf::ConvexShape>* _mouse_layer;
-            sfutils::Layer<Entity*>* _entites_layer;
+            sfutils::Layer<Entity*>* _entities_layer;
 
             std::list<std::unique_ptr<sf::Sound>> _sounds;
             sf::Listener _listener;

@@ -4,6 +4,7 @@
 #include <ctime>
 
 #include <SFML-Book/System.hpp>
+#include <SFML-Book/Component.hpp>
 
 
 namespace book
@@ -15,7 +16,7 @@ namespace book
         _map(sfutils::VMap::createMapFromFile(filename)),
         _viewer(window,*_map,Configuration::map_inputs),
         _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1)),
-        _entites_layer(new sfutils::Layer<Entity*>("Entity",2))
+        _entities_layer(new sfutils::Layer<Entity*>("Entity",2))
     {
         //Map
         if(_map == nullptr)
@@ -30,7 +31,7 @@ namespace book
             _mouse_light->setFillColor(sf::Color(255,255,255,64));
             _map->add(_mouse_layer);
         }
-        _map->add(_entites_layer);
+        _map->add(_entities_layer);
 
         //Viewer
         _viewer.bind(Configuration::MapInputs::TakeScreen,[&window](const sf::Event& event){
@@ -54,8 +55,8 @@ namespace book
         systems.add<SysAIWalker>(*this);
         systems.add<SysAIFlyer>(*this);
         systems.add<SysSkin>();
-        systems.add<SysHp>();
-        systems.add<SysEffect>();
+        systems.add<SysHp>(*this);
+        systems.add<SysEffect>(*this);
 
 
     }
@@ -69,7 +70,7 @@ namespace book
     {
         _viewer.update(deltaTime.asSeconds());
         Application::update(deltaTime);
-        _entites_layer->sort();
+        _entities_layer->sort();
 
         sf::Vector2f pos = _viewer.getPosition();
 
@@ -100,7 +101,7 @@ namespace book
                 std::list<Entity*> pick = getByCoords(coord);
                 for(Entity* e : pick)
                 {
-                    Param p(coord,*e,*_entites_layer,*_map);
+                    Param p(coord,*e,*_entities_layer,*_map);
                     onPickup(p);
                 }
 
@@ -142,11 +143,45 @@ namespace book
 
     Entity& Level::createEntity(const sf::Vector2i& coord)
     {
-        std::uint32_t id = entites.create(*_entites_layer);
+        std::uint32_t id = entites.create();
         Entity& e = entites.get(id);
-        e.init();
+
+        e.add<CompSkin>();
         e.setPosition(_map->mapCoordsToPixel(coord));
+
+        _entities_layer->add(&e);
+        _byCoords[coord].emplace_back(&e);
+
         return e;
+    }
+
+    void Level::destroyEntity(std::uint32_t id)
+    {
+        const sf::Vector2i coord = mapPixelToCoords(entites.getComponent<CompSkin>(id)->_sprite.getPosition());
+        Entity& e = entites.get(id);
+
+        _entities_layer->remove(&e,false);
+        _byCoords[coord].remove(&e);
+        e.remove();
+    }
+
+    void Level::destroyEntity(Entity& e)
+    {
+        const sf::Vector2i coord = mapPixelToCoords(entites.getComponent<CompSkin>(e.id())->_sprite.getPosition());
+
+        _entities_layer->remove(&e,false);
+
+        _byCoords[coord].remove(&e);
+        e.remove();
+    }
+
+    void Level::setPosition(Entity& e,const sf::Vector2i& old,const sf::Vector2i& n)
+    {
+        if(n != old)
+        {
+            _byCoords[old].remove(&e);
+            _byCoords[n].emplace_back(&e);
+        }
     }
     
     void Level::createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord)
@@ -188,9 +223,9 @@ namespace book
         return _viewer.mapScreenToCoords(pos);
     }
 
-    std::list<Entity*> Level::getByCoords(const sf::Vector2i& coord)const
+    std::list<Entity*> Level::getByCoords(const sf::Vector2i& coord)
     {
-        return _entites_layer->getByCoords(coord,*_map);
+        return _byCoords[coord];
     }
 
     //TODO A* or dijtra

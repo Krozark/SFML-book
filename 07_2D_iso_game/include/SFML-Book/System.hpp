@@ -57,12 +57,16 @@ namespace book
 
     struct SysHp : sfutils::System<SysHp,Entity>
     {
+        explicit SysHp(Level& level);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+        Level& _level;
     };
 
     struct SysEffect : sfutils::System<SysEffect,Entity>
     {
+        explicit SysEffect(Level& level);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+        Level& _level;
     };
 }
 #endif

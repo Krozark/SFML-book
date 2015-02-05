@@ -5,20 +5,9 @@ ES_INIT_ENTITY(book::Entity);
 
 namespace book
 {
-    Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id, sfutils::Layer<Entity*>& layer) : sfutils::Entity<Entity>(manager,id), onHit(nullptr), onHitted(nullptr), _layer(layer)
+    Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id) : sfutils::Entity<Entity>(manager,id), onHit(nullptr), onHitted(nullptr)
     {
         name = "???";
-    }
-
-    void Entity::init()
-    {
-        add<CompSkin>();
-        _layer.add(this);
-    }
-
-    Entity::~Entity()
-    {
-        _layer.remove(this,false);
     }
 
     sf::Vector2f Entity::getPosition()const

@@ -166,7 +166,7 @@ end_search: //exit nesteed loops
 
     void SysAIDefender::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
     {
-        CompAIWarrior::Handle AI;
+        CompAIDefender::Handle AI;
         CompTeam::Handle team;
         CompSkin::Handle skin;
         auto view = manager.getByComponents(AI,team,skin);
@@ -329,11 +329,14 @@ end_search: //exit nesteed loops
 
                 if(distance > frameDistance)
                 {
-                    skin->_sprite.setPosition(PosCurrent + directon*(frameDistance/distance));
+                    sf::Vector2f nextPos = PosCurrent + directon*(frameDistance/distance);
+                    skin->_sprite.setPosition(nextPos);
+                    _level.setPosition(**begin,CoordCurrent,_level.mapPixelToCoords(nextPos));
                 }
                 else
                 {
                     skin->_sprite.setPosition(PosDest);
+                    _level.setPosition(**begin,CoordCurrent,CoordDest);
                     AI->_pathToTake = CoordCurrent;
                 }
 
@@ -379,11 +382,14 @@ end_search: //exit nesteed loops
 
                 if(distance > frameDistance)
                 {
-                    skin->_sprite.setPosition(PosCurrent + directon*(frameDistance/distance));
+                    sf::Vector2f nextPos = PosCurrent + directon*(frameDistance/distance);
+                    skin->_sprite.setPosition(nextPos);
+                    _level.setPosition(**begin,CoordCurrent,_level.mapPixelToCoords(nextPos));
                 }
                 else
                 {
                     skin->_sprite.setPosition(PosDest);
+                    _level.setPosition(**begin,CoordCurrent,CoordDest);
                     AI->_pathToTake = CoordCurrent;
                 }
 
@@ -412,6 +418,9 @@ end_search: //exit nesteed loops
     }
 
     ///////////////////// SYS AI HP ///////////////////////
+    SysHp::SysHp(Level& level) : _level(level)
+    {
+    }
     void SysHp::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
     {
         CompHp::Handle hp;
@@ -427,7 +436,7 @@ end_search: //exit nesteed loops
                 {
                     team->_team->removeQgId(begin->id());
                 }
-                begin->remove();
+                _level.destroyEntity(**begin);
             }
             else
             {
@@ -441,6 +450,9 @@ end_search: //exit nesteed loops
     }
     
     ////////////////// EFFECTS //////////////////////
+    SysEffect::SysEffect(Level& level) : _level(level)
+    {
+    }
     void SysEffect::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
     {
         CompEffect::Handle effect;
@@ -452,7 +464,7 @@ end_search: //exit nesteed loops
         {
             if(skin->_sprite.getStatus() != sfutils::AnimatedSprite::Status::Playing)
             {
-                begin->remove();
+                _level.destroyEntity(**begin);
             }
         }
     }

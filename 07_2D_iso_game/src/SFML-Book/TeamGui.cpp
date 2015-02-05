@@ -306,7 +306,7 @@ namespace book
             button->on_click = [this](const sf::Event&, sfutils::Button& button){
                 if(_status == Status::Selecting)
                 {
-                    _entityManager->remove(_entityId);
+                    _level->destroyEntity(_entityId);
                     unSelect();
                 }
             };
