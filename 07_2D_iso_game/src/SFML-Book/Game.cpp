@@ -82,9 +82,6 @@ namespace book
                 update(TimePerFrame);
             }
 
-            //std::cout<<"FPS: "<<1.0/delta.asSeconds()<<std::endl;
-
-            
             if(repaint)
                 render();
         }

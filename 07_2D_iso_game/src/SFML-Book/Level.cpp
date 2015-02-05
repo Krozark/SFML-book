@@ -80,8 +80,6 @@ namespace book
               return sound->getStatus() != sf::SoundSource::Status::Playing;
           });
 
-        std::cout<<"Entities: "<<entites.size()<<std::endl;
-
     }
 
     void Level::processEvents()
