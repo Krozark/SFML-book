@@ -3,9 +3,12 @@ set(SRCROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
 #FILES
 set(FILES_HEADER
+    ${INCROOT}/Client.hpp
 )
 
 set(FILES_SRC
+    ${SRCROOT}/Client.cpp
+
     ${SRCROOT}/main.cpp
 )
 

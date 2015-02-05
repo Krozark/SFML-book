@@ -22,8 +22,9 @@ find_library(LIB_SFML_SYSTEM sfml-system)
 find_library(LIB_SFML_GRAPHICS sfml-graphics)
 find_library(LIB_SFML_WINDOW sfml-window)
 find_library(LIB_SFML_AUDIO sfml-audio)
+find_library(LIB_SFML_NETWORK sfml-network)
 
-set(LIBS ${LIB_SFML_SYSTEM} ${LIB_SFML_GRAPHICS} ${LIB_SFML_WINDOW} ${LIB_SFML_AUDIO})
+set(LIBS ${LIB_SFML_SYSTEM} ${LIB_SFML_GRAPHICS} ${LIB_SFML_WINDOW} ${LIB_SFML_AUDIO} ${LIB_SFML_NETWORK})
 
 set_option(BOOK_BUILD_CHAPTER_1 TRUE BOOL "Build chapter 1")
 set_option(BOOK_BUILD_CHAPTER_2 TRUE BOOL "Build chapter 2")
