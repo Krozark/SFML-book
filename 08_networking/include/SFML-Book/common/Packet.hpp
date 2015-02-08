@@ -1,5 +1,5 @@
-#ifndef BOOK_PACKET_P_HPP
-#define BOOK_PACKET_P_HPP
+#ifndef BOOK_PACKET_PACKET_HPP
+#define BOOK_PACKET_PACKET_HPP
 
 #include <SFML-Book/common/FuncIds.hpp>
 
@@ -10,18 +10,46 @@ namespace book
 {
     namespace packet
     {
-        class position
+        class NetworkEvent
         {
             public:
-                position(std::uint32_t entityId,const sf::Vector2f& pos);
-                position();
+                NetworkEvent(FuncIds::FUNCIDS type);
+                virtual ~NetworkEvent();
 
-                sf::Packet& operator>>(sf::Packet&);
-                sf::Packet& operator<<(sf::Packet&);
+                FuncIds::FUNCIDS type()const;
+
+                static NetworkEvent* makeFromPacket(sf::Packet& packet);
+
+            protected:
+                const FuncIds::FUNCIDS _type;
+
+        };
+
+        class GetListGame : public NetworkEvent
+        {
+            public:
+                GetListGame();
+
+                friend sf::Packet& operator>>(sf::Packet&, GetListGame& self);
+                friend sf::Packet& operator<<(sf::Packet&, const GetListGame& self);
+        };
+
+
+        class Position : public NetworkEvent
+        {
+            public:
+                Position(std::uint32_t entityId,const sf::Vector2f& pos);
+                Position();
+
+                friend sf::Packet& operator>>(sf::Packet&, Position& self);
+                friend sf::Packet& operator<<(sf::Packet&, const Position& self);
+
+                std::uint32_t getId()const;
+                const sf::Vector2f& getPosition()const;
 
             private:
                 sf::Uint32 _entityId;
-                sf::Vector2f& _pos;
+                sf::Vector2f _pos;
         };
     }
 }

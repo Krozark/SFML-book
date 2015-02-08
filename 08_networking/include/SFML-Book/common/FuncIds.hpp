@@ -1,9 +1,16 @@
+#ifndef BOOK_FUNCIDS_HPP
+#define BOOK_FUNCIDS_HPP
+
 namespace book
 {
     namespace FuncIds{
-        enum FUNCIDS{
+        enum FUNCIDS {
             IdHandler = 0,
-            setPosition,
+            IdGetListGame,
+            IdSelectGame,
+            IdPosition
         };
     }
 }
+
+#endif

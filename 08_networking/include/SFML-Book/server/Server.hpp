@@ -10,6 +10,7 @@
 namespace book
 {
     class Client;
+    class Game;
 
     class Server
     {
@@ -32,11 +33,16 @@ namespace book
             static bool connect(Client& client);
 
             sf::Thread _gameThread;
-            sf::Thread _listenThread;
+            sf::SocketSelector _gameSelector;
+            std::list<Client*> _clients;
+            std::list<Game*> _games;
 
+
+            sf::Thread _listenThread;
             sf::TcpListener _socketListener;
             Client* _currentClient;
-            std::list<Client*> _clients;
+
+
     };
 }
 #endif

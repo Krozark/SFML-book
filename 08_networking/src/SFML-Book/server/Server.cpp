@@ -5,6 +5,8 @@
 
 #include <SFML-Book/server/Client.hpp>
 #include <SFML-Book/common/FuncIds.hpp>
+#include <SFML-Book/common/Packet.hpp>
+
 
 namespace book
 {
@@ -45,6 +47,42 @@ namespace book
         std::cout<<"Start Game service"<<std::endl;
         while(!stop)
         {
+            
+            if(not _gameSelector.wait(sf::seconds(1)))
+                continue;
+
+            //for all clients
+            for(Client* client : _clients)
+            {
+                // if has data arived
+                if(_gameSelector.isReady(client->_sockIn))
+                {
+                    std::cout<<"Client "<<client->id()<<" has some datas"<<std::endl;
+                    //get data
+                    sf::Packet packet;
+                    if(client->_sockIn.receive(packet) == sf::Socket::Done)
+                    {
+                        //convert them
+                        packet::NetworkEvent* msg = packet::NetworkEvent::makeFromPacket(packet);
+                        if(msg != nullptr)
+                        {
+                            std::cout<<"Type : "<<msg->type()<<std::endl;
+                            switch(msg->type())
+                            {
+                                case FuncIds::IdGetListGame :
+                                {
+                                    //TODO client->_sockOut
+                                }break;
+                            }
+                            delete msg;
+                        }
+                        else
+                            std::cout<<"Unknow packet"<<std::endl;
+                    }
+                    else
+                        std::cout<<"Error whene receiving packet"<<std::endl;
+                }
+            }
         }
         std::cout<<"Stop Game service"<<std::endl;
     }
@@ -63,19 +101,22 @@ namespace book
         while(!stop)
         {
             std::cout<<"Waiting for new connections"<<std::endl;
-            if (_socketListener.accept(_currentClient->sockIn) == sf::Socket::Done)
+            if (_socketListener.accept(_currentClient->_sockIn) == sf::Socket::Done)
             {
-                std::cout<<"New connection received from " << _currentClient->sockIn.getRemoteAddress()<<std::endl;
+                std::cout<<"New connection received from " << _currentClient->_sockIn.getRemoteAddress()<<std::endl;
                 if(connect(*_currentClient))
                 {
                     std::cout<<"Client accepted"<<std::endl;
+
                     _clients.emplace_back(_currentClient);
+                    _gameSelector.add(_currentClient->_sockIn);
+
                     _currentClient = new Client;
                 }
                 else
                 {
                     std::cout<<"Client rejected"<<std::endl;
-                    _currentClient->sockIn.disconnect();
+                    _currentClient->_sockIn.disconnect();
                 }
             }
         }
@@ -88,7 +129,7 @@ namespace book
         bool res = false;
         sf::Packet packet;
         std::cout<<"Get datas"<<std::endl;
-        if(client.sockIn.receive(packet) == sf::Socket::Done)
+        if(client._sockIn.receive(packet) == sf::Socket::Done)
         {
             sf::Int32 fid;
 
@@ -99,7 +140,7 @@ namespace book
                 sf::Uint32 port;
                 packet>>port;
                 std::cout<<"Connect to given port ("<<port<<")"<<std::endl;
-                if(client.sockOut.connect(client.sockIn.getRemoteAddress(),port,sf::seconds(5)) == sf::Socket::Status::Done)
+                if(client._sockOut.connect(client._sockIn.getRemoteAddress(),port,sf::seconds(5)) == sf::Socket::Status::Done)
                 {
                     std::cout<<"All is good"<<std::endl;
                     res = true;
