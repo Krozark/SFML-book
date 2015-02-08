@@ -16,6 +16,8 @@ set(FILES_HEADER
     ${INCROOT}/Helpers.hpp
     ${INCROOT}/random.hpp
 
+    ${INCROOT}/Packet.hpp
+
 )
 
 set(FILES_SRC
@@ -30,6 +32,8 @@ set(FILES_SRC
     ${SRCROOT}/System.cpp
 
     ${SRCROOT}/Helpers.cpp
+
+    ${SRCROOT}/Packet.cpp
 
     ${SRCROOT}/main.cpp
 )
