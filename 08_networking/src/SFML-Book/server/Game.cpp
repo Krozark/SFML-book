@@ -2,7 +2,9 @@
 
 namespace book
 {
-    Game::Game()
+    int Game::_numberOfCreations = 0;
+    
+    Game::Game() : _id(++_numberOfCreations)
     {
     }
 
@@ -16,5 +18,10 @@ namespace book
     {
         sf::Lock guard(_clientsMutex);
         return _clients.size();
+    }
+
+    int Game::id()const
+    {
+        return _id;
     }
 }

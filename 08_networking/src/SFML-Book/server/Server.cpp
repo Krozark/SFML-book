@@ -71,8 +71,10 @@ namespace book
                             {
                                 case FuncIds::IdGetListGame :
                                 {
+                                    //TODO send game list
                                     //TODO client->_sockOut
                                 }break;
+                                default : break;
                             }
                             delete msg;
                         }

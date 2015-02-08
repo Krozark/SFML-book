@@ -19,6 +19,8 @@ namespace book
             std::size_t getTeamCount();
             std::size_t getPalyersCount();
 
+            int id()const;
+
         protected:
 
 
@@ -28,6 +30,9 @@ namespace book
 
             sf::Mutex _clientsMutex;
             std::vector<Client*> _clients;
+
+            const int _id;
+            static int _numberOfCreations;
     };
 }
 #endif

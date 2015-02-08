@@ -5,7 +5,7 @@
 namespace book
 {
 
-    unsigned int Client::_numberOfCreations = 0;
+    int Client::_numberOfCreations = 0;
     
     Client::Client() :_isRunning(false), _receiveThread(&Client::_receive,this), _sendThread(&Client::_send,this),_id(++_numberOfCreations)
     {
@@ -25,13 +25,14 @@ namespace book
         std::cout<<"Client "<<_id<<" is stoped"<<std::endl;
     }
 
-    unsigned int Client::id()const
+    int Client::id()const
     {
         return _id;
     }
 
     bool Client::poolEvent(sf::Packet& event)
     {
+        return false;
     }
 
     void Client::send(sf::Packet& packet)

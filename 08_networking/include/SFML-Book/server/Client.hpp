@@ -19,7 +19,7 @@ namespace book
             
             void run();
             void stop();
-            unsigned int id()const;
+            int id()const;
 
             bool poolEvent(sf::Packet& event);
             void send(sf::Packet& packet);
@@ -43,8 +43,8 @@ namespace book
             sf::Mutex _sendMutex;
             std::queue<sf::Packet> _outgoing;
 
-            static unsigned int _numberOfCreations;
-            const unsigned int _id;
+            static int _numberOfCreations;
+            const int _id;
 
     };
 }
