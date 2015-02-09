@@ -6,19 +6,19 @@ set(SRCROOT_SERVER ${SRCROOT}/../server)
 
 #FILES
 set(FILES_HEADER
-    ${INCROOT}/Configuration.hpp
-    ${INCROOT}/Game.hpp
-    ${INCROOT}/Level.hpp
-    ${INCROOT}/Team.hpp
-    ${INCROOT}/TeamGui.hpp
 
-    ${INCROOT}/Entity.hpp
-    ${INCROOT}/Component.hpp
-    ${INCROOT}/System.hpp
+    #${INCROOT}/Configuration.hpp
+    #${INCROOT}/Game.hpp
+    #${INCROOT}/Level.hpp
+    #${INCROOT}/Team.hpp
+    #${INCROOT}/TeamGui.hpp
 
-    ${INCROOT}/Helpers.hpp
-    ${INCROOT}/random.hpp
+    #${INCROOT}/Entity.hpp
+    #${INCROOT}/Component.hpp
+    #${INCROOT}/System.hpp
 
+    #${INCROOT}/Helpers.hpp
+    #${INCROOT}/random.hpp
 
     ${INCROOT}/Packet.hpp
     ${INCROOT}/Connection.hpp
@@ -28,17 +28,17 @@ set(FILES_HEADER
 )
 
 set(FILES_SRC
-    ${SRCROOT}/Configuration.cpp
-    ${SRCROOT}/Game.cpp
-    ${SRCROOT}/Level.cpp
-    ${SRCROOT}/Team.cpp
-    ${SRCROOT}/TeamGui.cpp
+    #${SRCROOT}/Configuration.cpp
+    #${SRCROOT}/Game.cpp
+    #${SRCROOT}/Level.cpp
+    #${SRCROOT}/Team.cpp
+    #${SRCROOT}/TeamGui.cpp
 
-    ${SRCROOT}/Entity.cpp
-    ${SRCROOT}/Component.cpp
-    ${SRCROOT}/System.cpp
+    #${SRCROOT}/Entity.cpp
+    #${SRCROOT}/Component.cpp
+    #${SRCROOT}/System.cpp
 
-    ${SRCROOT}/Helpers.cpp
+    #${SRCROOT}/Helpers.cpp
 
     ${SRCROOT}/Packet.cpp
     ${SRCROOT}/Connection.cpp

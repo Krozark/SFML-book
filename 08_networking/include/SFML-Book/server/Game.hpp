@@ -16,6 +16,7 @@ namespace book
             Game& operator=(const Game&) = delete;
 
             Game();
+            ~Game();
             
             int getTeamCount();
             int getPalyersCount();

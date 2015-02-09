@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include <SFML-Book/server/Client.hpp>
+#include <SFML-Book/server/Game.hpp>
+
 #include <SFML-Book/common/FuncIds.hpp>
 #include <SFML-Book/common/Packet.hpp>
 
@@ -21,10 +23,21 @@ namespace book
     Server::Server(int port) : _port(port),_gameThread(&Server::runGame,this), _listenThread(&Server::listen,this)
     {
         _currentClient = nullptr;
+        _games.emplace_back(new Game());
     }
 
     Server::~Server()
     {
+        sf::Lock guard(_gameMutex);
+        for(Game* game : _games)
+            delete game;
+
+        for(Client* client : _clients)
+        {
+            client->stop();
+            delete client;
+        }
+
         delete _currentClient;
     }
 
@@ -38,8 +51,8 @@ namespace book
         std::cout<<"Server is running"<<std::endl;
 
         _gameThread.wait();
-        _listenThread.terminate();
 
+        _listenThread.terminate();
     }
 
     void Server::runGame()
@@ -53,7 +66,7 @@ namespace book
             for(auto it = _clients.begin(); it != _clients.end();++it)
             {
                 Client* client = *it;
-                while(client->pollEvent(event))
+                while(client and client->pollEvent(event))
                 {
                     packet::NetworkEvent* msg = packet::NetworkEvent::makeFromPacket(event);
                     if(msg != nullptr)
@@ -71,6 +84,7 @@ namespace book
                             {
                                 it = _clients.erase(it);
                                 --it;
+                                client = nullptr;
                             }break;
                             default : break;
                         }
