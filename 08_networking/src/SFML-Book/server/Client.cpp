@@ -1,81 +1,55 @@
 #include <SFML-Book/server/Client.hpp>
 
+#include <SFML-Book/common/FuncIds.hpp>
+
 #include <iostream>
 
 namespace book
 {
 
-    int Client::_numberOfCreations = 0;
-    
-    Client::Client() :_isRunning(false), _receiveThread(&Client::_receive,this), _sendThread(&Client::_send,this),_id(++_numberOfCreations)
+    Client::Client()
     {
     }
 
-    void Client::run()
+    bool Client::connect()
     {
-        std::cout<<"Client "<<_id<<" is runing"<<std::endl;
-        _isRunning = true;
-        _receiveThread.launch();
-        _sendThread.launch();
-    }
-
-    void Client::stop()
-    {
-        _isRunning  = false;
-        std::cout<<"Client "<<_id<<" is stoped"<<std::endl;
-    }
-
-    int Client::id()const
-    {
-        return _id;
-    }
-
-    bool Client::poolEvent(sf::Packet& event)
-    {
-        return false;
-    }
-
-    void Client::send(sf::Packet& packet)
-    {
-    }
-
-    void Client::_receive()
-    {
-        sf::SocketSelector selector;
-        selector.add(_sockIn);
-
-        while(_isRunning)
+        bool res = false;
+        sf::Packet packet;
+        std::cout<<"Get datas"<<std::endl;
+        if(_sockIn.receive(packet) == sf::Socket::Done)
         {
-            if(not selector.wait(sf::seconds(1)))
-                continue;
+            sf::Int32 fid;
 
-            if(not selector.isReady(_sockIn))
-                continue;
-            
-        }
-    }
-
-    void Client::_send()
-    {
-        while(_isRunning)
-        {
-            _sendMutex.lock();
-            if(_outgoing.size() > 0)
+            packet>>fid;
+            std::cout<<"Receive datas. Compare them to expected one"<<std::endl;
+            if(fid ==  FuncIds::IdHandler)
             {
-                sf::Packet packet = _outgoing.front();
-                _outgoing.pop();
-                _sendMutex.unlock();
-                int retry = 3;
-                while(retry > 0 and _sockOut.send(packet) != sf::Socket::Done)
+                sf::Uint32 port;
+                packet>>port;
+                std::cout<<"Connect to given port ("<<port<<")"<<std::endl;
+                if(_sockOut.connect(_sockIn.getRemoteAddress(),port,sf::seconds(5)) == sf::Socket::Status::Done)
                 {
-                    --retry;
+                    std::cout<<"All is good"<<std::endl;
+                    res = true;
                 }
+                else
+                    std::cout<<"Failed"<<std::endl;
             }
             else
-            {
-                _sendMutex.unlock();
-            }
-
+                std::cout<<"Error. Fuction id is not IdHandler"<<std::endl;
         }
+        else
+            std::cout<<"Failed"<<std::endl;
+        return res;
+    }
+
+    sf::IpAddress Client::getRemoteAddress()const
+    {
+        return _sockIn.getRemoteAddress();
+    }
+
+    sf::TcpSocket& Client::getSockIn()
+    {
+        return _sockIn;
     }
 }

@@ -30,10 +30,8 @@ namespace book
             void runGame();
             void listen();
 
-            static bool connect(Client& client);
-
             sf::Thread _gameThread;
-            sf::SocketSelector _gameSelector;
+            sf::Mutex _gameMutex;
             std::list<Client*> _clients;
             std::list<Game*> _games;
 

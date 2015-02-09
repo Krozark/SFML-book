@@ -52,4 +52,10 @@ namespace book
 
         return res;
     }
+
+    sf::IpAddress Client::getRemoteAddress()const
+    {
+        return _sockOut.getRemoteAddress();
+    }
+
 }

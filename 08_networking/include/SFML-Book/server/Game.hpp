@@ -8,6 +8,7 @@ namespace book
 {
     class Team;
     class Client;
+
     class Game
     {
         public:
@@ -16,8 +17,8 @@ namespace book
 
             Game();
             
-            std::size_t getTeamCount();
-            std::size_t getPalyersCount();
+            int getTeamCount();
+            int getPalyersCount();
 
             int id()const;
 

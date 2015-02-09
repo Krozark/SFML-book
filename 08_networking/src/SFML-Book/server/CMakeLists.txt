@@ -15,6 +15,8 @@ set(FILES_HEADER
 
     ${INCROOT_COMMON}/Packet.hpp    
     ${INCROOT_COMMON}/FuncIds.hpp    
+    ${INCROOT_COMMON}/Connection.hpp
+
 )
 
 set(FILES_SRC
@@ -25,6 +27,7 @@ set(FILES_SRC
     ${SRCROOT}/Team.cpp
 
     ${SRCROOT_COMMON}/Packet.cpp
+    ${SRCROOT_COMMON}/Connection.cpp
 
     ${SRCROOT}/main.cpp
 )

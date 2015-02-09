@@ -45,44 +45,39 @@ namespace book
     void Server::runGame()
     {
         std::cout<<"Start Game service"<<std::endl;
+        sf::Packet event;
         while(!stop)
         {
-            
-            if(not _gameSelector.wait(sf::seconds(1)))
-                continue;
-
+            sf::Lock guard(_gameMutex);
             //for all clients
-            for(Client* client : _clients)
+            for(auto it = _clients.begin(); it != _clients.end();++it)
             {
-                // if has data arived
-                if(_gameSelector.isReady(client->_sockIn))
+                Client* client = *it;
+                while(client->pollEvent(event))
                 {
-                    std::cout<<"Client "<<client->id()<<" has some datas"<<std::endl;
-                    //get data
-                    sf::Packet packet;
-                    if(client->_sockIn.receive(packet) == sf::Socket::Done)
+                    packet::NetworkEvent* msg = packet::NetworkEvent::makeFromPacket(event);
+                    if(msg != nullptr)
                     {
-                        //convert them
-                        packet::NetworkEvent* msg = packet::NetworkEvent::makeFromPacket(packet);
-                        if(msg != nullptr)
+                        std::cout<<"Client "<<client->id()<<" recive data of type : "<<msg->type()<<std::endl;
+                        switch(msg->type())
                         {
-                            std::cout<<"Type : "<<msg->type()<<std::endl;
-                            switch(msg->type())
+                            case FuncIds::IdGetListGame :
                             {
-                                case FuncIds::IdGetListGame :
-                                {
-                                    //TODO send game list
-                                    //TODO client->_sockOut
-                                }break;
-                                default : break;
-                            }
-                            delete msg;
+                                sf::Packet response;
+                                response<<packet::SetListGame(_games);
+                                client->send(response);
+                            }break;
+                            case book::FuncIds::IdDisconnected :
+                            {
+                                it = _clients.erase(it);
+                                --it;
+                            }break;
+                            default : break;
                         }
-                        else
-                            std::cout<<"Unknow packet"<<std::endl;
+                        delete msg;
                     }
                     else
-                        std::cout<<"Error whene receiving packet"<<std::endl;
+                        std::cout<<"Unknow packet"<<std::endl;
                 }
             }
         }
@@ -103,22 +98,24 @@ namespace book
         while(!stop)
         {
             std::cout<<"Waiting for new connections"<<std::endl;
-            if (_socketListener.accept(_currentClient->_sockIn) == sf::Socket::Done)
+            if (_socketListener.accept(_currentClient->getSockIn()) == sf::Socket::Done)
             {
-                std::cout<<"New connection received from " << _currentClient->_sockIn.getRemoteAddress()<<std::endl;
-                if(connect(*_currentClient))
+                std::cout<<"New connection received from " << _currentClient->getRemoteAddress()<<std::endl;
+                if(_currentClient->connect())
                 {
                     std::cout<<"Client accepted"<<std::endl;
 
+                    sf::Lock guard(_gameMutex);
+
                     _clients.emplace_back(_currentClient);
-                    _gameSelector.add(_currentClient->_sockIn);
+                    _currentClient->run();
 
                     _currentClient = new Client;
                 }
                 else
                 {
                     std::cout<<"Client rejected"<<std::endl;
-                    _currentClient->_sockIn.disconnect();
+                    _currentClient->disconnect();
                 }
             }
         }
@@ -126,35 +123,4 @@ namespace book
         std::cout<<"Stop Network service"<<std::endl;
     }
 
-    bool Server::connect(Client& client)
-    {
-        bool res = false;
-        sf::Packet packet;
-        std::cout<<"Get datas"<<std::endl;
-        if(client._sockIn.receive(packet) == sf::Socket::Done)
-        {
-            sf::Int32 fid;
-
-            packet>>fid;
-            std::cout<<"Receive datas. Compare them to expected one"<<std::endl;
-            if(fid ==  FuncIds::IdHandler)
-            {
-                sf::Uint32 port;
-                packet>>port;
-                std::cout<<"Connect to given port ("<<port<<")"<<std::endl;
-                if(client._sockOut.connect(client._sockIn.getRemoteAddress(),port,sf::seconds(5)) == sf::Socket::Status::Done)
-                {
-                    std::cout<<"All is good"<<std::endl;
-                    res = true;
-                }
-                else
-                    std::cout<<"Failed"<<std::endl;
-            }
-            else
-                std::cout<<"Error. Fuction id is not IdHandler"<<std::endl;
-        }
-        else
-            std::cout<<"Failed"<<std::endl;
-        return res;
-    }
 }

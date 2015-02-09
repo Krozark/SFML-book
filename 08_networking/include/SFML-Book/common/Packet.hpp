@@ -5,9 +5,11 @@
 
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
+#include <list>
 
 namespace book
 {
+    class Game;
     namespace packet
     {
         class NetworkEvent
@@ -20,18 +22,45 @@ namespace book
 
                 static NetworkEvent* makeFromPacket(sf::Packet& packet);
 
+                friend sf::Packet& operator>>(sf::Packet&, NetworkEvent& self);
+                friend sf::Packet& operator<<(sf::Packet&, const NetworkEvent& self);
+
             protected:
                 const FuncIds::FUNCIDS _type;
 
+        };
+
+        class Disconnected : public NetworkEvent
+        {
+            public:
+                Disconnected();
         };
 
         class GetListGame : public NetworkEvent
         {
             public:
                 GetListGame();
+        };
 
-                friend sf::Packet& operator>>(sf::Packet&, GetListGame& self);
-                friend sf::Packet& operator<<(sf::Packet&, const GetListGame& self);
+        class SetListGame : public NetworkEvent
+        {
+            public:
+                SetListGame();
+                SetListGame(const std::list<book::Game*>& list);
+
+                friend sf::Packet& operator>>(sf::Packet&, SetListGame& self);
+                friend sf::Packet& operator<<(sf::Packet&, const SetListGame& self);
+                
+                struct Game {
+                    int nbTeams;
+                    int nbPlayers;
+                    int id;
+                };
+
+                const std::list<SetListGame::Game>& list()const;
+                
+            private:
+                std::list<SetListGame::Game> _list;
         };
 
 

@@ -8,13 +8,13 @@ namespace book
     {
     }
 
-    std::size_t Game::getTeamCount()
+    int Game::getTeamCount()
     {
         sf::Lock guard(_teamMutex);
         return _teams.size();
     }
 
-    std::size_t Game::getPalyersCount()
+    int Game::getPalyersCount()
     {
         sf::Lock guard(_clientsMutex);
         return _clients.size();

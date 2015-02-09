@@ -6,7 +6,9 @@ namespace book
     namespace FuncIds{
         enum FUNCIDS {
             IdHandler = 0,
+            IdDisconnected,
             IdGetListGame,
+            IdSetListGame,
             IdSelectGame,
             IdPosition
         };
