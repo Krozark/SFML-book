@@ -60,7 +60,6 @@ namespace book
     void Server::runGame()
     {
         std::cout<<"Start Game service"<<std::endl;
-        sf::Packet event;
         while(!stop)
         {
             sf::Lock guard(_clientMutex);
@@ -68,74 +67,69 @@ namespace book
             for(auto it = _clients.begin(); it != _clients.end();++it)
             {
                 Client* client = *it;
-                while(client and client->pollEvent(event))
+                packet::NetworkEvent* msg;
+                while(client and client->pollEvent(msg))
                 {
-                    packet::NetworkEvent* msg = packet::NetworkEvent::makeFromPacket(event);
-                    if(msg != nullptr)
+                    std::cout<<"Client "<<client->id()<<" recive data of type : "<<msg->type()<<std::endl;
+                    switch(msg->type())
                     {
-                        std::cout<<"Client "<<client->id()<<" recive data of type : "<<msg->type()<<std::endl;
-                        switch(msg->type())
+                        case FuncIds::IdGetListGame :
                         {
-                            case FuncIds::IdGetListGame :
+                            sf::Packet response;
+                            packet::SetListGame list;
+                            sf::Lock guard(_gameMutex);
+                            for(Game* game : _games)
                             {
-                                sf::Packet response;
-                                packet::SetListGame list;
-                                sf::Lock guard(_gameMutex);
-                                for(Game* game : _games)
+                                list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
+                            }
+
+                            response<<list;
+                            client->send(response);
+                        }break;
+                        case FuncIds::IdCreateGame :
+                        {
+                            sf::Packet response;
+                            packet::SetListGame list;
+                            sf::Lock guard(_gameMutex);
+                            _games.emplace_back(new Game());
+                            for(Game* game : _games)
+                            {
+                                list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
+                            }
+
+                            response<<list;
+                            //send new game to all clients
+                            for(auto it2 = _clients.begin(); it2 != _clients.end();++it2)
+                                (*it2)->send(response);
+                        }break;
+                        case FuncIds::IdJoinGame :
+                        {
+                            int gameId = static_cast<packet::JoinGame*>(msg)->gameId();
+                            sf::Lock guard(_gameMutex);
+                            for(Game* game : _games)
+                            {
+                                if(game->id() == gameId)
                                 {
-                                    list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
+                                    game->addClient(client);
+
+                                    client = nullptr;
+                                    it = _clients.erase(it);
+                                    --it;
+                                    break;
                                 }
+                            }
+                            
+                        }break;
 
-                                response<<list;
-                                client->send(response);
-                            }break;
-                            case FuncIds::IdCreateGame :
-                            {
-                                sf::Packet response;
-                                packet::SetListGame list;
-                                sf::Lock guard(_gameMutex);
-                                _games.emplace_back(new Game());
-                                for(Game* game : _games)
-                                {
-                                    list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
-                                }
-
-                                response<<list;
-                                //send new game to all clients
-                                for(auto it2 = _clients.begin(); it2 != _clients.end();++it2)
-                                    (*it2)->send(response);
-                            }break;
-                            case FuncIds::IdJoinGame :
-                            {
-                                int gameId = static_cast<packet::JoinGame*>(msg)->gameId();
-                                sf::Lock guard(_gameMutex);
-                                for(Game* game : _games)
-                                {
-                                    if(game->id() == gameId)
-                                    {
-                                        game->addClient(client);
-
-                                        client = nullptr;
-                                        it = _clients.erase(it);
-                                        --it;
-                                        break;
-                                    }
-                                }
-                                
-                            }break;
-
-                            case book::FuncIds::IdDisconnected :
-                            {
-                                it = _clients.erase(it);
-                                --it;
-                                client = nullptr;
-                            }break;
-                            default : break;
-                        }
-                        delete msg;
+                        case FuncIds::IdDisconnected :
+                        {
+                            it = _clients.erase(it);
+                            --it;
+                            client = nullptr;
+                        }break;
+                        default : break;
                     }
-                    else
-                        std::cout<<"Unknow packet"<<std::endl;
+                    delete msg;
                 }
             }
         }

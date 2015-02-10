@@ -36,6 +36,7 @@ namespace book
             enum Status {
                 StatusMainMenu,
                 StatusGameMenu,
+                StatusDisconnected
             } _status;
 
             MainMenu _mainMenu;

@@ -77,6 +77,31 @@ namespace book
 
     void Game::processNetworkEvents()
     {
+        sf::Lock guard(_clientsMutex);
+        for(auto it = _clients.begin(); it != _clients.end();++it)
+        {
+            Client* client = *it;
+            packet::NetworkEvent* msg;
+            while(client and client->pollEvent(msg))
+            {
+                switch(msg->type())
+                {
+                    case FuncIds::IdCreateEntity :
+                    {
+                    }break;
+                    case FuncIds::IdDestroyEntity :
+                    {
+                    }break;
+                    case FuncIds::IdDisconnected :
+                    {
+                        it = _clients.erase(it);
+                        --it;
+                        client = nullptr;
+                    }break;
+                    default : break;
+                }
+            }
+        }
     }
 
     void Game::update(sf::Time deltaTime)

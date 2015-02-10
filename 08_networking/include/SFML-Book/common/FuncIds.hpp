@@ -5,14 +5,19 @@ namespace book
 {
     namespace FuncIds{
         enum FUNCIDS {
+            //specials
             IdHandler = 0,
             IdDisconnected,
-            IdGetListGame,
-            IdSetListGame,
-            IdCreateGame,
-            IdJoinGame,
-            IdJoinGameConfirmation,
-            IdPosition
+            //main menu
+            IdGetListGame, //client
+            IdSetListGame, //server
+            IdCreateGame, //client
+            IdJoinGame, //client
+            IdJoinGameConfirmation, //server
+            //in game
+            IdPosition, //server
+            IdCreateEntity, //client
+            IdDestroyEntity, //client
         };
     }
 }

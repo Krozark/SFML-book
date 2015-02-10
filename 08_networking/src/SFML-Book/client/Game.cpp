@@ -91,6 +91,9 @@ namespace book
                     case Status::StatusGameMenu :
                     {
                     }break;
+                    case Status::StatusDisconnected :
+                    {
+                    }break;
                 }
             }
         }
@@ -101,6 +104,9 @@ namespace book
                 _mainMenu.processEvents();
             }break;
             case Status::StatusGameMenu :
+            {
+            }break;
+            case Status::StatusDisconnected :
             {
             }break;
         }
@@ -144,6 +150,9 @@ namespace book
             case Status::StatusGameMenu :
             {
             }break;
+            case Status::StatusDisconnected :
+            {
+            }break;
         }
     }
 
@@ -157,6 +166,9 @@ namespace book
                 _window.draw(_mainMenu);
             }break;
             case Status::StatusGameMenu :
+            {
+            }break;
+            case Status::StatusDisconnected :
             {
             }break;
         }
