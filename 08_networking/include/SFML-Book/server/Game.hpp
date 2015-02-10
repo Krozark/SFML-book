@@ -45,6 +45,9 @@ namespace book
             static int _numberOfCreations;
 
             void _run();
+
+            void processNetworkEvents();
+            void update(sf::Time deltaTime);
     };
 }
 #endif

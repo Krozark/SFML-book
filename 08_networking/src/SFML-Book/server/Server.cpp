@@ -89,6 +89,20 @@ namespace book
                                 response<<list;
                                 client->send(response);
                             }break;
+                            case FuncIds::IdCreateGame :
+                            {
+                                sf::Packet response;
+                                packet::SetListGame list;
+                                sf::Lock guard(_gameMutex);
+                                _games.emplace_back(new Game());
+                                for(Game* game : _games)
+                                {
+                                    list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
+                                }
+
+                                response<<list;
+                                client->send(response);
+                            }break;
                             case FuncIds::IdJoinGame :
                             {
                                 int gameId = static_cast<packet::JoinGame*>(msg)->gameId();
@@ -106,12 +120,12 @@ namespace book
                                         client = nullptr;
                                         it = _clients.erase(it);
                                         --it;
-
                                         break;
                                     }
                                 }
                                 
                             }break;
+
                             case book::FuncIds::IdDisconnected :
                             {
                                 it = _clients.erase(it);

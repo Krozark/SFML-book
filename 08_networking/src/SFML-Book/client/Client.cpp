@@ -1,7 +1,5 @@
 #include <SFML-Book/client/Client.hpp>
 
-#include <SFML-Book/common/Packet.hpp>
-
 #include <iostream>
 
 namespace book
@@ -58,18 +56,5 @@ namespace book
     sf::IpAddress Client::getRemoteAddress()const
     {
         return _sockOut.getRemoteAddress();
-    }
-
-    bool Client::pollEvent(packet::NetworkEvent*& event)
-    {
-        bool res = false;
-        sf::Packet msg;
-        if(Connection::pollEvent(msg))
-        {
-            event = packet::NetworkEvent::makeFromPacket(msg);
-            if(event != nullptr)
-                res = true;
-        }
-        return res;
     }
 }

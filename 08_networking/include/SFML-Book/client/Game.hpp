@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <SFML-Book/client/Client.hpp>
+#include <SFML-Book/client/Gui.hpp>
 
 namespace book
 {
@@ -33,9 +34,12 @@ namespace book
             bool _isConnected;
 
             enum Status {
-                MainMenu,
-                InGame,
+                StatusMainMenu,
+                StatusGameMenu,
             } _status;
+
+            MainMenu _mainMenu;
+
     };
 }
 #endif

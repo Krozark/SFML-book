@@ -2,6 +2,8 @@
 #define BOOK_CONNECTION_HPP
 
 #include <SFML/Network.hpp>
+#include <SFML-Book/common/Packet.hpp>
+
 #include <queue>
 
 namespace book
@@ -23,6 +25,8 @@ namespace book
             int id()const;
 
             bool pollEvent(sf::Packet& event);
+            bool pollEvent(packet::NetworkEvent*& event);
+            
             void send(sf::Packet& packet);
 
             void disconnect();

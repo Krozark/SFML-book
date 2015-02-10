@@ -14,7 +14,8 @@ namespace book
         _window(sf::VideoMode(X,Y),"08 Networking"),        
         _cursor(Configuration::textures.get(Configuration::TexCursor)),        
         _isConnected(false),
-        _status(Status::MainMenu)
+        _status(Status::StatusMainMenu),
+        _mainMenu(_window,_client)
     {
     }
 
@@ -36,11 +37,13 @@ namespace book
         if(not _isConnected)
             return;
 
-        /*{
+        _client.run();
+
+        {
             sf::Packet event;
             event<<packet::GetListGame();
             _client.send(event);
-        }*/
+        }
 
         sf::Clock clock;
         sf::Time timeSinceLastUpdate;
@@ -77,6 +80,29 @@ namespace book
             {
                 _window.close();
             }
+            else
+            {
+                switch(_status)
+                {
+                    case Status::StatusMainMenu :
+                    {
+                        _mainMenu.processEvent(event);
+                    }break;
+                    case Status::StatusGameMenu :
+                    {
+                    }break;
+                }
+            }
+        }
+        switch(_status)
+        {
+            case Status::StatusMainMenu :
+            {
+                _mainMenu.processEvents();
+            }break;
+            case Status::StatusGameMenu :
+            {
+            }break;
         }
     }
 
@@ -90,10 +116,7 @@ namespace book
                 case FuncIds::IdSetListGame :
                 {
                     packet::SetListGame* gameList = static_cast<packet::SetListGame*>(msg);
-                    for(const packet::SetListGame::Game& game : gameList->list())
-                    {
-                        std::cout<<"id: "<<game.id<<" teams: "<<game.nbTeams<<" players: "<<game.nbPlayers<<std::endl;
-                    }
+                    _mainMenu.fill(*gameList);
                 }break;
                 case FuncIds::IdJoinGameConfirmation :
                 {
@@ -111,11 +134,30 @@ namespace book
 
     void Game::update(sf::Time deltaTime)
     {
+        switch(_status)
+        {
+            case Status::StatusMainMenu :
+            {
+            }break;
+            case Status::StatusGameMenu :
+            {
+            }break;
+        }
     }
 
     void Game::render()
     {
         _window.clear();
+        switch(_status)
+        {
+            case Status::StatusMainMenu :
+            {
+                _window.draw(_mainMenu);
+            }break;
+            case Status::StatusGameMenu :
+            {
+            }break;
+        }
         _window.display();
     }
 }

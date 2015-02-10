@@ -41,6 +41,8 @@ namespace book
                 }break;
                 case FuncIds::IdCreateGame :
                 {
+                    res = new CreateGame();
+                    packet>>(*static_cast<CreateGame*>(res));
                 }break;
                 case FuncIds::IdJoinGameConfirmation :
                 {
@@ -141,6 +143,11 @@ namespace book
         const std::list<SetListGame::Game>& SetListGame::list()const
         {
             return _list;
+        }
+
+        ////////////////// Create game /////////////////
+        CreateGame::CreateGame() : NetworkEvent(FuncIds::IdCreateGame)
+        {
         }
 
         //////////////// Join Game ////////////////

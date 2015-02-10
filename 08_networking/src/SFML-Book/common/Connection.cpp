@@ -55,6 +55,20 @@ namespace book
         return res;
     }
 
+    
+    bool Connection::pollEvent(packet::NetworkEvent*& event)
+    {
+        bool res = false;
+        sf::Packet msg;
+        if(Connection::pollEvent(msg))
+        {
+            event = packet::NetworkEvent::makeFromPacket(msg);
+            if(event != nullptr)
+                res = true;
+        }
+        return res;
+    }
+
     void Connection::send(sf::Packet& packet)
     {
         sf::Lock guard(_sendMutex);

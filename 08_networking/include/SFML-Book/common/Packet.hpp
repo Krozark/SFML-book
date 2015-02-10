@@ -63,6 +63,12 @@ namespace book
                 std::list<SetListGame::Game> _list;
         };
 
+        class CreateGame : public NetworkEvent
+        {
+            public :
+                CreateGame();
+        };
+
         class JoinGame : public NetworkEvent
         {
             public:

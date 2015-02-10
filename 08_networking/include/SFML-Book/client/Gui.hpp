@@ -1,18 +1,25 @@
 #ifndef BOOK_GUI_HPP
 #define BOOK_GUI_HPP
 
+#include <SFML-utils/Gui.hpp>
+
+#include <SFML-Book/common/Packet.hpp>
+
 namespace book
 {
-    class Gui
+    class Client;
+    class MainMenu : public sfutils::Frame
     {
         public:
-            Gui();
-            Gui(const Gui&) = delete;
-            Gui& operator=(const Gui&) = delete;
+            MainMenu(const MainMenu&) = delete;
+            MainMenu& operator=(const MainMenu&) = delete;
 
-        protected:
+            MainMenu(sf::RenderWindow& window,Client& client);
+
+            void fill(packet::SetListGame& list);
 
         private:
+            Client& _client;
     };
 }
 #endif
