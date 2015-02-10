@@ -1,13 +1,12 @@
 #include <SFML-Book/client/Client.hpp>
 
-#include <SFML-Book/common/FuncIds.hpp>
 #include <SFML-Book/common/Packet.hpp>
 
 #include <iostream>
 
 namespace book
 {
-    Client::Client() : _isConnected(false)
+    Client::Client()
     {
     }
 
@@ -40,7 +39,6 @@ namespace book
                     {
                         std::cout<<"Connection Receive. All is good."<<std::endl;
                         res = true;
-                        _isConnected = true;
                     }
                     else
                         std::cout<<"Failed"<<std::endl;
@@ -57,51 +55,21 @@ namespace book
         return res;
     }
 
-    bool Client::isConnected()const
-    {
-        return _isConnected;
-    }
-
     sf::IpAddress Client::getRemoteAddress()const
     {
         return _sockOut.getRemoteAddress();
     }
 
-    void Client::processNetworkEvents()
+    bool Client::pollEvent(packet::NetworkEvent*& event)
     {
-        /*
-           event<<book::packet::GetListGame();
-           client.send(event);
-        */
-
-        sf::Packet event;
-        while(pollEvent(event) and _isConnected)
+        bool res = false;
+        sf::Packet msg;
+        if(Connection::pollEvent(msg))
         {
-            packet::NetworkEvent* msg = packet::NetworkEvent::makeFromPacket(event);
-            if(msg != nullptr)
-            {
-                switch(msg->type())
-                {
-                    case FuncIds::IdSetListGame :
-                    {
-                        packet::SetListGame* gameList = static_cast<packet::SetListGame*>(msg);
-                        for(const packet::SetListGame::Game& game : gameList->list())
-                        {
-                            std::cout<<"id: "<<game.id<<" teams: "<<game.nbTeams<<" players: "<<game.nbPlayers<<std::endl;
-                        }
-                    }break;
-                    case FuncIds::IdJoinGameConfirmation :
-                    {
-                        std::cout<<"Join game"<<std::endl;
-                    }break;
-                    case FuncIds::IdDisconnected :
-                    {
-                        _isConnected = false;
-                    }break;
-                    default : break;
-                }
-                delete msg;
-            }
+            event = packet::NetworkEvent::makeFromPacket(msg);
+            if(event != nullptr)
+                res = true;
         }
+        return res;
     }
 }

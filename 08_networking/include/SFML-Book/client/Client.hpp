@@ -2,6 +2,7 @@
 #define BOOK_CLIENT_HPP
 
 #include <SFML-Book/common/Connection.hpp>
+#include <SFML-Book/common/Packet.hpp>
 
 namespace book
 {
@@ -15,16 +16,12 @@ namespace book
 
             bool connect(const sf::IpAddress& ip, unsigned short port,sf::Time timeout=sf::Time::Zero);
 
-            bool isConnected()const;
-
-            void processNetworkEvents();
+            bool pollEvent(packet::NetworkEvent*& event);
 
             virtual sf::IpAddress getRemoteAddress()const;
 
         protected:
             unsigned int _port;
-
-            bool _isConnected;
     };
 }
 #endif

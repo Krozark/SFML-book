@@ -1,4 +1,6 @@
-#include <SFML-Book/client/Client.hpp>
+#include <SFML-Book/client/Game.hpp>
+
+#include <SFML-Book/common/Configuration.hpp>
 
 
 #include <iostream>
@@ -17,25 +19,18 @@ int main(int argc, char* argv[])
     if(argc >2 )
         port = std::atoi(argv[2]);
 
+    book::Configuration::initialize();
+
 
     std::cout<<"Client start on port "<<port<<std::endl;
 
-    book::Client client;
-    if(not client.connect(sf::IpAddress(ip),port,sf::seconds(5)))
+    book::Game game;
+    if(not game.connect(sf::IpAddress(ip),port,sf::seconds(5)))
         return 1;
 
     std::cout<<"Ok"<<std::endl;
 
-    client.run();
-
-    while(client.isConnected())
-    {
-        client.processNetworkEvents();
-    }
-
-    client.stop();
-    client.disconnect();
-    client.wait();
+    game.run();
 
     return 0;
 }
