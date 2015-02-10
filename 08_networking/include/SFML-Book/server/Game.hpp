@@ -23,10 +23,18 @@ namespace book
 
             int id()const;
 
+            void addClient(Client* client);
+
+            void run();
+            void stop();
+
         protected:
 
 
         private:
+            bool _running;
+            sf::Thread _thread;
+            
             sf::Mutex _teamMutex;
             std::vector<Team*> _teams;
 
@@ -35,6 +43,8 @@ namespace book
 
             const int _id;
             static int _numberOfCreations;
+
+            void _run();
     };
 }
 #endif

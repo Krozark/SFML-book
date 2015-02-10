@@ -32,8 +32,9 @@ namespace book
 
             sf::Thread _gameThread;
             sf::Mutex _gameMutex;
-            std::list<Client*> _clients;
             std::list<Game*> _games;
+            sf::Mutex _clientMutex;
+            std::list<Client*> _clients;
 
 
             sf::Thread _listenThread;

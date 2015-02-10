@@ -7,7 +7,7 @@ namespace book
 {
     int Game::_numberOfCreations = 0;
     
-    Game::Game() : _id(++_numberOfCreations)
+    Game::Game() : _running(false), _thread(&Game::_run,this), _id(++_numberOfCreations)
     {
     }
 
@@ -35,5 +35,29 @@ namespace book
     int Game::id()const
     {
         return _id;
+    }
+
+    void Game::addClient(Client* client)
+    {
+        sf::Lock guard(_clientsMutex);
+        _clients.emplace_back(client);
+    }
+
+    void Game::run()
+    {
+        _running = true;
+        _thread.launch();
+    }
+
+    void Game::stop()
+    {
+        _running = false;
+    }
+
+    void Game::_run()
+    {
+        /*while(_running)
+        {
+        }*/
     }
 }

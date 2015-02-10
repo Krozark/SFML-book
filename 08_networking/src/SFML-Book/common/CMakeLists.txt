@@ -1,9 +1,6 @@
 set(INCROOT ${CMAKE_CURRENT_SOURCE_DIR}/../../../include/${CMAKE_PROJECT_NAME}/common)
 set(SRCROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(INCROOT_SERVER ${INCROOT}/../server)
-set(SRCROOT_SERVER ${SRCROOT}/../server)
-
 #FILES
 set(FILES_HEADER
 
@@ -23,8 +20,6 @@ set(FILES_HEADER
     ${INCROOT}/Packet.hpp
     ${INCROOT}/Connection.hpp
 
-    ${INCROOT_SERVER}/Game.hpp
-
 )
 
 set(FILES_SRC
@@ -42,8 +37,6 @@ set(FILES_SRC
 
     ${SRCROOT}/Packet.cpp
     ${SRCROOT}/Connection.cpp
-
-    ${SRCROOT_SERVER}/Game.cpp
 
     ${SRCROOT}/main.cpp
 )

@@ -9,7 +9,9 @@ namespace book
             IdDisconnected,
             IdGetListGame,
             IdSetListGame,
-            IdSelectGame,
+            IdCreateGame,
+            IdJoinGame,
+            IdJoinGameConfirmation,
             IdPosition
         };
     }

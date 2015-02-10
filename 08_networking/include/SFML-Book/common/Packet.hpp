@@ -9,7 +9,6 @@
 
 namespace book
 {
-    class Game;
     namespace packet
     {
         class NetworkEvent
@@ -46,10 +45,11 @@ namespace book
         {
             public:
                 SetListGame();
-                SetListGame(const std::list<book::Game*>& list);
 
                 friend sf::Packet& operator>>(sf::Packet&, SetListGame& self);
                 friend sf::Packet& operator<<(sf::Packet&, const SetListGame& self);
+
+                void add(int id,int players,int teams);
                 
                 struct Game {
                     int nbTeams;
@@ -61,6 +61,27 @@ namespace book
                 
             private:
                 std::list<SetListGame::Game> _list;
+        };
+
+        class JoinGame : public NetworkEvent
+        {
+            public:
+                JoinGame();
+                JoinGame(int gameId);
+
+                int gameId()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, JoinGame& self);
+                friend sf::Packet& operator<<(sf::Packet&, const JoinGame& self);
+
+            private:
+                int _gameId;
+        };
+
+        class JoinGameConfirmation : public NetworkEvent
+        {
+            public:
+                JoinGameConfirmation();
         };
 
 

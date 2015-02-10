@@ -1,7 +1,5 @@
 #include <SFML-Book/common/Packet.hpp>
 
-#include <SFML-Book/server/Game.hpp>
-
 namespace book
 {
     namespace packet
@@ -36,8 +34,18 @@ namespace book
                     res = new SetListGame;
                     packet>>(*static_cast<SetListGame*>(res));
                 }break;
-                case FuncIds::IdSelectGame :
+                case FuncIds::IdJoinGame :
                 {
+                    res = new JoinGame();
+                    packet>>(*static_cast<JoinGame*>(res));
+                }break;
+                case FuncIds::IdCreateGame :
+                {
+                }break;
+                case FuncIds::IdJoinGameConfirmation :
+                {
+                    res = new JoinGameConfirmation();
+                    packet>>(*static_cast<JoinGameConfirmation*>(res));
                 }break;
                 case FuncIds::IdPosition :
                 {
@@ -82,16 +90,13 @@ namespace book
         {
         }
 
-        SetListGame::SetListGame(const std::list<book::Game*>& list) : SetListGame()
+        void SetListGame::add(int id,int players,int teams)
         {
-            for(book::Game* game : list)
-            {
-                Game tmp = {.nbTeams = game->getTeamCount(),
-                    .nbPlayers = game->getPalyersCount(),
-                    .id = game->id()};
+            Game tmp = {.nbTeams = teams,
+                .nbPlayers = players,
+                .id = id};
 
-                _list.emplace_back(std::move(tmp));
-            }
+            _list.emplace_back(std::move(tmp));
         }
 
         sf::Packet& operator>>(sf::Packet& packet, SetListGame& self)
@@ -136,6 +141,40 @@ namespace book
         const std::list<SetListGame::Game>& SetListGame::list()const
         {
             return _list;
+        }
+
+        //////////////// Join Game ////////////////
+    
+        JoinGame::JoinGame() : NetworkEvent(FuncIds::IdJoinGame), _gameId(-1)
+        {
+        }
+
+        JoinGame::JoinGame(int gameId) : NetworkEvent(FuncIds::IdJoinGame), _gameId(gameId)
+        {
+        }
+
+        int JoinGame::gameId()const
+        {
+            return _gameId;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const JoinGame& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<sf::Int32(self._gameId);
+            return packet;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, JoinGame& self)
+        {
+            sf::Int32 id;
+            packet>>id;
+            self._gameId = id;
+            return packet;
+        }
+
+        JoinGameConfirmation::JoinGameConfirmation() : NetworkEvent(FuncIds::IdJoinGameConfirmation)
+        {
         }
 
         ///////////////////// Position //////////////////////////

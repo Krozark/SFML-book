@@ -15,13 +15,16 @@ namespace book
 
             bool connect(const sf::IpAddress& ip, unsigned short port,sf::Time timeout=sf::Time::Zero);
 
+            bool isConnected()const;
+
+            void processNetworkEvents();
+
             virtual sf::IpAddress getRemoteAddress()const;
 
         protected:
             unsigned int _port;
 
-        private:
-            sf::TcpListener _socketListener;
+            bool _isConnected;
     };
 }
 #endif

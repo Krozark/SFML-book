@@ -23,20 +23,22 @@ namespace book
     Server::Server(int port) : _port(port),_gameThread(&Server::runGame,this), _listenThread(&Server::listen,this)
     {
         _currentClient = nullptr;
-        _games.emplace_back(new Game());
     }
 
     Server::~Server()
     {
-        sf::Lock guard(_gameMutex);
+        _gameMutex.lock();
         for(Game* game : _games)
             delete game;
+        _gameMutex.unlock();
 
+        _clientMutex.lock();
         for(Client* client : _clients)
         {
             client->stop();
             delete client;
         }
+        _clientMutex.unlock();
 
         delete _currentClient;
     }
@@ -61,7 +63,7 @@ namespace book
         sf::Packet event;
         while(!stop)
         {
-            sf::Lock guard(_gameMutex);
+            sf::Lock guard(_clientMutex);
             //for all clients
             for(auto it = _clients.begin(); it != _clients.end();++it)
             {
@@ -77,8 +79,38 @@ namespace book
                             case FuncIds::IdGetListGame :
                             {
                                 sf::Packet response;
-                                response<<packet::SetListGame(_games);
+                                packet::SetListGame list;
+                                sf::Lock guard(_gameMutex);
+                                for(Game* game : _games)
+                                {
+                                    list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
+                                }
+
+                                response<<list;
                                 client->send(response);
+                            }break;
+                            case FuncIds::IdJoinGame :
+                            {
+                                int gameId = static_cast<packet::JoinGame*>(msg)->gameId();
+                                sf::Lock guard(_gameMutex);
+                                for(Game* game : _games)
+                                {
+                                    if(game->id() == gameId)
+                                    {
+                                        game->addClient(client);
+
+                                        sf::Packet response;
+                                        response<<packet::JoinGameConfirmation();
+                                        client->send(response);
+
+                                        client = nullptr;
+                                        it = _clients.erase(it);
+                                        --it;
+
+                                        break;
+                                    }
+                                }
+                                
                             }break;
                             case book::FuncIds::IdDisconnected :
                             {
@@ -119,7 +151,7 @@ namespace book
                 {
                     std::cout<<"Client accepted"<<std::endl;
 
-                    sf::Lock guard(_gameMutex);
+                    sf::Lock guard(_clientMutex);
 
                     _clients.emplace_back(_currentClient);
                     _currentClient->run();
