@@ -115,12 +115,14 @@ namespace book
             {
                 case FuncIds::IdSetListGame :
                 {
-                    packet::SetListGame* gameList = static_cast<packet::SetListGame*>(msg);
-                    _mainMenu.fill(*gameList);
+                    packet::SetListGame* event = static_cast<packet::SetListGame*>(msg);
+                    _mainMenu.fill(*event);
                 }break;
                 case FuncIds::IdJoinGameConfirmation :
                 {
+                    packet::JoinGameConfirmation* event = static_cast<packet::JoinGameConfirmation*>(msg);
                     std::cout<<"Join game"<<std::endl;
+                    _status = StatusGameMenu;
                 }break;
                 case FuncIds::IdDisconnected :
                 {

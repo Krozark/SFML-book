@@ -101,7 +101,9 @@ namespace book
                                 }
 
                                 response<<list;
-                                client->send(response);
+                                //send new game to all clients
+                                for(auto it2 = _clients.begin(); it2 != _clients.end();++it2)
+                                    (*it2)->send(response);
                             }break;
                             case FuncIds::IdJoinGame :
                             {
@@ -112,10 +114,6 @@ namespace book
                                     if(game->id() == gameId)
                                     {
                                         game->addClient(client);
-
-                                        sf::Packet response;
-                                        response<<packet::JoinGameConfirmation();
-                                        client->send(response);
 
                                         client = nullptr;
                                         it = _clients.erase(it);

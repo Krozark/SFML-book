@@ -3,6 +3,10 @@
 #include <SFML-Book/server/Client.hpp>
 #include <SFML-Book/server/Team.hpp>
 
+#include <SFML-Book/common/Packet.hpp>
+
+#include <iostream>
+
 namespace book
 {
     int Game::_numberOfCreations = 0;
@@ -39,6 +43,13 @@ namespace book
 
     void Game::addClient(Client* client)
     {
+        //send map informations
+
+        std::cout<<"Add client to game"<<std::endl;
+        sf::Packet response;
+        response<<packet::JoinGameConfirmation();
+        client->send(response);
+
         sf::Lock guard(_clientsMutex);
         _clients.emplace_back(client);
     }
@@ -56,8 +67,19 @@ namespace book
 
     void Game::_run()
     {
-        /*while(_running)
+        sf::Clock clock;        
+        while(_running)
         {
-        }*/
+            processNetworkEvents();
+            update(clock.restart());
+        }
+    }
+
+    void Game::processNetworkEvents()
+    {
+    }
+
+    void Game::update(sf::Time deltaTime)
+    {
     }
 }

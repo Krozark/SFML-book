@@ -56,6 +56,7 @@ namespace book
             button->on_click = [this,game](const sf::Event&, sfutils::Button& button){
                 sf::Packet event;
                 event<<packet::JoinGame(game.id);
+                _client.send(event);
             };
             layout->add(button);
 
