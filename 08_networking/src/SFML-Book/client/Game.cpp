@@ -6,6 +6,9 @@
 
 
 #include <iostream>
+#include <sstream>
+
+
 
 
 namespace book
@@ -15,13 +18,18 @@ namespace book
         _cursor(Configuration::textures.get(Configuration::TexCursor)),        
         _isConnected(false),
         _status(Status::StatusMainMenu),
-        _mainMenu(_window,_client)
+        _mainMenu(_window,_client),
+        _map(nullptr),
+        _viewer(nullptr)
     {
         _window.setMouseCursorVisible(false);        
     }
 
     Game::~Game()
     {
+        delete _viewer;
+        delete _map;
+
         _client.stop();
         _client.disconnect();
         _client.wait();
@@ -55,13 +63,13 @@ namespace book
             bool repaint = false;
 
             processNetworkEvents();
-            processEvents();
 
             //fix time delta between frames
             sf::Time delta = clock.restart();
             timeSinceLastUpdate += delta;
             if(timeSinceLastUpdate > TimePerFrame)
             {
+                processEvents();
                 timeSinceLastUpdate -= TimePerFrame;
                 repaint = true;
                 update(TimePerFrame);
@@ -89,8 +97,10 @@ namespace book
                     {
                         _mainMenu.processEvent(event);
                     }break;
-                    case Status::StatusGameMenu :
+                    case Status::StatusInGame :
                     {
+                        bool res = _viewer->processEvent(event);
+
                     }break;
                     case Status::StatusDisconnected :
                     {
@@ -104,8 +114,9 @@ namespace book
             {
                 _mainMenu.processEvents();
             }break;
-            case Status::StatusGameMenu :
+            case Status::StatusInGame :
             {
+                _viewer->processEvents();
             }break;
             case Status::StatusDisconnected :
             {
@@ -141,7 +152,30 @@ namespace book
                                 packet::JoinGameConfirmation* event = static_cast<packet::JoinGameConfirmation*>(msg);
                                 std::cout<<"Join game"<<std::endl;
                                 const std::string& datas = event->getMapDatas();
-                                _status = StatusGameMenu;
+
+                                std::stringstream ss;
+                                ss<<datas;
+
+                                _map = sfutils::VMap::createMapFromStream(ss);
+                                if(_map != nullptr)
+                                {
+                                    _viewer = new sfutils::MapViewer(_window,*_map,Configuration::map_inputs);
+
+                                    _viewer->bind(Configuration::MapInputs::TakeScreen,[this](const sf::Event& event){
+                                         sf::Image screen = _window.capture();
+
+                                         time_t rawtime;
+                                         struct tm * timeinfo;
+                                         char buffer[128];
+
+                                         std::time(&rawtime);
+                                         timeinfo = std::localtime(&rawtime);
+                                         std::strftime (buffer,128,"screen/%F_%T.png",timeinfo);
+                                         screen.saveToFile(std::string(buffer));
+                                    });
+
+                                    _status = StatusInGame;
+                                }
                             }break;
                             case FuncIds::IdJoinGameReject :
                             {
@@ -150,7 +184,7 @@ namespace book
                             default : break;
                         }
                     }break;
-                    case StatusGameMenu :
+                    case StatusInGame :
                     {
                     }break;
                     case StatusDisconnected :
@@ -170,13 +204,21 @@ namespace book
             case Status::StatusMainMenu :
             {
             }break;
-            case Status::StatusGameMenu :
+            case Status::StatusInGame :
             {
+                _viewer->update(deltaTime.asSeconds());
+
+                sf::Vector2f pos = _viewer->getPosition();
+                sf::Listener::setPosition(pos.x,pos.x,_viewer->getZoom());
+
             }break;
             case Status::StatusDisconnected :
             {
             }break;
         }
+
+        sf::Vector2i mouse(sf::Mouse::getPosition(_window));
+        _cursor.setPosition(mouse.x,mouse.y);
     }
 
     void Game::render()
@@ -188,8 +230,9 @@ namespace book
             {
                 _window.draw(_mainMenu);
             }break;
-            case Status::StatusGameMenu :
+            case Status::StatusInGame :
             {
+                 _viewer->draw();
             }break;
             case Status::StatusDisconnected :
             {

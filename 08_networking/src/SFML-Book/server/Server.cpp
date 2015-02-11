@@ -29,7 +29,10 @@ namespace book
     {
         _gameMutex.lock();
         for(Game* game : _games)
+        {
+            game->stop();
             delete game;
+        }
         _gameMutex.unlock();
 
         _clientMutex.lock();
@@ -96,6 +99,7 @@ namespace book
                             {
                                 list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
                             }
+                            _games.back()->run();
 
                             response<<list;
                             //send new game to all clients

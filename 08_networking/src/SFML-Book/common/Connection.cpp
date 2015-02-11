@@ -110,6 +110,7 @@ namespace book
                 packet<<packet::Disconnected();
                 sf::Lock guard(_receiveMutex);
                 _incomming.emplace(std::move(packet));
+
                 stop();
             }
         }

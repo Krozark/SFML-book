@@ -21,17 +21,17 @@ namespace book
             {
                 case FuncIds::IdDisconnected :
                 {
-                    res = new Disconnected;
+                    res = new Disconnected();
                     packet>>(*static_cast<Disconnected*>(res));
                 }break;
                 case FuncIds::IdGetListGame :
                 {
-                    res = new GetListGame;
+                    res = new GetListGame();
                     packet>>(*static_cast<GetListGame*>(res));
                 }break;
                 case FuncIds::IdSetListGame :
                 {
-                    res = new SetListGame;
+                    res = new SetListGame();
                     packet>>(*static_cast<SetListGame*>(res));
                 }break;
                 case FuncIds::IdJoinGame :
@@ -56,7 +56,7 @@ namespace book
                 }break;
                 case FuncIds::IdMoveEntity :
                 {
-                    res = new MoveEntity;
+                    res = new MoveEntity();
                     packet>>(*static_cast<MoveEntity*>(res));
                 }break;
             }

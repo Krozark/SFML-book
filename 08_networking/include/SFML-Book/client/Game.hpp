@@ -6,6 +6,8 @@
 #include <SFML-Book/client/Client.hpp>
 #include <SFML-Book/client/Gui.hpp>
 
+#include <SFML-utils/Map.hpp>
+
 namespace book
 {
     class Game
@@ -35,11 +37,14 @@ namespace book
 
             enum Status {
                 StatusMainMenu,
-                StatusGameMenu,
+                StatusInGame,
                 StatusDisconnected
             } _status;
 
             MainMenu _mainMenu;
+
+            sfutils::VMap* _map;
+            sfutils::MapViewer* _viewer;
 
     };
 }
