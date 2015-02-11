@@ -2,6 +2,8 @@
 #define BOOK_GAME_HPP
 
 #include <vector>
+#include <string>
+
 #include <SFML/System.hpp>
 
 namespace book
@@ -15,7 +17,7 @@ namespace book
             Game(const Game&) = delete;
             Game& operator=(const Game&) = delete;
 
-            Game();
+            Game(const std::string& mapFileName);
             ~Game();
             
             int getTeamCount();
@@ -23,7 +25,7 @@ namespace book
 
             int id()const;
 
-            void addClient(Client* client);
+            bool addClient(Client* client);
 
             void run();
             void stop();
@@ -45,6 +47,8 @@ namespace book
             static int _numberOfCreations;
 
             void _run();
+
+            std::string _mapFileName;
 
             void processNetworkEvents();
             void update(sf::Time deltaTime);

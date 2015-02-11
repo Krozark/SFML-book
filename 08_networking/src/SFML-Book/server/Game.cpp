@@ -6,12 +6,17 @@
 #include <SFML-Book/common/Packet.hpp>
 
 #include <iostream>
+#include <fstream>
 
 namespace book
 {
     int Game::_numberOfCreations = 0;
     
-    Game::Game() : _running(false), _thread(&Game::_run,this), _id(++_numberOfCreations)
+    Game::Game(const std::string& mapFileName) :
+        _running(false),
+        _thread(&Game::_run,this),
+        _id(++_numberOfCreations),
+        _mapFileName(mapFileName)
     {
     }
 
@@ -41,17 +46,36 @@ namespace book
         return _id;
     }
 
-    void Game::addClient(Client* client)
+    bool Game::addClient(Client* client)
     {
         //send map informations
+        bool res = false;
+        {
+            sf::Lock guard(_clientsMutex);
+            res = _clients.size() < Team::MAX_TEAMS;
+        }
 
-        std::cout<<"Add client to game"<<std::endl;
         sf::Packet response;
-        response<<packet::JoinGameConfirmation();
-        client->send(response);
+        if(res == true)
+        {
+            std::ifstream file(_mapFileName);
+            std::string content((std::istreambuf_iterator<char>(file)),(std::istreambuf_iterator<char>()));
 
-        sf::Lock guard(_clientsMutex);
-        _clients.emplace_back(client);
+            response<<packet::JoinGameConfirmation(content);
+            client->send(response);
+
+            std::cout<<"Add client to game"<<std::endl;
+
+            sf::Lock guard(_clientsMutex);
+            _clients.emplace_back(client);
+        }
+        else
+        {
+            response<<packet::JoinGameReject(_id);
+            client->send(response);
+        }
+
+        return res;
     }
 
     void Game::run()
@@ -106,5 +130,13 @@ namespace book
 
     void Game::update(sf::Time deltaTime)
     {
+        /*
+        IdDestroyEntity, //client and server
+            IdMoveEntity, //server
+            IdHittedEntity, //server
+            IdHitEntity, //server
+            IdSetAnimationEntity, //server
+            IdAddGoldTeam, //server
+        */
     }
 }

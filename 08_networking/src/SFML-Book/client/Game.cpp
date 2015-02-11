@@ -17,6 +17,7 @@ namespace book
         _status(Status::StatusMainMenu),
         _mainMenu(_window,_client)
     {
+        _window.setMouseCursorVisible(false);        
     }
 
     Game::~Game()
@@ -117,25 +118,47 @@ namespace book
         packet::NetworkEvent* msg;
         while(_client.pollEvent(msg))
         {
-            switch(msg->type())
+            if(msg->type() == FuncIds::IdDisconnected)
             {
-                case FuncIds::IdSetListGame :
-                {
-                    packet::SetListGame* event = static_cast<packet::SetListGame*>(msg);
-                    _mainMenu.fill(*event);
-                }break;
-                case FuncIds::IdJoinGameConfirmation :
-                {
-                    packet::JoinGameConfirmation* event = static_cast<packet::JoinGameConfirmation*>(msg);
-                    std::cout<<"Join game"<<std::endl;
-                    _status = StatusGameMenu;
-                }break;
-                case FuncIds::IdDisconnected :
-                {
-                    _isConnected = false;
-                }break;
-                default : break;
+                _isConnected = false;
+                _status = StatusDisconnected;
             }
+            else
+            {
+                switch(_status)
+                {
+                    case StatusMainMenu:
+                    {
+                        switch(msg->type())
+                        {
+                            case FuncIds::IdSetListGame :
+                            {
+                                packet::SetListGame* event = static_cast<packet::SetListGame*>(msg);
+                                _mainMenu.fill(*event);
+                            }break;
+                            case FuncIds::IdJoinGameConfirmation :
+                            {
+                                packet::JoinGameConfirmation* event = static_cast<packet::JoinGameConfirmation*>(msg);
+                                std::cout<<"Join game"<<std::endl;
+                                const std::string& datas = event->getMapDatas();
+                                _status = StatusGameMenu;
+                            }break;
+                            case FuncIds::IdJoinGameReject :
+                            {
+                                
+                            }break;
+                            default : break;
+                        }
+                    }break;
+                    case StatusGameMenu :
+                    {
+                    }break;
+                    case StatusDisconnected :
+                    {
+                    }break;
+                }
+            }
+
             delete msg;
         }
     }
@@ -172,6 +195,8 @@ namespace book
             {
             }break;
         }
+         _window.draw(_cursor);
+
         _window.display();
     }
 }

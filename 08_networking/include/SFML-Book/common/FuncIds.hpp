@@ -8,16 +8,23 @@ namespace book
             //specials
             IdHandler = 0,
             IdDisconnected,
+
             //main menu
             IdGetListGame, //client
             IdSetListGame, //server
             IdCreateGame, //client
             IdJoinGame, //client
             IdJoinGameConfirmation, //server
+            IdJoinGameReject, //server
+
             //in game
-            IdPosition, //server
             IdCreateEntity, //client
-            IdDestroyEntity, //client
+            IdDestroyEntity, //client and server
+            IdMoveEntity, //server
+            IdHittedEntity, //server
+            IdHitEntity, //server
+            IdSetAnimationEntity, //server
+            IdAddGoldTeam, //server
         };
     }
 }

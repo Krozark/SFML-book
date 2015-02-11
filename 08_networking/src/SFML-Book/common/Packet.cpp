@@ -49,10 +49,15 @@ namespace book
                     res = new JoinGameConfirmation();
                     packet>>(*static_cast<JoinGameConfirmation*>(res));
                 }break;
-                case FuncIds::IdPosition :
+                case FuncIds::IdJoinGameReject :
                 {
-                    res = new Position;
-                    packet>>(*static_cast<Position*>(res));
+                    res = new JoinGameReject();
+                    packet>>(*static_cast<JoinGameReject*>(res));
+                }break;
+                case FuncIds::IdMoveEntity :
+                {
+                    res = new MoveEntity;
+                    packet>>(*static_cast<MoveEntity*>(res));
                 }break;
             }
             return res;
@@ -180,19 +185,71 @@ namespace book
             return packet;
         }
 
+        /////////////////////// JoinGameConfirmation //////////////////////////
+
         JoinGameConfirmation::JoinGameConfirmation() : NetworkEvent(FuncIds::IdJoinGameConfirmation)
         {
         }
 
-        ///////////////////// Position //////////////////////////
+        JoinGameConfirmation::JoinGameConfirmation(const std::string& mapDatas) : NetworkEvent(FuncIds::IdJoinGameConfirmation), _mapDatas(mapDatas)
+        {
+        }
 
-        Position::Position(): NetworkEvent(FuncIds::IdPosition)
+        const std::string& JoinGameConfirmation::getMapDatas()const
+        {
+            return _mapDatas;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, JoinGameConfirmation& self)
+        {
+            self._mapDatas.clear();
+            packet>>self._mapDatas;
+
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const JoinGameConfirmation& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<self._mapDatas;
+            return packet;
+        }
+
+        ////////////////////// JoinGameReject ///////////////////////
+
+        JoinGameReject::JoinGameReject() : NetworkEvent(FuncIds::IdJoinGameReject), _gameId(-1)
+        {
+        }
+
+        JoinGameReject::JoinGameReject(int id) : NetworkEvent(FuncIds::IdJoinGameReject), _gameId(id)
+        {
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, JoinGameReject& self)
+        {
+            sf::Int32 id;
+            packet>>id;
+            self._gameId = id;
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const JoinGameReject& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<sf::Int32(self._gameId);
+            return packet;
+        }
+
+        ///////////////////// MoveEntity //////////////////////////
+
+        MoveEntity::MoveEntity(): NetworkEvent(FuncIds::IdMoveEntity)
         {}
 
-        Position::Position(std::uint32_t entityId,const sf::Vector2f& pos) : Position()
-        {}
+        MoveEntity::MoveEntity(std::uint32_t entityId,const sf::Vector2f& pos) : MoveEntity()
+        {
+        }
 
-        sf::Packet& operator>>(sf::Packet& packet, Position& self)
+        sf::Packet& operator>>(sf::Packet& packet, MoveEntity& self)
         {
             packet>>self._entityId
                 >>self._pos.x
@@ -200,7 +257,7 @@ namespace book
             return packet;
         }
 
-        sf::Packet& operator<<(sf::Packet& packet,const Position& self)
+        sf::Packet& operator<<(sf::Packet& packet,const MoveEntity& self)
         {
             packet<<sf::Uint8(self._type)
                 <<self._entityId
@@ -209,12 +266,12 @@ namespace book
             return packet;
         }
 
-        std::uint32_t Position::getId()const
+        std::uint32_t MoveEntity::getId()const
         {
             return _entityId;
         }
 
-        const sf::Vector2f& Position::getPosition()const
+        const sf::Vector2f& MoveEntity::getPosition()const
         {
             return _pos;
         }

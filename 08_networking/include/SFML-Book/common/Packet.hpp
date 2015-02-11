@@ -88,17 +88,40 @@ namespace book
         {
             public:
                 JoinGameConfirmation();
+                JoinGameConfirmation(const std::string& mapDatas);
+
+                const std::string& getMapDatas()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, JoinGameConfirmation& self);
+                friend sf::Packet& operator<<(sf::Packet&, const JoinGameConfirmation& self);
+
+            private:
+                std::string _mapDatas;
+        };
+
+        class JoinGameReject : public NetworkEvent
+        {
+            public:
+                JoinGameReject();
+                JoinGameReject(int id);
+
+                int gameId()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, JoinGameReject& self);
+                friend sf::Packet& operator<<(sf::Packet&, const JoinGameReject& self);
+            private:
+                int _gameId;
         };
 
 
-        class Position : public NetworkEvent
+        class MoveEntity : public NetworkEvent
         {
             public:
-                Position(std::uint32_t entityId,const sf::Vector2f& pos);
-                Position();
+                MoveEntity(std::uint32_t entityId,const sf::Vector2f& pos);
+                MoveEntity();
 
-                friend sf::Packet& operator>>(sf::Packet&, Position& self);
-                friend sf::Packet& operator<<(sf::Packet&, const Position& self);
+                friend sf::Packet& operator>>(sf::Packet&, MoveEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const MoveEntity& self);
 
                 std::uint32_t getId()const;
                 const sf::Vector2f& getPosition()const;

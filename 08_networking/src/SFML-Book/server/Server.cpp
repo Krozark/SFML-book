@@ -91,7 +91,7 @@ namespace book
                             sf::Packet response;
                             packet::SetListGame list;
                             sf::Lock guard(_gameMutex);
-                            _games.emplace_back(new Game());
+                            _games.emplace_back(new Game("./media/map.json"));
                             for(Game* game : _games)
                             {
                                 list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
@@ -110,11 +110,12 @@ namespace book
                             {
                                 if(game->id() == gameId)
                                 {
-                                    game->addClient(client);
-
-                                    client = nullptr;
-                                    it = _clients.erase(it);
-                                    --it;
+                                    if(game->addClient(client))
+                                    {
+                                        client = nullptr;
+                                        it = _clients.erase(it);
+                                        --it;
+                                    }
                                     break;
                                 }
                             }
