@@ -1,9 +1,0 @@
-namespace book
-{
-    namespace FuncIds{
-        static enum FUNCIDS {
-            IdHandler = 0,
-            IdPosition,
-        };
-    }
-}

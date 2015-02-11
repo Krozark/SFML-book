@@ -5,8 +5,8 @@
 
 #include <SFML-Book/client/Client.hpp>
 #include <SFML-Book/client/Gui.hpp>
+#include <SFML-Book/client/Level.hpp>
 
-#include <SFML-utils/Map.hpp>
 
 namespace book
 {
@@ -42,9 +42,7 @@ namespace book
             } _status;
 
             MainMenu _mainMenu;
-
-            sfutils::VMap* _map;
-            sfutils::MapViewer* _viewer;
+            Level* _level;
 
     };
 }

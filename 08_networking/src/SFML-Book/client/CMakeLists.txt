@@ -9,6 +9,7 @@ set(FILES_HEADER
     ${INCROOT}/Client.hpp
     ${INCROOT}/Gui.hpp
     ${INCROOT}/Game.hpp
+    ${INCROOT}/Level.hpp
 
     ${INCROOT_COMMON}/Packet.hpp    
     ${INCROOT_COMMON}/FuncIds.hpp
@@ -20,6 +21,7 @@ set(FILES_SRC
     ${SRCROOT}/Client.cpp
     ${SRCROOT}/Gui.cpp
     ${SRCROOT}/Game.cpp
+    ${SRCROOT}/Level.cpp
 
     ${SRCROOT_COMMON}/Packet.cpp
     ${SRCROOT_COMMON}/Connection.cpp

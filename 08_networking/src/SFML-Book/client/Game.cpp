@@ -19,16 +19,14 @@ namespace book
         _isConnected(false),
         _status(Status::StatusMainMenu),
         _mainMenu(_window,_client),
-        _map(nullptr),
-        _viewer(nullptr)
+        _level(nullptr)
     {
         _window.setMouseCursorVisible(false);        
     }
 
     Game::~Game()
     {
-        delete _viewer;
-        delete _map;
+        delete _level;
 
         _client.stop();
         _client.disconnect();
@@ -99,7 +97,7 @@ namespace book
                     }break;
                     case Status::StatusInGame :
                     {
-                        bool res = _viewer->processEvent(event);
+                        _level->processEvent(event);
 
                     }break;
                     case Status::StatusDisconnected :
@@ -116,7 +114,7 @@ namespace book
             }break;
             case Status::StatusInGame :
             {
-                _viewer->processEvents();
+                _level->processEvents();
             }break;
             case Status::StatusDisconnected :
             {
@@ -156,26 +154,11 @@ namespace book
                                 std::stringstream ss;
                                 ss<<datas;
 
-                                _map = sfutils::VMap::createMapFromStream(ss);
-                                if(_map != nullptr)
-                                {
-                                    _viewer = new sfutils::MapViewer(_window,*_map,Configuration::map_inputs);
+                                _level = new Level(_window,ss);
 
-                                    _viewer->bind(Configuration::MapInputs::TakeScreen,[this](const sf::Event& event){
-                                         sf::Image screen = _window.capture();
-
-                                         time_t rawtime;
-                                         struct tm * timeinfo;
-                                         char buffer[128];
-
-                                         std::time(&rawtime);
-                                         timeinfo = std::localtime(&rawtime);
-                                         std::strftime (buffer,128,"screen/%F_%T.png",timeinfo);
-                                         screen.saveToFile(std::string(buffer));
-                                    });
-
+                                if(_level != nullptr)
                                     _status = StatusInGame;
-                                }
+
                             }break;
                             case FuncIds::IdJoinGameReject :
                             {
@@ -206,10 +189,7 @@ namespace book
             }break;
             case Status::StatusInGame :
             {
-                _viewer->update(deltaTime.asSeconds());
-
-                sf::Vector2f pos = _viewer->getPosition();
-                sf::Listener::setPosition(pos.x,pos.x,_viewer->getZoom());
+                _level->update(deltaTime);
 
             }break;
             case Status::StatusDisconnected :
@@ -232,7 +212,7 @@ namespace book
             }break;
             case Status::StatusInGame :
             {
-                 _viewer->draw();
+                 _level->draw(_window);
             }break;
             case Status::StatusDisconnected :
             {

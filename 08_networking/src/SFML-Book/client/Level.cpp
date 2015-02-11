@@ -1,28 +1,28 @@
-#include <SFML-Book/common/Level.hpp>
+#include <SFML-Book/client/Level.hpp>
 
 #include <stdexcept>
 #include <ctime>
 
-#include <SFML-Book/common/System.hpp>
-#include <SFML-Book/common/Component.hpp>
+//#include <SFML-Book/common/System.hpp>
+//#include <SFML-Book/common/Component.hpp>
 
 
 namespace book
 {
-    Level::FuncType Level::defaultFunc = [](Level::Param&){};
+    //Level::FuncType Level::defaultFunc = [](Level::Param&){};
 
-    Level::Level(sf::RenderWindow& window,const std::string& filename) : 
-        onPickup(defaultFunc),
-        _map(sfutils::VMap::createMapFromFile(filename)),
+    Level::Level(sf::RenderWindow& window,std::istream& stream) : 
+        //onPickup(defaultFunc),
+        _map(sfutils::VMap::createMapFromStream(stream)),
         _viewer(window,*_map,Configuration::map_inputs),
-        _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1)),
-        _entities_layer(new sfutils::Layer<Entity*>("Entity",2))
+        _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1))
+        //_entities_layer(new sfutils::Layer<Entity*>("Entity",2))
     {
         //Map
         if(_map == nullptr)
         {
             //do some error
-            throw std::runtime_error("Impossible to load file " + filename);
+            throw std::runtime_error("Impossible to load file map");
         }
 
 
@@ -31,7 +31,7 @@ namespace book
             _mouse_light->setFillColor(sf::Color(255,255,255,64));
             _map->add(_mouse_layer);
         }
-        _map->add(_entities_layer);
+        //_map->add(_entities_layer);
 
         //Viewer
         _viewer.bind(Configuration::MapInputs::TakeScreen,[&window](const sf::Event& event){
@@ -48,7 +48,7 @@ namespace book
          });
         
         //ES
-        systems.add<SysAIMain>();
+        /*systems.add<SysAIMain>();
         systems.add<SysAIWarrior>(*this);
         systems.add<SysAIDefender>(*this);
         systems.add<SysAISpawner>(*this);
@@ -56,21 +56,21 @@ namespace book
         systems.add<SysAIFlyer>(*this);
         systems.add<SysSkin>();
         systems.add<SysHp>(*this);
-        systems.add<SysEffect>(*this);
+        systems.add<SysEffect>(*this);*/
 
 
     }
     Level::~Level()
     {
-        entites.reset();
+        //entites.reset();
         delete _map;
     }
 
     void Level::update(sf::Time deltaTime)
     {
         _viewer.update(deltaTime.asSeconds());
-        Application::update(deltaTime);
-        _entities_layer->sort();
+        //Application::update(deltaTime);
+        //_entities_layer->sort();
 
         sf::Vector2f pos = _viewer.getPosition();
 
@@ -96,12 +96,12 @@ namespace book
             if(event.type == sf::Event::MouseButtonReleased and event.mouseButton.button == sf::Mouse::Button::Left)
             {
                 sf::Vector2i coord = _viewer.mapScreenToCoords(event.mouseButton.x,event.mouseButton.y);
-                std::list<Entity*> pick = getByCoords(coord);
+                /*std::list<Entity*> pick = getByCoords(coord);
                 for(Entity* e : pick)
                 {
                     Param p(coord,*e,*_entities_layer,*_map);
                     onPickup(p);
-                }
+                }*/
 
             }
             else if(event.type == sf::Event::MouseMoved)
@@ -119,7 +119,7 @@ namespace book
         _viewer.draw();
     }
 
-    Level::Param::Param(sf::Vector2i& c,Entity& e,sfutils::Layer<Entity*>& l,sfutils::VMap& m) : 
+    /*Level::Param::Param(sf::Vector2i& c,Entity& e,sfutils::Layer<Entity*>& l,sfutils::VMap& m) : 
         coord(c), entity(e),layer(l),map(m)
     {
     }
@@ -127,7 +127,7 @@ namespace book
     sfutils::EntityManager<Entity>& Level::entityManager()
     {
         return entites;
-    }
+    }*/
 
     sfutils::Layer<sf::ConvexShape>& Level::getHighlightLayer()const
     {
@@ -139,7 +139,7 @@ namespace book
         return _map->getShape();
     }
 
-    Entity& Level::createEntity(const sf::Vector2i& coord)
+    /*Entity& Level::createEntity(const sf::Vector2i& coord)
     {
         std::uint32_t id = entites.create();
         Entity& e = entites.get(id);
@@ -180,7 +180,7 @@ namespace book
             _byCoords[old].remove(&e);
             _byCoords[n].emplace_back(&e);
         }
-    }
+    }*/
     
     void Level::createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord)
     {
@@ -201,7 +201,7 @@ namespace book
     }
 
 
-    sf::Vector2i Level::mapPixelToCoords(const sf::Vector2f& pos)const
+   /* sf::Vector2i Level::mapPixelToCoords(const sf::Vector2f& pos)const
     {
         return _map->mapPixelToCoords(pos);
     }
@@ -240,7 +240,7 @@ namespace book
     int Level::getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const
     {
         return _map->getDistance(origin,dest);
-    }
+    }*/
 
     sf::Vector2i Level::getMinCoord()const
     {
