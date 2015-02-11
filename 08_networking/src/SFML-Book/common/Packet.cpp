@@ -191,7 +191,7 @@ namespace book
         {
         }
 
-        JoinGameConfirmation::JoinGameConfirmation(const std::string& mapDatas) : NetworkEvent(FuncIds::IdJoinGameConfirmation), _mapDatas(mapDatas)
+        JoinGameConfirmation::JoinGameConfirmation(const std::string& mapDatas,const sf::Color& color) : NetworkEvent(FuncIds::IdJoinGameConfirmation), _mapDatas(mapDatas), _teamColor(color)
         {
         }
 
@@ -200,10 +200,21 @@ namespace book
             return _mapDatas;
         }
 
+        const sf::Color& JoinGameConfirmation::getTeamColor()const
+        {
+            return _teamColor;
+        }
+
         sf::Packet& operator>>(sf::Packet& packet, JoinGameConfirmation& self)
         {
+            sf::Int8 r,g,b;
+
             self._mapDatas.clear();
-            packet>>self._mapDatas;
+            packet>>self._mapDatas
+                >>r
+                >>g
+                >>b;
+            self._teamColor = sf::Color(r,g,b);
 
             return packet;
         }
@@ -211,7 +222,11 @@ namespace book
         sf::Packet& operator<<(sf::Packet& packet, const JoinGameConfirmation& self)
         {
             packet<<sf::Uint8(self._type)
-                <<self._mapDatas;
+                <<self._mapDatas
+                <<sf::Int8(self._teamColor.r)
+                <<sf::Int8(self._teamColor.g)
+                <<sf::Int8(self._teamColor.g);
+
             return packet;
         }
 

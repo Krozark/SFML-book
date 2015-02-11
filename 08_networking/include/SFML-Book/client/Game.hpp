@@ -41,7 +41,10 @@ namespace book
                 StatusDisconnected
             } _status;
 
+            //Maine
             MainMenu _mainMenu;
+            //Game
+            GameMenu _gameMenu;
             Level* _level;
 
     };

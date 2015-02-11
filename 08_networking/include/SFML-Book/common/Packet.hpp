@@ -88,15 +88,17 @@ namespace book
         {
             public:
                 JoinGameConfirmation();
-                JoinGameConfirmation(const std::string& mapDatas);
+                JoinGameConfirmation(const std::string& mapDatas,const sf::Color& color);
 
                 const std::string& getMapDatas()const;
+                const sf::Color& getTeamColor()const;
 
                 friend sf::Packet& operator>>(sf::Packet&, JoinGameConfirmation& self);
                 friend sf::Packet& operator<<(sf::Packet&, const JoinGameConfirmation& self);
 
             private:
                 std::string _mapDatas;
+                sf::Color _teamColor;
         };
 
         class JoinGameReject : public NetworkEvent

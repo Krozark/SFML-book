@@ -19,6 +19,7 @@ namespace book
         _isConnected(false),
         _status(Status::StatusMainMenu),
         _mainMenu(_window,_client),
+        _gameMenu(_window,_client),
         _level(nullptr)
     {
         _window.setMouseCursorVisible(false);        
@@ -97,7 +98,8 @@ namespace book
                     }break;
                     case Status::StatusInGame :
                     {
-                        _level->processEvent(event);
+                        if(not _gameMenu.processEvent(event))
+                            _level->processEvent(event);
 
                     }break;
                     case Status::StatusDisconnected :
@@ -114,6 +116,7 @@ namespace book
             }break;
             case Status::StatusInGame :
             {
+                _gameMenu.processEvents();
                 _level->processEvents();
             }break;
             case Status::StatusDisconnected :
@@ -157,7 +160,11 @@ namespace book
                                 _level = new Level(_window,ss);
 
                                 if(_level != nullptr)
+                                {
+                                    _gameMenu.setTeamColor(event->getTeamColor());
+                                    _gameMenu.init();
                                     _status = StatusInGame;
+                                }
 
                             }break;
                             case FuncIds::IdJoinGameReject :
@@ -169,6 +176,16 @@ namespace book
                     }break;
                     case StatusInGame :
                     {
+                        _gameMenu.processNetworkEvent(msg);
+                        
+                        /*
+                        IdDestroyEntity
+                        IdMoveEntity
+                        IdHittedEntity
+                        IdHitEntity
+                        IdSetAnimationEntity*/
+
+                        
                     }break;
                     case StatusDisconnected :
                     {
@@ -189,6 +206,7 @@ namespace book
             }break;
             case Status::StatusInGame :
             {
+                _gameMenu.update(deltaTime);
                 _level->update(deltaTime);
 
             }break;
@@ -213,6 +231,7 @@ namespace book
             case Status::StatusInGame :
             {
                  _level->draw(_window);
+                 _gameMenu.draw(_window);
             }break;
             case Status::StatusDisconnected :
             {
