@@ -98,10 +98,21 @@ namespace book
     void Game::_run()
     {
         sf::Clock clock;        
+        sf::Time timeSinceLastUpdate;
+
+        sf::Time TimePerFrame = sf::seconds(1.f/120);
+
         while(_running)
         {
             processNetworkEvents();
-            update(clock.restart());
+
+            sf::Time delta = clock.restart();
+            timeSinceLastUpdate += delta;
+            if(timeSinceLastUpdate > TimePerFrame)
+            {
+                timeSinceLastUpdate -= TimePerFrame;
+                update(TimePerFrame);
+            }
         }
     }
 
