@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <string>
+#include <queue>
 
 #include <SFML/System.hpp>
+#include <SFML/Network.hpp>
 
 namespace book
 {
@@ -26,6 +28,7 @@ namespace book
             int id()const;
 
             bool addClient(Client* client);
+            void sendToAll(sf::Packet& packet);
 
             void run();
             void stop();
@@ -34,14 +37,19 @@ namespace book
 
 
         private:
-            bool _running;
-            sf::Thread _thread;
+            bool _isRunning;
+            sf::Thread _gameThread;
             
             sf::Mutex _teamMutex;
             std::vector<Team*> _teams;
 
             sf::Mutex _clientsMutex;
             std::vector<Client*> _clients;
+
+            void _send();
+            sf::Thread _sendThread;
+            sf::Mutex _sendMutex;
+            std::queue<sf::Packet> _outgoing;
 
             const int _id;
             static int _numberOfCreations;
@@ -52,6 +60,7 @@ namespace book
 
             void processNetworkEvents();
             void update(sf::Time deltaTime);
+
     };
 }
 #endif

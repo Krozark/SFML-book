@@ -14,8 +14,9 @@ namespace book
     int Game::_numberOfCreations = 0;
 
     Game::Game(const std::string& mapFileName) :
-        _running(false),
-        _thread(&Game::_run,this),
+        _isRunning(false),
+        _gameThread(&Game::_run,this),
+        _sendThread(&Game::_send,this),
         _id(++_numberOfCreations),
         _mapFileName(mapFileName)
     {
@@ -53,8 +54,9 @@ namespace book
 
         bool res = false;
         {
-            sf::Lock guard(_clientsMutex);
-            res = _clients.size() < Team::MAX_TEAMS;
+            sf::Lock guard(_teamMutex);
+            res = _teams.size() < Team::MAX_TEAMS;
+            //or _teams->getClients.size() == 0
         }
 
         sf::Packet response;
@@ -63,6 +65,7 @@ namespace book
             std::ifstream file(_mapFileName);
             std::string content((std::istreambuf_iterator<char>(file)),(std::istreambuf_iterator<char>()));
 
+            //TODO set color to team
             response<<packet::JoinGameConfirmation(content,
                                                     sf::Color(random(110,225),
                                                               random(110,225),
@@ -72,7 +75,12 @@ namespace book
 
             std::cout<<"Add client to game"<<std::endl;
 
-            sf::Lock guard(_clientsMutex);
+            sf::Lock guardTeam(_teamMutex);
+            Team* team =new Team();
+            _teams.emplace_back(team);
+            client->setTeam(team);
+
+            sf::Lock guardClients(_clientsMutex);
             _clients.emplace_back(client);
         }
         else
@@ -84,15 +92,22 @@ namespace book
         return res;
     }
 
+    void Game::sendToAll(sf::Packet& packet)
+    {
+        sf::Lock guard(_sendMutex);
+        _outgoing.emplace(packet);
+    }
+
     void Game::run()
     {
-        _running = true;
-        _thread.launch();
+        _isRunning = true;
+        _gameThread.launch();
+        _sendThread.launch();
     }
 
     void Game::stop()
     {
-        _running = false;
+        _isRunning = false;
     }
 
     void Game::_run()
@@ -102,7 +117,7 @@ namespace book
 
         sf::Time TimePerFrame = sf::seconds(1.f/120);
 
-        while(_running)
+        while(_isRunning)
         {
             processNetworkEvents();
 
@@ -113,6 +128,31 @@ namespace book
                 timeSinceLastUpdate -= TimePerFrame;
                 update(TimePerFrame);
             }
+        }
+    }
+
+    void Game::_send()
+    {
+        while(_isRunning)
+        {
+            _sendMutex.lock();
+            if(_outgoing.size() > 0)
+            {
+                sf::Packet packet = _outgoing.front();
+                _outgoing.pop();
+                _sendMutex.unlock();
+
+                sf::Lock guard(_clientsMutex);
+                for(auto it = _clients.begin(); it != _clients.end();++it)
+                {
+                    (*it)->send(packet);
+                }
+            }
+            else
+            {
+                _sendMutex.unlock();
+            }
+
         }
     }
 

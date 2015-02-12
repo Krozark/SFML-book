@@ -1,19 +1,22 @@
 #ifndef BOOK_TEAM_HPP
 #define BOOK_TEAM_HPP
 
-#include <SFML/Graphics.hpp>
-
 #include <vector>
+#include <list>
+
+#include <cstdint>
 
 namespace book
 {
+    class Client;
+
     class Team
     {
         public:
             Team(const Team&) = delete;
             Team& operator=(const Team&) = delete;
 
-            Team(int id);
+            Team();
 
             void addGold(int amount);
             void addEnemy(Team* team);
@@ -25,17 +28,24 @@ namespace book
 
             int id()const;
 
+            void add(Client* client);
+            void remove(Client* client);
+
+            const std::list<Client*>& getClients()const;
+
             bool isAlive;
 
             static const int MAX_TEAMS = 4;
 
         private:
             int _id;
-            int _points;
             int _gold;
             std::vector<std::uint32_t> _QGId;
 
+            static int _numberOfCreations;
+
             std::vector<Team*> _enemies;
+            std::list<Client*> _clients;
 
 
     };

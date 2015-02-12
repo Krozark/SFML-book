@@ -3,7 +3,9 @@
 
 namespace book
 {
-    Team::Team(int id) : isAlive(true),_id(id), _points(0), _gold(0), _QGId(0)
+    int Team::_numberOfCreations = 0;
+
+    Team::Team() : isAlive(true),_id(_numberOfCreations++), _gold(0), _QGId(0)
     {
     }
 
@@ -34,8 +36,8 @@ namespace book
 
     void Team::removeQgId(std::uint32_t id)
     {
-        size_t size = _QGId.size();
-        size_t i=0;
+        std::size_t size = _QGId.size();
+        std::size_t i=0;
         while(i<size)
         {
             if(_QGId[i] == id)
@@ -52,5 +54,20 @@ namespace book
     int Team::id()const
     {
         return _id;
+    }
+
+    void Team::add(Client* client)
+    {
+        _clients.emplace_back(client);
+    }
+
+    void Team::remove(Client* client)
+    {
+        _clients.remove(client);
+    }
+
+    const std::list<Client*>& Team::getClients()const
+    {
+        return _clients;
     }
 }

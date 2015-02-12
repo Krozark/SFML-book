@@ -6,6 +6,7 @@
 
 namespace book
 {
+    class Team;
     class Client : public Connection
     {
         public:
@@ -13,11 +14,17 @@ namespace book
             Client& operator=(const Client&) = delete;
 
             Client();
+            ~Client();
+
+            void setTeam(Team* team);
+            Team* getTeam()const;
 
             bool connect();
             virtual sf::IpAddress getRemoteAddress()const;
 
             sf::TcpSocket& getSockIn();
+        private:
+        Team* _team;
 
     };
 }

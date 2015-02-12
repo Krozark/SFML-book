@@ -2,13 +2,35 @@
 
 #include <SFML-Book/common/FuncIds.hpp>
 
+#include <SFML-Book/server/Team.hpp>
+
 #include <iostream>
 
 namespace book
 {
 
-    Client::Client()
+    Client::Client() : _team(nullptr)
     {
+    }
+
+    Client::~Client()
+    {
+        if(_team)
+            _team->remove(this);
+    }
+
+    void Client::setTeam(Team* team)
+    {
+        if(_team)
+            _team->remove(this);
+        _team = team;
+        if(_team)
+            _team->add(this);
+    }
+
+    Team* Client::getTeam()const
+    {
+        return _team;
     }
 
     bool Client::connect()
