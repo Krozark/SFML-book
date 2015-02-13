@@ -4,16 +4,22 @@
 #include <vector>
 #include <string>
 #include <queue>
+#include <unordered_map>
+#include <functional>
 
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
+
+#include <SFML-utils/es/Application.hpp>
+#include <SFML-Book/server/std_hash.hpp>
+#include <SFML-Book/server/Entity.hpp>
 
 namespace book
 {
     class Team;
     class Client;
 
-    class Game
+    class Game : private sfutils::Application<Entity>
     {
         public:
             Game(const Game&) = delete;
@@ -28,12 +34,17 @@ namespace book
             int id()const;
 
             bool addClient(Client* client);
-            void sendToAll(sf::Packet& packet);
 
             void run();
             void stop();
 
-        protected:
+            Entity& createEntity(const sf::Vector2i& coord);
+            void destroyEntity(std::uint32_t id);
+            void setPosition(Entity& e,const sf::Vector2i& oldCoord,const sf::Vector2f& pos,const sf::Vector2i& newCoord);
+
+            std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
+            sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
+            int getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
 
 
         private:
@@ -60,6 +71,10 @@ namespace book
 
             void processNetworkEvents();
             void update(sf::Time deltaTime);
+
+            void sendToAll(sf::Packet& packet);
+
+            std::unordered_map<sf::Vector2i,std::list<Entity*>> _byCoords;
 
     };
 }

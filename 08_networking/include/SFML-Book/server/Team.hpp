@@ -3,8 +3,9 @@
 
 #include <vector>
 #include <list>
-
 #include <cstdint>
+
+#include <SFML/Graphics.hpp>
 
 namespace book
 {

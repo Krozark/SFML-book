@@ -54,10 +54,10 @@ namespace book
                     res = new JoinGameReject();
                     packet>>(*static_cast<JoinGameReject*>(res));
                 }break;
-                case FuncIds::IdMoveEntity :
+                case FuncIds::IdUpdateEntity:
                 {
-                    res = new MoveEntity();
-                    packet>>(*static_cast<MoveEntity*>(res));
+                    res = new UpdateEntity();
+                    packet>>(*static_cast<UpdateEntity*>(res));
                 }break;
             }
             return res;
@@ -255,40 +255,62 @@ namespace book
             return packet;
         }
 
-        ///////////////////// MoveEntity //////////////////////////
+        //////////////////////////// UpdateEntity /////////////////////
 
-        MoveEntity::MoveEntity(): NetworkEvent(FuncIds::IdMoveEntity)
-        {}
-
-        MoveEntity::MoveEntity(std::uint32_t entityId,const sf::Vector2f& pos) : MoveEntity()
+        UpdateEntity::UpdateEntity() : NetworkEvent(FuncIds::IdUpdateEntity)
         {
         }
 
-        sf::Packet& operator>>(sf::Packet& packet, MoveEntity& self)
+        void UpdateEntity::add(UpdateEntity::Update&& update)
         {
-            packet>>self._entityId
-                >>self._pos.x
-                >>self._pos.y;
+            _updates.emplace_back(update);
+        }
+
+        const std::list<UpdateEntity::Update>& UpdateEntity::getUpdates()const
+        {
+            return _updates;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, UpdateEntity& self)
+        {
+            sf::Uint32 size;
+            packet>>size;
+            self._updates.clear();
+            for(unsigned int i=0;i<size;++i)
+            {
+                UpdateEntity::Update update;
+                sf::Int32 entityId;
+                sf::Int8 animationId;
+                sf::Int32 hp;
+
+                packet>>entityId
+                    >>animationId
+                    >>update.position.x
+                    >>update.position.y
+                    >>hp;
+                update.entityId = entityId;
+                update.animationId = animationId;
+                update.hp = hp;
+
+                self._updates.emplace_back(std::move(update));
+
+            }
             return packet;
         }
 
-        sf::Packet& operator<<(sf::Packet& packet,const MoveEntity& self)
+        sf::Packet& operator<<(sf::Packet& packet, const UpdateEntity& self)
         {
-            packet<<sf::Uint8(self._type)
-                <<self._entityId
-                <<self._pos.x
-                <<self._pos.y;
+            packet<<sf::Uint32(self._updates.size());
+            for(const UpdateEntity::Update& update : self._updates)
+            {
+                packet<<sf::Int32(update.entityId)
+                    <<sf::Int8(update.animationId)
+                    <<update.position.x
+                    <<update.position.y
+                    <<sf::Int32(update.hp);
+            }
             return packet;
         }
 
-        std::uint32_t MoveEntity::getId()const
-        {
-            return _entityId;
-        }
-
-        const sf::Vector2f& MoveEntity::getPosition()const
-        {
-            return _pos;
-        }
     }
 }

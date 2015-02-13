@@ -115,23 +115,29 @@ namespace book
                 int _gameId;
         };
 
-
-        class MoveEntity : public NetworkEvent
+        class UpdateEntity : public NetworkEvent
         {
-            public:
-                MoveEntity(std::uint32_t entityId,const sf::Vector2f& pos);
-                MoveEntity();
+            public :
+                UpdateEntity();
 
-                friend sf::Packet& operator>>(sf::Packet&, MoveEntity& self);
-                friend sf::Packet& operator<<(sf::Packet&, const MoveEntity& self);
+                struct Update {
+                    int entityId;
+                    short int animationId;
+                    sf::Vector2f position;
+                    int hp;
+                };
 
-                std::uint32_t getId()const;
-                const sf::Vector2f& getPosition()const;
+                void add(Update&& update);
+                const std::list<Update>& getUpdates()const;
 
-            private:
-                sf::Uint32 _entityId;
-                sf::Vector2f _pos;
+                friend sf::Packet& operator>>(sf::Packet&, UpdateEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const UpdateEntity& self);
+
+            private :
+                std::list<Update> _updates;
         };
+
+
     }
 }
 #endif

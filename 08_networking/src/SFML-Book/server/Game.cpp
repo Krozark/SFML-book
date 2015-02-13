@@ -20,13 +20,23 @@ namespace book
         _id(++_numberOfCreations),
         _mapFileName(mapFileName)
     {
+        //TODO parse map to get initial gold, and team position
         for(int i = 0; i<Team::MAX_TEAMS;++i)
         {
             _teams.emplace_back(new Team(sf::Color(random(110,225),
                                                    random(110,225),
                                                    random(110,225)
-                                                  ));
+                                                  )));
         }
+
+        /*systems.add<SysAIMain>();
+        systems.add<SysAIWarrior>(*this);
+        systems.add<SysAIDefender>(*this);
+        systems.add<SysAISpawner>(*this);
+        systems.add<SysAIWalker>(*this);
+        systems.add<SysAIFlyer>(*this);
+        systems.add<SysHp>(*this);
+        systems.add<SysEffect>(*this);*/
     }
 
     Game::~Game()
@@ -62,7 +72,7 @@ namespace book
         Team* clientTeam = nullptr;
         for(Team* team : _teams)
         {
-            if(_teams->getClients.size() == 0)
+            if(team->getClients().size() == 0)
             {
                 clientTeam = team;
                 break;
@@ -95,11 +105,6 @@ namespace book
         return clientTeam != nullptr;
     }
 
-    void Game::sendToAll(sf::Packet& packet)
-    {
-        sf::Lock guard(_sendMutex);
-        _outgoing.emplace(packet);
-    }
 
     void Game::run()
     {
@@ -190,6 +195,7 @@ namespace book
 
     void Game::update(sf::Time deltaTime)
     {
+        Application::update(deltaTime);
         /*
         IdDestroyEntity, //client and server
             IdMoveEntity, //server
@@ -198,5 +204,11 @@ namespace book
             IdSetAnimationEntity, //server
             IdAddGoldTeam, //server
         */
+    }
+
+    void Game::sendToAll(sf::Packet& packet)
+    {
+        sf::Lock guard(_sendMutex);
+        _outgoing.emplace(packet);
     }
 }

@@ -20,10 +20,9 @@ namespace book
             //in game
             IdCreateEntity, //client
             IdDestroyEntity, //client and server
-            IdMoveEntity, //server
+            IdUpdateEntity, //server
             IdHittedEntity, //server
             IdHitEntity, //server
-            IdSetAnimationEntity, //server
             IdAddGoldTeam, //server
         };
     }

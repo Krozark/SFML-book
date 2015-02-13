@@ -56,6 +56,11 @@ namespace book
         return _id;
     }
 
+    const sf::Color& Team::getColor()const
+    {
+        return _color;
+    }
+
     void Team::add(Client* client)
     {
         _clients.emplace_back(client);

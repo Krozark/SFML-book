@@ -10,8 +10,10 @@ set(FILES_HEADER
     ${INCROOT}/Client.hpp
     ${INCROOT}/Server.hpp
 
+    ${INCROOT}/Entity.hpp
     ${INCROOT}/Game.hpp
     ${INCROOT}/Team.hpp
+    ${INCROOT}/std_hash.hpp
 
     ${INCROOT_COMMON}/Packet.hpp    
     ${INCROOT_COMMON}/FuncIds.hpp    
@@ -23,6 +25,7 @@ set(FILES_SRC
     ${SRCROOT}/Client.cpp
     ${SRCROOT}/Server.cpp
 
+    ${SRCROOT}/Entity.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Team.cpp
 
