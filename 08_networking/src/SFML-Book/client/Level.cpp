@@ -62,7 +62,7 @@ namespace book
     }
     Level::~Level()
     {
-        //entites.reset();
+        //entities.reset();
         delete _map;
     }
 
@@ -126,7 +126,7 @@ namespace book
 
     sfutils::EntityManager<Entity>& Level::entityManager()
     {
-        return entites;
+        return entities;
     }*/
 
     sfutils::Layer<sf::ConvexShape>& Level::getHighlightLayer()const
@@ -141,8 +141,8 @@ namespace book
 
     /*Entity& Level::createEntity(const sf::Vector2i& coord)
     {
-        std::uint32_t id = entites.create();
-        Entity& e = entites.get(id);
+        std::uint32_t id = entities.create();
+        Entity& e = entities.get(id);
 
         e.add<CompSkin>();
         e.setPosition(_map->mapCoordsToPixel(coord));
@@ -155,8 +155,8 @@ namespace book
 
     void Level::destroyEntity(std::uint32_t id)
     {
-        const sf::Vector2i coord = mapPixelToCoords(entites.getComponent<CompSkin>(id)->_sprite.getPosition());
-        Entity& e = entites.get(id);
+        const sf::Vector2i coord = mapPixelToCoords(entities.getComponent<CompSkin>(id)->_sprite.getPosition());
+        Entity& e = entities.get(id);
 
         _entities_layer->remove(&e,false);
         _byCoords[coord].remove(&e);
@@ -165,7 +165,7 @@ namespace book
 
     void Level::destroyEntity(Entity& e)
     {
-        const sf::Vector2i coord = mapPixelToCoords(entites.getComponent<CompSkin>(e.id())->_sprite.getPosition());
+        const sf::Vector2i coord = mapPixelToCoords(entities.getComponent<CompSkin>(e.id())->_sprite.getPosition());
 
         _entities_layer->remove(&e,false);
 

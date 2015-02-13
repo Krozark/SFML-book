@@ -279,17 +279,25 @@ namespace book
             for(unsigned int i=0;i<size;++i)
             {
                 UpdateEntity::Update update;
-                sf::Int32 entityId;
+                sf::Uint32 entityId;
                 sf::Int8 animationId;
+                sf::Int32 coord_x;
+                sf::Int32 coord_y;
                 sf::Int32 hp;
 
                 packet>>entityId
                     >>animationId
                     >>update.position.x
                     >>update.position.y
+                    >>coord_x
+                    >>coord_y
                     >>hp;
+
                 update.entityId = entityId;
                 update.animationId = animationId;
+                update.coord.x = coord_x;
+                update.coord.y = coord_y;
+
                 update.hp = hp;
 
                 self._updates.emplace_back(std::move(update));
@@ -303,10 +311,12 @@ namespace book
             packet<<sf::Uint32(self._updates.size());
             for(const UpdateEntity::Update& update : self._updates)
             {
-                packet<<sf::Int32(update.entityId)
+                packet<<sf::Uint32(update.entityId)
                     <<sf::Int8(update.animationId)
                     <<update.position.x
                     <<update.position.y
+                    <<sf::Int32(update.coord.x)
+                    <<sf::Int32(update.coord.y)
                     <<sf::Int32(update.hp);
             }
             return packet;

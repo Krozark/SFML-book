@@ -14,6 +14,8 @@
 #include <SFML-Book/server/std_hash.hpp>
 #include <SFML-Book/server/Entity.hpp>
 
+#include <SFML-Book/common/Packet.hpp>
+
 namespace book
 {
     class Team;
@@ -42,6 +44,8 @@ namespace book
             void destroyEntity(std::uint32_t id);
             void setPosition(Entity& e,const sf::Vector2i& oldCoord,const sf::Vector2f& pos,const sf::Vector2i& newCoord);
 
+            void addUpdate(packet::UpdateEntity& packet,unsigned int id);
+
             std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             int getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
@@ -50,6 +54,7 @@ namespace book
         private:
             bool _isRunning;
             sf::Thread _gameThread;
+            sf::Mutex _gameMutex;
             
             sf::Mutex _teamMutex;
             std::vector<Team*> _teams;

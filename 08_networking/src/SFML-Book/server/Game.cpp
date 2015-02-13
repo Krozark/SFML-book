@@ -2,8 +2,8 @@
 
 #include <SFML-Book/server/Client.hpp>
 #include <SFML-Book/server/Team.hpp>
+#include <SFML-Book/server/Component.hpp>
 
-#include <SFML-Book/common/Packet.hpp>
 #include <SFML-Book/common/random.hpp>
 
 #include <iostream>
@@ -89,6 +89,20 @@ namespace book
 
             client->send(response);
 
+            {
+                response.clear();
+                sf::Lock gameGuard(_gameMutex);
+                packet::UpdateEntity datas;
+
+                for(auto id : entities)
+                    addUpdate(datas,id);
+
+                response<<datas;
+                client->send(response);
+            }
+
+
+
             std::cout<<"Add client to game"<<std::endl;
 
             client->setTeam(clientTeam);
@@ -116,6 +130,20 @@ namespace book
     void Game::stop()
     {
         _isRunning = false;
+    }
+
+    void Game::addUpdate(packet::UpdateEntity& packet,unsigned int id)
+    {
+        Entity& e = entities.get(id);
+        packet::UpdateEntity::Update update;
+        
+        update.entityId = id;
+        update.animationId = entities.getComponent<CompSkin>(id)->_animationId;
+        update.position = e.getPosition();
+        update.coord = e.getCoord();
+        update.hp = entities.getComponent<CompHp>(id)->_hp;
+
+        packet.add(std::move(update));
     }
 
     void Game::_run()

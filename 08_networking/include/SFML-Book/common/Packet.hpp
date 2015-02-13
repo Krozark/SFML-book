@@ -121,9 +121,10 @@ namespace book
                 UpdateEntity();
 
                 struct Update {
-                    int entityId;
+                    unsigned int entityId;
                     short int animationId;
                     sf::Vector2f position;
+                    sf::Vector2i coord;
                     int hp;
                 };
 
