@@ -16,7 +16,7 @@ namespace book
             Team(const Team&) = delete;
             Team& operator=(const Team&) = delete;
 
-            Team();
+            Team(const sf::Color& color);
 
             void addGold(int amount);
             void addEnemy(Team* team);
@@ -27,6 +27,7 @@ namespace book
             void removeQgId(std::uint32_t id);
 
             int id()const;
+            const sf::Color& getColor()const;
 
             void add(Client* client);
             void remove(Client* client);
@@ -41,6 +42,7 @@ namespace book
             int _id;
             int _gold;
             std::vector<std::uint32_t> _QGId;
+            sf::Color _color;
 
             static int _numberOfCreations;
 

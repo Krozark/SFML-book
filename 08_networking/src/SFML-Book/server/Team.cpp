@@ -5,7 +5,7 @@ namespace book
 {
     int Team::_numberOfCreations = 0;
 
-    Team::Team() : isAlive(true),_id(_numberOfCreations++), _gold(0), _QGId(0)
+    Team::Team(const sf::Color& color) : isAlive(true),_id(_numberOfCreations++), _gold(0), _QGId(0), _color(color)
     {
     }
 
