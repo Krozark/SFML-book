@@ -34,15 +34,15 @@ namespace book
                     res = new SetListGame();
                     packet>>(*static_cast<SetListGame*>(res));
                 }break;
-                case FuncIds::IdJoinGame :
-                {
-                    res = new JoinGame();
-                    packet>>(*static_cast<JoinGame*>(res));
-                }break;
                 case FuncIds::IdCreateGame :
                 {
                     res = new CreateGame();
                     packet>>(*static_cast<CreateGame*>(res));
+                }break;
+                case FuncIds::IdJoinGame :
+                {
+                    res = new JoinGame();
+                    packet>>(*static_cast<JoinGame*>(res));
                 }break;
                 case FuncIds::IdJoinGameConfirmation :
                 {
@@ -54,10 +54,38 @@ namespace book
                     res = new JoinGameReject();
                     packet>>(*static_cast<JoinGameReject*>(res));
                 }break;
+                case FuncIds::IdRequestCreateEntity :
+                {
+                    //TODO
+                }break;
+                case FuncIds::IdRequestDestroyEntity :
+                {
+                    //TODO
+                }break;
+                case FuncIds::IdDestroyEntity :
+                {
+                    //TODO
+                }break;
+                case FuncIds::IdCreateEntity :
+                {
+                    //TODO
+                }break;
                 case FuncIds::IdUpdateEntity:
                 {
                     res = new UpdateEntity();
                     packet>>(*static_cast<UpdateEntity*>(res));
+                }break;
+                case FuncIds::IdHittedEntity :
+                {
+                    //TODO
+                }break;
+                case FuncIds::IdHitEntity :
+                {
+                    //TODO
+                }break;
+                case FuncIds::IdAddGoldTeam :
+                {
+                    //TODO
                 }break;
             }
             return res;
@@ -280,12 +308,14 @@ namespace book
             {
                 UpdateEntity::Update update;
                 sf::Uint32 entityId;
+                sf::Int8 entityType;
                 sf::Int8 animationId;
                 sf::Int32 coord_x;
                 sf::Int32 coord_y;
                 sf::Int32 hp;
 
                 packet>>entityId
+                    >>entityType
                     >>animationId
                     >>update.position.x
                     >>update.position.y
@@ -294,6 +324,7 @@ namespace book
                     >>hp;
 
                 update.entityId = entityId;
+                update.entityType = entityType;
                 update.animationId = animationId;
                 update.coord.x = coord_x;
                 update.coord.y = coord_y;
@@ -312,6 +343,7 @@ namespace book
             for(const UpdateEntity::Update& update : self._updates)
             {
                 packet<<sf::Uint32(update.entityId)
+                    <<sf::Int8(update.entityType)
                     <<sf::Int8(update.animationId)
                     <<update.position.x
                     <<update.position.y

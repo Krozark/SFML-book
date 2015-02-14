@@ -11,6 +11,7 @@ namespace book
 {
     namespace packet
     {
+        // base
         class NetworkEvent
         {
             public:
@@ -29,12 +30,15 @@ namespace book
 
         };
 
+        //specials
+
         class Disconnected : public NetworkEvent
         {
             public:
                 Disconnected();
         };
 
+        // main menu
         class GetListGame : public NetworkEvent
         {
             public:
@@ -115,6 +119,13 @@ namespace book
                 int _gameId;
         };
 
+        //in game
+        
+        //RequestCreateEntity, //client
+        //RequestDestroyEntity, //client
+        //DestroyEntity, //server
+        //CreateEntity, //server
+
         class UpdateEntity : public NetworkEvent
         {
             public :
@@ -122,6 +133,7 @@ namespace book
 
                 struct Update {
                     unsigned int entityId;
+                    short int entityType;
                     short int animationId;
                     sf::Vector2f position;
                     sf::Vector2i coord;
@@ -138,6 +150,9 @@ namespace book
                 std::list<Update> _updates;
         };
 
+        //IdHittedEntity, //server
+        //IdHitEntity, //server
+        //IdAddGoldTeam, //server
 
     }
 }

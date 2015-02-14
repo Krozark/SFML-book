@@ -67,7 +67,6 @@ namespace book
 
     bool Game::addClient(Client* client)
     {
-        //send map informations
         sf::Lock guard(_teamMutex);
         Team* clientTeam = nullptr;
         for(Team* team : _teams)
@@ -82,6 +81,8 @@ namespace book
         sf::Packet response;
         if(clientTeam != nullptr)
         {
+
+            //send map informations
             std::ifstream file(_mapFileName);
             std::string content((std::istreambuf_iterator<char>(file)),(std::istreambuf_iterator<char>()));
 
@@ -90,6 +91,7 @@ namespace book
             client->send(response);
 
             {
+                //send initial content
                 response.clear();
                 sf::Lock gameGuard(_gameMutex);
                 packet::UpdateEntity datas;
@@ -100,8 +102,6 @@ namespace book
                 response<<datas;
                 client->send(response);
             }
-
-
 
             std::cout<<"Add client to game"<<std::endl;
 
@@ -138,6 +138,7 @@ namespace book
         packet::UpdateEntity::Update update;
         
         update.entityId = id;
+        update.entityType = e.getType();
         update.animationId = entities.getComponent<CompSkin>(id)->_animationId;
         update.position = e.getPosition();
         update.coord = e.getCoord();

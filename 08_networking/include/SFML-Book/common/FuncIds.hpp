@@ -18,12 +18,24 @@ namespace book
             IdJoinGameReject, //server
 
             //in game
-            IdCreateEntity, //client
-            IdDestroyEntity, //client and server
+            IdRequestCreateEntity, //client
+            IdRequestDestroyEntity, //client
+            IdDestroyEntity, //server
+            IdCreateEntity, //server
             IdUpdateEntity, //server
             IdHittedEntity, //server
             IdHitEntity, //server
             IdAddGoldTeam, //server
+        };
+    }
+
+    namespace EntityType {
+        enum TYPES {
+            IdMain = 0,
+            IdEye,
+            IdWormEgg,
+            IdWorm,
+            IdCarnivor
         };
     }
 }

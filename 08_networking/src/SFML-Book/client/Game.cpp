@@ -177,13 +177,14 @@ namespace book
                     case StatusInGame :
                     {
                         _gameMenu.processNetworkEvent(msg);
+
                         
                         /*
                         IdDestroyEntity
-                        IdMoveEntity
+                        IdUpdateEntity
                         IdHittedEntity
                         IdHitEntity
-                        IdSetAnimationEntity*/
+                        */
 
                         
                     }break;
