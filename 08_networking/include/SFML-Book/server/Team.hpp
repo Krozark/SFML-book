@@ -17,9 +17,11 @@ namespace book
             Team(const Team&) = delete;
             Team& operator=(const Team&) = delete;
 
-            Team(const sf::Color& color);
+            Team(int id,const sf::Color& color,int gold);
 
             void addGold(int amount);
+            int getGold()const;
+
             void addEnemy(Team* team);
             const std::vector<Team*>& getEnemies()const;
 
@@ -37,15 +39,11 @@ namespace book
 
             bool isAlive;
 
-            static const int MAX_TEAMS = 4;
-
         private:
-            int _id;
+            const int _id;
             int _gold;
             std::vector<std::uint32_t> _QGId;
             sf::Color _color;
-
-            static int _numberOfCreations;
 
             std::vector<Team*> _enemies;
             std::list<Client*> _clients;

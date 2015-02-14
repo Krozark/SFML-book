@@ -3,15 +3,18 @@
 
 namespace book
 {
-    int Team::_numberOfCreations = 0;
-
-    Team::Team(const sf::Color& color) : isAlive(true),_id(_numberOfCreations++), _gold(0), _QGId(0), _color(color)
+    Team::Team(int id,const sf::Color& color,int gold) : isAlive(true),_id(id), _gold(gold), _QGId(0), _color(color)
     {
     }
 
     void Team::addGold(int amount)
     {
         _gold += amount;
+    }
+
+    int Team::getGold()const
+    {
+        return _gold;
     }
 
     void Team::addEnemy(Team* team)

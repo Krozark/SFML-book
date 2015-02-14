@@ -29,12 +29,12 @@ namespace book
             GameMenu(const GameMenu&) = delete;
             GameMenu& operator=(const GameMenu&) = delete;
 
-            GameMenu(sf::RenderWindow& window,Client& client);
+            GameMenu(sf::RenderWindow& window,Client& client,int& team);
 
             ~GameMenu();
 
             void setTeamColor(const sf::Color& color);
-            void init();
+            void init(int gold);
 
             void update(sf::Time deltaTime);
             
@@ -47,6 +47,7 @@ namespace book
             //void setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager);
 
         private:
+            int& _team;
             Client& _client;
             sf::Color _color;
 

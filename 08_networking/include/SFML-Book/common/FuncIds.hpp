@@ -25,7 +25,7 @@ namespace book
             IdUpdateEntity, //server
             IdHittedEntity, //server
             IdHitEntity, //server
-            IdAddGoldTeam, //server
+            IdUpdateTeam, //server
         };
     }
 

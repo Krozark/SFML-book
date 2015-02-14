@@ -76,8 +76,8 @@ namespace book
 
     struct CompTeam : sfutils::Component<CompTeam,Entity>
     {
-        explicit CompTeam(Team* team);
-        Team* _team;
+        explicit CompTeam(int id);
+        int _team
     };
 
     struct CompSkin : sfutils::Component<CompSkin,Entity>

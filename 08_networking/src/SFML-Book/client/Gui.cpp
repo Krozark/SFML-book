@@ -65,7 +65,8 @@ namespace book
 
     //////////////////// GameMenu ///////////////////////
 
-    GameMenu::GameMenu(sf::RenderWindow& window,Client& client) : 
+    GameMenu::GameMenu(sf::RenderWindow& window,Client& client,int& team) : 
+        _team(team),
         _client(client),
         _infoBar(window,Configuration::gui_inputs),
         _labelGold(nullptr),
@@ -92,7 +93,7 @@ namespace book
         
     }
 
-    void GameMenu::init()
+    void GameMenu::init(int gold)
     {
 
         clear();
@@ -103,6 +104,8 @@ namespace book
         initInfoBar();
         initSelectingBar();
         initBuildBar();
+
+        setGold(gold);
 
         //IdDisconnected
         //IdCreateEntity
@@ -232,7 +235,19 @@ namespace book
     
     void GameMenu::processNetworkEvent(packet::NetworkEvent* msg)
     {
-        //IdAddGoldTeam
+        if(msg->type() == FuncIds::IdUpdateTeam)
+        {
+            packet::UpdateTeam* event = static_cast<packet::UpdateTeam*>(msg);
+            const std::list<packet::UpdateTeam::Data>& datas = event->getUpdates();
+            for(const packet::UpdateTeam::Data& data : datas)
+            {
+                if(data.team == _team)
+                {
+                    setGold(data.gold);
+                    break;
+                }
+            }
+        }
     }
 
     void GameMenu::draw(sf::RenderTarget& window)

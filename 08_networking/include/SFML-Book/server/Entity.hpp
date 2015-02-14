@@ -1,12 +1,16 @@
 #ifndef BOOK_ENTITY_HPP
 #define BOOK_ENTITY_HPP
 
+#include <functional>
+
 #include <SFML-utils/ES.hpp>
 #include <SFML-utils/Core.hpp>
 
 namespace book
 {
     class Game;
+    class Team;
+    
     class Entity : public sfutils::Entity<Entity>
     {
 
@@ -24,7 +28,6 @@ namespace book
 
             using FuncType = std::function<void(Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Game& game)>;
 
-
             FuncType onHit;
             FuncType onHitted;
 
@@ -37,6 +40,15 @@ namespace book
             sf::Vector2i _coords;
             short int _type;
     };
+
+    using MakeAs = std::function<void(Entity& entity,Team* team,Game& game)>;
+
+    void makeAsMain(Entity& entity,Team* team,Game& game);
+    void makeAsEye(Entity& entity,Team* team,Game& game);
+    void makeAsWormEgg(Entity& entity,Team* team,Game& game);
+    void makeAsWorm(Entity& entity,Team* team,Game& game);
+    void makeAsCarnivor(Entity& entity,Team* team,Game& game);
+
 
 }
 #endif

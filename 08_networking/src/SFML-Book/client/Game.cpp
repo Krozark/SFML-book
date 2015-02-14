@@ -10,7 +10,6 @@
 
 
 
-
 namespace book
 {
     Game::Game(int X, int Y): 
@@ -19,7 +18,7 @@ namespace book
         _isConnected(false),
         _status(Status::StatusMainMenu),
         _mainMenu(_window,_client),
-        _gameMenu(_window,_client),
+        _gameMenu(_window,_client,_team),
         _level(nullptr)
     {
         _window.setMouseCursorVisible(false);        
@@ -161,8 +160,18 @@ namespace book
 
                                 if(_level != nullptr)
                                 {
-                                    _gameMenu.setTeamColor(event->getTeamColor());
-                                    _gameMenu.init();
+                                    _team = event->getTeamId();
+                                    for(const packet::JoinGameConfirmation::Data& data : event->getTeamInfo())
+                                    {
+                                        _teamColor[data.team] = data.color;
+
+                                        if(data.team == _team)
+                                        {
+                                            _gameMenu.setTeamColor(data.color);
+                                            _gameMenu.init(data.gold);
+                                        }
+                                    }
+
                                     _status = StatusInGame;
                                 }
 
@@ -177,7 +186,6 @@ namespace book
                     case StatusInGame :
                     {
                         _gameMenu.processNetworkEvent(msg);
-
                         
                         /*
                         IdDestroyEntity

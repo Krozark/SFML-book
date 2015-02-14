@@ -68,7 +68,9 @@ namespace book
                 }break;
                 case FuncIds::IdCreateEntity :
                 {
-                    //TODO
+                    res = new CreateEntity();
+                    packet>>(*static_cast<CreateEntity*>(res));
+
                 }break;
                 case FuncIds::IdUpdateEntity:
                 {
@@ -83,9 +85,10 @@ namespace book
                 {
                     //TODO
                 }break;
-                case FuncIds::IdAddGoldTeam :
+                case FuncIds::IdUpdateTeam :
                 {
-                    //TODO
+                    res = new UpdateEntity();
+                    packet>>(*static_cast<UpdateEntity*>(res));
                 }break;
             }
             return res;
@@ -219,7 +222,7 @@ namespace book
         {
         }
 
-        JoinGameConfirmation::JoinGameConfirmation(const std::string& mapDatas,const sf::Color& color) : NetworkEvent(FuncIds::IdJoinGameConfirmation), _mapDatas(mapDatas), _teamColor(color)
+        JoinGameConfirmation::JoinGameConfirmation(const std::string& mapDatas,int team): NetworkEvent(FuncIds::IdJoinGameConfirmation), _mapDatas(mapDatas), _teamId(team)
         {
         }
 
@@ -228,21 +231,50 @@ namespace book
             return _mapDatas;
         }
 
-        const sf::Color& JoinGameConfirmation::getTeamColor()const
+        int JoinGameConfirmation::getTeamId()const
         {
-            return _teamColor;
+            return _teamId;
+        }
+
+        const void JoinGameConfirmation::addTeam(JoinGameConfirmation::Data&& data)
+        {
+            _teamInfo.emplace_back(data);
+        }
+
+        const std::list<JoinGameConfirmation::Data>& JoinGameConfirmation::getTeamInfo()const
+        {
+            return _teamInfo;
         }
 
         sf::Packet& operator>>(sf::Packet& packet, JoinGameConfirmation& self)
         {
-            sf::Int8 r,g,b;
-
             self._mapDatas.clear();
+
+            sf::Int32 teamId;
+            sf::Int32 nbTeam;
+
             packet>>self._mapDatas
-                >>r
-                >>g
-                >>b;
-            self._teamColor = sf::Color(r,g,b);
+                >>teamId
+                >>nbTeam;
+            self._teamId = teamId;
+
+            self._teamInfo.clear();
+            for(int i=0;i<nbTeam;++i)
+            {
+                sf::Int32 team;
+                sf::Int32 gold;
+                sf::Uint8 r,g,b;
+
+                packet>>team
+                    >>gold
+                    >>r>>g>>b;
+                JoinGameConfirmation::Data data;
+                data.team = team;
+                data.gold = gold;
+                data.color = sf::Color(r,g,b);
+
+                self._teamInfo.emplace_back(std::move(data));
+            }
 
             return packet;
         }
@@ -251,9 +283,16 @@ namespace book
         {
             packet<<sf::Uint8(self._type)
                 <<self._mapDatas
-                <<sf::Int8(self._teamColor.r)
-                <<sf::Int8(self._teamColor.g)
-                <<sf::Int8(self._teamColor.g);
+                <<sf::Int32(self._teamId)
+                <<sf::Int32(self._teamInfo.size());
+            for(const JoinGameConfirmation::Data& data: self._teamInfo)
+            {
+                packet<<sf::Int32(data.team)
+                    <<sf::Int32(data.gold)
+                    <<sf::Uint8(data.color.r)
+                    <<sf::Uint8(data.color.g)
+                    <<sf::Uint8(data.color.b);
+            }
 
             return packet;
         }
@@ -283,32 +322,38 @@ namespace book
             return packet;
         }
 
-        //////////////////////////// UpdateEntity /////////////////////
+        //////////////////////////// CreateEntity /////////////////////
 
-        UpdateEntity::UpdateEntity() : NetworkEvent(FuncIds::IdUpdateEntity)
+        CreateEntity::CreateEntity() : NetworkEvent(FuncIds::IdCreateEntity)
         {
         }
 
-        void UpdateEntity::add(UpdateEntity::Update&& update)
+        void CreateEntity::add(CreateEntity::Data&& update)
         {
             _updates.emplace_back(update);
         }
 
-        const std::list<UpdateEntity::Update>& UpdateEntity::getUpdates()const
+        const std::list<CreateEntity::Data>& CreateEntity::getCreates()const
         {
             return _updates;
         }
 
-        sf::Packet& operator>>(sf::Packet& packet, UpdateEntity& self)
+        void CreateEntity::clear()
+        {
+            _updates.clear();
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, CreateEntity& self)
         {
             sf::Uint32 size;
             packet>>size;
             self._updates.clear();
             for(unsigned int i=0;i<size;++i)
             {
-                UpdateEntity::Update update;
+                CreateEntity::Data update;
                 sf::Uint32 entityId;
                 sf::Int8 entityType;
+                sf::Int8 entityTeam;
                 sf::Int8 animationId;
                 sf::Int32 coord_x;
                 sf::Int32 coord_y;
@@ -316,6 +361,7 @@ namespace book
 
                 packet>>entityId
                     >>entityType
+                    >>entityTeam
                     >>animationId
                     >>update.position.x
                     >>update.position.y
@@ -325,6 +371,81 @@ namespace book
 
                 update.entityId = entityId;
                 update.entityType = entityType;
+                update.entityTeam = entityTeam;
+                update.animationId = animationId;
+                update.coord.x = coord_x;
+                update.coord.y = coord_y;
+
+                update.hp = hp;
+
+                self._updates.emplace_back(std::move(update));
+
+            }
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const CreateEntity& self)
+        {
+            packet<<sf::Uint32(self._updates.size());
+            for(const CreateEntity::Data& update : self._updates)
+            {
+                packet<<sf::Uint32(update.entityId)
+                    <<sf::Int8(update.entityType)
+                    <<sf::Int8(update.entityTeam)
+                    <<sf::Int8(update.animationId)
+                    <<update.position.x
+                    <<update.position.y
+                    <<sf::Int32(update.coord.x)
+                    <<sf::Int32(update.coord.y)
+                    <<sf::Int32(update.hp);
+            }
+            return packet;
+        }
+
+        //////////////////////////// UpdateEntity /////////////////////
+
+        UpdateEntity::UpdateEntity() : NetworkEvent(FuncIds::IdUpdateEntity)
+        {
+        }
+
+        void UpdateEntity::add(UpdateEntity::Data&& update)
+        {
+            _updates.emplace_back(update);
+        }
+
+        const std::list<UpdateEntity::Data>& UpdateEntity::getUpdates()const
+        {
+            return _updates;
+        }
+
+        void UpdateEntity::clear()
+        {
+            _updates.clear();
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, UpdateEntity& self)
+        {
+            sf::Uint32 size;
+            packet>>size;
+            self._updates.clear();
+            for(unsigned int i=0;i<size;++i)
+            {
+                UpdateEntity::Data update;
+                sf::Uint32 entityId;
+                sf::Int8 animationId;
+                sf::Int32 coord_x;
+                sf::Int32 coord_y;
+                sf::Int32 hp;
+
+                packet>>entityId
+                    >>animationId
+                    >>update.position.x
+                    >>update.position.y
+                    >>coord_x
+                    >>coord_y
+                    >>hp;
+
+                update.entityId = entityId;
                 update.animationId = animationId;
                 update.coord.x = coord_x;
                 update.coord.y = coord_y;
@@ -340,10 +461,9 @@ namespace book
         sf::Packet& operator<<(sf::Packet& packet, const UpdateEntity& self)
         {
             packet<<sf::Uint32(self._updates.size());
-            for(const UpdateEntity::Update& update : self._updates)
+            for(const UpdateEntity::Data& update : self._updates)
             {
                 packet<<sf::Uint32(update.entityId)
-                    <<sf::Int8(update.entityType)
                     <<sf::Int8(update.animationId)
                     <<update.position.x
                     <<update.position.y
@@ -354,5 +474,57 @@ namespace book
             return packet;
         }
 
+        ////////////////////// UpdateTeam ///////////////////////////////
+        
+        UpdateTeam::UpdateTeam() : NetworkEvent(FuncIds::IdUpdateTeam)
+        {
+        }
+
+        void UpdateTeam::add(UpdateTeam::Data&& data)
+        {
+            _updates.emplace_back(data);
+        }
+
+        const std::list<UpdateTeam::Data>& UpdateTeam::getUpdates()const
+        {
+            return _updates;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, UpdateTeam& self)
+        {
+            self._updates.clear();
+            sf::Int32 size;
+            packet>>size;
+            for(int i=0;i<size;++i)
+            {
+                sf::Int32 team;
+                sf::Uint8 gameOver;
+                sf::Int32 gold;
+                packet>>team
+                    >>gameOver
+                    >>gold;
+
+                UpdateTeam::Data data;
+                data.team = team;
+                data.gameOver = gameOver;
+                data.gold = gold;
+
+                self._updates.emplace_back(std::move(data));
+            }
+
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const UpdateTeam& self)
+        {
+            packet<<sf::Uint32(self._updates.size());
+            for(const UpdateTeam::Data& data : self._updates)
+            {
+                packet<<sf::Uint32(data.team)
+                    <<sf::Uint8(data.gameOver)
+                    <<sf::Int32(data.gold);
+            }
+            return packet;
+        }
     }
 }

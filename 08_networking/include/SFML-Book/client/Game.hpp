@@ -41,11 +41,13 @@ namespace book
                 StatusDisconnected
             } _status;
 
-            //Maine
+            //Main
             MainMenu _mainMenu;
             //Game
             GameMenu _gameMenu;
             Level* _level;
+            int _team;
+            std::unordered_map<int,sf::Color> _teamColor;
 
     };
 }

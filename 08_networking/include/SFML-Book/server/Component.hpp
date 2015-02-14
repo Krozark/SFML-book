@@ -83,7 +83,7 @@ namespace book
     struct CompSkin : sfutils::Component<CompSkin,Entity>
     {
         enum AnimationId : int{
-            Stand,
+            Stand = 0,
             Spawn,
             MoveLeft,
             MoveRight,
@@ -91,7 +91,7 @@ namespace book
             HitRight
         };
 
-        explicit CompSkin(){};
+        explicit CompSkin(short int animation);
         
         short int _animationId;
     };
@@ -100,9 +100,6 @@ namespace book
     {
         explicit CompHp(int hp);
 
-        sf::RectangleShape _shape_hp;
-        sf::RectangleShape _shape_max_hp;
-
         int _hp;
         const int _maxHp;
     };
@@ -110,17 +107,6 @@ namespace book
 
     struct CompUpgradable : sfutils::Component<CompUpgradable,Entity>
     {
-    };
-
-    struct CompEffect : sfutils::Component<CompEffect,Entity>
-    {
-    };
-
-    struct CompBuildArea : sfutils::Component<CompBuildArea,Entity>
-    {
-        explicit CompBuildArea(int range);
-
-        int _range;
     };
 }
 #endif

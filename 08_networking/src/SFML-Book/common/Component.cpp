@@ -26,7 +26,7 @@ namespace book
     {
     }
 
-    CompTeam::CompTeam(Team* team) : _team(team)
+    CompTeam::CompTeam(int id) : _team(id)
     {
     }
 

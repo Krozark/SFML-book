@@ -92,17 +92,27 @@ namespace book
         {
             public:
                 JoinGameConfirmation();
-                JoinGameConfirmation(const std::string& mapDatas,const sf::Color& color);
+                JoinGameConfirmation(const std::string& mapDatas,int team);
 
                 const std::string& getMapDatas()const;
-                const sf::Color& getTeamColor()const;
+                int getTeamId()const;
 
                 friend sf::Packet& operator>>(sf::Packet&, JoinGameConfirmation& self);
                 friend sf::Packet& operator<<(sf::Packet&, const JoinGameConfirmation& self);
 
+                struct Data{
+                    int team;
+                    int gold;
+                    sf::Color color;
+                };
+
+                const void addTeam(Data&& data);
+                const std::list<Data>& getTeamInfo()const;
+
             private:
                 std::string _mapDatas;
-                sf::Color _teamColor;
+                int _teamId;
+                std::list<Data> _teamInfo;
         };
 
         class JoinGameReject : public NetworkEvent
@@ -125,34 +135,80 @@ namespace book
         //RequestDestroyEntity, //client
         //DestroyEntity, //server
         //CreateEntity, //server
-
-        class UpdateEntity : public NetworkEvent
+        class CreateEntity : public NetworkEvent
         {
             public :
-                UpdateEntity();
+                CreateEntity();
 
-                struct Update {
+                struct Data {
                     unsigned int entityId;
                     short int entityType;
+                    short int entityTeam;
                     short int animationId;
                     sf::Vector2f position;
                     sf::Vector2i coord;
                     int hp;
                 };
 
-                void add(Update&& update);
-                const std::list<Update>& getUpdates()const;
+                void add(Data&& update);
+                const std::list<Data>& getCreates()const;
+                void clear();
+
+                friend sf::Packet& operator>>(sf::Packet&, CreateEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const CreateEntity& self);
+
+
+            private :
+                std::list<Data> _updates;
+        };
+
+        class UpdateEntity : public NetworkEvent
+        {
+            public :
+                UpdateEntity();
+
+                struct Data {
+                    unsigned int entityId;
+                    short int animationId;
+                    sf::Vector2f position;
+                    sf::Vector2i coord;
+                    int hp;
+                };
+
+                void add(Data&& update);
+                const std::list<Data>& getUpdates()const;
+                void clear();
 
                 friend sf::Packet& operator>>(sf::Packet&, UpdateEntity& self);
                 friend sf::Packet& operator<<(sf::Packet&, const UpdateEntity& self);
 
             private :
-                std::list<Update> _updates;
+                std::list<Data> _updates;
         };
 
         //IdHittedEntity, //server
         //IdHitEntity, //server
-        //IdAddGoldTeam, //server
+        class UpdateTeam : public NetworkEvent
+        {
+            public :
+                UpdateTeam();
+
+                struct Data {
+                    short int team;
+                    bool gameOver;
+                    int gold;
+                };
+
+                void add(Data&& update);
+                const std::list<Data>& getUpdates()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, UpdateTeam& self);
+                friend sf::Packet& operator<<(sf::Packet&, const UpdateTeam& self);
+
+            private:
+                std::list<Data> _updates;
+
+        };
 
     }
 }

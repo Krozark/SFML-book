@@ -6,8 +6,12 @@
 
 #include <SFML-Book/common/random.hpp>
 
+
+#include <utils/json/Driver.hpp>
+
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 
 namespace book
 {
@@ -16,17 +20,64 @@ namespace book
     Game::Game(const std::string& mapFileName) :
         _isRunning(false),
         _gameThread(&Game::_run,this),
+        _map(sfutils::VMap::createMapFromFile(mapFileName)),
         _sendThread(&Game::_send,this),
         _id(++_numberOfCreations),
         _mapFileName(mapFileName)
     {
-        //TODO parse map to get initial gold, and team position
-        for(int i = 0; i<Team::MAX_TEAMS;++i)
+        if(_map == nullptr)
+            throw std::runtime_error("Impossible to load file map");
+        _map->clear();//we just need the geometry here
+
+        int initialGold = 0;
+        std::vector<sf::Vector2i> spawns;
         {
-            _teams.emplace_back(new Team(sf::Color(random(110,225),
-                                                   random(110,225),
-                                                   random(110,225)
-                                                  )));
+            utils::json::Value* rootPtr = utils::json::Driver::parse_file(mapFileName);
+
+            utils::json::Object& root = *rootPtr;
+            const utils::json::Object& size = root["size"];
+            const utils::json::Object& min = size["min"];
+            const utils::json::Object& max = size["max"];
+
+            _minCoord.x = min["x"].as_int();
+            _minCoord.y = min["y"].as_int();
+
+            _maxCoord.x = max["x"].as_int();
+            _maxCoord.y = max["y"].as_int();
+
+            const utils::json::Object& players = root["players"];
+            const utils::json::Array& spawn = players["spawn"];
+
+            for(const utils::json::Object& value : spawn)
+                spawns.emplace_back(value["x"].as_int(),value["y"].as_int());
+
+            initialGold = players["gold"].as_int();
+        }
+        
+
+
+        for(unsigned int i = 0; i<spawns.size();++i)
+        {
+            Team* team = new Team(i,sf::Color(random(110,225),
+                                              random(110,225),
+                                              random(110,225)
+                                             ),
+                                  initialGold);
+
+            Entity& e = createEntity(spawns[i],team,makeAsMain);
+            _teams.emplace_back(team);
+        }
+
+        //add enemies
+        for(unsigned int i=0; i<spawns.size();++i)
+        {
+            for(unsigned int j=0; i<spawns.size();++i)
+            {
+                if(i!=j)
+                {
+                    _teams[i]->addEnemy(_teams[j]);
+                }
+            }
         }
 
         /*systems.add<SysAIMain>();
@@ -86,7 +137,17 @@ namespace book
             std::ifstream file(_mapFileName);
             std::string content((std::istreambuf_iterator<char>(file)),(std::istreambuf_iterator<char>()));
 
-            response<<packet::JoinGameConfirmation(content,clientTeam->getColor());
+            packet::JoinGameConfirmation conf(content,clientTeam->id());
+            for(Team* team : _teams)
+            {
+                packet::JoinGameConfirmation::Data data;
+                data.team = team->id();
+                data.gold = team->getGold();
+                data.color = team->getColor();
+
+                conf.addTeam(std::move(data));
+            }
+            response<<conf;
 
             client->send(response);
 
@@ -94,10 +155,10 @@ namespace book
                 //send initial content
                 response.clear();
                 sf::Lock gameGuard(_gameMutex);
-                packet::UpdateEntity datas;
+                packet::CreateEntity datas;
 
                 for(auto id : entities)
-                    addUpdate(datas,id);
+                    addCreate(datas,id);
 
                 response<<datas;
                 client->send(response);
@@ -132,20 +193,26 @@ namespace book
         _isRunning = false;
     }
 
-    void Game::addUpdate(packet::UpdateEntity& packet,unsigned int id)
+    Entity& Game::createEntity(const sf::Vector2i& coord,Team* team,MakeAs makeAs)
     {
+        std::uint32_t id = entities.create();
         Entity& e = entities.get(id);
-        packet::UpdateEntity::Update update;
-        
-        update.entityId = id;
-        update.entityType = e.getType();
-        update.animationId = entities.getComponent<CompSkin>(id)->_animationId;
-        update.position = e.getPosition();
-        update.coord = e.getCoord();
-        update.hp = entities.getComponent<CompHp>(id)->_hp;
 
-        packet.add(std::move(update));
+        e.setPosition(_map->mapCoordsToPixel(coord),coord);
+        _byCoords[coord].emplace_back(&e);
+
+        makeAs(e,team,*this);
+
+        addCreate(_createEntities,id);
+
+        return e;
     }
+
+    void Game::markEntityUpdated(std::uint32_t id)
+    {
+        _updateEntitiesId.insert(id);
+    }
+
 
     void Game::_run()
     {
@@ -156,6 +223,7 @@ namespace book
 
         while(_isRunning)
         {
+            sf::Lock gameGuard(_gameMutex);
             processNetworkEvents();
 
             sf::Time delta = clock.restart();
@@ -195,30 +263,53 @@ namespace book
 
     void Game::processNetworkEvents()
     {
-        sf::Lock guard(_clientsMutex);
-        for(auto it = _clients.begin(); it != _clients.end();++it)
         {
-            Client* client = *it;
-            packet::NetworkEvent* msg;
-            while(client and client->pollEvent(msg))
+            sf::Lock guard(_clientsMutex);
+            for(auto it = _clients.begin(); it != _clients.end();++it)
             {
-                switch(msg->type())
+                Client* client = *it;
+                packet::NetworkEvent* msg;
+                while(client and client->pollEvent(msg))
                 {
-                    case FuncIds::IdCreateEntity :
+                    switch(msg->type())
                     {
-                    }break;
-                    case FuncIds::IdDestroyEntity :
-                    {
-                    }break;
-                    case FuncIds::IdDisconnected :
-                    {
-                        it = _clients.erase(it);
-                        --it;
-                        client = nullptr;
-                    }break;
-                    default : break;
+                        case FuncIds::IdCreateEntity :
+                        {
+                        }break;
+                        case FuncIds::IdDestroyEntity :
+                        {
+                        }break;
+                        case FuncIds::IdDisconnected :
+                        {
+                            it = _clients.erase(it);
+                            --it;
+                            client = nullptr;
+                        }break;
+                        default : break;
+                    }
                 }
             }
+        }
+
+        if(_createEntities.getCreates().size() >0)
+        {
+            sf::Packet packet;
+            packet<<_createEntities;
+            sendToAll(packet);
+            _createEntities.clear();
+        }
+        
+        if(_updateEntitiesId.size() > 0)
+        {
+            packet::UpdateEntity update;
+
+            for(std::uint32_t id : _updateEntitiesId)
+                addUpdate(update,id);
+
+            sf::Packet packet;
+            packet<<update;
+            sendToAll(packet);
+            _updateEntitiesId.clear();
         }
     }
 
@@ -239,5 +330,35 @@ namespace book
     {
         sf::Lock guard(_sendMutex);
         _outgoing.emplace(packet);
+    }
+
+    void Game::addUpdate(packet::UpdateEntity& packet,unsigned int id)
+    {
+        Entity& e = entities.get(id);
+        packet::UpdateEntity::Data update;
+        
+        update.entityId = id;
+        update.animationId = entities.getComponent<CompSkin>(id)->_animationId;
+        update.position = e.getPosition();
+        update.coord = e.getCoord();
+        update.hp = entities.getComponent<CompHp>(id)->_hp;
+
+        packet.add(std::move(update));
+    }
+
+    void Game::addCreate(packet::CreateEntity& packet,unsigned int id)
+    {
+        Entity& e = entities.get(id);
+        packet::CreateEntity::Data update;
+        
+        update.entityId = id;
+        update.entityType = e.getType();
+        update.entityTeam = entities.getComponent<CompTeam>(id)->_team->id();
+        update.animationId = entities.getComponent<CompSkin>(id)->_animationId;
+        update.position = e.getPosition();
+        update.coord = e.getCoord();
+        update.hp = entities.getComponent<CompHp>(id)->_hp;
+
+        packet.add(std::move(update));
     }
 }

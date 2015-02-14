@@ -5,11 +5,16 @@ set(INCROOT_COMMON ${INCROOT}/../common)
 set(SRCROOT_COMMON ${SRCROOT}/../common)
 
 
+find_library(LIB_UTILS_JSON utils-json)
+set(LIBS ${LIBS} ${LIB_UTILS_JSON})
+
+
 #FILES
 set(FILES_HEADER
     ${INCROOT}/Client.hpp
     ${INCROOT}/Server.hpp
 
+    ${INCROOT}/Component.hpp
     ${INCROOT}/Entity.hpp
     ${INCROOT}/Game.hpp
     ${INCROOT}/Team.hpp
@@ -25,6 +30,7 @@ set(FILES_SRC
     ${SRCROOT}/Client.cpp
     ${SRCROOT}/Server.cpp
 
+    ${SRCROOT}/Component.cpp
     ${SRCROOT}/Entity.cpp
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Team.cpp

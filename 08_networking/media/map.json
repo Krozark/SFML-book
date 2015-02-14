@@ -5,6 +5,22 @@
         "name" :"HexaIso",
         "size" : 50.0
     },
+    "size" :
+    {
+        "min" : {"x" : 0, "y" : 0},
+        "max" : {"x" : 99, "y" : 99}
+    },
+    "players" :
+    {
+        "spawn" :
+        [
+            {"x" : 10, "y" : 10},
+            {"x" : 10, "y" : 90},
+            {"x" : 90, "y" : 90},
+            {"x" : 90, "y" : 10}
+        ],
+        "gold" : 1000
+    },
     "layers" : 
     [
         {
@@ -14,7 +30,7 @@
             "texture" : 
             [
                 {
-                    "img" :"media/img/ground.png",
+                    "img" :"media/img/ground3.png",
                     "x" : 0,
                     "y" : 0,
                     "width" : 100,
