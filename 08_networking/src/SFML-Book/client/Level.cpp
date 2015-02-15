@@ -49,6 +49,7 @@ namespace book
         
         //ES
         systems.add<SysSkin>();
+        systems.add<SysHp>();
 
     }
     Level::~Level()
