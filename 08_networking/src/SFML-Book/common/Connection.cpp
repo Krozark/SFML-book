@@ -95,8 +95,6 @@ namespace book
             if(not selector.isReady(_sockIn))
                 continue;
 
-            std::cout<<"Connection "<<_id<<" has some datas"<<std::endl;
-
             sf::Packet packet;
             sf::Socket::Status status = _sockIn.receive(packet);
             if(status == sf::Socket::Done)

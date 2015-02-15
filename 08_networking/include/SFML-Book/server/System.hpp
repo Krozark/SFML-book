@@ -3,70 +3,61 @@
 
 #include <SFML-utils/ES.hpp>
 
-#include <SFML-Book/common/Entity.hpp>
+#include <SFML-Book/server/Entity.hpp>
 
 namespace book
 {
-    class Level;
+    class Game;
     
     struct SysAIMain : sfutils::System<SysAIMain,Entity>
     {
+        explicit SysAIMain(Game& game);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+        Game& _game;
     };
 
     struct SysAIWarrior : sfutils::System<SysAIWarrior,Entity>
     {
-        explicit SysAIWarrior(Level& level);
+        explicit SysAIWarrior(Game& game);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
-        Level& _level;
+        Game& _game;
     };
 
     struct SysAIDefender : sfutils::System<SysAIDefender,Entity>
     {
-        explicit SysAIDefender(Level& level);
+        explicit SysAIDefender(Game& game);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
-        Level& _level;
+        Game& _game;
     };
 
     struct SysAISpawner : sfutils::System<SysAISpawner,Entity>
     {
-        explicit SysAISpawner(Level& level);
+        explicit SysAISpawner(Game& game);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
 
-        Level& _level;
+        Game& _game;
     };
 
     struct SysAIWalker : sfutils::System<SysAIWalker,Entity>
     {
-        explicit SysAIWalker(Level& level);
+        explicit SysAIWalker(Game& game);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
-        Level& _level;
+        Game& _game;
     };
 
     struct SysAIFlyer : sfutils::System<SysAIFlyer,Entity>
     {
-        explicit SysAIFlyer(Level& level);
+        explicit SysAIFlyer(Game& game);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
-        Level& _level;
-    };
-
-    struct SysSkin : sfutils::System<SysSkin,Entity>
-    {
-        virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
+        Game& _game;
     };
 
     struct SysHp : sfutils::System<SysHp,Entity>
     {
-        explicit SysHp(Level& level);
+        explicit SysHp(Game& game);
         virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
-        Level& _level;
+        Game& _game;
     };
 
-    struct SysEffect : sfutils::System<SysEffect,Entity>
-    {
-        explicit SysEffect(Level& level);
-        virtual void update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt) override;
-        Level& _level;
-    };
 }
 #endif

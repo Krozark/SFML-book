@@ -64,7 +64,8 @@ namespace book
                 }break;
                 case FuncIds::IdDestroyEntity :
                 {
-                    //TODO
+                    res = new DestroyEntity();
+                    packet>>(*static_cast<DestroyEntity*>(res));
                 }break;
                 case FuncIds::IdCreateEntity :
                 {
@@ -319,6 +320,46 @@ namespace book
         {
             packet<<sf::Uint8(self._type)
                 <<sf::Int32(self._gameId);
+            return packet;
+        }
+        //////////////////////////// DestroyEntity /////////////////////
+
+        DestroyEntity::DestroyEntity() : NetworkEvent(FuncIds::IdDestroyEntity)
+        {
+        }
+
+        void DestroyEntity::add(unsigned int id)
+        {
+            _updates.emplace_back(id);
+        }
+
+        const std::list<unsigned int>& DestroyEntity::getDestroy()const
+        {
+            return _updates;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, DestroyEntity& self)
+        {
+            sf::Uint32 size;
+            packet>>size;
+            self._updates.clear();
+            for(unsigned int i=0;i<size;++i)
+            {
+                sf::Uint32 entityId;
+                packet>>entityId;
+                self._updates.emplace_back(entityId);
+            }
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const DestroyEntity& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<sf::Uint32(self._updates.size());
+            for(unsigned int id : self._updates)
+            {
+                packet<<sf::Uint32(id);
+            }
             return packet;
         }
 

@@ -1,12 +1,19 @@
-#include <SFML-Book/common/System.hpp>
-#include <SFML-Book/common/Component.hpp>
-#include <SFML-Book/common/Team.hpp>
-#include <SFML-Book/common/Level.hpp>
-#include <SFML-Book/common/Helpers.hpp>
+#include <SFML-Book/server/System.hpp>
+
+#include <SFML-Book/server/Component.hpp>
+#include <SFML-Book/server/Team.hpp>
+#include <SFML-Book/server/Game.hpp>
+#include <SFML-Book/server/Entity.hpp>
+
+#include <SFML-Book/common/random.hpp>
 
 namespace book
 {
     ///////////////////// SYS AI MAIN ///////////////////////
+    SysAIMain::SysAIMain(Game& game) : _game(game)
+    {
+    }
+
     void SysAIMain::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
     {
         CompAIMain::Handle AI;
@@ -39,7 +46,7 @@ namespace book
         return false;
     }
 
-    SysAIWarrior::SysAIWarrior(Level& level) : _level(level)
+    SysAIWarrior::SysAIWarrior(Game& game) : _game(game)
     {
     }
     
@@ -65,15 +72,22 @@ namespace book
                 continue;
 
             std::uint32_t id = std::uint32_t(-1);
-            const std::vector<std::uint32_t>& ids = teamEnemies[0]->getQgIds();
+            { //random Team Qg
 
-            if(ids.size() <= 0)
-                continue;
+                int team_index = random(0,teamEnemies.size()-1);
+                const std::vector<std::uint32_t>& ids = teamEnemies[team_index]->getQgIds();
 
-            id = ids[0];
+                if(ids.size() <= 0)
+                    continue;
+                id = ids[random(0,ids.size()-1)];
+            }
 
 
-            const sf::Vector2i myPosition = _level.mapPixelToCoords(skin->_sprite.getPosition());
+
+
+            Entity& e = **begin;
+
+            const sf::Vector2i myCoord = e.getCoord();
             const int range = AI->_range;
 
             //seach near me
@@ -83,7 +97,7 @@ namespace book
 
                 for(int y = std::max(-range,-x-range);y<=m;++y)
                 {
-                    std::list<Entity*> l = _level.getByCoords(myPosition + sf::Vector2i(x,y));
+                    std::list<Entity*> l = _game.getByCoords(myCoord + sf::Vector2i(x,y));
                     for(Entity* e : l)
                     {
                         if(e->has<CompTeam>() and e->has<CompHp>()) //check its team
@@ -107,9 +121,8 @@ end_search: //exit nesteed loops
 
             //update path
             Entity& enemy = manager.get(id);
-            const sf::Vector2f pos = enemy.component<CompSkin>()->_sprite.getPosition();
-            const sf::Vector2i coord = _level.mapPixelToCoords(pos);
-            const int distance = _level.getDistance(myPosition,coord);
+            const sf::Vector2i coord = e.getCoord();
+            const int distance = _game.getDistance(myCoord,coord);
 
             if(distance <= range) //next me
             {
@@ -120,10 +133,12 @@ end_search: //exit nesteed loops
 
                 Entity& me = **begin;
 
+                _game.markEntityUpdated(enemy.id());
+
                 if(enemy.onHitted != nullptr)
-                    enemy.onHitted(enemy,coord,me,myPosition,_level);
+                    enemy.onHitted(enemy,coord,me,myCoord,_game);
                 if(me.onHit != nullptr)
-                    me.onHit(me,myPosition,enemy,coord,_level);
+                    me.onHit(me,myCoord,enemy,coord,_game);
 
 
                 //win some gold
@@ -134,16 +149,16 @@ end_search: //exit nesteed loops
                 //no need to move more
                 if(begin->has<CompAIFlyer>())
                 {
-                    begin->component<CompAIFlyer>()->_pathToTake = myPosition;
+                    begin->component<CompAIFlyer>()->_pathToTake = myCoord;
                 }
                 else if(begin->has<CompAIWalker>())
                 {
-                    begin->component<CompAIWalker>()->_pathToTake = myPosition;
+                    begin->component<CompAIWalker>()->_pathToTake = myCoord;
                 }
             }
             else
             {
-                sf::Vector2i path = _level.getPath1(myPosition,coord);
+                sf::Vector2i path = _game.getPath1(myCoord,coord);
                 //move closer
                 if(begin->has<CompAIFlyer>())
                 {
@@ -159,7 +174,7 @@ end_search: //exit nesteed loops
     }
 
     ///////////////////// SYS AI DEFENDER ///////////////////////
-    SysAIDefender::SysAIDefender(Level& level) : _level(level)
+    SysAIDefender::SysAIDefender(Game& game) : _game(game)
     {
     }
 
@@ -185,7 +200,8 @@ end_search: //exit nesteed loops
 
             std::uint32_t id = std::uint32_t(-1);
 
-            const sf::Vector2i myPosition = _level.mapPixelToCoords(skin->_sprite.getPosition());
+            Entity& e = **begin;
+            const sf::Vector2i myCoord = e.getCoord();
             const int range = AI->_range;
 
             //seach near me
@@ -195,7 +211,7 @@ end_search: //exit nesteed loops
 
                 for(int y = std::max(-range,-x-range);y<=m;++y)
                 {
-                    std::list<Entity*> l = _level.getByCoords(myPosition + sf::Vector2i(x,y));
+                    std::list<Entity*> l = _game.getByCoords(myCoord + sf::Vector2i(x,y));
                     for(Entity* e : l)
                     {
                         if(e->has<CompTeam>() and e->has<CompHp>()) //check its team
@@ -219,20 +235,21 @@ end_search: //exit nesteed loops
 
             //update path
             Entity& enemy = manager.get(id);
-            const sf::Vector2f pos = enemy.component<CompSkin>()->_sprite.getPosition();
-            const sf::Vector2i coord = _level.mapPixelToCoords(pos);
+            const sf::Vector2i coord = enemy.getCoord();
 
             //shoot it
             AI->_elapsed = sf::Time::Zero;
             CompHp::Handle hp = enemy.component<CompHp>();
             hp->_hp -= AI->_hitPoint;
 
+            _game.markEntityUpdated(enemy.id());
+
             Entity& me = **begin;
 
             if(enemy.onHitted != nullptr)
-                enemy.onHitted(enemy,coord,me,myPosition,_level);
+                enemy.onHitted(enemy,coord,me,myCoord,_game);
             if(me.onHit != nullptr)
-                me.onHit(me,myPosition,enemy,coord,_level);
+                me.onHit(me,myCoord,enemy,coord,_game);
 
 
             //win some gold
@@ -244,7 +261,7 @@ end_search: //exit nesteed loops
     }
 
     ///////////////////// SYS AI SPAWNER ///////////////////////
-    SysAISpawner::SysAISpawner(Level& level) : _level(level)
+    SysAISpawner::SysAISpawner(Game& game) : _game(game)
     {
     }
 
@@ -259,39 +276,34 @@ end_search: //exit nesteed loops
         {
             if(team->_team != nullptr)
             {
-                if(skin->_sprite.getAnimation() == skin->_animations.at(CompSkin::Stand))//if Stand
+                AI->_elapsed += dt;
+                const Entity& e = **begin;
+                if(skin->_animationId == CompSkin::Stand)//if Stand
                 {
-                    AI->_elapsed += dt;
                     if(AI->_elapsed > AI->_delta)
                     {
                         AI->_elapsed = sf::Time::Zero;
-                        skin->_sprite.setAnimation(skin->_animations.at(CompSkin::Spawn));
-                        skin->_sprite.setRepeate(3);
-                        skin->_sprite.setLoop(false);
+                        skin->_animationId = CompSkin::Spawn;
+                        _game.markEntityUpdated(e.id());
+                    }
+                }
+                else if(skin->_animationId == CompSkin::Spawn) //spawning
+                {
+                    if(AI->_elapsed > sf::seconds(1))
+                    {
+                        AI->_elapsed = sf::Time::Zero;
+                        skin->_animationId = CompSkin::Stand;
+                        _game.markEntityUpdated(e.id());
 
-                        std::uint32_t id = begin->id();
-
-                        skin->_sprite.on_finished = [this,id,&manager](){
-                            const Entity& e = manager.get(id);
-                            auto skin = e.component<CompSkin>();
-                            auto team = e.component<CompTeam>();
-                            auto AI = e.component<CompAISpawner>();
-                            //reset animation
-                            skin->_sprite.setAnimation(skin->_animations.at(CompSkin::Stand));
-                            skin->_sprite.setLoop(true);
-                            skin->_sprite.play();
-                            //create new
-                            sf::Vector2f pos = skin->_sprite.getPosition();
-                            sf::Vector2i coord = this->_level.mapPixelToCoords(pos);
-                            for(int i=0;i<AI->_number;++i)
-                            {
-                                //TODO update coord 
-                                Entity& newEntity = this->_level.createEntity(coord);
-                                //init with callback
-                                AI->_makeAs(newEntity,team->_team,this->_level);
-                                AI->_OnSpawn(this->_level,coord);
-                            }
-                        };
+                        auto team = e.component<CompTeam>();
+                        auto AI = e.component<CompAISpawner>();
+                        //create new
+                        sf::Vector2i coord = e.getCoord();
+                        for(int i=0;i<AI->_number;++i)
+                        {
+                            Entity& newEntity = this->_game.createEntity(coord,team->_team,AI->_makeAs);
+                            AI->_OnSpawn(this->_game,coord);
+                        }
                     }
                 }
             }
@@ -299,7 +311,7 @@ end_search: //exit nesteed loops
     }
 
     ///////////////////// SYS AI WALKER ///////////////////////
-    SysAIWalker::SysAIWalker(Level& level) :_level(level)
+    SysAIWalker::SysAIWalker(Game& game) :_game(game)
     {
     }
     void SysAIWalker::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
@@ -312,13 +324,15 @@ end_search: //exit nesteed loops
         const float seconds = dt.asSeconds();
         for(auto begin = view.begin();begin != end;++begin)
         {
-            sf::Vector2f PosCurrent = skin->_sprite.getPosition();
-            sf::Vector2i CoordCurrent = _level.mapPixelToCoords(PosCurrent);
+            Entity& e = **begin;
+
+            sf::Vector2f PosCurrent = e.getPosition();
+            sf::Vector2i CoordCurrent = e.getCoord();
 
             sf::Vector2i CoordDest = AI->_pathToTake;
             if(CoordDest != CoordCurrent) //need to move
             {
-                sf::Vector2f PosDest = _level.mapCoordsToPixel(CoordDest);
+                sf::Vector2f PosDest = _game.mapCoordsToPixel(CoordDest);
 
                 //calulation of the diriction to take
                 sf::Vector2f directon = PosDest - PosCurrent;
@@ -329,30 +343,28 @@ end_search: //exit nesteed loops
                 if(distance > frameDistance)
                 {
                     sf::Vector2f nextPos = PosCurrent + directon*(frameDistance/distance);
-                    skin->_sprite.setPosition(nextPos);
-                    _level.setPosition(**begin,CoordCurrent,_level.mapPixelToCoords(nextPos));
+                    _game.setPosition(**begin,CoordCurrent,PosCurrent,_game.mapPixelToCoords(nextPos),nextPos);
                 }
                 else
                 {
-                    skin->_sprite.setPosition(PosDest);
-                    _level.setPosition(**begin,CoordCurrent,CoordDest);
+                    _game.setPosition(**begin,CoordCurrent,PosCurrent,CoordDest,PosDest);
                     AI->_pathToTake = CoordCurrent;
                 }
 
                 if(directon.x >0) //unpdate skin direction
                 {
-                    skin->_sprite.setAnimation(skin->_animations.at(CompSkin::MoveRight));
+                    skin->_animationId = CompSkin::MoveRight;
                 }
                 else
                 {
-                    skin->_sprite.setAnimation(skin->_animations.at(CompSkin::MoveLeft));
+                    skin->_animationId = CompSkin::MoveLeft;
                 }
             }
         }
     }
 
     ///////////////////// SYS AI FLYER ///////////////////////
-    SysAIFlyer::SysAIFlyer(Level& level) : _level(level)
+    SysAIFlyer::SysAIFlyer(Game& game) : _game(game)
     {
     }
     void SysAIFlyer::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
@@ -365,13 +377,15 @@ end_search: //exit nesteed loops
         const float seconds = dt.asSeconds();
         for(auto begin = view.begin();begin != end;++begin)
         {
-            sf::Vector2f PosCurrent = skin->_sprite.getPosition();
-            sf::Vector2i CoordCurrent = _level.mapPixelToCoords(PosCurrent);
+            Entity& e = **begin;
+
+            sf::Vector2f PosCurrent = e.getPosition();
+            sf::Vector2i CoordCurrent = e.getCoord();
 
             sf::Vector2i CoordDest = AI->_pathToTake;
             if(CoordDest != CoordCurrent) //need to move
             {
-                sf::Vector2f PosDest = _level.mapCoordsToPixel(CoordDest);
+                sf::Vector2f PosDest = _game.mapCoordsToPixel(CoordDest);
 
                 //calulation of the diriction to take
                 sf::Vector2f directon = PosDest - PosCurrent;
@@ -382,42 +396,28 @@ end_search: //exit nesteed loops
                 if(distance > frameDistance)
                 {
                     sf::Vector2f nextPos = PosCurrent + directon*(frameDistance/distance);
-                    skin->_sprite.setPosition(nextPos);
-                    _level.setPosition(**begin,CoordCurrent,_level.mapPixelToCoords(nextPos));
+                    _game.setPosition(**begin,CoordCurrent,PosCurrent,_game.mapPixelToCoords(nextPos),nextPos);
                 }
                 else
                 {
-                    skin->_sprite.setPosition(PosDest);
-                    _level.setPosition(**begin,CoordCurrent,CoordDest);
+                    _game.setPosition(**begin,CoordCurrent,PosCurrent,CoordDest,PosDest);
                     AI->_pathToTake = CoordCurrent;
                 }
 
                 if(directon.x >0) //unpdate skin direction
                 {
-                    skin->_sprite.setAnimation(skin->_animations.at(CompSkin::MoveRight));
+                    skin->_animationId = CompSkin::MoveRight;
                 }
                 else
                 {
-                    skin->_sprite.setAnimation(skin->_animations.at(CompSkin::MoveLeft));
+                    skin->_animationId = CompSkin::MoveLeft;
                 }
             }
         }
     }
     
-    ///////////////////// SYS AI SKIN ///////////////////////
-    void SysSkin::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
-    {
-        CompSkin::Handle skin;
-        auto view = manager.getByComponents(skin);
-        auto end = view.end();
-        for(auto begin = view.begin();begin != end;++begin)
-        {
-            skin->_sprite.update(dt);
-        }
-    }
-
     ///////////////////// SYS AI HP ///////////////////////
-    SysHp::SysHp(Level& level) : _level(level)
+    SysHp::SysHp(Game& game) : _game(game)
     {
     }
     void SysHp::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
@@ -435,35 +435,7 @@ end_search: //exit nesteed loops
                 {
                     team->_team->removeQgId(begin->id());
                 }
-                _level.destroyEntity(**begin);
-            }
-            else
-            {
-                CompSkin::Handle skin = begin->component<CompSkin>();
-                if(skin.isValid())
-                {
-                    hp->update(skin->_sprite.getPosition());
-                }
-            }
-        }
-    }
-    
-    ////////////////// EFFECTS //////////////////////
-    SysEffect::SysEffect(Level& level) : _level(level)
-    {
-    }
-    void SysEffect::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
-    {
-        CompEffect::Handle effect;
-        CompSkin::Handle skin;
-        auto view = manager.getByComponents(effect,skin);
-
-        auto end = view.end();
-        for(auto begin = view.begin();begin != end;++begin)
-        {
-            if(skin->_sprite.getStatus() != sfutils::AnimatedSprite::Status::Playing)
-            {
-                _level.destroyEntity(**begin);
+                _game.destroyEntity((**begin).id());
             }
         }
     }

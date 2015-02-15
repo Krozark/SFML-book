@@ -133,8 +133,20 @@ namespace book
         
         //RequestCreateEntity, //client
         //RequestDestroyEntity, //client
-        //DestroyEntity, //server
-        //CreateEntity, //server
+        class DestroyEntity : public NetworkEvent
+        {
+            public : 
+                DestroyEntity();
+
+                void add(unsigned int id);
+                const std::list<unsigned int>& getDestroy()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, DestroyEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const DestroyEntity& self);
+            private :
+                std::list<unsigned int> _updates;
+        };
+
         class CreateEntity : public NetworkEvent
         {
             public :

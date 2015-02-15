@@ -10,6 +10,7 @@
 namespace book
 {
     class Client;
+    class Game;
 
     class Team
     {
@@ -17,7 +18,7 @@ namespace book
             Team(const Team&) = delete;
             Team& operator=(const Team&) = delete;
 
-            Team(int id,const sf::Color& color,int gold);
+            Team(int id,const sf::Color& color,int gold,Game& game);
 
             void addGold(int amount);
             int getGold()const;
@@ -44,6 +45,7 @@ namespace book
             int _gold;
             std::vector<std::uint32_t> _QGId;
             sf::Color _color;
+            Game& _game;
 
             std::vector<Team*> _enemies;
             std::list<Client*> _clients;

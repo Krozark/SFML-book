@@ -59,8 +59,7 @@ namespace book
             
             /*
             void destroyEntity(Entity& e);
-            void destroyEntity(std::uint32_t id);
-            void setPosition(Entity& e,const sf::Vector2i& old,const sf::Vector2i& n);*/
+            */
 
             void createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord);
             void createSound(Configuration::Sounds sound_id,const sf::Vector2f& pos);
@@ -97,6 +96,9 @@ namespace book
             std::unordered_map<int,Team> _teamInfo;
 
             Entity& createEntity(unsigned int id,const sf::Vector2i& coord);
+
+            void destroyEntity(std::uint32_t id);
+            void setPosition(Entity& e,const sf::Vector2i& old,const sf::Vector2i& n);
     };
 }
 #endif

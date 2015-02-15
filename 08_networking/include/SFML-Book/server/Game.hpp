@@ -45,12 +45,17 @@ namespace book
 
             Entity& createEntity(const sf::Vector2i& coord,Team* team,MakeAs makeAs);
             void markEntityUpdated(std::uint32_t id);
+            void markTeamUpdated(std::uint32_t id);
 
             void destroyEntity(std::uint32_t id);
-            void setPosition(Entity& e,const sf::Vector2i& oldCoord,const sf::Vector2f& pos,const sf::Vector2i& newCoord);
+            void setPosition(Entity& e,const sf::Vector2i& oldCoord,const sf::Vector2f& oldPos,const sf::Vector2i& newCoord,const sf::Vector2f& newPos);
+
+            sf::Vector2i mapPixelToCoords(const sf::Vector2f& pos)const;
+            sf::Vector2f mapCoordsToPixel(const sf::Vector2i& pos)const;
 
 
-            std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
+            std::list<Entity*> getByCoords(const sf::Vector2i& coord);
+            //std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             int getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
 
@@ -61,7 +66,9 @@ namespace book
             sf::Mutex _gameMutex;
             sfutils::VMap* _map;
 
+            std::list<std::uint32_t> _destroyEntityId;
             std::set<std::uint32_t> _updateEntitiesId;
+            std::set<std::uint32_t> _updateTeamId;
             
             packet::CreateEntity _createEntities;
             

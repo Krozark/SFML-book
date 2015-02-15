@@ -1,15 +1,17 @@
 
 #include <SFML-Book/server/Team.hpp>
+#include <SFML-Book/server/Game.hpp>
 
 namespace book
 {
-    Team::Team(int id,const sf::Color& color,int gold) : isAlive(true),_id(id), _gold(gold), _QGId(0), _color(color)
+    Team::Team(int id,const sf::Color& color,int gold,Game& game) : isAlive(true),_id(id), _gold(gold), _QGId(0), _color(color), _game(game)
     {
     }
 
     void Team::addGold(int amount)
     {
         _gold += amount;
+        _game.markTeamUpdated(_id);
     }
 
     int Team::getGold()const

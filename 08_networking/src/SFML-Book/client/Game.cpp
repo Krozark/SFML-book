@@ -137,7 +137,6 @@ namespace book
         packet::NetworkEvent* msg;
         while(_client.pollEvent(msg))
         {
-            std::cout<<msg->type()<<std::endl;
             if(msg->type() == FuncIds::IdDisconnected)
             {
                 _isConnected = false;

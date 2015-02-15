@@ -107,14 +107,53 @@ namespace book
 
     void Level::processNetworkEvent(packet::NetworkEvent* msg)
     {
-        if(msg->type() == FuncIds::IdCreateEntity)
+        switch(msg->type())
         {
-            packet::CreateEntity* event = static_cast<packet::CreateEntity*>(msg);
-            for(const packet::CreateEntity::Data& data : event->getCreates())
+            case FuncIds::IdDestroyEntity :
             {
-                Entity& e = createEntity(data.entityId,data.coord);
-                makeAs(data.entityType,e,&_teamInfo.at(data.entityTeam),*this,data);
-            }
+                packet::DestroyEntity* event = static_cast<packet::DestroyEntity*>(msg);
+                for(std::uint32_t id : event->getDestroy())
+                {
+                    destroyEntity(id);
+                }
+            }break;
+            case FuncIds::IdCreateEntity :
+            {
+                packet::CreateEntity* event = static_cast<packet::CreateEntity*>(msg);
+                for(const packet::CreateEntity::Data& data : event->getCreates())
+                {
+                    Entity& e = createEntity(data.entityId,data.coord);
+                    makeAs(data.entityType,e,&_teamInfo.at(data.entityTeam),*this,data);
+                }
+            }break;
+            case FuncIds::IdUpdateEntity :
+            {
+                packet::UpdateEntity* event = static_cast<packet::UpdateEntity*>(msg);
+                for(const packet::UpdateEntity::Data& data : event->getUpdates())
+                {
+                    if(entities.isValid(data.entityId))
+                    {
+                        CompSkin::Handle skin = entities.getComponent<CompSkin>(data.entityId);
+                        CompHp::Handle hp = entities.getComponent<CompHp>(data.entityId);
+
+                        sf::Vector2i coord = _map->mapPixelToCoords(skin->_sprite.getPosition());
+
+                        skin->_sprite.setAnimation(skin->_animations.at(data.animationId));
+                        skin->_sprite.setPosition(data.position);
+                        setPosition(entities.get(data.entityId),coord,data.coord);
+                        hp->_hp = data.hp;
+                    }
+                }
+            }break;
+            case FuncIds::IdHittedEntity :
+            {
+                //TODO
+            }break;
+            case FuncIds::IdHitEntity :
+            {
+                //TODO
+            }break;
+            default : break;
         }
     }
 
@@ -145,15 +184,6 @@ namespace book
 
     /*
 
-    void Level::destroyEntity(std::uint32_t id)
-    {
-        const sf::Vector2i coord = mapPixelToCoords(entities.getComponent<CompSkin>(id)->_sprite.getPosition());
-        Entity& e = entities.get(id);
-
-        _entities_layer->remove(&e,false);
-        _byCoords[coord].remove(&e);
-        e.remove();
-    }
 
     void Level::destroyEntity(Entity& e)
     {
@@ -165,14 +195,7 @@ namespace book
         e.remove();
     }
 
-    void Level::setPosition(Entity& e,const sf::Vector2i& old,const sf::Vector2i& n)
-    {
-        if(n != old)
-        {
-            _byCoords[old].remove(&e);
-            _byCoords[n].emplace_back(&e);
-        }
-    }*/
+    */
     
     void Level::createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord)
     {
@@ -256,5 +279,24 @@ namespace book
         _byCoords[coord].emplace_back(&e);
 
         return e;
+    }
+
+    void Level::destroyEntity(std::uint32_t id)
+    {
+        const sf::Vector2i coord = _map->mapPixelToCoords(entities.getComponent<CompSkin>(id)->_sprite.getPosition());
+        Entity& e = entities.get(id);
+
+        _entities_layer->remove(&e,false);
+        _byCoords[coord].remove(&e);
+        e.remove();
+    }
+
+    void Level::setPosition(Entity& e,const sf::Vector2i& old,const sf::Vector2i& n)
+    {
+        if(n != old)
+        {
+            _byCoords[old].remove(&e);
+            _byCoords[n].emplace_back(&e);
+        }
     }
 }

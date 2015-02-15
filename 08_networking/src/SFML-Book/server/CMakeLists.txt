@@ -17,6 +17,7 @@ set(FILES_HEADER
     ${INCROOT}/Component.hpp
     ${INCROOT}/Entity.hpp
     ${INCROOT}/Game.hpp
+    ${INCROOT}/System.hpp
     ${INCROOT}/Team.hpp
 
     ${INCROOT_COMMON}/std_hash.hpp
@@ -33,6 +34,7 @@ set(FILES_SRC
     ${SRCROOT}/Component.cpp
     ${SRCROOT}/Entity.cpp
     ${SRCROOT}/Game.cpp
+    ${SRCROOT}/System.cpp
     ${SRCROOT}/Team.cpp
 
     ${SRCROOT_COMMON}/Packet.cpp

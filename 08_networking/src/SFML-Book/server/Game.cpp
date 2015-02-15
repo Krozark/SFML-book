@@ -3,6 +3,7 @@
 #include <SFML-Book/server/Client.hpp>
 #include <SFML-Book/server/Team.hpp>
 #include <SFML-Book/server/Component.hpp>
+#include <SFML-Book/server/System.hpp>
 
 #include <SFML-Book/common/random.hpp>
 
@@ -60,7 +61,8 @@ namespace book
                                               random(110,225),
                                               random(110,225)
                                              ),
-                                  initialGold);
+                                  initialGold,
+                                  *this);
 
             Entity& e = createEntity(spawns[i],team,makeAsMain);
             _teams.emplace_back(team);
@@ -78,14 +80,13 @@ namespace book
             }
         }
 
-        /*systems.add<SysAIMain>();
+        systems.add<SysAIMain>(*this);
         systems.add<SysAIWarrior>(*this);
         systems.add<SysAIDefender>(*this);
         systems.add<SysAISpawner>(*this);
         systems.add<SysAIWalker>(*this);
         systems.add<SysAIFlyer>(*this);
         systems.add<SysHp>(*this);
-        systems.add<SysEffect>(*this);*/
     }
 
     Game::~Game()
@@ -195,10 +196,10 @@ namespace book
         std::uint32_t id = entities.create();
         Entity& e = entities.get(id);
 
+        makeAs(e,team,*this);
+
         e.setPosition(_map->mapCoordsToPixel(coord),coord);
         _byCoords[coord].emplace_back(&e);
-
-        makeAs(e,team,*this);
 
         addCreate(_createEntities,id);
 
@@ -208,6 +209,59 @@ namespace book
     void Game::markEntityUpdated(std::uint32_t id)
     {
         _updateEntitiesId.insert(id);
+    }
+
+    void Game::markTeamUpdated(std::uint32_t id)
+    {
+        _updateTeamId.insert(id);
+    }
+
+    void Game::destroyEntity(std::uint32_t id)
+    {
+        Entity& e = entities.get(id);
+        const sf::Vector2i coord = e.getCoord();
+
+        _byCoords[coord].remove(&e);
+        entities.remove(id);
+        _destroyEntityId.emplace_back(id);
+    }
+
+    void Game::setPosition(Entity& e,const sf::Vector2i& oldCoord,const sf::Vector2f& oldPos,const sf::Vector2i& newCoord, const sf::Vector2f& newPos)
+    {
+        markEntityUpdated(e.id());
+        e.setPosition(newPos,newCoord);
+
+        if(oldCoord != newCoord)
+        {
+            _byCoords[oldCoord].remove(&e);
+            _byCoords[newCoord].emplace_back(&e);
+        }
+    }
+
+
+    sf::Vector2i Game::mapPixelToCoords(const sf::Vector2f& pos)const
+    {
+        return _map->mapPixelToCoords(pos);
+    }
+
+    sf::Vector2f Game::mapCoordsToPixel(const sf::Vector2i& pos)const
+    {
+        return _map->mapCoordsToPixel(pos);
+    }
+
+    std::list<Entity*> Game::getByCoords(const sf::Vector2i& coord)
+    {
+        return _byCoords[coord];
+    }
+
+    sf::Vector2i Game::getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const
+    {
+        return _map->getPath1(origin,dest);
+    }
+
+    int Game::getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const
+    {
+        return _map->getDistance(origin,dest);
     }
 
 
@@ -286,6 +340,18 @@ namespace book
                 }
             }
         }
+        
+        if(_destroyEntityId.size() > 0)
+        {
+            packet::DestroyEntity update;
+            for(std::uint32_t id : _destroyEntityId)
+                update.add(id);
+
+            sf::Packet packet;
+            packet<<update;
+            sendToAll(packet);
+            _destroyEntityId.clear();
+        }
 
         if(_createEntities.getCreates().size() >0)
         {
@@ -307,18 +373,22 @@ namespace book
             sendToAll(packet);
             _updateEntitiesId.clear();
         }
+
+        if(_updateTeamId.size() > 0)
+        {
+            //TODO
+
+            _updateTeamId.clear();
+        }
     }
 
     void Game::update(sf::Time deltaTime)
     {
         Application::update(deltaTime);
         /*
-        IdDestroyEntity, //client and server
-            IdMoveEntity, //server
+         * onSpawn
             IdHittedEntity, //server
             IdHitEntity, //server
-            IdSetAnimationEntity, //server
-            IdAddGoldTeam, //server
         */
     }
 
