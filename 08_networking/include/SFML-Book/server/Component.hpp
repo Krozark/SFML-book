@@ -31,6 +31,7 @@ namespace book
         const sf::Time _delta;
         sf::Time _elapsed;
         const int _range;
+        std::uint32_t _enemyId;
     };
 
     struct CompAIDefender : sfutils::Component<CompAIDefender,Entity>

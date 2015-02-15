@@ -1,5 +1,6 @@
 #include <SFML-utils/Map.hpp>
 
+#include <SFML-Book/common/random.hpp>
 #include <iostream>
 
 //#include <SFML-Book/common/Configuration.hpp>
@@ -7,6 +8,7 @@
 
 int main(int argc,char* argv[])
 {
+    book::rand_init();
     /*book::Configuration::initialize();
 
     book::Game game(1600,900);

@@ -71,7 +71,7 @@ namespace book
         //add enemies
         for(unsigned int i=0; i<spawns.size();++i)
         {
-            for(unsigned int j=0; i<spawns.size();++i)
+            for(unsigned int j=0; j<spawns.size();++j)
             {
                 if(i!=j)
                 {
@@ -400,16 +400,19 @@ namespace book
 
     void Game::addUpdate(packet::UpdateEntity& packet,unsigned int id)
     {
-        Entity& e = entities.get(id);
-        packet::UpdateEntity::Data update;
-        
-        update.entityId = id;
-        update.animationId = entities.getComponent<CompSkin>(id)->_animationId;
-        update.position = e.getPosition();
-        update.coord = e.getCoord();
-        update.hp = entities.getComponent<CompHp>(id)->_hp;
+        if(entities.isValid(id))
+        {
+            Entity& e = entities.get(id);
+            packet::UpdateEntity::Data update;
 
-        packet.add(std::move(update));
+            update.entityId = id;
+            update.animationId = entities.getComponent<CompSkin>(id)->_animationId;
+            update.position = e.getPosition();
+            update.coord = e.getCoord();
+            update.hp = entities.getComponent<CompHp>(id)->_hp;
+
+            packet.add(std::move(update));
+        }
     }
 
     void Game::addCreate(packet::CreateEntity& packet,unsigned int id)

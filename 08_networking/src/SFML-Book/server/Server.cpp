@@ -8,6 +8,7 @@
 
 #include <SFML-Book/common/FuncIds.hpp>
 #include <SFML-Book/common/Packet.hpp>
+#include <SFML-Book/common/random.hpp>
 
 
 namespace book
@@ -22,6 +23,7 @@ namespace book
 
     Server::Server(int port) : _port(port),_gameThread(&Server::runGame,this), _listenThread(&Server::listen,this)
     {
+        rand_init();        
         _currentClient = nullptr;
     }
 

@@ -71,7 +71,7 @@ namespace book
             if(teamEnemies.size() <=0)
                 continue;
 
-            std::uint32_t id = std::uint32_t(-1);
+            if(AI->_enemyId == std::uint32_t(-1) or not manager.isValid(AI->_enemyId))
             { //random Team Qg
 
                 int team_index = random(0,teamEnemies.size()-1);
@@ -79,11 +79,8 @@ namespace book
 
                 if(ids.size() <= 0)
                     continue;
-                id = ids[random(0,ids.size()-1)];
+                AI->_enemyId = ids[random(0,ids.size()-1)];
             }
-
-
-
 
             Entity& e = **begin;
 
@@ -105,7 +102,7 @@ namespace book
                             Team* t = e->component<CompTeam>()->_team;
                             if( isEnemy(teamEnemies,t))
                             {
-                                id = e->id();
+                                AI->_enemyId = e->id();
                                 goto end_search;
                             }
                         }
@@ -113,15 +110,16 @@ namespace book
                 }
             }
 end_search: //exit nesteed loops
-            if(not manager.isValid(id))
+            if(not manager.isValid(AI->_enemyId))
             {
+                AI->_enemyId = std::uint32_t(-1);
                 continue;
             }
 
 
             //update path
-            Entity& enemy = manager.get(id);
-            const sf::Vector2i coord = e.getCoord();
+            Entity& enemy = manager.get(AI->_enemyId);
+            const sf::Vector2i coord = enemy.getCoord();
             const int distance = _game.getDistance(myCoord,coord);
 
             if(distance <= range) //next me

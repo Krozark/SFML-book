@@ -6,7 +6,7 @@ namespace book
     {
     }
 
-    CompAIWarrior::CompAIWarrior(int hitPoint,const sf::Time& timeDelta,int range) : _hitPoint(hitPoint), _delta(timeDelta), _elapsed(sf::Time::Zero), _range(range)
+    CompAIWarrior::CompAIWarrior(int hitPoint,const sf::Time& timeDelta,int range) : _hitPoint(hitPoint), _delta(timeDelta), _elapsed(sf::Time::Zero), _range(range), _enemyId(-1)
     {
     }
 
