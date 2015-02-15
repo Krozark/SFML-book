@@ -32,6 +32,7 @@ namespace book
         CompHp::Handle hp = component<CompHp>();
         if(hp.isValid())
         {
+            hp->update(getPosition())
             hp->draw(target,states);
         }
     }
