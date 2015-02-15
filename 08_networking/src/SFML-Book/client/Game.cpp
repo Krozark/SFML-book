@@ -13,6 +13,7 @@
 namespace book
 {
     Game::Game(int X, int Y): 
+        _asFocus(true),
         _window(sf::VideoMode(X,Y),"08 Networking"),        
         _cursor(Configuration::textures.get(Configuration::TexCursor)),        
         _isConnected(false),
@@ -87,6 +88,10 @@ namespace book
             {
                 _window.close();
             }
+            else if(event.type == sf::Event::GainedFocus)
+                _asFocus = true;
+            else if(event.type == sf::Event::LostFocus)
+                _asFocus = false;
             else
             {
                 switch(_status)
@@ -107,20 +112,23 @@ namespace book
                 }
             }
         }
-        switch(_status)
+        if(_asFocus)
         {
-            case Status::StatusMainMenu :
+            switch(_status)
             {
-                _mainMenu.processEvents();
-            }break;
-            case Status::StatusInGame :
-            {
-                _gameMenu.processEvents();
-                _level->processEvents();
-            }break;
-            case Status::StatusDisconnected :
-            {
-            }break;
+                case Status::StatusMainMenu :
+                {
+                    _mainMenu.processEvents();
+                }break;
+                case Status::StatusInGame :
+                {
+                    _gameMenu.processEvents();
+                    _level->processEvents();
+                }break;
+                case Status::StatusDisconnected :
+                {
+                }break;
+            }
         }
     }
 

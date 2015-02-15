@@ -12,6 +12,7 @@ set(FILES_HEADER
     ${INCROOT}/Game.hpp
     ${INCROOT}/Gui.hpp
     ${INCROOT}/Level.hpp
+    ${INCROOT}/System.hpp
     ${INCROOT}/Team.hpp
 
     ${INCROOT_COMMON}/std_hash.hpp
@@ -28,6 +29,7 @@ set(FILES_SRC
     ${SRCROOT}/Game.cpp
     ${SRCROOT}/Gui.cpp
     ${SRCROOT}/Level.cpp
+    ${SRCROOT}/System.cpp
     ${SRCROOT}/Team.cpp
 
     ${SRCROOT_COMMON}/Packet.cpp

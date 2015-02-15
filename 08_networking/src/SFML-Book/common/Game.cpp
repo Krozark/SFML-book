@@ -7,6 +7,7 @@ namespace book
 {
     Game::Game(int X, int Y) : 
         _window(sf::VideoMode(X,Y),"08 Networking"),
+        _asFocus(false),
         _cursor(Configuration::textures.get(Configuration::TexCursor)),
         _level(nullptr)
     {
@@ -93,12 +94,14 @@ namespace book
         //events loop
         while(_window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-                _window.close();
-            else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape)
+            if (event.type == sf::Event::Closed or (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Escape))
                 _window.close();
             else if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::Return)
                 _team_id = (_team_id +1) %2;
+            else if(event.type == sf::Event::GainedFocus)
+                _asFocus = true;
+            else if(event.type == sf::Event::LostFocus)
+                _asFocus = false;
             else
             {
                 bool used = false;
@@ -108,10 +111,13 @@ namespace book
                     used = _level->processEvent(event);
             }
         }
-        if(_team[_team_id])
-            _team[_team_id]->gui.processEvents();
-        if(_level)
-            _level->processEvents();
+        if(_asFocus)
+        {
+            if(_team[_team_id])
+                _team[_team_id]->gui.processEvents();
+            if(_level)
+                _level->processEvents();
+        }
     }
 
     

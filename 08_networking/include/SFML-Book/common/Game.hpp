@@ -32,6 +32,7 @@ namespace book
             void initTeam(Team* team,const sf::Vector2i& pos);
 
             sf::RenderWindow _window;
+            bool _asFocus;
             sf::Sprite _cursor;
             
             Level* _level;

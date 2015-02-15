@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <ctime>
 
-//#include <SFML-Book/common/System.hpp>
+#include <SFML-Book/client/System.hpp>
 #include <SFML-Book/client/Component.hpp>
 
 
@@ -48,16 +48,7 @@ namespace book
          });
         
         //ES
-        /*systems.add<SysAIMain>();
-        systems.add<SysAIWarrior>(*this);
-        systems.add<SysAIDefender>(*this);
-        systems.add<SysAISpawner>(*this);
-        systems.add<SysAIWalker>(*this);
-        systems.add<SysAIFlyer>(*this);
         systems.add<SysSkin>();
-        systems.add<SysHp>(*this);
-        systems.add<SysEffect>(*this);*/
-
 
     }
     Level::~Level()

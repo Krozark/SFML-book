@@ -28,7 +28,8 @@ namespace book
             void processNetworkEvents();
             void update(sf::Time deltaTime);
             void render();
-            
+
+            bool _asFocus; 
             sf::RenderWindow _window;
             sf::Sprite _cursor;
 

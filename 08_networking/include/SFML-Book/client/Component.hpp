@@ -68,10 +68,6 @@ namespace book
     {
     };
 
-    struct CompEffect : sfutils::Component<CompEffect,Entity>
-    {
-    };
-
     struct CompBuildArea : sfutils::Component<CompBuildArea,Entity>
     {
         explicit CompBuildArea(int range);
