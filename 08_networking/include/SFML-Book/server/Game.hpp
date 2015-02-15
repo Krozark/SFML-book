@@ -14,10 +14,10 @@
 #include <SFML-utils/es/Application.hpp>
 #include <SFML-utils/Map.hpp>
 
-#include <SFML-Book/server/std_hash.hpp>
 #include <SFML-Book/server/Entity.hpp>
 
 #include <SFML-Book/common/Packet.hpp>
+#include <SFML-Book/common/std_hash.hpp>
 
 namespace book
 {

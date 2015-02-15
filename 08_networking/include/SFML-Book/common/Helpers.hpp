@@ -24,10 +24,6 @@ namespace book
     void makeAsFlashEffect(Entity& entity);
     void makeAsVoltageEffect(Entity& entity);
 
-    ////////// UTILTS /////////////
-    void setTeam(Entity& entity,Team* team);
-    void setAnimation(Entity& entity,int animationId,int animationMap,float ox=0,float oy=0,float sx=1,float sy=1);
-
     enum BuildEntities {
         EntityMain,
         EntityWormEgg,

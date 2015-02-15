@@ -129,6 +129,7 @@ namespace book
         packet::NetworkEvent* msg;
         while(_client.pollEvent(msg))
         {
+            std::cout<<msg->type()<<std::endl;
             if(msg->type() == FuncIds::IdDisconnected)
             {
                 _isConnected = false;
@@ -163,7 +164,7 @@ namespace book
                                     _team = event->getTeamId();
                                     for(const packet::JoinGameConfirmation::Data& data : event->getTeamInfo())
                                     {
-                                        _teamColor[data.team] = data.color;
+                                        _level->_teamInfo.emplace(data.team,Team(data.team,data.color));
 
                                         if(data.team == _team)
                                         {
@@ -178,7 +179,7 @@ namespace book
                             }break;
                             case FuncIds::IdJoinGameReject :
                             {
-                                
+                               //TODO 
                             }break;
                             default : break;
                         }
@@ -186,6 +187,7 @@ namespace book
                     case StatusInGame :
                     {
                         _gameMenu.processNetworkEvent(msg);
+                        _level->processNetworkEvent(msg);
                         
                         /*
                         IdDestroyEntity

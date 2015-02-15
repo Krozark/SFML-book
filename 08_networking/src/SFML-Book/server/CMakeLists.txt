@@ -18,8 +18,8 @@ set(FILES_HEADER
     ${INCROOT}/Entity.hpp
     ${INCROOT}/Game.hpp
     ${INCROOT}/Team.hpp
-    ${INCROOT}/std_hash.hpp
 
+    ${INCROOT_COMMON}/std_hash.hpp
     ${INCROOT_COMMON}/Packet.hpp    
     ${INCROOT_COMMON}/FuncIds.hpp    
     ${INCROOT_COMMON}/Connection.hpp

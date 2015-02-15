@@ -48,7 +48,7 @@ namespace book
         {
 
             std::stringstream ss;
-            ss<<"Game ["<<game.id<<"] teams: "<<game.nbTeams<<" players: "<<game.nbPlayers;
+            ss<<"Game ["<<game.id<<"] Palyers: "<<game.nbPlayers<<"/"<<game.nbTeams;
 
             sfutils::TextButton* button = new sfutils::TextButton(ss.str());
             button->setCharacterSize(20);
@@ -238,8 +238,7 @@ namespace book
         if(msg->type() == FuncIds::IdUpdateTeam)
         {
             packet::UpdateTeam* event = static_cast<packet::UpdateTeam*>(msg);
-            const std::list<packet::UpdateTeam::Data>& datas = event->getUpdates();
-            for(const packet::UpdateTeam::Data& data : datas)
+            for(const packet::UpdateTeam::Data& data : event->getUpdates())
             {
                 if(data.team == _team)
                 {

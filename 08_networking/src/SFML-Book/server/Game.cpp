@@ -54,8 +54,6 @@ namespace book
             initialGold = players["gold"].as_int();
         }
         
-
-
         for(unsigned int i = 0; i<spawns.size();++i)
         {
             Team* team = new Team(i,sf::Color(random(110,225),
@@ -132,7 +130,6 @@ namespace book
         sf::Packet response;
         if(clientTeam != nullptr)
         {
-
             //send map informations
             std::ifstream file(_mapFileName);
             std::string content((std::istreambuf_iterator<char>(file)),(std::istreambuf_iterator<char>()));
@@ -257,7 +254,6 @@ namespace book
             {
                 _sendMutex.unlock();
             }
-
         }
     }
 

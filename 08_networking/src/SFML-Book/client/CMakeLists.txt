@@ -7,10 +7,14 @@ set(SRCROOT_COMMON ${SRCROOT}/../common)
 #FILES
 set(FILES_HEADER
     ${INCROOT}/Client.hpp
-    ${INCROOT}/Gui.hpp
+    ${INCROOT}/Component.hpp
+    ${INCROOT}/Entity.hpp
     ${INCROOT}/Game.hpp
+    ${INCROOT}/Gui.hpp
     ${INCROOT}/Level.hpp
+    ${INCROOT}/Team.hpp
 
+    ${INCROOT_COMMON}/std_hash.hpp
     ${INCROOT_COMMON}/Packet.hpp    
     ${INCROOT_COMMON}/FuncIds.hpp
     ${INCROOT_COMMON}/Connection.hpp
@@ -19,9 +23,12 @@ set(FILES_HEADER
 
 set(FILES_SRC
     ${SRCROOT}/Client.cpp
-    ${SRCROOT}/Gui.cpp
+    ${SRCROOT}/Component.cpp
+    ${SRCROOT}/Entity.cpp
     ${SRCROOT}/Game.cpp
+    ${SRCROOT}/Gui.cpp
     ${SRCROOT}/Level.cpp
+    ${SRCROOT}/Team.cpp
 
     ${SRCROOT_COMMON}/Packet.cpp
     ${SRCROOT_COMMON}/Connection.cpp

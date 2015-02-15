@@ -4,7 +4,7 @@
 #include <ctime>
 
 //#include <SFML-Book/common/System.hpp>
-//#include <SFML-Book/common/Component.hpp>
+#include <SFML-Book/client/Component.hpp>
 
 
 namespace book
@@ -15,8 +15,8 @@ namespace book
         //onPickup(defaultFunc),
         _map(sfutils::VMap::createMapFromStream(stream)),
         _viewer(window,*_map,Configuration::map_inputs),
-        _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1))
-        //_entities_layer(new sfutils::Layer<Entity*>("Entity",2))
+        _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1)),
+        _entities_layer(new sfutils::Layer<Entity*>("Entity",2))
     {
         //Map
         if(_map == nullptr)
@@ -31,7 +31,7 @@ namespace book
             _mouse_light->setFillColor(sf::Color(255,255,255,64));
             _map->add(_mouse_layer);
         }
-        //_map->add(_entities_layer);
+        _map->add(_entities_layer);
 
         //Viewer
         _viewer.bind(Configuration::MapInputs::TakeScreen,[&window](const sf::Event& event){
@@ -69,8 +69,8 @@ namespace book
     void Level::update(sf::Time deltaTime)
     {
         _viewer.update(deltaTime.asSeconds());
-        //Application::update(deltaTime);
-        //_entities_layer->sort();
+        Application::update(deltaTime);
+        _entities_layer->sort();
 
         sf::Vector2f pos = _viewer.getPosition();
 
@@ -79,7 +79,6 @@ namespace book
         _sounds.remove_if([](const std::unique_ptr<sf::Sound>& sound) -> bool {
               return sound->getStatus() != sf::SoundSource::Status::Playing;
           });
-
     }
 
     void Level::processEvents()
@@ -114,6 +113,19 @@ namespace book
         return res;
     }
 
+    void Level::processNetworkEvent(packet::NetworkEvent* msg)
+    {
+        if(msg->type() == FuncIds::IdCreateEntity)
+        {
+            packet::CreateEntity* event = static_cast<packet::CreateEntity*>(msg);
+            for(const packet::CreateEntity::Data& data : event->getCreates())
+            {
+                Entity& e = createEntity(data.entityId,data.coord);
+                makeAs(data.entityType,e,&_teamInfo.at(data.entityTeam),*this,data);
+            }
+        }
+    }
+
     void Level::draw(sf::RenderTarget& window)
     {
         _viewer.draw();
@@ -139,19 +151,7 @@ namespace book
         return _map->getShape();
     }
 
-    /*Entity& Level::createEntity(const sf::Vector2i& coord)
-    {
-        std::uint32_t id = entities.create();
-        Entity& e = entities.get(id);
-
-        e.add<CompSkin>();
-        e.setPosition(_map->mapCoordsToPixel(coord));
-
-        _entities_layer->add(&e);
-        _byCoords[coord].emplace_back(&e);
-
-        return e;
-    }
+    /*
 
     void Level::destroyEntity(std::uint32_t id)
     {
@@ -250,5 +250,19 @@ namespace book
     sf::Vector2i Level::getMaxCoord()const
     {
         return sf::Vector2i(99,99);
+    }
+
+    Entity& Level::createEntity(unsigned int id,const sf::Vector2i& coord)
+    {
+        entities.emplace(id);
+        Entity& e = entities.get(id);
+
+        e.add<CompSkin>();
+        e.setPosition(_map->mapCoordsToPixel(coord));
+
+        _entities_layer->add(&e);
+        _byCoords[coord].emplace_back(&e);
+
+        return e;
     }
 }

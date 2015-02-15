@@ -47,7 +47,6 @@ namespace book
             GameMenu _gameMenu;
             Level* _level;
             int _team;
-            std::unordered_map<int,sf::Color> _teamColor;
 
     };
 }

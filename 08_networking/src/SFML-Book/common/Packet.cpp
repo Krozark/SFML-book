@@ -386,7 +386,8 @@ namespace book
 
         sf::Packet& operator<<(sf::Packet& packet, const CreateEntity& self)
         {
-            packet<<sf::Uint32(self._updates.size());
+            packet<<sf::Uint8(self._type)
+                <<sf::Uint32(self._updates.size());
             for(const CreateEntity::Data& update : self._updates)
             {
                 packet<<sf::Uint32(update.entityId)
@@ -460,7 +461,8 @@ namespace book
 
         sf::Packet& operator<<(sf::Packet& packet, const UpdateEntity& self)
         {
-            packet<<sf::Uint32(self._updates.size());
+            packet<<sf::Uint8(self._type)
+                <<sf::Uint32(self._updates.size());
             for(const UpdateEntity::Data& update : self._updates)
             {
                 packet<<sf::Uint32(update.entityId)
@@ -517,7 +519,8 @@ namespace book
 
         sf::Packet& operator<<(sf::Packet& packet, const UpdateTeam& self)
         {
-            packet<<sf::Uint32(self._updates.size());
+            packet<<sf::Uint8(self._type)
+                <<sf::Uint32(self._updates.size());
             for(const UpdateTeam::Data& data : self._updates)
             {
                 packet<<sf::Uint32(data.team)

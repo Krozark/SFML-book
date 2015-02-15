@@ -126,11 +126,7 @@ namespace book
                 sf::Packet packet = _outgoing.front();
                 _outgoing.pop();
                 _sendMutex.unlock();
-                int retry = 3;
-                while(retry > 0 and _sockOut.send(packet) != sf::Socket::Done)
-                {
-                    --retry;
-                }
+                _sockOut.send(packet);
             }
             else
             {
