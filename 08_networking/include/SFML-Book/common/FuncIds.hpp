@@ -38,7 +38,15 @@ namespace book
             IdEye,
             IdWormEgg,
             IdWorm,
-            IdCarnivor
+            IdCarnivor,
+        };
+    }
+
+    namespace EventType {
+        enum TYPES {
+            IdBloodEffect = 0,
+            IdFlashEffect,
+            IdVoltageEffect
         };
     }
 }
