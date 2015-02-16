@@ -45,8 +45,8 @@ namespace book
 
             Entity& createEntity(const sf::Vector2i& coord,Team* team,MakeAs makeAs);
             void markEntityUpdated(std::uint32_t id);
-            void markEntityHit(std::uint32_t id);
-            void markEntityHitted(std::uint32_t id);
+            void markEntityHit(std::uint32_t id,std::uint32_t enemyId);
+            void markEntityHitted(std::uint32_t id,std::uint32_t enemyId);
             void markEntitySpawn(std::uint32_t id);
             void markTeamUpdated(std::uint32_t id);
 
@@ -72,8 +72,8 @@ namespace book
             std::list<std::uint32_t> _destroyEntityId;
             std::set<std::uint32_t> _updateEntitiesId;
             std::set<std::uint32_t> _updateTeamId;
-            std::set<std::uint32_t> _onHit;
-            std::set<std::uint32_t> _onHitted;
+            std::list<packet::OnHittedEntity::Data> _onHitted;
+            std::list<packet::OnHitEntity::Data> _onHit;
             std::set<std::uint32_t> _onSpawn;
             
             packet::CreateEntity _createEntities;

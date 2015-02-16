@@ -20,7 +20,7 @@ namespace book
 
         explicit CompAISpawner(FuncType_onSpawn onSpawn = [](Level&,const sf::Vector2i&){});
         
-        FuncType_onSpawn _OnSpawn;
+        FuncType_onSpawn _onSpawn;
     };
 
     struct CompTeam : sfutils::Component<CompTeam,Entity>

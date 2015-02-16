@@ -129,9 +129,11 @@ end_search: //exit nesteed loops
                 CompHp::Handle hp = enemy.component<CompHp>();
                 hp->_hp -= AI->_hitPoint;
 
+                Entity& me = **begin;
+
                 _game.markEntityUpdated(enemy.id());
-                _game.markEntityHitted(enemy.id());
-                _game.markEntityHit((**begin).id());
+                _game.markEntityHitted(enemy.id(),me.id());
+                _game.markEntityHit(me.id(),enemy.id());
 
                 //win some gold
                 if(hp->_hp <=0)
@@ -232,9 +234,11 @@ end_search: //exit nesteed loops
             CompHp::Handle hp = enemy.component<CompHp>();
             hp->_hp -= AI->_hitPoint;
 
+            Entity& me = **begin;
+
             _game.markEntityUpdated(enemy.id());
-            _game.markEntityHitted(enemy.id());
-            _game.markEntityHit((**begin).id());
+            _game.markEntityHitted(enemy.id(),me.id());
+            _game.markEntityHit(me.id(),enemy.id());
 
 
             //win some gold

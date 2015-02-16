@@ -610,12 +610,12 @@ namespace book
         {
         }
 
-        void OnHittedEntity::add(unsigned int id)
+        void OnHittedEntity::add(OnHittedEntity::Data&& data)
         {
-            _updates.emplace_back(id);
+            _updates.emplace_back(data);
         }
 
-        const std::list<unsigned int>& OnHittedEntity::getHitted()const
+        const std::list<OnHittedEntity::Data>& OnHittedEntity::getHitted()const
         {
             return _updates;
         }
@@ -628,8 +628,25 @@ namespace book
             for(unsigned int i=0;i<size;++i)
             {
                 sf::Uint32 id;
-                packet>>id;
-                self.add(id);
+                sf::Int32 x,y,ex,ey;
+                sf::Uint32 enemyId;
+                packet>>id
+                    >>x
+                    >>y
+                    >>enemyId
+                    >>ex
+                    >>ey;
+
+                OnHittedEntity::Data data;
+
+                data.entityId = id;
+                data.entityCoord.x = x;
+                data.entityCoord.y = y;
+                data.enemyId = enemyId;
+                data.entityCoord.x = ex;
+                data.entityCoord.y = ey;
+
+                self.add(std::move(data));
             }
 
             return packet;
@@ -639,8 +656,15 @@ namespace book
         {
             packet<<sf::Uint8(self._type)
                 <<sf::Uint32(self._updates.size());
-            for(unsigned int id : self._updates)
-                packet<<sf::Uint32(id);
+            for(const OnHittedEntity::Data& data : self._updates)
+            {
+                packet<<sf::Uint32(data.entityId)
+                    <<sf::Int32(data.entityCoord.x)
+                    <<sf::Int32(data.entityCoord.y)
+                    <<sf::Uint32(data.enemyId)
+                    <<sf::Int32(data.entityCoord.x)
+                    <<sf::Int32(data.entityCoord.y);
+            }
             return packet;
         }
 
@@ -650,12 +674,12 @@ namespace book
         {
         }
 
-        void OnHitEntity::add(unsigned int id)
+        void OnHitEntity::add(OnHitEntity::Data&& data)
         {
-            _updates.emplace_back(id);
+            _updates.emplace_back(data);
         }
 
-        const std::list<unsigned int>& OnHitEntity::getHit()const
+        const std::list<OnHitEntity::Data>& OnHitEntity::getHit()const
         {
             return _updates;
         }
@@ -668,8 +692,25 @@ namespace book
             for(unsigned int i=0;i<size;++i)
             {
                 sf::Uint32 id;
-                packet>>id;
-                self.add(id);
+                sf::Int32 x,y,ex,ey;
+                sf::Uint32 enemyId;
+                packet>>id
+                    >>x
+                    >>y
+                    >>enemyId
+                    >>ex
+                    >>ey;
+
+                OnHitEntity::Data data;
+
+                data.entityId = id;
+                data.entityCoord.x = x;
+                data.entityCoord.y = y;
+                data.enemyId = enemyId;
+                data.entityCoord.x = ex;
+                data.entityCoord.y = ey;
+
+                self.add(std::move(data));
             }
 
             return packet;
@@ -679,10 +720,18 @@ namespace book
         {
             packet<<sf::Uint8(self._type)
                 <<sf::Uint32(self._updates.size());
-            for(unsigned int id : self._updates)
-                packet<<sf::Uint32(id);
+            for(const OnHitEntity::Data& data : self._updates)
+            {
+                packet<<sf::Uint32(data.entityId)
+                    <<sf::Int32(data.entityCoord.x)
+                    <<sf::Int32(data.entityCoord.y)
+                    <<sf::Uint32(data.enemyId)
+                    <<sf::Int32(data.entityCoord.x)
+                    <<sf::Int32(data.entityCoord.y);
+            }
             return packet;
         }
+
 
         ///////////////////////// OnSpawnEntity ///////////////////
 

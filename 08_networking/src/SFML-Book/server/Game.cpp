@@ -211,14 +211,26 @@ namespace book
         _updateEntitiesId.insert(id);
     }
 
-    void Game::markEntityHit(std::uint32_t id)
+    void Game::markEntityHit(std::uint32_t id,std::uint32_t enemyId)
     {
-        _onHit.insert(id);
+        packet::OnHitEntity::Data data;
+        data.entityId = id;
+        data.entityCoord = entities.get(id).getCoord();
+        data.enemyId = enemyId;
+        data.enemyCoord = entities.get(id).getCoord();
+
+        _onHit.emplace_back(std::move(data));
     }
 
-    void Game::markEntityHitted(std::uint32_t id)
+    void Game::markEntityHitted(std::uint32_t id,std::uint32_t enemyId)
     {
-        _onHitted.insert(id);
+        packet::OnHittedEntity::Data data;
+        data.entityId = id;
+        data.entityCoord = entities.get(id).getCoord();
+        data.enemyId = enemyId;
+        data.enemyCoord = entities.get(id).getCoord();
+
+        _onHitted.emplace_back(std::move(data));
     }
 
     void Game::markEntitySpawn(std::uint32_t id)
@@ -359,8 +371,10 @@ namespace book
         if(_onHit.size() > 0)
         {
             packet::OnHitEntity update;
-            for(std::uint32_t id : _onHit)
-                update.add(id);
+            for(packet::OnHitEntity::Data& data: _onHit)
+            {
+                update.add(std::move(data));
+            }
 
             sf::Packet packet;
             packet<<update;
@@ -372,8 +386,10 @@ namespace book
         if(_onHitted.size() > 0)
         {
             packet::OnHittedEntity update;
-            for(std::uint32_t id : _onHitted)
-                update.add(id);
+            for(packet::OnHittedEntity::Data& data : _onHitted)
+            {
+                update.add(std::move(data));
+            }
 
             sf::Packet packet;
             packet<<update;

@@ -233,14 +233,21 @@ namespace book
             public :
                 OnHittedEntity();
 
-                void add(unsigned int id);
-                const std::list<unsigned int>& getHitted()const;
+                struct Data {
+                    unsigned int entityId;
+                    sf::Vector2i entityCoord;
+                    unsigned int enemyId;
+                    sf::Vector2i enemyCoord;
+                };
+
+                void add(Data&& data);
+                const std::list<Data>& getHitted()const;
 
                 friend sf::Packet& operator>>(sf::Packet&, OnHittedEntity& self);
                 friend sf::Packet& operator<<(sf::Packet&, const OnHittedEntity& self);
 
             private :
-                std::list<unsigned int> _updates;
+                std::list<Data> _updates;
         };
         
         class OnHitEntity : public NetworkEvent
@@ -248,13 +255,20 @@ namespace book
             public :
                 OnHitEntity();
 
-                void add(unsigned int id);
-                const std::list<unsigned int>& getHit()const;
+                struct Data {
+                    unsigned int entityId;
+                    sf::Vector2i entityCoord;
+                    unsigned int enemyId;
+                    sf::Vector2i enemyCoord;
+                };
+
+                void add(Data&& data);
+                const std::list<Data>& getHit()const;
 
                 friend sf::Packet& operator>>(sf::Packet&, OnHitEntity& self);
                 friend sf::Packet& operator<<(sf::Packet&, const OnHitEntity& self);
             private :
-                std::list<unsigned int> _updates;
+                std::list<Data> _updates;
         };
 
         class OnSpawnEntity : public NetworkEvent

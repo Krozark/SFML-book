@@ -2,7 +2,7 @@
 
 namespace book
 {
-    CompAISpawner::CompAISpawner(CompAISpawner::FuncType_onSpawn onSpawn) : _OnSpawn(onSpawn)
+    CompAISpawner::CompAISpawner(CompAISpawner::FuncType_onSpawn onSpawn) : _onSpawn(onSpawn)
     {
     }
 

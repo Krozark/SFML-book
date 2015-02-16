@@ -145,15 +145,55 @@ namespace book
             }break;
             case FuncIds::IdOnHittedEntity :
             {
-                //TODO
+                packet::OnHittedEntity* event = static_cast<packet::OnHittedEntity*>(msg);
+                for(const packet::OnHittedEntity::Data& data : event->getHitted())
+                {
+                    if(entities.isValid(data.entityId))
+                    {
+                        Entity& e = entities.get(data.entityId);
+                        if(e.onHitted and entities.isValid(data.enemyId))
+                        {
+                            Entity& enemy = entities.get(data.enemyId);
+                            e.onHitted(e,_map->mapPixelToCoords(e.getPosition()),
+                                       enemy, _map->mapPixelToCoords(enemy.getPosition()),
+                                       *this);
+                        }
+                    }
+                }
             }break;
             case FuncIds::IdOnHitEntity :
             {
-                //TODO
+                packet::OnHitEntity* event = static_cast<packet::OnHitEntity*>(msg);
+                for(const packet::OnHitEntity::Data& data : event->getHit())
+                {
+                    if(entities.isValid(data.entityId))
+                    {
+                        Entity& e = entities.get(data.entityId);
+                        if(e.onHit and entities.isValid(data.enemyId))
+                        {
+                            Entity& enemy = entities.get(data.enemyId);
+                            e.onHit(e,_map->mapPixelToCoords(e.getPosition()),
+                                       enemy, _map->mapPixelToCoords(enemy.getPosition()),
+                                       *this);
+                        }
+                    }
+                }
             }break;
             case FuncIds::IdOnSpawnEntity :
             {
-                //TODO
+                packet::OnSpawnEntity* event = static_cast<packet::OnSpawnEntity*>(msg);
+                for(unsigned int id : event->getSpawn())
+                {
+                    if(entities.isValid(id))
+                    {
+                        Entity& e = entities.get(id);
+                        CompAISpawner::Handle spawn = entities.getComponent<CompAISpawner>(id);
+                        if(spawn.isValid() and spawn->_onSpawn)
+                        {
+                            spawn->_onSpawn(*this,_map->mapPixelToCoords(e.getPosition()));
+                        }
+                    }
+                }
             }break;
             default : break;
         }

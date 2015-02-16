@@ -67,13 +67,6 @@ namespace book
         };
     }
 
-    namespace EventType {
-        enum TYPES {
-            IdBloodEffect = 0,
-            IdFlashEffect,
-            IdVoltageEffect
-        };
-    }
 }
 
 #endif
