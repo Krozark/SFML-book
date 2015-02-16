@@ -23,8 +23,11 @@ namespace book
             IdDestroyEntity, //server
             IdCreateEntity, //server
             IdUpdateEntity, //server
-            IdHittedEntity, //server
-            IdHitEntity, //server
+            //// Entity Event
+            IdOnHittedEntity, //server
+            IdOnHitEntity, //server
+            IdOnSpawnEntity, //server
+            //// Team event
             IdUpdateTeam, //server
         };
     }

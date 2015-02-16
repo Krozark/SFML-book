@@ -145,11 +145,15 @@ namespace book
                     }
                 }
             }break;
-            case FuncIds::IdHittedEntity :
+            case FuncIds::IdOnHittedEntity :
             {
                 //TODO
             }break;
-            case FuncIds::IdHitEntity :
+            case FuncIds::IdOnHitEntity :
+            {
+                //TODO
+            }break;
+            case FuncIds::IdOnSpawnEntity :
             {
                 //TODO
             }break;

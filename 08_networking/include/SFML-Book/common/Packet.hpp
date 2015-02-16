@@ -131,8 +131,38 @@ namespace book
 
         //in game
         
-        //RequestCreateEntity, //client
-        //RequestDestroyEntity, //client
+        class RequestCreateEntity : public NetworkEvent
+        {
+            public :
+                RequestCreateEntity();
+                RequestCreateEntity(short int type,const sf::Vector2i& coord);
+
+                short int getType()const;
+                const sf::Vector2i& getCoord()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, RequestCreateEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const RequestCreateEntity& self);
+
+
+            private:
+                short int _entitytype;
+                sf::Vector2i _coord;
+        };
+
+        class RequestDestroyEntity : public NetworkEvent
+        {
+            public :
+                RequestDestroyEntity();
+                RequestDestroyEntity(unsigned int id);
+
+                unsigned int getId()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, RequestDestroyEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const RequestDestroyEntity& self);
+            private :
+                unsigned int _id;
+        };
+
         class DestroyEntity : public NetworkEvent
         {
             public : 
@@ -198,8 +228,48 @@ namespace book
                 std::list<Data> _updates;
         };
 
-        //IdHittedEntity, //server
-        //IdHitEntity, //server
+        class OnHittedEntity : public NetworkEvent
+        {
+            public :
+                OnHittedEntity();
+                OnHittedEntity(unsigned int id);
+
+                unsigned int getId()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, OnHittedEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const OnHittedEntity& self);
+            private :
+                unsigned int _id;
+        };
+        
+        class OnHitEntity : public NetworkEvent
+        {
+            public :
+                OnHitEntity();
+                OnHitEntity(unsigned int id);
+
+                unsigned int getId()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, OnHitEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const OnHitEntity& self);
+            private :
+                unsigned int _id;
+        };
+
+        class OnSpawnEntity : public NetworkEvent
+        {
+            public :
+                OnSpawnEntity();
+                OnSpawnEntity(unsigned int id);
+
+                unsigned int getId()const;
+
+                friend sf::Packet& operator>>(sf::Packet&, OnSpawnEntity& self);
+                friend sf::Packet& operator<<(sf::Packet&, const OnSpawnEntity& self);
+            private :
+                unsigned int _id;
+        };
+
         class UpdateTeam : public NetworkEvent
         {
             public :

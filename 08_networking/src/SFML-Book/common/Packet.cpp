@@ -56,11 +56,13 @@ namespace book
                 }break;
                 case FuncIds::IdRequestCreateEntity :
                 {
-                    //TODO
+                    res = new RequestCreateEntity();
+                    packet>>(*static_cast<RequestCreateEntity*>(res));
                 }break;
                 case FuncIds::IdRequestDestroyEntity :
                 {
-                    //TODO
+                    res = new RequestDestroyEntity();
+                    packet>>(*static_cast<RequestDestroyEntity*>(res));
                 }break;
                 case FuncIds::IdDestroyEntity :
                 {
@@ -78,13 +80,20 @@ namespace book
                     res = new UpdateEntity();
                     packet>>(*static_cast<UpdateEntity*>(res));
                 }break;
-                case FuncIds::IdHittedEntity :
+                case FuncIds::IdOnHittedEntity :
                 {
-                    //TODO
+                    res = new OnHittedEntity();
+                    packet>>(*static_cast<OnHittedEntity*>(res));
                 }break;
-                case FuncIds::IdHitEntity :
+                case FuncIds::IdOnHitEntity :
                 {
-                    //TODO
+                    res = new OnHitEntity();
+                    packet>>(*static_cast<OnHitEntity*>(res));
+                }break;
+                case FuncIds::IdOnSpawnEntity :
+                {
+                    res = new OnSpawnEntity();
+                    packet>>(*static_cast<OnSpawnEntity*>(res));
                 }break;
                 case FuncIds::IdUpdateTeam :
                 {
@@ -322,6 +331,84 @@ namespace book
                 <<sf::Int32(self._gameId);
             return packet;
         }
+
+        //////////////////// RequestCreateEntity /////////////////////
+
+        RequestCreateEntity::RequestCreateEntity() : NetworkEvent(FuncIds::IdRequestCreateEntity)
+        {
+        }
+
+        RequestCreateEntity::RequestCreateEntity(short int type,const sf::Vector2i& coord) : NetworkEvent(FuncIds::IdRequestCreateEntity), _entitytype(type), _coord(coord)
+        {
+        }
+
+        short int RequestCreateEntity::getType()const
+        {
+            return _entitytype;
+        }
+
+        const sf::Vector2i& RequestCreateEntity::getCoord()const
+        {
+            return _coord;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, RequestCreateEntity& self)
+        {
+            sf::Int8 type;
+            sf::Int32 x,y;
+
+            packet>>type
+                >>x
+                >>y;
+
+            self._entitytype = type;
+            self._coord.x = x;
+            self._coord.y = y;
+
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const RequestCreateEntity& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<sf::Int8(self._entitytype)
+                <<sf::Int32(self._coord.x)
+                <<sf::Int32(self._coord.y);
+            return packet;
+        }
+
+
+        ///////////////////////// RequestDestroyEntity ///////////////////
+
+        RequestDestroyEntity::RequestDestroyEntity() : NetworkEvent(FuncIds::IdRequestDestroyEntity)
+        {
+        }
+
+        RequestDestroyEntity::RequestDestroyEntity(unsigned int id) : NetworkEvent(FuncIds::IdRequestDestroyEntity), _id(id)
+        {
+        }
+
+        unsigned int RequestDestroyEntity::getId()const
+        {
+            return _id;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, RequestDestroyEntity& self)
+        {
+            sf::Uint32 id;
+            packet>>id;
+            self._id = id;
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const RequestDestroyEntity& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<sf::Uint32(self._id);
+            return packet;
+        }
+        
+        
         //////////////////////////// DestroyEntity /////////////////////
 
         DestroyEntity::DestroyEntity() : NetworkEvent(FuncIds::IdDestroyEntity)
@@ -514,6 +601,96 @@ namespace book
                     <<sf::Int32(update.coord.y)
                     <<sf::Int32(update.hp);
             }
+            return packet;
+        }
+
+        ///////////////////////// OnHittedEntity ///////////////////
+
+        OnHittedEntity::OnHittedEntity() : NetworkEvent(FuncIds::IdOnHittedEntity)
+        {
+        }
+
+        OnHittedEntity::OnHittedEntity(unsigned int id) : NetworkEvent(FuncIds::IdOnHittedEntity), _id(id)
+        {
+        }
+
+        unsigned int OnHittedEntity::getId()const
+        {
+            return _id;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, OnHittedEntity& self)
+        {
+            sf::Uint32 id;
+            packet>>id;
+            self._id = id;
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const OnHittedEntity& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<sf::Uint32(self._id);
+            return packet;
+        }
+
+        ///////////////////////// OnHitEntity ///////////////////
+
+        OnHitEntity::OnHitEntity() : NetworkEvent(FuncIds::IdOnHitEntity)
+        {
+        }
+
+        OnHitEntity::OnHitEntity(unsigned int id) : NetworkEvent(FuncIds::IdOnHitEntity), _id(id)
+        {
+        }
+
+        unsigned int OnHitEntity::getId()const
+        {
+            return _id;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, OnHitEntity& self)
+        {
+            sf::Uint32 id;
+            packet>>id;
+            self._id = id;
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const OnHitEntity& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<sf::Uint32(self._id);
+            return packet;
+        }
+
+        ///////////////////////// OnSpawnEntity ///////////////////
+
+        OnSpawnEntity::OnSpawnEntity() : NetworkEvent(FuncIds::IdOnSpawnEntity)
+        {
+        }
+
+        OnSpawnEntity::OnSpawnEntity(unsigned int id) : NetworkEvent(FuncIds::IdOnSpawnEntity), _id(id)
+        {
+        }
+
+        unsigned int OnSpawnEntity::getId()const
+        {
+            return _id;
+        }
+
+        sf::Packet& operator>>(sf::Packet& packet, OnSpawnEntity& self)
+        {
+            sf::Uint32 id;
+            packet>>id;
+            self._id = id;
+            return packet;
+        }
+
+        sf::Packet& operator<<(sf::Packet& packet, const OnSpawnEntity& self)
+        {
+            packet<<sf::Uint8(self._type)
+                <<sf::Uint32(self._id);
             return packet;
         }
 
