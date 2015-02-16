@@ -12,40 +12,12 @@ namespace book
     class Team;
     class Level;
 
-    void makeAsMain(Entity& entity,Team* team,Level& level);
-    void makeAsEye(Entity& entity,Team* team,Level& level);
-    void makeAsWormEgg(Entity& entity,Team* team, Level& level);
-    void makeAsWorm(Entity& entity,Team* team, Level& level);
-    void makeAsCarnivor(Entity& entity,Team* team, Level& level);
-    
     //////////// EFFECTS ////////////////
     void makeAsEffect(Entity& entity,int animation);
     void makeAsBloodEffect(Entity& entity);
     void makeAsFlashEffect(Entity& entity);
     void makeAsVoltageEffect(Entity& entity);
 
-    enum BuildEntities {
-        EntityMain,
-        EntityWormEgg,
-        EntityCarnivor,
-        SIZE
-    };
-
-
-    struct Info {
-        int cost;
-        std::string name;
-        std::function<void(Entity&,Team*,Level&)> makeAs;
-        int icon_id;
-        int animation_id;
-        std::string description;
-    };
-
-    static Info informations[SIZE] = {
-        {5000, "GQ",makeAsMain, Configuration::TexBuildMain, Configuration::AnimMainStand,"Main building.\nGenerates gold.\nYou loose the game\nif you don't control\nany one of them."},
-        {250, "Worm Egg",makeAsWormEgg,Configuration::TexBuildWormEgg, Configuration::AnimWormEggStand, "Spawn some worms"},
-        {300, "Carnivore",makeAsCarnivor, Configuration::TexBuildCarnivor, Configuration::AnimCarnivorStand, "Make hight damage"}
-    };
 
 }
 #endif

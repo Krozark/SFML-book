@@ -129,15 +129,9 @@ end_search: //exit nesteed loops
                 CompHp::Handle hp = enemy.component<CompHp>();
                 hp->_hp -= AI->_hitPoint;
 
-                Entity& me = **begin;
-
                 _game.markEntityUpdated(enemy.id());
-
-                if(enemy.onHitted != nullptr)
-                    enemy.onHitted(enemy,coord,me,myCoord,_game);
-                if(me.onHit != nullptr)
-                    me.onHit(me,myCoord,enemy,coord,_game);
-
+                _game.markEntityHitted(enemy.id());
+                _game.markEntityHit((**begin).id());
 
                 //win some gold
                 if(hp->_hp <=0)
@@ -233,21 +227,14 @@ end_search: //exit nesteed loops
 
             //update path
             Entity& enemy = manager.get(id);
-            const sf::Vector2i coord = enemy.getCoord();
-
             //shoot it
             AI->_elapsed = sf::Time::Zero;
             CompHp::Handle hp = enemy.component<CompHp>();
             hp->_hp -= AI->_hitPoint;
 
             _game.markEntityUpdated(enemy.id());
-
-            Entity& me = **begin;
-
-            if(enemy.onHitted != nullptr)
-                enemy.onHitted(enemy,coord,me,myCoord,_game);
-            if(me.onHit != nullptr)
-                me.onHit(me,myCoord,enemy,coord,_game);
+            _game.markEntityHitted(enemy.id());
+            _game.markEntityHit((**begin).id());
 
 
             //win some gold
@@ -291,16 +278,18 @@ end_search: //exit nesteed loops
                     {
                         AI->_elapsed = sf::Time::Zero;
                         skin->_animationId = CompSkin::Stand;
+
                         _game.markEntityUpdated(e.id());
+                        _game.markEntitySpawn(e.id());
 
                         auto team = e.component<CompTeam>();
                         auto AI = e.component<CompAISpawner>();
                         //create new
                         sf::Vector2i coord = e.getCoord();
+
                         for(int i=0;i<AI->_number;++i)
                         {
                             Entity& newEntity = this->_game.createEntity(coord,team->_team,AI->_makeAs);
-                            AI->_OnSpawn(this->_game,coord);
                         }
                     }
                 }

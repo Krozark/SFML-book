@@ -211,6 +211,21 @@ namespace book
         _updateEntitiesId.insert(id);
     }
 
+    void Game::markEntityHit(std::uint32_t id)
+    {
+        _onHit.insert(id);
+    }
+
+    void Game::markEntityHitted(std::uint32_t id)
+    {
+        _onHitted.insert(id);
+    }
+
+    void Game::markEntitySpawn(std::uint32_t id)
+    {
+        _onSpawn.insert(id);
+    }
+
     void Game::markTeamUpdated(std::uint32_t id)
     {
         _updateTeamId.insert(id);
@@ -340,6 +355,45 @@ namespace book
                 }
             }
         }
+
+        if(_onHit.size() > 0)
+        {
+            packet::OnHitEntity update;
+            for(std::uint32_t id : _onHit)
+                update.add(id);
+
+            sf::Packet packet;
+            packet<<update;
+            sendToAll(packet);
+
+            _onHit.clear();
+        }
+
+        if(_onHitted.size() > 0)
+        {
+            packet::OnHittedEntity update;
+            for(std::uint32_t id : _onHitted)
+                update.add(id);
+
+            sf::Packet packet;
+            packet<<update;
+            sendToAll(packet);
+
+            _onHitted.clear();
+        }
+
+        if(_onSpawn.size() > 0)
+        {
+            packet::OnSpawnEntity update;
+            for(std::uint32_t id : _onSpawn)
+                update.add(id);
+
+            sf::Packet packet;
+            packet<<update;
+            sendToAll(packet);
+
+            _onSpawn.clear();
+        }
         
         if(_destroyEntityId.size() > 0)
         {
@@ -350,6 +404,7 @@ namespace book
             sf::Packet packet;
             packet<<update;
             sendToAll(packet);
+
             _destroyEntityId.clear();
         }
 
@@ -358,6 +413,7 @@ namespace book
             sf::Packet packet;
             packet<<_createEntities;
             sendToAll(packet);
+
             _createEntities.clear();
         }
         
@@ -371,6 +427,7 @@ namespace book
             sf::Packet packet;
             packet<<update;
             sendToAll(packet);
+
             _updateEntitiesId.clear();
         }
 
@@ -390,6 +447,7 @@ namespace book
             sf::Packet packet;
             packet<<update;
             sendToAll(packet);
+
             _updateTeamId.clear();
         }
     }

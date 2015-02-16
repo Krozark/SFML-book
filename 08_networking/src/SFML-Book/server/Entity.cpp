@@ -8,7 +8,7 @@ ES_INIT_ENTITY(book::Entity);
 
 namespace book
 {
-    Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id) : sfutils::Entity<Entity>(manager,id), onHit(nullptr), onHitted(nullptr)
+    Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id) : sfutils::Entity<Entity>(manager,id)
     {
     }
 
@@ -51,11 +51,7 @@ namespace book
 
         //add AI
         entity.add<CompAIMain>(100,sf::seconds(10));
-        entity.add<CompAISpawner>(makeAsEye,1,sf::seconds(5),
-                                  [](Game& game,const sf::Vector2i& pos){
-                                    //makeAsVoltageEffect(game.createEntity(pos));
-                                    //TODO
-                                  });
+        entity.add<CompAISpawner>(makeAsEye,1,sf::seconds(5));
         entity.add<CompHp>(5000);
 
     }
@@ -78,11 +74,7 @@ namespace book
         entity.add<CompTeam>(team);
         entity.add<CompSkin>(CompSkin::Stand);
         
-        entity.add<CompAISpawner>(makeAsWorm,1,sf::seconds(15),
-                                  [](Game& game,const sf::Vector2i& pos){
-                                    //makeAsFlashEffect(lvl.createEntity(pos));
-                                    //TODO
-                                  });
+        entity.add<CompAISpawner>(makeAsWorm,1,sf::seconds(15));
         entity.add<CompHp>(200);
 
     }

@@ -610,27 +610,37 @@ namespace book
         {
         }
 
-        OnHittedEntity::OnHittedEntity(unsigned int id) : NetworkEvent(FuncIds::IdOnHittedEntity), _id(id)
+        void OnHittedEntity::add(unsigned int id)
         {
+            _updates.emplace_back(id);
         }
 
-        unsigned int OnHittedEntity::getId()const
+        const std::list<unsigned int>& OnHittedEntity::getHitted()const
         {
-            return _id;
+            return _updates;
         }
 
         sf::Packet& operator>>(sf::Packet& packet, OnHittedEntity& self)
         {
-            sf::Uint32 id;
-            packet>>id;
-            self._id = id;
+            self._updates.clear();
+            sf::Uint32 size;
+            packet>>size;
+            for(unsigned int i=0;i<size;++i)
+            {
+                sf::Uint32 id;
+                packet>>id;
+                self.add(id);
+            }
+
             return packet;
         }
 
         sf::Packet& operator<<(sf::Packet& packet, const OnHittedEntity& self)
         {
             packet<<sf::Uint8(self._type)
-                <<sf::Uint32(self._id);
+                <<sf::Uint32(self._updates.size());
+            for(unsigned int id : self._updates)
+                packet<<sf::Uint32(id);
             return packet;
         }
 
@@ -640,27 +650,37 @@ namespace book
         {
         }
 
-        OnHitEntity::OnHitEntity(unsigned int id) : NetworkEvent(FuncIds::IdOnHitEntity), _id(id)
+        void OnHitEntity::add(unsigned int id)
         {
+            _updates.emplace_back(id);
         }
 
-        unsigned int OnHitEntity::getId()const
+        const std::list<unsigned int>& OnHitEntity::getHit()const
         {
-            return _id;
+            return _updates;
         }
 
         sf::Packet& operator>>(sf::Packet& packet, OnHitEntity& self)
         {
-            sf::Uint32 id;
-            packet>>id;
-            self._id = id;
+            self._updates.clear();
+            sf::Uint32 size;
+            packet>>size;
+            for(unsigned int i=0;i<size;++i)
+            {
+                sf::Uint32 id;
+                packet>>id;
+                self.add(id);
+            }
+
             return packet;
         }
 
         sf::Packet& operator<<(sf::Packet& packet, const OnHitEntity& self)
         {
             packet<<sf::Uint8(self._type)
-                <<sf::Uint32(self._id);
+                <<sf::Uint32(self._updates.size());
+            for(unsigned int id : self._updates)
+                packet<<sf::Uint32(id);
             return packet;
         }
 
@@ -670,29 +690,40 @@ namespace book
         {
         }
 
-        OnSpawnEntity::OnSpawnEntity(unsigned int id) : NetworkEvent(FuncIds::IdOnSpawnEntity), _id(id)
+        void OnSpawnEntity::add(unsigned int id)
         {
+            _updates.emplace_back(id);
         }
 
-        unsigned int OnSpawnEntity::getId()const
+        const std::list<unsigned int>& OnSpawnEntity::getSpawn()const
         {
-            return _id;
+            return _updates;
         }
 
         sf::Packet& operator>>(sf::Packet& packet, OnSpawnEntity& self)
         {
-            sf::Uint32 id;
-            packet>>id;
-            self._id = id;
+            self._updates.clear();
+            sf::Uint32 size;
+            packet>>size;
+            for(unsigned int i=0;i<size;++i)
+            {
+                sf::Uint32 id;
+                packet>>id;
+                self.add(id);
+            }
+
             return packet;
         }
 
         sf::Packet& operator<<(sf::Packet& packet, const OnSpawnEntity& self)
         {
             packet<<sf::Uint8(self._type)
-                <<sf::Uint32(self._id);
+                <<sf::Uint32(self._updates.size());
+            for(unsigned int id : self._updates)
+                packet<<sf::Uint32(id);
             return packet;
         }
+
 
         ////////////////////// UpdateTeam ///////////////////////////////
         

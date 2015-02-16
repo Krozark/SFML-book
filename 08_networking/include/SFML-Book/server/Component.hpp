@@ -47,16 +47,13 @@ namespace book
     struct CompAISpawner : sfutils::Component<CompAISpawner,Entity>
     {
         using FuncType = std::function<void(Entity& entity,Team* team,Game& game)>;
-        typedef void (*FuncType_onSpawn)(Game& game,const sf::Vector2i& pos);
 
-        explicit CompAISpawner(FuncType makeAs,int number,const sf::Time& timeDelta,FuncType_onSpawn onSpawn = [](Game&,const sf::Vector2i&){});
+        explicit CompAISpawner(FuncType makeAs,int number,const sf::Time& timeDelta);
         
         FuncType _makeAs;
         const int _number;
         const sf::Time _delta;
         sf::Time _elapsed;
-        FuncType_onSpawn _OnSpawn;
-
     };
 
     struct CompAIWalker : sfutils::Component<CompAIWalker,Entity>

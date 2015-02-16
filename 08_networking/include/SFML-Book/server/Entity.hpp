@@ -28,9 +28,6 @@ namespace book
 
             using FuncType = std::function<void(Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Game& game)>;
 
-            FuncType onHit;
-            FuncType onHitted;
-
         private:
             friend class Game;
 

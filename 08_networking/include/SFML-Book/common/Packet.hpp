@@ -232,42 +232,43 @@ namespace book
         {
             public :
                 OnHittedEntity();
-                OnHittedEntity(unsigned int id);
 
-                unsigned int getId()const;
+                void add(unsigned int id);
+                const std::list<unsigned int>& getHitted()const;
 
                 friend sf::Packet& operator>>(sf::Packet&, OnHittedEntity& self);
                 friend sf::Packet& operator<<(sf::Packet&, const OnHittedEntity& self);
+
             private :
-                unsigned int _id;
+                std::list<unsigned int> _updates;
         };
         
         class OnHitEntity : public NetworkEvent
         {
             public :
                 OnHitEntity();
-                OnHitEntity(unsigned int id);
 
-                unsigned int getId()const;
+                void add(unsigned int id);
+                const std::list<unsigned int>& getHit()const;
 
                 friend sf::Packet& operator>>(sf::Packet&, OnHitEntity& self);
                 friend sf::Packet& operator<<(sf::Packet&, const OnHitEntity& self);
             private :
-                unsigned int _id;
+                std::list<unsigned int> _updates;
         };
 
         class OnSpawnEntity : public NetworkEvent
         {
             public :
                 OnSpawnEntity();
-                OnSpawnEntity(unsigned int id);
 
-                unsigned int getId()const;
+                void add(unsigned int id);
+                const std::list<unsigned int>& getSpawn()const;
 
                 friend sf::Packet& operator>>(sf::Packet&, OnSpawnEntity& self);
                 friend sf::Packet& operator<<(sf::Packet&, const OnSpawnEntity& self);
             private :
-                unsigned int _id;
+                std::list<unsigned int> _updates;
         };
 
         class UpdateTeam : public NetworkEvent

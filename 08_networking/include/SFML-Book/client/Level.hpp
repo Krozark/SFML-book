@@ -35,49 +35,16 @@ namespace book
             void processNetworkEvent(packet::NetworkEvent* msg);
             void draw(sf::RenderTarget& window);
 
-            /*struct Param {
-                explicit Param(sf::Vector2i&,
-                               Entity&,
-                               sfutils::Layer<Entity*>&,
-                               sfutils::VMap&);
-
-                sf::Vector2i& coord;
-                Entity& entity;
-                sfutils::Layer<Entity*>& layer;
-                sfutils::VMap& map;
-            };
-
-            using FuncType = std::function<void(Param& param)>;
+            using FuncType = std::function<void(std::uint32_t id,sf::Vector2i coord)>;
             static FuncType defaultFunc;
 
             FuncType onPickup;
 
-            sfutils::EntityManager<Entity>& entityManager();*/
             sfutils::Layer<sf::ConvexShape>& getHighlightLayer()const;
             const sf::ConvexShape getShape()const;
 
-            
-            /*
-            void destroyEntity(Entity& e);
-            */
-
             void createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord);
             void createSound(Configuration::Sounds sound_id,const sf::Vector2f& pos);
-
-           /* sf::Vector2i mapPixelToCoords(const sf::Vector2f& pos)const;
-            sf::Vector2f mapCoordsToPixel(const sf::Vector2i& pos)const;
-
-            sf::Vector2i mapCoordsToScreen(const sf::Vector2i& pos)const;
-            sf::Vector2i mapScreenToCoords(const sf::Vector2i& pos)const;
-
-            std::list<Entity*> getByCoords(const sf::Vector2i& coord);
-
-            std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
-            sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
-            int getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const;*/
-
-            sf::Vector2i getMinCoord()const;
-            sf::Vector2i getMaxCoord()const;
 
         private:
             friend class Game;

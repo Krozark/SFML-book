@@ -9,10 +9,10 @@
 
 namespace book
 {
-    //Level::FuncType Level::defaultFunc = [](Level::Param&){};
+    Level::FuncType Level::defaultFunc = [](unsigned int id,sf::Vector2i coord){};
 
     Level::Level(sf::RenderWindow& window,std::istream& stream) : 
-        //onPickup(defaultFunc),
+        onPickup(defaultFunc),
         _map(sfutils::VMap::createMapFromStream(stream)),
         _viewer(window,*_map,Configuration::map_inputs),
         _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1)),
@@ -52,6 +52,7 @@ namespace book
         systems.add<SysHp>();
 
     }
+
     Level::~Level()
     {
         //entities.reset();
@@ -87,13 +88,10 @@ namespace book
             if(event.type == sf::Event::MouseButtonReleased and event.mouseButton.button == sf::Mouse::Button::Left)
             {
                 sf::Vector2i coord = _viewer.mapScreenToCoords(event.mouseButton.x,event.mouseButton.y);
-                /*std::list<Entity*> pick = getByCoords(coord);
-                for(Entity* e : pick)
-                {
-                    Param p(coord,*e,*_entities_layer,*_map);
-                    onPickup(p);
-                }*/
 
+                std::list<Entity*> pick = _byCoords[coord];
+                for(Entity* e : pick)
+                    onPickup(e->id(),coord);
             }
             else if(event.type == sf::Event::MouseMoved)
             {
@@ -166,16 +164,6 @@ namespace book
         _viewer.draw();
     }
 
-    /*Level::Param::Param(sf::Vector2i& c,Entity& e,sfutils::Layer<Entity*>& l,sfutils::VMap& m) : 
-        coord(c), entity(e),layer(l),map(m)
-    {
-    }
-
-    sfutils::EntityManager<Entity>& Level::entityManager()
-    {
-        return entities;
-    }*/
-
     sfutils::Layer<sf::ConvexShape>& Level::getHighlightLayer()const
     {
         return *_mouse_layer;
@@ -186,20 +174,6 @@ namespace book
         return _map->getShape();
     }
 
-    /*
-
-
-    void Level::destroyEntity(Entity& e)
-    {
-        const sf::Vector2i coord = mapPixelToCoords(entities.getComponent<CompSkin>(e.id())->_sprite.getPosition());
-
-        _entities_layer->remove(&e,false);
-
-        _byCoords[coord].remove(&e);
-        e.remove();
-    }
-
-    */
     
     void Level::createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord)
     {
@@ -219,57 +193,6 @@ namespace book
         _sounds.emplace_back(std::move(sound));
     }
 
-
-   /* sf::Vector2i Level::mapPixelToCoords(const sf::Vector2f& pos)const
-    {
-        return _map->mapPixelToCoords(pos);
-    }
-
-    sf::Vector2f Level::mapCoordsToPixel(const sf::Vector2i& pos)const
-    {
-        return _map->mapCoordsToPixel(pos);
-    }
-
-    sf::Vector2i Level::mapCoordsToScreen(const sf::Vector2i& pos)const
-    {
-        return _viewer.mapCoordsToScreen(pos);
-    }
-
-    sf::Vector2i Level::mapScreenToCoords(const sf::Vector2i& pos)const
-    {
-        return _viewer.mapScreenToCoords(pos);
-    }
-
-    std::list<Entity*> Level::getByCoords(const sf::Vector2i& coord)
-    {
-        return _byCoords[coord];
-    }
-
-    //TODO A* or dijtra
-    std::list<sf::Vector2i> Level::getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const
-    {
-        return _map->getPath(origin,dest);
-    }
-
-    sf::Vector2i Level::getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const
-    {
-        return _map->getPath1(origin,dest);
-    }
-
-    int Level::getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const
-    {
-        return _map->getDistance(origin,dest);
-    }*/
-
-    sf::Vector2i Level::getMinCoord()const
-    {
-        return sf::Vector2i(0,0);
-    }
-
-    sf::Vector2i Level::getMaxCoord()const
-    {
-        return sf::Vector2i(99,99);
-    }
 
     Entity& Level::createEntity(unsigned int id,const sf::Vector2i& coord)
     {

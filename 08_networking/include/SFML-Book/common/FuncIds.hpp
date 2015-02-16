@@ -1,6 +1,9 @@
 #ifndef BOOK_FUNCIDS_HPP
 #define BOOK_FUNCIDS_HPP
 
+#include <string>
+#include <SFML-Book/common/Configuration.hpp>
+
 namespace book
 {
     namespace FuncIds{
@@ -39,6 +42,28 @@ namespace book
             IdWormEgg,
             IdWorm,
             IdCarnivor,
+        };
+
+        enum BuildEntities {
+            EntityMain,
+            EntityWormEgg,
+            EntityCarnivor,
+            SIZE
+        };
+
+        struct Info {
+            int cost;
+            std::string name;
+            unsigned int entityType;
+            int icon_id;
+            int animation_id;
+            std::string description;
+        };
+
+        static Info informations[SIZE] = {
+            {5000, "GQ",IdMain, Configuration::TexBuildMain, Configuration::AnimMainStand,"Main building.\nGenerates gold.\nYou loose the game\nif you don't control\nany one of them."},
+            {250, "Worm Egg",IdWormEgg,Configuration::TexBuildWormEgg, Configuration::AnimWormEggStand, "Spawn some worms"},
+            {300, "Carnivore",IdCarnivor, Configuration::TexBuildCarnivor, Configuration::AnimCarnivorStand, "Make hight damage"}
         };
     }
 
