@@ -88,8 +88,8 @@ namespace book
                 }break;
                 case FuncIds::IdUpdateTeam :
                 {
-                    res = new UpdateEntity();
-                    packet>>(*static_cast<UpdateEntity*>(res));
+                    res = new UpdateTeam();
+                    packet>>(*static_cast<UpdateTeam*>(res));
                 }break;
             }
             return res;

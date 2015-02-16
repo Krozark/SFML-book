@@ -121,7 +121,7 @@ namespace book
         Team* clientTeam = nullptr;
         for(Team* team : _teams)
         {
-            if(team->getClients().size() == 0)
+            if(team->getClients().size() == 0 and team->isGameOver())
             {
                 clientTeam = team;
                 break;
@@ -376,8 +376,20 @@ namespace book
 
         if(_updateTeamId.size() > 0)
         {
-            //TODO
+            packet::UpdateTeam update;
+            sf::Lock guard(_teamMutex);
+            for(std::uint32_t id : _updateTeamId)
+            {
+                packet::UpdateTeam::Data data;
+                data.team = id;
+                data.gameOver = _teams[id]->isGameOver();
+                data.gold = _teams[id]->getGold();
 
+                update.add(std::move(data));
+            }
+            sf::Packet packet;
+            packet<<update;
+            sendToAll(packet);
             _updateTeamId.clear();
         }
     }
@@ -385,6 +397,7 @@ namespace book
     void Game::update(sf::Time deltaTime)
     {
         Application::update(deltaTime);
+
         /*
          * onSpawn
             IdHittedEntity, //server

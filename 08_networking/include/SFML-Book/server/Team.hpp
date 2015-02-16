@@ -38,9 +38,11 @@ namespace book
 
             const std::list<Client*>& getClients()const;
 
-            bool isAlive;
+            bool isGameOver()const;
+
 
         private:
+            bool _isAlive;
             const int _id;
             int _gold;
             std::vector<std::uint32_t> _QGId;
@@ -49,6 +51,7 @@ namespace book
 
             std::vector<Team*> _enemies;
             std::list<Client*> _clients;
+
 
 
     };

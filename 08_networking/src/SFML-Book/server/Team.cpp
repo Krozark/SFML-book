@@ -4,7 +4,7 @@
 
 namespace book
 {
-    Team::Team(int id,const sf::Color& color,int gold,Game& game) : isAlive(true),_id(id), _gold(gold), _QGId(0), _color(color), _game(game)
+    Team::Team(int id,const sf::Color& color,int gold,Game& game) : _isAlive(true),_id(id), _gold(gold), _QGId(0), _color(color), _game(game)
     {
     }
 
@@ -53,7 +53,7 @@ namespace book
             else
             ++i;
         }
-        isAlive = _QGId.size()>0;
+        _isAlive = _QGId.size()>0;
     }
 
     int Team::id()const
@@ -80,4 +80,10 @@ namespace book
     {
         return _clients;
     }
+
+    bool Team::isGameOver()const
+    {
+        return _isAlive;
+    }
+
 }
