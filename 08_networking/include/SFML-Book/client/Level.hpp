@@ -46,6 +46,8 @@ namespace book
             void createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord);
             void createSound(Configuration::Sounds sound_id,const sf::Vector2f& pos);
 
+            void addEffect(std::function<Effect*(void)> effectFn,const sf::Vector2i& coord);
+
         private:
             friend class Game;
 
@@ -56,7 +58,8 @@ namespace book
 
             sf::ConvexShape* _mouse_light;
             sfutils::Layer<sf::ConvexShape>* _mouse_layer;
-            sfutils::Layer<Entity*>* _entities_layer;
+            sfutils::Layer<MapComponent*>* _entities_layer;
+            std::list<Effect*> _effects;
 
             std::list<std::unique_ptr<sf::Sound>> _sounds;
 

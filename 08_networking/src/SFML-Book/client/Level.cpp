@@ -16,7 +16,7 @@ namespace book
         _map(sfutils::VMap::createMapFromStream(stream)),
         _viewer(window,*_map,Configuration::map_inputs),
         _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1)),
-        _entities_layer(new sfutils::Layer<Entity*>("Entity",2))
+        _entities_layer(new sfutils::Layer<MapComponent*>("Entity",2))
     {
         //Map
         if(_map == nullptr)
@@ -56,6 +56,9 @@ namespace book
     Level::~Level()
     {
         //entities.reset();
+        for(Effect* effect : _effects)
+            delete effect;
+
         delete _map;
     }
 
@@ -66,8 +69,22 @@ namespace book
         _entities_layer->sort();
 
         sf::Vector2f pos = _viewer.getPosition();
+        sf::Listener::setPosition(pos.x,pos.y,0);
 
-        sf::Listener::setPosition(pos.x,pos.x,_viewer.getZoom());
+        auto begin = _effects.begin();
+        while(begin != _effects.end())
+        {
+            Effect& e = **begin;
+            e.sprite.update(deltaTime);
+            if(e.sprite.getStatus() != sfutils::AnimatedSprite::Status::Playing)
+            {
+                begin = _effects.erase(begin);
+                _entities_layer->remove(&e);
+                delete &e;
+            }
+            else
+                ++begin;
+        }
 
         _sounds.remove_if([](const std::unique_ptr<sf::Sound>& sound) -> bool {
               return sound->getStatus() != sf::SoundSource::Status::Playing;
@@ -224,13 +241,25 @@ namespace book
     void Level::createSound(Configuration::Sounds sound_id,const sf::Vector2f& pos)
     {
         std::unique_ptr<sf::Sound> sound(new sf::Sound(Configuration::sounds.get(sound_id)));
+
         sound->setPosition(pos.x,pos.y,0);
-        sound->setRelativeToListener(true);
+        sound->setRelativeToListener(false);
         sound->setVolume(100);
+        sound->setMinDistance(300);
         sound->setAttenuation(1);
 
         sound->play();
         _sounds.emplace_back(std::move(sound));
+    }
+
+    void Level::addEffect(std::function<Effect*(void)> effectFn,const sf::Vector2i& coord)
+    {
+        Effect* effect = effectFn();
+
+        effect->setPosition(_map->mapCoordsToPixel(coord));
+
+        _entities_layer->add(effect);
+        _effects.emplace_back(effect);
     }
 
 

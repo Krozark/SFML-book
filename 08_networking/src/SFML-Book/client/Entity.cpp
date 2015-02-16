@@ -5,6 +5,7 @@
 
 #include <SFML-Book/common/FuncIds.hpp>
 #include <SFML-Book/common/Configuration.hpp>
+#include <SFML-Book/common/random.hpp>
 
 ES_INIT_ENTITY(book::Entity);
 
@@ -91,6 +92,7 @@ namespace book
         }
     }
 
+    ////////////////////////// helpers  //////////////////////////////
 
     void makeAsMain(Entity& entity,Team* team,Level& level,const packet::CreateEntity::Data& data)
     {
@@ -101,14 +103,14 @@ namespace book
         setTeam(entity,team);
 
         entity.add<CompAISpawner>([](Level& lvl,const sf::Vector2i& pos){
-                                    //TODO makeAsVoltageEffect(lvl.createEntity(pos));
+                                    lvl.addEffect(makeVoltageEffect,pos);
                                   });
         entity.add<CompHp>(data.hp);
         entity.add<CompBuildArea>(4);
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedMain,myCoord);
-            //TODO makeAsVoltageEffect(lvl.createEntity(myCoord));
+            lvl.addEffect(makeVoltageEffect,myCoord);
         };
 
         entity.name = "QG";
@@ -130,7 +132,7 @@ namespace book
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedEye,myCoord);
-            //makeAsBloodEffect(lvl.createEntity(myCoord));
+            lvl.addEffect(makeBloodEffect,myCoord);
         };
 
         entity.onHit = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
@@ -148,7 +150,7 @@ namespace book
 
         setTeam(entity,team);
         entity.add<CompAISpawner>([](Level& lvl,const sf::Vector2i& pos){
-                                    //makeAsFlashEffect(lvl.createEntity(pos));
+                                    lvl.addEffect(makeFlashEffect,pos);
                                   });
         entity.add<CompHp>(data.hp);
         entity.add<CompBuildArea>(2);
@@ -170,7 +172,7 @@ namespace book
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedWorm,myCoord);
-            //makeAsBloodEffect(lvl.createEntity(myCoord));
+            lvl.addEffect(makeBloodEffect,myCoord);
         };
 
         entity.onHit = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
@@ -190,14 +192,56 @@ namespace book
         entity.add<CompBuildArea>(2);
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
-            //lvl.createSound(Configuration::SoundHittedWorm,myCoord);
-            //makeAsBloodEffect(lvl.createEntity(myCoord));
+            lvl.createSound(Configuration::SoundHittedWorm,myCoord);
+            lvl.addEffect(makeBloodEffect,myCoord);
         };
 
         entity.onHit = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
-            //lvl.createSound(Configuration::SoundHitWorm,myCoord);
+            lvl.createSound(Configuration::SoundHitWorm,myCoord);
         };
 
         entity.name = "Carnivor";
     }
+
+    //////////////////// Effects ///////////////////////////
+
+    Effect::Effect(int animationId)
+    {
+        sfutils::Animation& animation = Configuration::animations.get(animationId);
+        sprite.setAnimation(&animation);
+        sprite.setLoop(false);
+        
+        sf::IntRect rec = animation.getRect(0);
+        sprite.setOrigin(rec.width*0.5,rec.height*0.5);
+    }
+
+    sf::Vector2f Effect::getPosition()const
+    {
+        return sprite.getPosition();
+    }
+
+    void Effect::setPosition(const sf::Vector2f& pos)
+    {
+        sprite.setPosition(pos);
+    }
+
+    void Effect::draw(sf::RenderTarget& target,sf::RenderStates states) const
+    {
+        target.draw(sprite,states);
+    }
+
+    Effect* makeBloodEffect()
+    {
+        int animation = random(Configuration::AnimBlood1,Configuration::AnimBlood4);
+        return new Effect(animation);
+    }
+    Effect* makeFlashEffect()
+    {
+        return new Effect(Configuration::AnimFlash);
+    }
+
+    Effect* makeVoltageEffect()
+    {
+        return new Effect(Configuration::AnimVoltage);
+    }    
 }

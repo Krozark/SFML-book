@@ -12,7 +12,16 @@ namespace book
     class Level;
     class Team;
 
-    class Entity : public sfutils::Entity<Entity>, public sf::Drawable
+
+    //base class for put Entity and Effect in same map
+    class MapComponent : public sf::Drawable
+    {
+        public :
+            virtual sf::Vector2f getPosition()const = 0;
+            virtual void setPosition(const sf::Vector2f& pos) = 0;
+    };
+
+    class Entity : public MapComponent , public sfutils::Entity<Entity>
     {
         public:
             Entity(const Entity&) = delete;
@@ -20,8 +29,8 @@ namespace book
 
             Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id);
 
-            sf::Vector2f getPosition()const;
-            void setPosition(const sf::Vector2f& pos);
+            virtual sf::Vector2f getPosition()const;
+            virtual void setPosition(const sf::Vector2f& pos);
 
             std::string name;
 
@@ -42,6 +51,26 @@ namespace book
     void makeAsWormEgg(Entity& entity,Team* team,Level& level,const packet::CreateEntity::Data& data);
     void makeAsWorm(Entity& entity,Team* team,Level& level,const packet::CreateEntity::Data& data);
     void makeAsCarnivor(Entity& entity,Team* team,Level& level,const packet::CreateEntity::Data& data);
+
+    
+    class Effect : public MapComponent
+    {
+        public :
+            Effect(int animationId);
+
+            virtual sf::Vector2f getPosition()const;
+            virtual void setPosition(const sf::Vector2f& pos);
+
+            sfutils::AnimatedSprite sprite;
+
+        private:
+            virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const override;
+    };
+
+    Effect* makeBloodEffect();
+    Effect* makeFlashEffect();
+    Effect* makeVoltageEffect();
+
 
 
 }
