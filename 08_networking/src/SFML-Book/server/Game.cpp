@@ -360,6 +360,7 @@ namespace book
                         {
                             it = _clients.erase(it);
                             --it;
+                            delete client;
                             client = nullptr;
                         }break;
                         default : break;
@@ -513,6 +514,7 @@ namespace book
         update.animationId = entities.getComponent<CompSkin>(id)->_animationId;
         update.position = e.getPosition();
         update.coord = e.getCoord();
+        update.maxHp = entities.getComponent<CompHp>(id)->_maxHp;
         update.hp = entities.getComponent<CompHp>(id)->_hp;
 
         packet.add(std::move(update));

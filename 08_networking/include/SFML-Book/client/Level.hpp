@@ -25,7 +25,7 @@ namespace book
             Level(const Level&) = delete;
             Level& operator=(const Level&) = delete;
 
-            Level(sf::RenderWindow& window,std::istream& stream);
+            Level(sf::RenderWindow& window,int team,std::istream& stream,const std::string& data);
             ~Level();
 
             void update(sf::Time deltaTime);
@@ -35,6 +35,7 @@ namespace book
             void processNetworkEvent(packet::NetworkEvent* msg);
             void draw(sf::RenderTarget& window);
 
+
             using FuncType = std::function<void(std::uint32_t id,sf::Vector2i coord)>;
             static FuncType defaultFunc;
 
@@ -43,16 +44,27 @@ namespace book
             sfutils::Layer<sf::ConvexShape>& getHighlightLayer()const;
             const sf::ConvexShape getShape()const;
 
+            sfutils::EntityManager<Entity>& entityManager();
+
             void createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord);
             void createSound(Configuration::Sounds sound_id,const sf::Vector2f& pos);
 
             void addEffect(std::function<Effect*(void)> effectFn,const sf::Vector2i& coord);
+
+            sf::Vector2i getMinCoord()const;
+            sf::Vector2i getMaxCoord()const;
+
+            sf::Vector2i mapPixelToCoords(const sf::Vector2f& pos)const;
+            sf::Vector2f mapCoordsToPixel(const sf::Vector2i& pos)const;
 
         private:
             friend class Game;
 
             sfutils::VMap* _map;
             sfutils::MapViewer _viewer;
+
+            sf::Vector2i _minCoord;
+            sf::Vector2i _maxCoord;
 
             std::unordered_map<sf::Vector2i,std::list<Entity*>> _byCoords;
 

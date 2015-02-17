@@ -2,16 +2,18 @@
 
 #include <stdexcept>
 #include <ctime>
+#include <sstream>
 
 #include <SFML-Book/client/System.hpp>
 #include <SFML-Book/client/Component.hpp>
+#include <utils/json/Driver.hpp>
 
 
 namespace book
 {
     Level::FuncType Level::defaultFunc = [](unsigned int id,sf::Vector2i coord){};
 
-    Level::Level(sf::RenderWindow& window,std::istream& stream) : 
+    Level::Level(sf::RenderWindow& window,int team,std::istream& stream,const std::string& data) : 
         onPickup(defaultFunc),
         _map(sfutils::VMap::createMapFromStream(stream)),
         _viewer(window,*_map,Configuration::map_inputs),
@@ -23,6 +25,42 @@ namespace book
         {
             //do some error
             throw std::runtime_error("Impossible to load file map");
+        }
+
+
+        {
+            std::stringstream ss;
+            ss<<data;
+
+            utils::json::Value* rootPtr = utils::json::Driver::parse(ss);
+
+            utils::json::Object& root = *rootPtr;
+            const utils::json::Object& size = root["size"];
+            const utils::json::Object& min = size["min"];
+            const utils::json::Object& max = size["max"];
+
+            _minCoord.x = min["x"].as_int();
+            _minCoord.y = min["y"].as_int();
+
+            _maxCoord.x = max["x"].as_int();
+            _maxCoord.y = max["y"].as_int();
+
+            const utils::json::Object& players = root["players"];
+            const utils::json::Array& spawn = players["spawn"];
+
+            int i = 0;
+            for(const utils::json::Object& value : spawn)
+            {
+                if(i == team)
+                {
+                    sf::Vector2i initial;
+                    initial.x = value["x"].as_int();
+                    initial.y = value["y"].as_int();
+                    _viewer.setPosition(_map->mapCoordsToPixel(initial));
+                    break;
+                }
+                ++i;
+            }
         }
 
 
@@ -108,7 +146,9 @@ namespace book
 
                 std::list<Entity*> pick = _byCoords[coord];
                 for(Entity* e : pick)
+                {
                     onPickup(e->id(),coord);
+                }
             }
             else if(event.type == sf::Event::MouseMoved)
             {
@@ -231,6 +271,11 @@ namespace book
         return _map->getShape();
     }
 
+    sfutils::EntityManager<Entity>& Level::entityManager()
+    {
+        return entities;
+    }
+
     
     void Level::createSound(Configuration::Sounds sound_id,const sf::Vector2i& coord)
     {
@@ -260,6 +305,26 @@ namespace book
 
         _entities_layer->add(effect);
         _effects.emplace_back(effect);
+    }
+
+    sf::Vector2i Level::getMinCoord()const
+    {
+        return sf::Vector2i(0,0);
+    }
+
+    sf::Vector2i Level::getMaxCoord()const
+    {
+        return sf::Vector2i(99,99);
+    }
+
+    sf::Vector2i Level::mapPixelToCoords(const sf::Vector2f& pos)const
+    {
+        return _map->mapPixelToCoords(pos);
+    }
+
+    sf::Vector2f Level::mapCoordsToPixel(const sf::Vector2i& pos)const
+    {
+        return _map->mapCoordsToPixel(pos);
     }
 
 

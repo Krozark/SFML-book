@@ -88,8 +88,13 @@ namespace book
             {
                 makeAsCarnivor(e,team,level,data);
             }break;
-            default : break;
+            default :
+            {
+                std::cout<<"ERROR Unknow Entity Created"<<std::endl;
+            }break;
         }
+
+        e.type = entityType;
     }
 
     ////////////////////////// helpers  //////////////////////////////
@@ -105,7 +110,7 @@ namespace book
         entity.add<CompAISpawner>([](Level& lvl,const sf::Vector2i& pos){
                                     lvl.addEffect(makeVoltageEffect,pos);
                                   });
-        entity.add<CompHp>(data.hp);
+        entity.add<CompHp>(data.hp,data.maxHp);
         entity.add<CompBuildArea>(4);
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
@@ -128,7 +133,7 @@ namespace book
         //add team
         setTeam(entity,team);
 
-        entity.add<CompHp>(data.hp);
+        entity.add<CompHp>(data.hp,data.maxHp);
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedEye,myCoord);
@@ -152,7 +157,7 @@ namespace book
         entity.add<CompAISpawner>([](Level& lvl,const sf::Vector2i& pos){
                                     lvl.addEffect(makeFlashEffect,pos);
                                   });
-        entity.add<CompHp>(data.hp);
+        entity.add<CompHp>(data.hp,data.maxHp);
         entity.add<CompBuildArea>(2);
 
         entity.name = "Worm Egg";
@@ -168,7 +173,7 @@ namespace book
 
         setTeam(entity,team);
 
-        entity.add<CompHp>(data.hp);
+        entity.add<CompHp>(data.hp,data.maxHp);
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedWorm,myCoord);
@@ -188,7 +193,7 @@ namespace book
 
         setTeam(entity,team);
 
-        entity.add<CompHp>(data.hp);
+        entity.add<CompHp>(data.hp,data.maxHp);
         entity.add<CompBuildArea>(2);
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){

@@ -23,6 +23,7 @@ namespace book
 
             void run(int frame_per_seconds=60);
 
+
         private:
             void processEvents();
             void processNetworkEvents();
@@ -42,11 +43,13 @@ namespace book
                 StatusDisconnected
             } _status;
 
+
             //Main
             MainMenu _mainMenu;
             //Game
             GameMenu _gameMenu;
             Level* _level;
+            Level::FuncType _onPickup;
             int _team;
 
     };

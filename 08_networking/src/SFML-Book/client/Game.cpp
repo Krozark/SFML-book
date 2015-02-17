@@ -1,13 +1,13 @@
 #include <SFML-Book/client/Game.hpp>
 
+#include <SFML-Book/client/Component.hpp>
+
 #include <SFML-Book/common/FuncIds.hpp>
 #include <SFML-Book/common/Packet.hpp>
 #include <SFML-Book/common/Configuration.hpp>
 
-
 #include <iostream>
 #include <sstream>
-
 
 
 namespace book
@@ -23,6 +23,22 @@ namespace book
         _level(nullptr)
     {
         _window.setMouseCursorVisible(false);        
+
+        _onPickup = [this](std::uint32_t id,sf::Vector2i coord)
+        {
+            if(_level)
+            {
+                Entity* e = _level->entityManager().getPtr(id);
+                if(e->has<CompTeam>())
+                {
+                    CompTeam::Handle team = e->component<CompTeam>();
+                    if(team->_team->id() == _team)
+                    {
+                        _gameMenu.setSelected(id,_level);
+                    }
+                }
+            }
+        };
     }
 
     Game::~Game()
@@ -164,7 +180,8 @@ namespace book
                                 std::stringstream ss;
                                 ss<<datas;
 
-                                _level = new Level(_window,ss);
+                                _level = new Level(_window,event->getTeamId(),ss,datas);
+                                _level->onPickup = _onPickup;
 
                                 if(_level != nullptr)
                                 {

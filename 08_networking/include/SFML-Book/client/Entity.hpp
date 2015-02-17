@@ -39,6 +39,8 @@ namespace book
             FuncType onHit;
             FuncType onHitted;
 
+            short int type;
+
         private:
             virtual void draw(sf::RenderTarget& target,sf::RenderStates states) const override;
     };

@@ -14,9 +14,9 @@ namespace book
     const float CompHp::_height = 5;
     const float CompHp::_width = 0.05;
 
-    CompHp::CompHp(int hp) : _hp(hp)
+    CompHp::CompHp(int hp,int maxHp) : _hp(hp), _maxHp(maxHp)
     {
-        float width = _width*_hp;
+        float width = _width*_maxHp;
 
         _shape_max_hp.setFillColor(sf::Color::Red);
         _shape_max_hp.setOutlineThickness(1);

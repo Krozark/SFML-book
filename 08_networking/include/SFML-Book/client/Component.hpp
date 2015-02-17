@@ -48,7 +48,7 @@ namespace book
 
     struct CompHp : sfutils::Component<CompHp,Entity>
     {
-        explicit CompHp(int hp);
+        explicit CompHp(int hp,int maxHp);
 
         void update(const sf::Vector2f& pos);
 
@@ -58,6 +58,7 @@ namespace book
         sf::RectangleShape _shape_max_hp;
 
         int _hp;
+        const int _maxHp;
 
         static const float _height;
         static const float _width;

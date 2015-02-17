@@ -485,6 +485,7 @@ namespace book
                 sf::Int8 animationId;
                 sf::Int32 coord_x;
                 sf::Int32 coord_y;
+                sf::Int32 maxHp;
                 sf::Int32 hp;
 
                 packet>>entityId
@@ -495,6 +496,7 @@ namespace book
                     >>update.position.y
                     >>coord_x
                     >>coord_y
+                    >>maxHp
                     >>hp;
 
                 update.entityId = entityId;
@@ -503,7 +505,7 @@ namespace book
                 update.animationId = animationId;
                 update.coord.x = coord_x;
                 update.coord.y = coord_y;
-
+                update.maxHp = maxHp;
                 update.hp = hp;
 
                 self._updates.emplace_back(std::move(update));
@@ -526,6 +528,7 @@ namespace book
                     <<update.position.y
                     <<sf::Int32(update.coord.x)
                     <<sf::Int32(update.coord.y)
+                    <<sf::Int32(update.maxHp)
                     <<sf::Int32(update.hp);
             }
             return packet;

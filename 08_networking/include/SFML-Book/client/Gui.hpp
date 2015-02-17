@@ -9,6 +9,8 @@
 namespace book
 {
     class Client;
+    class Level;
+
     class MainMenu : public sfutils::Frame
     {
         public:
@@ -44,7 +46,7 @@ namespace book
 
             void draw(sf::RenderTarget& window);
             
-            //void setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager);
+            void setSelected(std::uint32_t id,Level* level);
 
         private:
             int& _team;
@@ -65,17 +67,11 @@ namespace book
             int _goldCost;
             int _goldAmount;
 
-            /*using FuncType = std::function<void(Entity& entity,Team* team, Level& level)>;
-            FuncType _makeAs;
-
             std::uint32_t _entityId;
-            sfutils::EntityManager<Entity>* _entityManager;
-
-            sf::Color _color;
             Level* _level;
 
             std::vector<sf::ConvexShape*> _highlight;
-            sf::ConvexShape* _selectionLight;*/
+            sf::ConvexShape* _selectionLight;
 
 
             void clear();

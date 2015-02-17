@@ -2,8 +2,19 @@
 
 #include <SFML-Book/common/Configuration.hpp>
 #include <SFML-Book/client/Client.hpp>
+#include <SFML-Book/client/Entity.hpp>
+#include <SFML-Book/client/Level.hpp>
+#include <SFML-Book/client/Component.hpp>
 
 #include <sstream>
+
+struct cmpVector2i
+{
+    bool operator()(const sf::Vector2i& a,const sf::Vector2i& b)const
+    {
+        return (a.y < b.y) or (a.y == b.y and a.x < b.x);
+    };
+};
 
 namespace book
 {
@@ -74,6 +85,9 @@ namespace book
         _entityName(nullptr),
         _entityHp(nullptr),
         _buildBar(window,Configuration::gui_inputs),
+        _entityId(0),
+        _level(nullptr),
+        _selectionLight(nullptr),
         _status(Status::None)
     {
     }
@@ -106,10 +120,6 @@ namespace book
         initBuildBar();
 
         setGold(gold);
-
-        //IdDisconnected
-        //IdCreateEntity
-        //IdDestroyEntity
     }
 
     void GameMenu::clear()
@@ -122,25 +132,22 @@ namespace book
         {
             case Status::Selecting :
             {
-                /*if(_entityManager and _entityManager->isValid(_entityId))
+                Entity* entity = nullptr;
+                if(_level and (entity = _level->entityManager().getPtr(_entityId)) != nullptr )
                 {
                     _spriteInfo.update(deltaTime);
 
-                    CompHp::Handle hp = _entityManager->getComponent<CompHp>(_entityId);
+                    CompHp::Handle hp = entity->component<CompHp>();
 
-                    if(hp.isValid())
-                        setHp(hp->_hp,hp->_maxHp);
-                    else
-                        _entityHp->setText("HP: ?/?");
+                    setHp(hp->_hp,hp->_maxHp);
 
-                    CompSkin::Handle skin = _entityManager->getComponent<CompSkin>(_entityId);
+                    CompSkin::Handle skin = entity->component<CompSkin>();
                     _selectionLight->setPosition(skin->_sprite.getPosition());
-
                 }
                 else
                 {
                     unSelect();
-                }*/
+                }
             }break;
             case Status::Building :
             {
@@ -156,6 +163,8 @@ namespace book
                     }
                     _spriteBuild.update(deltaTime);
                 }*/
+        //IdCreateEntity
+        //IdDestroyEntity
             }break;
             default: break;
         }
@@ -273,17 +282,23 @@ namespace book
         }
     }
 
-    /*void GameMenu::setSelected(std::uint32_t id,sfutils::EntityManager<Entity>& manager)
+    void GameMenu::setSelected(std::uint32_t id,Level* level)
     {
         if(_status == Status::None or _status == Status::Selecting)
         {
             unSelect();
             unBuild();
 
+            _level = level;
             _entityId = id;
-            _entityManager = &manager;
 
-            _spriteInfo = manager.getComponent<CompSkin>(id)->_sprite;
+            Entity* entity = level->entityManager().getPtr(id);
+
+            if(entity == nullptr)
+                return;
+
+
+            _spriteInfo = entity->component<CompSkin>()->_sprite;
 
             _spriteInfo.setColor(sf::Color(255,255,255,255));
             _spriteInfo.setOrigin(0,0);
@@ -292,20 +307,15 @@ namespace book
             sf::IntRect rect = _spriteInfo.getAnimation()->getRect(0);
             _spriteInfo.setScale(sf::Vector2f(90.f/rect.width,90.f/rect.height));
 
-            Entity& e = manager.get(id);
-            _entityName->setText(e.name);
-
+            _entityName->setText(entity->name);
 
             //hightlight
-            if(_level)
-            {
-                _selectionLight = _level->getHighlightLayer().add(_level->getShape());
-                _selectionLight->setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
-            }
+            _selectionLight = _level->getHighlightLayer().add(_level->getShape());
+            _selectionLight->setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
 
             _status = Status::Selecting;
         }
-    }*/
+    }
 
     void GameMenu::initInfoBar()
     {
@@ -470,8 +480,12 @@ namespace book
         unSelect();
         unBuild();
 
+        if (_level == nullptr)
+            return;
+
         _status = Status::Building;
-        /*_makeAs = nullptr;
+        
+        //_makeAs = nullptr;
 
         CompBuildArea::Handle area;
         CompTeam::Handle team;
@@ -492,7 +506,7 @@ namespace book
             sf::Vector2i initCoords = _level->mapPixelToCoords(initPos);
             pos_set_not_allow.emplace(initCoords); //romove all already used tile
 
-            if(team->_team->id() == _team.id() and area->_range > 0)
+            if(team->_team->id() == _team and area->_range > 0)
             {
 
 
@@ -526,16 +540,21 @@ namespace book
             shape->setFillColor(sf::Color(0,255,0,128));
             shape->setPosition(_level->mapCoordsToPixel(pos));
             _highlight.emplace_back(shape);
-        }*/
+        }
     }
 
 
 
+    void GameMenu::setHp(int current,int max)
+    {
+        _entityHp->setText("HP: "+std::to_string(current)+"/"+std::to_string(max));
+    }
 
     void GameMenu::setGold(int amount)
     {
         _labelGold->setText("Gold: "+std::to_string(amount));
     }
+
 
 
 

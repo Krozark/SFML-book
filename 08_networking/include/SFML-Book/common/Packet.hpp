@@ -189,6 +189,7 @@ namespace book
                     short int animationId;
                     sf::Vector2f position;
                     sf::Vector2i coord;
+                    int maxHp;
                     int hp;
                 };
 
