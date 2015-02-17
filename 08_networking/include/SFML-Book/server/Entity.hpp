@@ -40,6 +40,8 @@ namespace book
 
     using MakeAs = std::function<void(Entity& entity,Team* team,Game& game)>;
 
+    MakeAs getMakeAs(int id);
+
     void makeAsMain(Entity& entity,Team* team,Game& game);
     void makeAsEye(Entity& entity,Team* team,Game& game);
     void makeAsWormEgg(Entity& entity,Team* team,Game& game);

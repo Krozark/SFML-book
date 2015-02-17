@@ -64,7 +64,7 @@ namespace book
                                   initialGold,
                                   *this);
 
-            Entity& e = createEntity(spawns[i],team,makeAsMain);
+            createEntity(spawns[i],team,makeAsMain);
             _teams.emplace_back(team);
         }
 
@@ -202,7 +202,6 @@ namespace book
         _byCoords[coord].emplace_back(&e);
 
         addCreate(_createEntities,id);
-
         return e;
     }
 
@@ -350,11 +349,49 @@ namespace book
                 {
                     switch(msg->type())
                     {
-                        case FuncIds::IdCreateEntity :
+                        case FuncIds::IdRequestCreateEntity :
                         {
+                            packet::RequestCreateEntity* event = static_cast<packet::RequestCreateEntity*>(msg);
+
+                            sf::Lock gameGuard(_teamMutex);
+                            short int entityType = event->getType();
+                            int gold = client->getTeam()->getGold();
+                            sf::Vector2i coord = event->getCoord();
+
+
+                            for(EntityType::Info& info : EntityType::informations)
+                            {
+                                if(info.makeAs == entityType
+                                   and gold >= info.cost
+                                   and _byCoords[coord].size() == 0)
+                                {
+                                    MakeAs makeAs = getMakeAs(info.makeAs);
+                                    if(makeAs != nullptr)
+                                    {
+                                        createEntity(coord,client->getTeam(),makeAs);
+                                        client->getTeam()->addGold(-info.cost);
+                                    }
+                                }
+                            }
                         }break;
-                        case FuncIds::IdDestroyEntity :
+                        case FuncIds::IdRequestDestroyEntity :
                         {
+                            packet::RequestDestroyEntity* event = static_cast<packet::RequestDestroyEntity*>(msg);
+                            unsigned int id = event->getId();
+
+                            if(entities.isValid(id))
+                            {
+                                sf::Lock gameGuard(_teamMutex);
+                                Entity& e = entities.get(id);
+                                CompTeam::Handle team = entities.getComponent<CompTeam>(id);
+                                if(team.isValid())
+                                {
+                                    if(team->_team->id() == client->getTeam()->id())
+                                    {
+                                        destroyEntity(id);
+                                    }
+                                }
+                            }
                         }break;
                         case FuncIds::IdDisconnected :
                         {

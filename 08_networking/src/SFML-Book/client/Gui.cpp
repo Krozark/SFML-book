@@ -212,7 +212,7 @@ namespace book
                                     {
                                         sf::Packet packet;
 
-                                        packet::RequestCreateEntity request(_makeAs,coord);
+                                        packet<<packet::RequestCreateEntity(_makeAs,coord);
                                         _client.send(packet);
 
                                         setBuild();
@@ -389,7 +389,7 @@ namespace book
                 if(_status == Status::Selecting)
                 {
                     sf::Packet packet;
-                    packet<<RequestDestroyEntity(_entityId);
+                    packet<<packet::RequestDestroyEntity(_entityId);
                     _client.send(packet);
                     unSelect();
                 }

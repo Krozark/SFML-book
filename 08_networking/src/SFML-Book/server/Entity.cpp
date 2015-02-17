@@ -41,6 +41,24 @@ namespace book
 
     /************* Helpers *****************/
 
+    MakeAs getMakeAs(int id)
+    {
+        switch(id)
+        {
+            case EntityType::IdMain :
+                return makeAsMain;
+            case EntityType::IdEye :
+                return makeAsEye;
+            case EntityType::IdWormEgg :
+                return makeAsWormEgg;
+            case EntityType::IdWorm :
+                return makeAsWorm;
+            case EntityType::IdCarnivor :
+                return makeAsCarnivor;
+            default : return nullptr;
+        }
+    }
+
     void makeAsMain(Entity& entity,Team* team,Game& game)
     {
         entity.setType(EntityType::IdMain);
