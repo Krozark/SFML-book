@@ -216,6 +216,7 @@ namespace book
                                         _client.send(packet);
 
                                         setBuild();
+                                        _makeAs = -1;
                                         break;
                                     }
                                 }
@@ -249,17 +250,26 @@ namespace book
     
     void GameMenu::processNetworkEvent(packet::NetworkEvent* msg)
     {
-        if(msg->type() == FuncIds::IdUpdateTeam)
+        switch(msg->type())
         {
-            packet::UpdateTeam* event = static_cast<packet::UpdateTeam*>(msg);
-            for(const packet::UpdateTeam::Data& data : event->getUpdates())
+            case FuncIds::IdUpdateTeam :
             {
-                if(data.team == _team)
+                packet::UpdateTeam* event = static_cast<packet::UpdateTeam*>(msg);
+                for(const packet::UpdateTeam::Data& data : event->getUpdates())
                 {
-                    setGold(data.gold);
-                    break;
+                    if(data.team == _team)
+                    {
+                        setGold(data.gold);
+                        break;
+                    }
                 }
-            }
+            }break;
+            case FuncIds::IdCreateEntity :
+            {
+                if(_status == Building)
+                    setBuild();
+            }break;
+            default : break;
         }
     }
 
@@ -487,7 +497,7 @@ namespace book
 
         _status = Status::Building;
         
-        _makeAs = -1;
+        //_makeAs = -1;
 
         CompBuildArea::Handle area;
         CompTeam::Handle team;
@@ -506,7 +516,7 @@ namespace book
         {
             sf::Vector2f initPos = skin->_sprite.getPosition();
             sf::Vector2i initCoords = _level->mapPixelToCoords(initPos);
-            pos_set_not_allow.emplace(initCoords); //romove all already used tile
+            pos_set_not_allow.emplace(initCoords); //remove all already used tile
 
             if(team->_team->id() == _team and area->_range > 0)
             {
