@@ -1,6 +1,8 @@
 #include <SFML-Book/client/Gui.hpp>
 
 #include <SFML-Book/common/Configuration.hpp>
+#include <SFML-Book/common/Packet.hpp>
+
 #include <SFML-Book/client/Client.hpp>
 #include <SFML-Book/client/Entity.hpp>
 #include <SFML-Book/client/Level.hpp>
@@ -85,6 +87,8 @@ namespace book
         _entityName(nullptr),
         _entityHp(nullptr),
         _buildBar(window,Configuration::gui_inputs),
+        _gold_cost(0),
+        _makeAs(-1),
         _entityId(0),
         _level(nullptr),
         _selectionLight(nullptr),
@@ -107,10 +111,11 @@ namespace book
         
     }
 
-    void GameMenu::init(int gold)
+    void GameMenu::init(Level* level,int gold)
     {
-
         clear();
+
+        _level = level;
 
         unBuild();
         unSelect();
@@ -132,8 +137,8 @@ namespace book
         {
             case Status::Selecting :
             {
-                Entity* entity = nullptr;
-                if(_level and (entity = _level->entityManager().getPtr(_entityId)) != nullptr )
+                Entity* entity = _level->entityManager().getPtr(_entityId);
+                if(entity != nullptr )
                 {
                     _spriteInfo.update(deltaTime);
 
@@ -151,9 +156,9 @@ namespace book
             }break;
             case Status::Building :
             {
-                /*if(_makeAs != nullptr)
+                if(_makeAs != -1)
                 {
-                    if(_gold_cost <= _team._gold)
+                    if(_gold_cost <= _goldAmount)
                     {
                         _spriteBuild.setColor(sf::Color::White);
                     }
@@ -162,9 +167,7 @@ namespace book
                         _spriteBuild.setColor(sf::Color::Red);
                     }
                     _spriteBuild.update(deltaTime);
-                }*/
-        //IdCreateEntity
-        //IdDestroyEntity
+                }
             }break;
             default: break;
         }
@@ -185,7 +188,7 @@ namespace book
                 case Building :
                 {
                     res = _buildBar.processEvent(event);
-                    /*if(_makeAs != nullptr)
+                    if(_makeAs != -1)
                     {
                         if(event.type == sf::Event::MouseMoved)
                         {
@@ -196,19 +199,21 @@ namespace book
                         }
                         else if(event.type == sf::Event::MouseButtonPressed )
                         {
-                            sf::Vector2i mouse = sf::Vector2i(event.mouseButton.x,event.mouseButton.y);
-                            sf::Vector2i coord = _level->mapScreenToCoords(mouse);
-                            if(_makeAs != nullptr and _level != nullptr and _gold_cost <= _team._gold)
+                            if(_makeAs != -1 and _level != nullptr and _gold_cost <= _goldAmount)
                             {
                                 size_t size = _highlight.size();
                                 for(size_t i=0;i<size;++i)
                                 {
+                                    sf::Vector2i mouse = sf::Vector2i(event.mouseButton.x,event.mouseButton.y);
+                                    sf::Vector2i coord = _level->mapScreenToCoords(mouse);
                                     sf::Vector2i shapeCoord = _level->mapPixelToCoords(_highlight[i]->getPosition());
+
                                     if(coord == shapeCoord)
                                     {
-                                        Entity& entity = _level->createEntity(coord);
-                                        _makeAs(entity,&_team,*_level);
-                                        _team.addGold(-_gold_cost);
+                                        sf::Packet packet;
+
+                                        packet::RequestCreateEntity request(_makeAs,coord);
+                                        _client.send(packet);
 
                                         setBuild();
                                         break;
@@ -217,7 +222,7 @@ namespace book
 
                             }
                         }
-                    }*/
+                    }
                 }break;
                 default: break;
             }
@@ -272,27 +277,26 @@ namespace book
             case Building :
             {
                 window.draw(_buildBar);
-                /*if(_makeAs != nullptr)
+                if(_makeAs != -1)
                 {
                     window.draw(_spriteBuild);
-                }*/
+                }
 
             }break;
             default: break;
         }
     }
 
-    void GameMenu::setSelected(std::uint32_t id,Level* level)
+    void GameMenu::setSelected(std::uint32_t id)
     {
         if(_status == Status::None or _status == Status::Selecting)
         {
             unSelect();
             unBuild();
 
-            _level = level;
             _entityId = id;
 
-            Entity* entity = level->entityManager().getPtr(id);
+            Entity* entity = _level->entityManager().getPtr(id);
 
             if(entity == nullptr)
                 return;
@@ -384,7 +388,9 @@ namespace book
             button->on_click = [this](const sf::Event&, sfutils::Button& button){
                 if(_status == Status::Selecting)
                 {
-                    //TODO _level->destroyEntity(_entityId);
+                    sf::Packet packet;
+                    packet<<RequestDestroyEntity(_entityId);
+                    _client.send(packet);
                     unSelect();
                 }
             };
@@ -410,7 +416,7 @@ namespace book
         sfutils::VLayout* layout = new sfutils::VLayout;
         _buildBar.setLayout(layout);
 
-        /*for(Info& info : informations)
+        for(EntityType::Info& info : EntityType::informations)
         {//worms egg
             sfutils::SpriteButton* button = new sfutils::SpriteButton(Configuration::textures.get(info.icon_id));
             button->on_click = [this,info](const sf::Event& event,sfutils::Button& button){
@@ -430,7 +436,7 @@ namespace book
                                                       +"\n"+info.description);
             desc->setCharacterSize(18);
             layout->add(desc);
-        }*/
+        }
 
         {
             sfutils::TextButton* close = new sfutils::TextButton("close");
@@ -445,7 +451,6 @@ namespace book
 
     void GameMenu::unSelect()
     {
-        /*_entityManager = nullptr;
         _entityId = 0;
 
         if(_selectionLight and _level)
@@ -453,7 +458,7 @@ namespace book
             auto& layer = _level->getHighlightLayer();
             layer.remove(_selectionLight);
             _selectionLight = nullptr;
-        }*/
+        }
 
         _status = Status::None;
 
@@ -461,7 +466,7 @@ namespace book
 
     void GameMenu::unBuild()
     {
-        /*size_t size = _highlight.size();
+        size_t size = _highlight.size();
         if(size>0 and _level)
         {
             auto& layer = _level->getHighlightLayer();
@@ -470,7 +475,7 @@ namespace book
                 layer.remove(_highlight[i]);
             }
         }
-        _highlight.clear();*/
+        _highlight.clear();
 
         _status = Status::None;
     }
@@ -480,12 +485,9 @@ namespace book
         unSelect();
         unBuild();
 
-        if (_level == nullptr)
-            return;
-
         _status = Status::Building;
         
-        //_makeAs = nullptr;
+        _makeAs = -1;
 
         CompBuildArea::Handle area;
         CompTeam::Handle team;
@@ -553,6 +555,7 @@ namespace book
     void GameMenu::setGold(int amount)
     {
         _labelGold->setText("Gold: "+std::to_string(amount));
+        _goldAmount = amount;
     }
 
 

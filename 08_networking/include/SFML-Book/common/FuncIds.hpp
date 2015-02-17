@@ -54,7 +54,7 @@ namespace book
         struct Info {
             int cost;
             std::string name;
-            unsigned int entityType;
+            unsigned int makeAs;
             int icon_id;
             int animation_id;
             std::string description;

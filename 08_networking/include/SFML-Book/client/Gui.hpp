@@ -36,7 +36,7 @@ namespace book
             ~GameMenu();
 
             void setTeamColor(const sf::Color& color);
-            void init(int gold);
+            void init(Level* level,int gold);
 
             void update(sf::Time deltaTime);
             
@@ -46,7 +46,7 @@ namespace book
 
             void draw(sf::RenderTarget& window);
             
-            void setSelected(std::uint32_t id,Level* level);
+            void setSelected(std::uint32_t id);
 
         private:
             int& _team;
@@ -63,6 +63,9 @@ namespace book
 
             sfutils::Frame _buildBar;
             sfutils::AnimatedSprite _spriteBuild;
+            int _gold_cost;
+
+            int _makeAs;
 
             int _goldCost;
             int _goldAmount;

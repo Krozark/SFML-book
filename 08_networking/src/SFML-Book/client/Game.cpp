@@ -34,7 +34,7 @@ namespace book
                     CompTeam::Handle team = e->component<CompTeam>();
                     if(team->_team->id() == _team)
                     {
-                        _gameMenu.setSelected(id,_level);
+                        _gameMenu.setSelected(id);
                     }
                 }
             }
@@ -193,7 +193,7 @@ namespace book
                                         if(data.team == _team)
                                         {
                                             _gameMenu.setTeamColor(data.color);
-                                            _gameMenu.init(data.gold);
+                                            _gameMenu.init(_level,data.gold);
                                         }
                                     }
 

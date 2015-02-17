@@ -57,6 +57,9 @@ namespace book
             sf::Vector2i mapPixelToCoords(const sf::Vector2f& pos)const;
             sf::Vector2f mapCoordsToPixel(const sf::Vector2i& pos)const;
 
+            sf::Vector2i mapCoordsToScreen(const sf::Vector2i& pos)const;
+            sf::Vector2i mapScreenToCoords(const sf::Vector2i& pos)const;
+
         private:
             friend class Game;
 

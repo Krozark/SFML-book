@@ -327,6 +327,16 @@ namespace book
         return _map->mapCoordsToPixel(pos);
     }
 
+    sf::Vector2i Level::mapCoordsToScreen(const sf::Vector2i& pos)const
+    {
+        return _viewer.mapCoordsToScreen(pos);
+    }
+
+    sf::Vector2i Level::mapScreenToCoords(const sf::Vector2i& pos)const
+    {
+        return _viewer.mapScreenToCoords(pos);
+    }
+
 
     Entity& Level::createEntity(unsigned int id,const sf::Vector2i& coord)
     {
