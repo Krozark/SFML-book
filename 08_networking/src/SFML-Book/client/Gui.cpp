@@ -331,8 +331,15 @@ namespace book
         }
     }
 
+    GameMenu::Status GameMenu::getStatus()const
+    {
+        return _status;
+    }
+
     void GameMenu::initInfoBar()
     {
+        _infoBar.clear();
+
         _infoBar.setSize(sf::Vector2f(0,60));
         _infoBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
 
@@ -372,6 +379,8 @@ namespace book
 
     void GameMenu::initSelectingBar()
     {
+        _selectBar.clear();
+
         _selectBar.setSize(sf::Vector2f(120,300));
         _selectBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
         _selectBar.setPosition(0,60);
@@ -419,6 +428,8 @@ namespace book
 
     void GameMenu::initBuildBar()
     {
+        _buildBar.clear();
+
         _buildBar.setSize(sf::Vector2f(200,600));
         _buildBar.setFillColor(sf::Color(_color.r,_color.g,_color.b,128));
         _buildBar.setPosition(0,60);

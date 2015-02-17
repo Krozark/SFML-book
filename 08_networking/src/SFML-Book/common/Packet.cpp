@@ -24,6 +24,11 @@ namespace book
                     res = new Disconnected();
                     packet>>(*static_cast<Disconnected*>(res));
                 }break;
+                case FuncIds::IdLogOut :
+                {
+                    res = new LogOut();
+                    packet>>(*static_cast<LogOut*>(res));
+                }break;
                 case FuncIds::IdGetListGame :
                 {
                     res = new GetListGame();
@@ -122,6 +127,12 @@ namespace book
         ////////////////////// Disconnected ////////////////////
         
         Disconnected::Disconnected() : NetworkEvent(FuncIds::IdDisconnected)
+        {
+        }
+
+        //////////////////// LogOut /////////////////////////////////
+
+        LogOut::LogOut() : NetworkEvent(FuncIds::IdLogOut)
         {
         }
 

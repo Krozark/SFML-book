@@ -38,6 +38,12 @@ namespace book
                 Disconnected();
         };
 
+        class LogOut : public NetworkEvent
+        {
+            public:
+                LogOut();
+        };
+
         // main menu
         class GetListGame : public NetworkEvent
         {

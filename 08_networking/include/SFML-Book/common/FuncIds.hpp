@@ -11,6 +11,7 @@ namespace book
             //specials
             IdHandler = 0,
             IdDisconnected,
+            IdLogOut,
 
             //main menu
             IdGetListGame, //client

@@ -62,6 +62,9 @@ namespace book
             sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             int getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
 
+            using FuncType = std::function<void(Client*)>;
+            FuncType onLogOut;
+
 
         private:
             bool _isRunning;

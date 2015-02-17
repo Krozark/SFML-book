@@ -349,6 +349,22 @@ namespace book
                 {
                     switch(msg->type())
                     {
+                        case FuncIds::IdDisconnected :
+                        {
+                            it = _clients.erase(it);
+                            --it;
+                            delete client;
+                            client = nullptr;
+                        }break;
+                        case FuncIds::IdLogOut :
+                        {
+                            it = _clients.erase(it);
+                            --it;
+                            client->getTeam()->remove(client);
+                            
+                            onLogOut(client);
+                            client = nullptr;
+                        }break;
                         case FuncIds::IdRequestCreateEntity :
                         {
                             packet::RequestCreateEntity* event = static_cast<packet::RequestCreateEntity*>(msg);
@@ -392,13 +408,6 @@ namespace book
                                     }
                                 }
                             }
-                        }break;
-                        case FuncIds::IdDisconnected :
-                        {
-                            it = _clients.erase(it);
-                            --it;
-                            delete client;
-                            client = nullptr;
                         }break;
                         default : break;
                     }

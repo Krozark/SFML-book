@@ -101,6 +101,9 @@ namespace book
                             {
                                 list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
                             }
+                            _games.back()->onLogOut = [this](Client* client){
+                                _clients.emplace_back(client);
+                            };
                             _games.back()->run();
 
                             response<<list;

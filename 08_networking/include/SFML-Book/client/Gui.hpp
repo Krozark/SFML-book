@@ -31,6 +31,13 @@ namespace book
             GameMenu(const GameMenu&) = delete;
             GameMenu& operator=(const GameMenu&) = delete;
 
+            enum Status {
+                None,
+                Selecting,
+                Building,
+                Exit
+            };
+
             GameMenu(sf::RenderWindow& window,Client& client,int& team);
 
             ~GameMenu();
@@ -47,6 +54,9 @@ namespace book
             void draw(sf::RenderTarget& window);
             
             void setSelected(std::uint32_t id);
+            
+            Status getStatus()const;
+            
 
         private:
             int& _team;
@@ -76,6 +86,8 @@ namespace book
             std::vector<sf::ConvexShape*> _highlight;
             sf::ConvexShape* _selectionLight;
 
+            Status _status;
+
 
             void clear();
 
@@ -83,12 +95,6 @@ namespace book
             void initSelectingBar();
             void initBuildBar();
 
-            enum Status {
-                None,
-                Selecting,
-                Building,
-                Exit
-            } _status;
 
             void unSelect();
             void unBuild();

@@ -20,7 +20,8 @@ namespace book
         _status(Status::StatusMainMenu),
         _mainMenu(_window,_client),
         _gameMenu(_window,_client,_team),
-        _level(nullptr)
+        _level(nullptr),
+        _team(-1)
     {
         _window.setMouseCursorVisible(false);        
 
@@ -238,11 +239,25 @@ namespace book
         {
             case Status::StatusMainMenu :
             {
+
             }break;
             case Status::StatusInGame :
             {
                 _gameMenu.update(deltaTime);
                 _level->update(deltaTime);
+
+                if(_gameMenu.getStatus() == GameMenu::Exit)
+                {
+                    _status = StatusMainMenu;
+                    delete _level;
+                    _level = nullptr;
+                    _team = -1;
+
+                    sf::Packet packet;
+                    packet<<packet::LogOut();
+
+                    _client.send(packet);
+                }
 
             }break;
             case Status::StatusDisconnected :

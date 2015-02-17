@@ -102,12 +102,12 @@ namespace book
 
     void Level::update(sf::Time deltaTime)
     {
-        _viewer.update(deltaTime.asSeconds());
         Application::update(deltaTime);
         _entities_layer->sort();
 
         sf::Vector2f pos = _viewer.getPosition();
         sf::Listener::setPosition(pos.x,pos.y,0);
+        _viewer.update(deltaTime.asSeconds());
 
         auto begin = _effects.begin();
         while(begin != _effects.end())
@@ -303,7 +303,7 @@ namespace book
 
         effect->setPosition(_map->mapCoordsToPixel(coord));
 
-        _entities_layer->add(effect);
+        _entities_layer->add(effect,false);
         _effects.emplace_back(effect);
     }
 
@@ -346,7 +346,7 @@ namespace book
         e.add<CompSkin>();
         e.setPosition(_map->mapCoordsToPixel(coord));
 
-        _entities_layer->add(&e);
+        _entities_layer->add(&e,false);
         _byCoords[coord].emplace_back(&e);
 
         return e;
