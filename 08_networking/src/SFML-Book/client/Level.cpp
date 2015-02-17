@@ -81,7 +81,7 @@ namespace book
 
              std::time(&rawtime);
              timeinfo = std::localtime(&rawtime);
-             std::strftime (buffer,128,"screen/%F_%T.png",timeinfo);
+             std::strftime (buffer,128,"screen/%F_%H-%M-%S.png",timeinfo);
              screen.saveToFile(std::string(buffer));
          });
         
