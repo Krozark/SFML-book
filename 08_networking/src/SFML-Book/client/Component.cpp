@@ -18,35 +18,35 @@ namespace book
     {
         float width = _width*_maxHp;
 
-        _shape_max_hp.setFillColor(sf::Color::Red);
-        _shape_max_hp.setOutlineThickness(1);
-        _shape_max_hp.setOutlineColor(sf::Color::Black);
+        _shapeMaxHp.setFillColor(sf::Color::Red);
+        _shapeMaxHp.setOutlineThickness(1);
+        _shapeMaxHp.setOutlineColor(sf::Color::Black);
 
-        _shape_max_hp.setSize(sf::Vector2f(width,_height));
-        _shape_max_hp.setOrigin(width/2,_height/2);
+        _shapeMaxHp.setSize(sf::Vector2f(width,_height));
+        _shapeMaxHp.setOrigin(width/2,_height/2);
 
-        _shape_hp.setFillColor(sf::Color::Green);
-        _shape_hp.setOutlineThickness(1);
-        _shape_hp.setOutlineColor(sf::Color::Black);
+        _shapeHp.setFillColor(sf::Color::Green);
+        _shapeHp.setOutlineThickness(1);
+        _shapeHp.setOutlineColor(sf::Color::Black);
 
-        _shape_hp.setSize(sf::Vector2f(width,_height));
-        _shape_hp.setOrigin(width/2,_height/2);
+        _shapeHp.setSize(sf::Vector2f(width,_height));
+        _shapeHp.setOrigin(width/2,_height/2);
 
     }
 
     void CompHp::update(const sf::Vector2f& pos)
     {
         float width = _width*_hp;
-        _shape_hp.setSize(sf::Vector2f(width,_height));
-        _shape_hp.setPosition(pos.x,pos.y-50);
+        _shapeHp.setSize(sf::Vector2f(width,_height));
+        _shapeHp.setPosition(pos.x,pos.y-50);
 
-        _shape_max_hp.setPosition(pos.x,pos.y-50);
+        _shapeMaxHp.setPosition(pos.x,pos.y-50);
     }
 
     void CompHp::draw(sf::RenderTarget& target,sf::RenderStates states)
     {
-        target.draw(_shape_max_hp,states);
-        target.draw(_shape_hp,states);
+        target.draw(_shapeMaxHp,states);
+        target.draw(_shapeHp,states);
     }
 
     CompBuildArea::CompBuildArea(int range) : _range(range)

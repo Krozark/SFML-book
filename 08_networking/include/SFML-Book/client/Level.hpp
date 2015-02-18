@@ -72,8 +72,8 @@ namespace book
             std::unordered_map<sf::Vector2i,std::list<Entity*>> _byCoords;
 
             sf::ConvexShape* _mouse_light;
-            sfutils::Layer<sf::ConvexShape>* _mouse_layer;
-            sfutils::Layer<MapComponent*>* _entities_layer;
+            sfutils::Layer<sf::ConvexShape>* _mouseLayer;
+            sfutils::Layer<MapComponent*>* _entitiesLayer;
             std::list<Effect*> _effects;
 
             std::list<std::unique_ptr<sf::Sound>> _sounds;

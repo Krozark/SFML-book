@@ -21,12 +21,12 @@ namespace book
     
     TeamGui::TeamGui(Team& team,sf::RenderWindow& window,const sf::Color& color) :
     _team(team),
-    _infoBar(window,Configuration::gui_inputs),
+    _infoBar(window,Configuration::guiInputs),
     _labelGold(nullptr),
-    _selectBar(window,Configuration::gui_inputs),
+    _selectBar(window,Configuration::guiInputs),
     _entityName(nullptr),
     _entityHp(nullptr),
-    _buildBar(window,Configuration::gui_inputs),
+    _buildBar(window,Configuration::guiInputs),
     _gold_cost(0),
     _makeAs(nullptr),
     _entityId(0),

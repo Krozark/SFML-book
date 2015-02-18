@@ -8,8 +8,8 @@ namespace book
     sfutils::ResourceManager<sf::Texture,int> Configuration::textures;
     sfutils::ResourceManager<sfutils::Animation,int> Configuration::animations;
     sfutils::ResourceManager<sf::SoundBuffer,int> Configuration::sounds;
-    sfutils::ActionMap<int> Configuration::gui_inputs;
-    sfutils::ActionMap<int> Configuration::map_inputs;
+    sfutils::ActionMap<int> Configuration::guiInputs;
+    sfutils::ActionMap<int> Configuration::mapInputs;
 
 
     void Configuration::initialize()
@@ -97,7 +97,7 @@ namespace book
 
     void Configuration::initInputs()
     {
-        gui_inputs.map(GuiInputs::Escape,sfutils::Action(sf::Keyboard::Escape,sfutils::Action::Type::Pressed));
+        guiInputs.map(GuiInputs::Escape,sfutils::Action(sf::Keyboard::Escape,sfutils::Action::Type::Pressed));
     }
 
     void Configuration::initSounds()
@@ -126,11 +126,11 @@ namespace book
 
     void Configuration::initEvents()
     {
-        map_inputs.map(MapInputs::MoveUp,sfutils::Action(sf::Keyboard::Up));
-        map_inputs.map(MapInputs::MoveDown,sfutils::Action(sf::Keyboard::Down));
-        map_inputs.map(MapInputs::MoveLeft,sfutils::Action(sf::Keyboard::Left));
-        map_inputs.map(MapInputs::MoveRight,sfutils::Action(sf::Keyboard::Right));
-        map_inputs.map(MapInputs::TakeScreen,sfutils::Action(sf::Keyboard::F1,sfutils::Action::Released));
+        mapInputs.map(MapInputs::MoveUp,sfutils::Action(sf::Keyboard::Up));
+        mapInputs.map(MapInputs::MoveDown,sfutils::Action(sf::Keyboard::Down));
+        mapInputs.map(MapInputs::MoveLeft,sfutils::Action(sf::Keyboard::Left));
+        mapInputs.map(MapInputs::MoveRight,sfutils::Action(sf::Keyboard::Right));
+        mapInputs.map(MapInputs::TakeScreen,sfutils::Action(sf::Keyboard::F1,sfutils::Action::Released));
     }
 
 }

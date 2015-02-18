@@ -20,7 +20,7 @@ struct cmpVector2i
 
 namespace book
 {
-    MainMenu::MainMenu(sf::RenderWindow& window,Client& client) : sfutils::Frame(window,Configuration::gui_inputs), _client(client)
+    MainMenu::MainMenu(sf::RenderWindow& window,Client& client) : sfutils::Frame(window,Configuration::guiInputs), _client(client)
     {
         setLayout(new sfutils::VLayout);
     }
@@ -81,12 +81,12 @@ namespace book
     GameMenu::GameMenu(sf::RenderWindow& window,Client& client,int& team) : 
         _team(team),
         _client(client),
-        _infoBar(window,Configuration::gui_inputs),
+        _infoBar(window,Configuration::guiInputs),
         _labelGold(nullptr),
-        _selectBar(window,Configuration::gui_inputs),
+        _selectBar(window,Configuration::guiInputs),
         _entityName(nullptr),
         _entityHp(nullptr),
-        _buildBar(window,Configuration::gui_inputs),
+        _buildBar(window,Configuration::guiInputs),
         _gold_cost(0),
         _makeAs(-1),
         _entityId(0),

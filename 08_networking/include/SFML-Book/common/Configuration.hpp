@@ -81,7 +81,7 @@ namespace book
             enum GuiInputs : int {
                 Escape
             };
-            static sfutils::ActionMap<int> gui_inputs;
+            static sfutils::ActionMap<int> guiInputs;
 
             enum MapInputs {
                 MoveUp,
@@ -91,7 +91,7 @@ namespace book
                 TakeScreen,
             };
 
-            static sfutils::ActionMap<int> map_inputs;
+            static sfutils::ActionMap<int> mapInputs;
 
 
 

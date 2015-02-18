@@ -14,9 +14,9 @@ namespace book
     Level::Level(sf::RenderWindow& window,const std::string& filename) : 
         onPickup(defaultFunc),
         _map(sfutils::VMap::createMapFromFile(filename)),
-        _viewer(window,*_map,Configuration::map_inputs),
-        _mouse_layer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1)),
-        _entities_layer(new sfutils::Layer<Entity*>("Entity",2))
+        _viewer(window,*_map,Configuration::mapInputs),
+        _mouseLayer(new sfutils::Layer<sf::ConvexShape>("ConvexShape",1)),
+        _entitiesLayer(new sfutils::Layer<Entity*>("Entity",2))
     {
         //Map
         if(_map == nullptr)
@@ -27,11 +27,11 @@ namespace book
 
 
         {
-            _mouse_light = _mouse_layer->add(_map->getShape());
+            _mouse_light = _mouseLayer->add(_map->getShape());
             _mouse_light->setFillColor(sf::Color(255,255,255,64));
-            _map->add(_mouse_layer);
+            _map->add(_mouseLayer);
         }
-        _map->add(_entities_layer);
+        _map->add(_entitiesLayer);
 
         //Viewer
         _viewer.bind(Configuration::MapInputs::TakeScreen,[&window](const sf::Event& event){
@@ -62,7 +62,7 @@ namespace book
     }
     Level::~Level()
     {
-        entites.reset();
+        entities.reset();
         delete _map;
     }
 
@@ -70,7 +70,7 @@ namespace book
     {
         _viewer.update(deltaTime.asSeconds());
         Application::update(deltaTime);
-        _entities_layer->sort();
+        _entitiesLayer->sort();
 
         sf::Vector2f pos = _viewer.getPosition();
 
@@ -99,7 +99,7 @@ namespace book
                 std::list<Entity*> pick = getByCoords(coord);
                 for(Entity* e : pick)
                 {
-                    Param p(coord,*e,*_entities_layer,*_map);
+                    Param p(coord,*e,*_entitiesLayer,*_map);
                     onPickup(p);
                 }
 
@@ -126,12 +126,12 @@ namespace book
 
     sfutils::EntityManager<Entity>& Level::entityManager()
     {
-        return entites;
+        return entities;
     }
 
     sfutils::Layer<sf::ConvexShape>& Level::getHighlightLayer()const
     {
-        return *_mouse_layer;
+        return *_mouseLayer;
     }
 
     const sf::ConvexShape Level::getShape()const
@@ -141,13 +141,13 @@ namespace book
 
     Entity& Level::createEntity(const sf::Vector2i& coord)
     {
-        std::uint32_t id = entites.create();
-        Entity& e = entites.get(id);
+        std::uint32_t id = entities.create();
+        Entity& e = entities.get(id);
 
         e.add<CompSkin>();
         e.setPosition(_map->mapCoordsToPixel(coord));
 
-        _entities_layer->add(&e);
+        _entitiesLayer->add(&e);
         _byCoords[coord].emplace_back(&e);
 
         return e;
@@ -155,19 +155,19 @@ namespace book
 
     void Level::destroyEntity(std::uint32_t id)
     {
-        const sf::Vector2i coord = mapPixelToCoords(entites.getComponent<CompSkin>(id)->_sprite.getPosition());
-        Entity& e = entites.get(id);
+        const sf::Vector2i coord = mapPixelToCoords(entities.getComponent<CompSkin>(id)->_sprite.getPosition());
+        Entity& e = entities.get(id);
 
-        _entities_layer->remove(&e,false);
+        _entitiesLayer->remove(&e,false);
         _byCoords[coord].remove(&e);
         e.remove();
     }
 
     void Level::destroyEntity(Entity& e)
     {
-        const sf::Vector2i coord = mapPixelToCoords(entites.getComponent<CompSkin>(e.id())->_sprite.getPosition());
+        const sf::Vector2i coord = mapPixelToCoords(entities.getComponent<CompSkin>(e.id())->_sprite.getPosition());
 
-        _entities_layer->remove(&e,false);
+        _entitiesLayer->remove(&e,false);
 
         _byCoords[coord].remove(&e);
         e.remove();

@@ -54,8 +54,8 @@ namespace book
 
         void draw(sf::RenderTarget& target,sf::RenderStates states);
 
-        sf::RectangleShape _shape_hp;
-        sf::RectangleShape _shape_max_hp;
+        sf::RectangleShape _shapeHp;
+        sf::RectangleShape _shapeMaxHp;
 
         int _hp;
         const int _maxHp;
