@@ -10,14 +10,14 @@ namespace book
 Board::Board(int columns,int lines,int cell_x,int cell_y):
     _columns(columns),
     _lines(lines),
-    _cell_x(cell_x),
-    _cell_y(cell_y),
-    _is_game_over(false),
-    _grid_content(nullptr)
+    _cellX(cell_x),
+    _cellY(cell_y),
+    _isGameOver(false),
+    _gridContent(nullptr)
 {
     //build the grid content and set it to empty(0)
-    _grid_content = new int[_lines*_columns];
-    std::memset(_grid_content,CELL_EMPTY,_lines*_columns*sizeof(int));
+    _gridContent = new int[_lines*_columns];
+    std::memset(_gridContent,CELL_EMPTY,_lines*_columns*sizeof(int));
 
     //make the grid color
     sf::Color grid_color(55,55,55);
@@ -25,16 +25,16 @@ Board::Board(int columns,int lines,int cell_x,int cell_y):
     _grid = sf::VertexArray(sf::Lines,(_lines+1+_columns+1)*2);
     for(int i=0;i<=_lines;++i)
     {
-        _grid[i*2] = sf::Vertex(sf::Vector2f(0,i*_cell_y));
-        _grid[i*2+1] = sf::Vertex(sf::Vector2f(_columns*_cell_x,i*_cell_y));
+        _grid[i*2] = sf::Vertex(sf::Vector2f(0,i*_cellY));
+        _grid[i*2+1] = sf::Vertex(sf::Vector2f(_columns*_cellX,i*_cellY));
 
         _grid[i*2].color = grid_color;
         _grid[i*2+1].color = grid_color;
     }
     for(int i=0;i<=columns;++i)
     {
-        _grid[(_lines+1)*2 + i*2] = sf::Vertex(sf::Vector2f(i*_cell_x,0));
-        _grid[(_lines+1)*2 + i*2+1] = sf::Vertex(sf::Vector2f(i*_cell_x,_lines*_cell_y));
+        _grid[(_lines+1)*2 + i*2] = sf::Vertex(sf::Vector2f(i*_cellX,0));
+        _grid[(_lines+1)*2 + i*2+1] = sf::Vertex(sf::Vector2f(i*_cellX,_lines*_cellY));
 
         _grid[(_lines+1)*2 + i*2].color = grid_color;
         _grid[(_lines+1)*2 + i*2+1].color = grid_color;
@@ -43,7 +43,7 @@ Board::Board(int columns,int lines,int cell_x,int cell_y):
 
 Board::~Board()
 {
-    delete _grid_content;
+    delete _gridContent;
 }
 
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -55,11 +55,11 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
     for(int y=0; y<_lines; ++y)
         for(int x=0; x<_columns; ++x)
         {
-            if(_grid_content[y*_columns + x] != CELL_EMPTY)
+            if(_gridContent[y*_columns + x] != CELL_EMPTY)
             {
-                sf::RectangleShape rectangle(sf::Vector2f(_cell_x,_cell_y));
-                rectangle.setFillColor(Piece::Tetrimino_colors[_grid_content[y*_columns + x]]);
-                rectangle.setPosition(x*_cell_x,y*_cell_y);
+                sf::RectangleShape rectangle(sf::Vector2f(_cellX,_cellY));
+                rectangle.setFillColor(Piece::Tetrimino_colors[_gridContent[y*_columns + x]]);
+                rectangle.setPosition(x*_cellX,y*_cellY);
                 target.draw(rectangle,states);
             }
         }
@@ -75,9 +75,9 @@ void Board::spawn(Piece& piece)
     //add it in the grid
     clear(piece);
     for(int x=0;x<_columns;++x)
-        if(_grid_content[x] != CELL_EMPTY)
+        if(_gridContent[x] != CELL_EMPTY)
         {
-            _is_game_over = true;
+            _isGameOver = true;
             break;
         }
     draw(piece);
@@ -165,7 +165,7 @@ bool Board::rotateRight(Piece& piece)
 
 bool Board::isGameOver()
 {
-    return _is_game_over;
+    return _isGameOver;
 }
 
 bool Board::rotate(Piece& piece,int rotation)
@@ -240,7 +240,7 @@ void Board::flood(int grid_x,int grid_y,int piece_x,int piece_y,Piece::Tetrimino
     visited[piece_y][piece_x] = true;
 
     //add the value to the grid
-    _grid_content[grid_y*_columns + grid_x] = value;
+    _gridContent[grid_y*_columns + grid_x] = value;
 
     //recursiv call for each square around : 4 directions
     flood(grid_x, grid_y-1, piece_x, piece_y-1, type, rotation, visited, value);
@@ -264,7 +264,7 @@ void Board::flood(int grid_x,int grid_y,int piece_x,int piece_y,Piece::Tetrimino
     //collision tests
     if(grid_x < 0 or grid_x >= (int)_columns
        or grid_y < 0 or grid_y >= (int)_lines
-       or _grid_content[grid_y*_columns + grid_x] != CELL_EMPTY)
+       or _gridContent[grid_y*_columns + grid_x] != CELL_EMPTY)
     {
         flag = false;
         return;
@@ -284,7 +284,7 @@ void Board::clearLine(int yy)
 
     for(int y=yy; y>0; --y)
         for(int x=0; x<_columns; ++x)
-            _grid_content[y*_columns + x] = _grid_content[(y-1)*_columns + x];
+            _gridContent[y*_columns + x] = _gridContent[(y-1)*_columns + x];
 
 }
 
@@ -299,7 +299,7 @@ int Board::clearLines(const Piece& piece)
     {
         //for each cell
         int x =0;
-        for(;_grid_content[y*_columns + x] != CELL_EMPTY and x<_columns; ++x);
+        for(;_gridContent[y*_columns + x] != CELL_EMPTY and x<_columns; ++x);
         //if the line is complete
         if(x == _columns)
         {

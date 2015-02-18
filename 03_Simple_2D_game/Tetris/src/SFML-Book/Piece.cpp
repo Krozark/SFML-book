@@ -199,7 +199,7 @@ const char Piece::Tetrimino_Pieces[Piece::Tetrimino_Types::SIZE][Piece::NB_ROTAT
     }
 };
 
-Piece::Piece(Tetrimino_Types type,short int rotation) : _type(type), _rotation(rotation), _position_x(0), _position_y(0)
+Piece::Piece(Tetrimino_Types type,short int rotation) : _type(type), _rotation(rotation), _positionX(0), _positionY(0)
 {
     assert(rotation >= 0 and rotation < NB_ROTATIONS);
 }
@@ -225,8 +225,8 @@ short int Piece::getRotation()const
 
 void Piece::setPosition(int x,int y)
 {
-    _position_x = x;
-    _position_y = y;
+    _positionX = x;
+    _positionY = y;
 
     //restart clock
     _clockSinceLastMove.restart();
@@ -234,12 +234,12 @@ void Piece::setPosition(int x,int y)
 
 int Piece::getPosX()const
 {
-    return _position_x;
+    return _positionX;
 }
 
 int Piece::getPosY()const
 {
-    return _position_y;
+    return _positionY;
 }
 
 sf::Time Piece::getTimeSinceLastMove()const

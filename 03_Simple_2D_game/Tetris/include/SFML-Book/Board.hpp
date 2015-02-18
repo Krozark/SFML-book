@@ -20,11 +20,11 @@ namespace book
 
             static const int DEFAULT_BOARD_COLUMNS = 10; //< default colums number
             static const int DEFAULT_BOARD_LINE = 20;//< default line number
-            static const int DEFAULT_CELL_X = 24;
-            static const int DEFAULT_CELL_Y = 24;
+            static const int DEFAULT_cellX = 24;
+            static const int DEFAULT_cellY = 24;
 
 
-            Board(int columns=DEFAULT_BOARD_COLUMNS,int line=DEFAULT_BOARD_LINE,int cell_x=DEFAULT_CELL_X,int cell_y=DEFAULT_CELL_Y);
+            Board(int columns=DEFAULT_BOARD_COLUMNS,int line=DEFAULT_BOARD_LINE,int cell_x=DEFAULT_cellX,int cell_y=DEFAULT_cellY);
 
             ~Board();
 
@@ -56,13 +56,13 @@ namespace book
 
             const int _columns;
             const int _lines;
-            const int _cell_x;
-            const int _cell_y;
+            const int _cellX;
+            const int _cellY;
 
-            bool _is_game_over;
+            bool _isGameOver;
 
             sf::VertexArray _grid;//< grid borders
-            int* _grid_content;//< lines * columns
+            int* _gridContent;//< lines * columns
     };
 }
 #endif

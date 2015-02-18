@@ -53,8 +53,8 @@ namespace book
             const Tetrimino_Types _type; //< the piece type
             short int _rotation; //< the piece rotaton
 
-            int _position_x; //< position in the board
-            int _position_y;//< position in the board
+            int _positionX; //< position in the board
+            int _positionY;//< position in the board
             
             sf::Clock _clockSinceLastMove;
     };

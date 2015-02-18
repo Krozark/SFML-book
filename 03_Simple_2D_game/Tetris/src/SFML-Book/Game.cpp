@@ -64,32 +64,32 @@ void Game::processEvents()
             }
             else if (event.key.code == sf::Keyboard::Down)
             {
-                _board.move(*_current_piece,0,1);
+                _board.move(*_currentPiece,0,1);
             }
             else if (event.key.code == sf::Keyboard::Up)
             {
-                _board.move(*_current_piece,0,-1);
+                _board.move(*_currentPiece,0,-1);
             }
             else if (event.key.code == sf::Keyboard::Left)
             {
-                _board.move(*_current_piece,-1,0);
+                _board.move(*_currentPiece,-1,0);
             }
             else if (event.key.code == sf::Keyboard::Right)
             {
-                _board.move(*_current_piece,1,0);
+                _board.move(*_currentPiece,1,0);
             }
             else if (event.key.code == sf::Keyboard::Space)
             {
-                _board.drop(*_current_piece);
+                _board.drop(*_currentPiece);
                 newPiece();
             }
             else if (event.key.code == sf::Keyboard::S)
             {
-                _board.rotateRight(*_current_piece);
+                _board.rotateRight(*_currentPiece);
             }
             else if (event.key.code == sf::Keyboard::D)
             {
-                _board.rotateLeft(*_current_piece);
+                _board.rotateLeft(*_currentPiece);
             }
         }
     }
@@ -100,15 +100,15 @@ void Game::update(sf::Time deltaTime)
     //update stats
     if(not _board.isGameOver())
     {
-        _stats.addLines(_board.clearLines(*_current_piece));
-        next_fall += deltaTime;
-        if((not _board.isFallen(*_current_piece)) and  (_current_piece->getTimeSinceLastMove() > sf::seconds(1.f)))
+        _stats.addLines(_board.clearLines(*_currentPiece));
+        _nextFall += deltaTime;
+        if((not _board.isFallen(*_currentPiece)) and  (_currentPiece->getTimeSinceLastMove() > sf::seconds(1.f)))
             newPiece();
         sf::Time max_time = sf::seconds(std::max(0.1,0.6-0.005*_stats.getLvl()));
-        while(next_fall > max_time)
+        while(_nextFall > max_time)
         {
-            next_fall -= max_time;
-            _board.move(*_current_piece,0,1);
+            _nextFall -= max_time;
+            _board.move(*_currentPiece,0,1);
         } 
     }
     else
@@ -134,7 +134,7 @@ void Game::render()
 
 void Game::newPiece()
 {
-    _current_piece.reset(new Piece((Piece::Tetrimino_Types)random(0,Piece::Tetrimino_Types::SIZE-1),0));
-    _board.spawn(*_current_piece);
+    _currentPiece.reset(new Piece((Piece::Tetrimino_Types)random(0,Piece::Tetrimino_Types::SIZE-1),0));
+    _board.spawn(*_currentPiece);
 }
 }

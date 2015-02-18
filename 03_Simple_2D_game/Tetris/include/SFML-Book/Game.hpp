@@ -29,10 +29,10 @@ namespace book
             void newPiece();
 
             sf::RenderWindow _window; //< the window use to display the game
-            std::unique_ptr<Piece> _current_piece; //< the current piece
+            std::unique_ptr<Piece> _currentPiece; //< the current piece
             Board _board; //< the game board
             Stats _stats; //< stats printer
-            sf::Time next_fall;
+            sf::Time _nextFall;
 
     };
 }
