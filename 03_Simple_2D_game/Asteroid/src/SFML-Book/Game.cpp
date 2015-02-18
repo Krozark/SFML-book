@@ -105,12 +105,12 @@ namespace book
                 Configuration::player->setPosition(_world.getX()/2,_world.getY()/2);
                 _world.add(Configuration::player);
             }
-            _next_saucer -= deltaTime;
+            _nextSaucer -= deltaTime;
 
-            if(_next_saucer < sf::Time::Zero)
+            if(_nextSaucer < sf::Time::Zero)
             {
                 Saucer::newSaucer(_world);
-                _next_saucer = sf::seconds(book::random(5.f,60.f - Configuration::level*2));
+                _nextSaucer = sf::seconds(book::random(5.f,60.f - Configuration::level*2));
             }
 
             if(_world.size() <= 1)
@@ -144,7 +144,7 @@ namespace book
 
     void Game::reset()
     {
-        _next_saucer = sf::seconds(book::random(5.f,6.f - Configuration::level*2));
+        _nextSaucer = sf::seconds(book::random(5.f,6.f - Configuration::level*2));
         _world.clear();
         Configuration::player = nullptr;
         Configuration::reset();

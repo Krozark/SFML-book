@@ -10,12 +10,12 @@
 namespace book
 {
     Player::Player(World& world) : Entity(Configuration::Textures::Player,world)
-                       ,ActionTarget(Configuration::player_inputs)
-                       ,_is_moving(false)
+                       ,ActionTarget(Configuration::playerInputs)
+                       ,_isMoving(false)
                        ,_rotation(0)
     {
         bind(Configuration::PlayerInputs::Up,[this](const sf::Event&){
-             _is_moving = true;
+             _isMoving = true;
         });
 
         bind(Configuration::PlayerInputs::Left,[this](const sf::Event&){
@@ -46,10 +46,10 @@ namespace book
 
     void Player::shoot()
     {
-        if(_time_since_last_shoot > sf::seconds(0.3))
+        if(_timeSinceLastShoot > sf::seconds(0.3))
         {
             _world.add(new ShootPlayer(*this));
-            _time_since_last_shoot = sf::Time::Zero;
+            _timeSinceLastShoot = sf::Time::Zero;
         }
     }
 
@@ -71,7 +71,7 @@ namespace book
 
     void Player::processEvents()
     {
-        _is_moving = false;
+        _isMoving = false;
         _rotation = 0;
         ActionTarget::processEvents();
     }
@@ -80,7 +80,7 @@ namespace book
     {
         float seconds = deltaTime.asSeconds();
 
-        _time_since_last_shoot += deltaTime;
+        _timeSinceLastShoot += deltaTime;
 
         if(_rotation != 0)
         {
@@ -88,7 +88,7 @@ namespace book
             _sprite.rotate(angle);
         }
         
-        if(_is_moving)
+        if(_isMoving)
         { 
             float angle = _sprite.getRotation() / 180 * M_PI - M_PI / 2;
             _impulse += sf::Vector2f(std::cos(angle),std::sin(angle)) * 300.f * seconds;

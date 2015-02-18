@@ -8,7 +8,7 @@ namespace book
     ResourceManager<sf::SoundBuffer,int> Configuration::sounds;
     ResourceManager<sf::Music,int> Configuration::musics;
 
-    ActionMap<int> Configuration::player_inputs;
+    ActionMap<int> Configuration::playerInputs;
     int Configuration::level;
     int Configuration::lives;
 
@@ -133,10 +133,10 @@ namespace book
 
     void Configuration::initPlayerInputs()
     {
-        player_inputs.map(PlayerInputs::Up,Action(sf::Keyboard::Up));
-        player_inputs.map(PlayerInputs::Right,Action(sf::Keyboard::Right));
-        player_inputs.map(PlayerInputs::Left,Action(sf::Keyboard::Left));
-        player_inputs.map(PlayerInputs::Hyperspace,Action(sf::Keyboard::Down,Action::Type::Released));
-        player_inputs.map(PlayerInputs::Shoot,Action(sf::Keyboard::Space));
+        playerInputs.map(PlayerInputs::Up,Action(sf::Keyboard::Up));
+        playerInputs.map(PlayerInputs::Right,Action(sf::Keyboard::Right));
+        playerInputs.map(PlayerInputs::Left,Action(sf::Keyboard::Left));
+        playerInputs.map(PlayerInputs::Hyperspace,Action(sf::Keyboard::Down,Action::Type::Released));
+        playerInputs.map(PlayerInputs::Shoot,Action(sf::Keyboard::Space));
     }
 }

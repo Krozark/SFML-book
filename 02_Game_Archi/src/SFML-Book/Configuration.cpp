@@ -3,7 +3,7 @@
 namespace book
 {
     ResourceManager<sf::Texture,int> Configuration::textures;
-    ActionMap<int> Configuration::player_inputs;
+    ActionMap<int> Configuration::playerInputs;
 
     void Configuration::initialize()
     {
@@ -18,8 +18,8 @@ namespace book
 
     void Configuration::initPlayerInputs()
     {
-        player_inputs.map(PlayerInputs::Up,Action(sf::Keyboard::Up));
-        player_inputs.map(PlayerInputs::Right,Action(sf::Keyboard::Right));
-        player_inputs.map(PlayerInputs::Left,Action(sf::Keyboard::Left));
+        playerInputs.map(PlayerInputs::Up,Action(sf::Keyboard::Up));
+        playerInputs.map(PlayerInputs::Right,Action(sf::Keyboard::Right));
+        playerInputs.map(PlayerInputs::Left,Action(sf::Keyboard::Left));
     }
 }

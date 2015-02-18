@@ -37,7 +37,7 @@ namespace book
             virtual void update(sf::Time deltaTime);
 
         private:
-            sf::Time            _time_since_last_shoot;
+            sf::Time            _timeSinceLastShoot;
     };
 
 }

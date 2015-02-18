@@ -27,10 +27,10 @@ namespace book
             void unbind(const T& key);
 
         private:
-            std::list<std::pair<T,FuncType>> _events_real_time;
-            std::list<std::pair<T,FuncType>> _events_poll;
+            std::list<std::pair<T,FuncType>> _eventsRealTime;
+            std::list<std::pair<T,FuncType>> _eventsPoll;
 
-            const ActionMap<T>& _action_map;
+            const ActionMap<T>& _actionMap;
     };
 }
 #include <SFML-Book/ActionTarget.tpl>

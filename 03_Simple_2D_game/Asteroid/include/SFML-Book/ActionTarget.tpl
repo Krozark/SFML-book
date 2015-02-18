@@ -1,7 +1,7 @@
 namespace book
 {
     template<typename T>
-    ActionTarget<T>::ActionTarget(const ActionMap<T>& map) : _action_map(map)
+    ActionTarget<T>::ActionTarget(const ActionMap<T>& map) : _actionMap(map)
     {
     }
 
@@ -9,9 +9,9 @@ namespace book
     bool ActionTarget<T>::processEvent(const sf::Event& event)const
     {
         bool res = false;
-        for(auto& pair : _events_poll)
+        for(auto& pair : _eventsPoll)
         {
-            if(_action_map.get(pair.first) == event)
+            if(_actionMap.get(pair.first) == event)
             {
                 pair.second(event);
                 res = true;
@@ -24,9 +24,9 @@ namespace book
     template<typename T>
     void ActionTarget<T>::processEvents()const
     {
-        for(auto& pair : _events_real_time)
+        for(auto& pair : _eventsRealTime)
         {
-            const Action& action = _action_map.get(pair.first);
+            const Action& action = _actionMap.get(pair.first);
             if(action.test())
                 pair.second(action._event);
         }
@@ -35,11 +35,11 @@ namespace book
     template<typename T>
     void ActionTarget<T>::bind(const T& key,const FuncType& callback)
     {
-        const Action& action = _action_map.get(key);
+        const Action& action = _actionMap.get(key);
         if(action._type & Action::Type::RealTime)
-            _events_real_time.emplace_back(key,callback);
+            _eventsRealTime.emplace_back(key,callback);
         else
-            _events_poll.emplace_back(key,callback);
+            _eventsPoll.emplace_back(key,callback);
     }
 
     template<typename T>
@@ -50,11 +50,11 @@ namespace book
             return pair.first == key;
         };
 
-        const Action& action = _action_map.get(key);
+        const Action& action = _actionMap.get(key);
         if(action._type & Action::Type::RealTime)
-            _events_real_time.remove_if(remove_func);
+            _eventsRealTime.remove_if(remove_func);
         else
-            _events_poll.remove_if(remove_func);
+            _eventsPoll.remove_if(remove_func);
     }
 
 }

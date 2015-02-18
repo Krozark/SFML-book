@@ -65,7 +65,7 @@ namespace book
             };
             static ResourceManager<sf::Music,int> musics;
 
-            static ActionMap<int> player_inputs;
+            static ActionMap<int> playerInputs;
 
             static void initialize();
             static void reset();

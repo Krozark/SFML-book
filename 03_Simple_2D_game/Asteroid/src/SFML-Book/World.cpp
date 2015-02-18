@@ -14,7 +14,7 @@ namespace book
 
     void World::add(Entity* entity)
     {
-        _entities_tmp.push_back(entity);
+        _entitiesTmp.push_back(entity);
     }
 
     void World::clear()
@@ -23,9 +23,9 @@ namespace book
             delete entity;
         _entities.clear();
 
-        for(Entity* entity :_entities_tmp)
+        for(Entity* entity :_entitiesTmp)
             delete entity;
-        _entities_tmp.clear();
+        _entitiesTmp.clear();
 
         _sounds.clear();
     }
@@ -47,7 +47,7 @@ namespace book
     }
     int World::size()
     {
-        return _entities.size() + _entities_tmp.size();
+        return _entities.size() + _entitiesTmp.size();
     }
 
     int World::getX()const
@@ -67,8 +67,8 @@ namespace book
 
     void World::update(sf::Time deltaTime)
     {
-        if(_entities_tmp.size() > 0)
-            _entities.merge(_entities_tmp);
+        if(_entitiesTmp.size() > 0)
+            _entities.merge(_entitiesTmp);
 
         for(Entity* entity_ptr : _entities)
         {

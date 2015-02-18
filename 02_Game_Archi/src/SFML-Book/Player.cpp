@@ -5,7 +5,7 @@
 
 namespace book
 {
-    Player::Player() : ActionTarget(Configuration::player_inputs)
+    Player::Player() : ActionTarget(Configuration::playerInputs)
                        ,_is_moving(false)
                        ,_rotation(0)
     {

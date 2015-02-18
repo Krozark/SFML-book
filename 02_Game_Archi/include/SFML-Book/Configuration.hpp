@@ -19,7 +19,7 @@ namespace book
             static ResourceManager<sf::Texture,int> textures;
 
             enum PlayerInputs : int {Up,Left,Right};
-            static ActionMap<int> player_inputs;
+            static ActionMap<int> playerInputs;
 
             static void initialize();
 

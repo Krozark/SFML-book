@@ -96,7 +96,7 @@ namespace book
 
     SmallSaucer::SmallSaucer(World& world) : Saucer(Configuration::Textures::SmallSaucer,world)
     {        
-        _time_since_last_shoot = sf::Time::Zero;
+        _timeSinceLastShoot = sf::Time::Zero;
         _world.add(Configuration::Sounds::SaucerSpawn2);
         _impulse *= 400.f;
     }
@@ -110,12 +110,12 @@ namespace book
     {
         Saucer::update(deltaTime);
         //shoot on the Configuration::player
-        _time_since_last_shoot += deltaTime;
-        if(_time_since_last_shoot > sf::seconds(1.5))
+        _timeSinceLastShoot += deltaTime;
+        if(_timeSinceLastShoot > sf::seconds(1.5))
         {
             if(Configuration::player != nullptr)
                 _world.add(new ShootSaucer(*this));
-            _time_since_last_shoot = sf::Time::Zero;
+            _timeSinceLastShoot = sf::Time::Zero;
         }
     }
 

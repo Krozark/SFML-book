@@ -27,10 +27,10 @@ namespace book
 
         private:
 
-            bool _is_moving;
+            bool _isMoving;
             int _rotation;
 
-            sf::Time            _time_since_last_shoot;
+            sf::Time            _timeSinceLastShoot;
     };
 }
 #endif

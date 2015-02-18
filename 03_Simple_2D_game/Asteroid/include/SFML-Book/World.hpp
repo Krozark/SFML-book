@@ -39,7 +39,7 @@ namespace book
 
         private:
             std::list<Entity*>  _entities; 
-            std::list<Entity*>  _entities_tmp; 
+            std::list<Entity*>  _entitiesTmp; 
             std::list<std::unique_ptr<sf::Sound>> _sounds;
 
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
