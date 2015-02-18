@@ -4,37 +4,18 @@ set(SRCROOT ${CMAKE_CURRENT_SOURCE_DIR})
 #FILES
 set(FILES_HEADER
 
-    #${INCROOT}/Configuration.hpp
-    #${INCROOT}/Game.hpp
-    #${INCROOT}/Level.hpp
-    #${INCROOT}/Team.hpp
-    #${INCROOT}/TeamGui.hpp
-
-    #${INCROOT}/Entity.hpp
-    #${INCROOT}/Component.hpp
-    #${INCROOT}/System.hpp
-
-    #${INCROOT}/Helpers.hpp
-    #${INCROOT}/random.hpp
-
-    ${INCROOT}/Packet.hpp
+    ${INCROOT}/Configuration.hpp
     ${INCROOT}/Connection.hpp
+    ${INCROOT}/FuncIds.hpp
+    ${INCROOT}/Packet.hpp
+    ${INCROOT}/random.hpp
+    ${INCROOT}/std_hash.hpp
+
 
 )
 
 set(FILES_SRC
-    #${SRCROOT}/Configuration.cpp
-    #${SRCROOT}/Game.cpp
-    #${SRCROOT}/Level.cpp
-    #${SRCROOT}/Team.cpp
-    #${SRCROOT}/TeamGui.cpp
-
-    #${SRCROOT}/Entity.cpp
-    #${SRCROOT}/Component.cpp
-    #${SRCROOT}/System.cpp
-
-    #${SRCROOT}/Helpers.cpp
-
+    ${SRCROOT}/Configuration.cpp
     ${SRCROOT}/Packet.cpp
     ${SRCROOT}/Connection.cpp
 
