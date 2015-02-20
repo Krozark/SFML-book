@@ -49,7 +49,6 @@ namespace book
                 sf::Uint32 port;
                 packet>>port;
                 std::cout<<"Connect to given port ("<<port<<")"<<std::endl;
-                std::cout<<_sockIn.getRemoteAddress()<<std::endl;
                 if(_sockOut.connect(_sockIn.getRemoteAddress(),port,sf::seconds(5)) == sf::Socket::Status::Done)
                 {
                     std::cout<<"All is good"<<std::endl;
