@@ -11,7 +11,7 @@ namespace book
     bool Client::connect(const sf::IpAddress& ip,unsigned short port,sf::Time timeout)
     {
         bool res = false;
-        std::cout<<"Connect to server"<<std::endl;
+        std::cout<<"Connect to server "<<ip<<std::endl;
         sf::TcpListener socketListener;
         if(_sockOut.connect(ip,port,timeout) == sf::Socket::Status::Done)
         {

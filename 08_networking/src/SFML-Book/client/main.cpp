@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     book::Configuration::initialize();
 
 
-    std::cout<<"Client start on port "<<port<<std::endl;
+    std::cout<<"Client start on adresse "<<ip<<":"<<port<<std::endl;
 
     book::Game game;
     if(not game.connect(sf::IpAddress(ip),port,sf::seconds(5)))

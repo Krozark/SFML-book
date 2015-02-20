@@ -97,7 +97,7 @@ namespace book
                     std::list<Entity*> l = _game.getByCoords(myCoord + sf::Vector2i(x,y));
                     for(Entity* e : l)
                     {
-                        if(e and e->has<CompTeam>() and e->has<CompHp>()) //check its team
+                        if(e->has<CompTeam>() and e->has<CompHp>()) //check its team
                         {
                             Team* t = e->component<CompTeam>()->_team;
                             if( isEnemy(teamEnemies,t))
@@ -208,7 +208,7 @@ end_search: //exit nesteed loops
                     std::list<Entity*> l = _game.getByCoords(myCoord + sf::Vector2i(x,y));
                     for(Entity* e : l)
                     {
-                        if(e and e->has<CompTeam>() and e->has<CompHp>()) //check its team
+                        if(e->has<CompTeam>() and e->has<CompHp>()) //check its team
                         {
                             Team* t = e->component<CompTeam>()->_team;
                             if( isEnemy(teamEnemies,t))
