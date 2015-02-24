@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
     std::cout<<"Client start on adresse "<<ip<<":"<<port<<std::endl;
 
-    book::Game game(3680,1080);
+    book::Game game;
     if(not game.connect(sf::IpAddress(ip),port,sf::seconds(5)))
         return 1;
 
