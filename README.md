@@ -5,7 +5,7 @@ The code for the SFML book I write
 
 Chapter 1:
 ----------
-[[https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter1.png | height = 100px]]
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter1.png" alt="Chapter 1" height="200px">
 
 Chapter 2:
 ----------
