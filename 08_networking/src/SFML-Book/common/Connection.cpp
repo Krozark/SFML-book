@@ -46,10 +46,10 @@ namespace book
     {
         bool res = false;
         sf::Lock guard(_receiveMutex);
-        if(_incomming.size() > 0)
+        if(_incoming.size() > 0)
         {
-            std::swap(event,_incomming.front());
-            _incomming.pop();
+            std::swap(event,_incoming.front());
+            _incoming.pop();
             res = true;
         }
         return res;
@@ -100,14 +100,14 @@ namespace book
             if(status == sf::Socket::Done)
             {
                 sf::Lock guard(_receiveMutex);
-                _incomming.emplace(std::move(packet));
+                _incoming.emplace(std::move(packet));
             }
             else if (status == sf::Socket::Disconnected)
             {
                 packet.clear();
                 packet<<packet::Disconnected();
                 sf::Lock guard(_receiveMutex);
-                _incomming.emplace(std::move(packet));
+                _incoming.emplace(std::move(packet));
 
                 stop();
             }

@@ -44,7 +44,7 @@ namespace book
             void _receive();
             sf::Thread _receiveThread;
             sf::Mutex _receiveMutex;
-            std::queue<sf::Packet> _incomming;
+            std::queue<sf::Packet> _incoming;
 
             void _send();
             sf::Thread _sendThread;
