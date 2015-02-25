@@ -5,7 +5,7 @@ The code for the SFML book I write
 
 Chapter 1:
 ----------
-<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter1.png" alt="Chapter 1" height="200px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter1.png" alt="Chapter 1" height="250px">
 
 Chapter 2:
 ----------
@@ -22,8 +22,8 @@ Chapter 4:
 
 Chapter 5:
 ----------
-<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter5a.png" alt="Chapter 5" height="450px">
-<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter5b.png" alt="Chapter 5" height="450px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter5a.png" alt="Chapter 5" height="250px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter5b.png" alt="Chapter 5" height="250px">
 
 Chapter 6:
 ----------
