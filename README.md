@@ -13,12 +13,12 @@ Chapter 2:
 
 Chapter 3:
 ----------
-<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter3a.png" alt="Chapter 3" height="250px">
-<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter3b.png" alt="Chapter 3" height="250px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter3a.png" alt="Chapter 3" height="350px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter3b.png" alt="Chapter 3" height="350px">
 
 Chapter 4:
 ----------
-<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter4.png" alt="Chapter 4" height="250px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter4.png" alt="Chapter 4" height="350px">
 
 Chapter 5:
 ----------
