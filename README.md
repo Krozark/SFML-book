@@ -5,7 +5,7 @@ The code for the SFML book I write
 
 Chapter 1:
 ----------
-![Chapter 1](https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter1.png)
+![Chapter 1](https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter1.png =250x)
 
 Chapter 2:
 ----------
