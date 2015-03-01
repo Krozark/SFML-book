@@ -45,12 +45,12 @@ namespace book
             IdCarnivor,
         };
 
-        enum BuildEntities {
+        /*enum BuildEntities {
             EntityMain,
             EntityWormEgg,
             EntityCarnivor,
             SIZE
-        };
+        };*/
 
         struct Info {
             int cost;
@@ -61,7 +61,7 @@ namespace book
             std::string description;
         };
 
-        static Info informations[SIZE] = {
+        static Info informations[] = {
             {5000, "GQ",IdMain, Configuration::TexBuildMain, Configuration::AnimMainStand,"Main building.\nGenerates gold.\nYou loose the game\nif you don't control\nany one of them."},
             {250, "Worm Egg",IdWormEgg,Configuration::TexBuildWormEgg, Configuration::AnimWormEggStand, "Spawn some worms"},
             {300, "Carnivore",IdCarnivor, Configuration::TexBuildCarnivor, Configuration::AnimCarnivorStand, "Make hight damage"}
