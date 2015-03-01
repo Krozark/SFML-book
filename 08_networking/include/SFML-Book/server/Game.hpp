@@ -104,6 +104,8 @@ namespace book
             std::string _mapFileName;
 
             void processNetworkEvents();
+            void sendUpdates();
+
             void update(sf::Time deltaTime);
 
             void sendToAll(sf::Packet& packet);

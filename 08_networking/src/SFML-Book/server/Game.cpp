@@ -339,81 +339,82 @@ namespace book
 
     void Game::processNetworkEvents()
     {
+        sf::Lock guard(_clientsMutex);
+        for(auto it = _clients.begin(); it != _clients.end();++it)
         {
-            sf::Lock guard(_clientsMutex);
-            for(auto it = _clients.begin(); it != _clients.end();++it)
+            Client* client = *it;
+            packet::NetworkEvent* msg;
+            while(client and client->pollEvent(msg))
             {
-                Client* client = *it;
-                packet::NetworkEvent* msg;
-                while(client and client->pollEvent(msg))
+                switch(msg->type())
                 {
-                    switch(msg->type())
+                    case FuncIds::IdDisconnected :
                     {
-                        case FuncIds::IdDisconnected :
-                        {
-                            it = _clients.erase(it);
-                            --it;
-                            delete client;
-                            client = nullptr;
-                        }break;
-                        case FuncIds::IdLogOut :
-                        {
-                            it = _clients.erase(it);
-                            --it;
-                            client->getTeam()->remove(client);
-                            
-                            onLogOut(client);
-                            client = nullptr;
-                        }break;
-                        case FuncIds::IdRequestCreateEntity :
-                        {
-                            packet::RequestCreateEntity* event = static_cast<packet::RequestCreateEntity*>(msg);
+                        it = _clients.erase(it);
+                        --it;
+                        delete client;
+                        client = nullptr;
+                    }break;
+                    case FuncIds::IdLogOut :
+                    {
+                        it = _clients.erase(it);
+                        --it;
+                        client->getTeam()->remove(client);
+                        
+                        onLogOut(client);
+                        client = nullptr;
+                    }break;
+                    case FuncIds::IdRequestCreateEntity :
+                    {
+                        packet::RequestCreateEntity* event = static_cast<packet::RequestCreateEntity*>(msg);
 
+                        sf::Lock gameGuard(_teamMutex);
+                        short int entityType = event->getType();
+                        int gold = client->getTeam()->getGold();
+                        sf::Vector2i coord = event->getCoord();
+
+
+                        for(EntityType::Info& info : EntityType::informations)
+                        {
+                            if(info.makeAs == entityType
+                               and gold >= info.cost
+                               and _byCoords[coord].size() == 0)
+                            {
+                                MakeAs makeAs = getMakeAs(info.makeAs);
+                                if(makeAs != nullptr)
+                                {
+                                    createEntity(coord,client->getTeam(),makeAs);
+                                    client->getTeam()->addGold(-info.cost);
+                                }
+                            }
+                        }
+                    }break;
+                    case FuncIds::IdRequestDestroyEntity :
+                    {
+                        packet::RequestDestroyEntity* event = static_cast<packet::RequestDestroyEntity*>(msg);
+                        unsigned int id = event->getId();
+
+                        if(entities.isValid(id))
+                        {
                             sf::Lock gameGuard(_teamMutex);
-                            short int entityType = event->getType();
-                            int gold = client->getTeam()->getGold();
-                            sf::Vector2i coord = event->getCoord();
-
-
-                            for(EntityType::Info& info : EntityType::informations)
+                            Entity& e = entities.get(id);
+                            CompTeam::Handle team = entities.getComponent<CompTeam>(id);
+                            if(team.isValid())
                             {
-                                if(info.makeAs == entityType
-                                   and gold >= info.cost
-                                   and _byCoords[coord].size() == 0)
+                                if(team->_team->id() == client->getTeam()->id())
                                 {
-                                    MakeAs makeAs = getMakeAs(info.makeAs);
-                                    if(makeAs != nullptr)
-                                    {
-                                        createEntity(coord,client->getTeam(),makeAs);
-                                        client->getTeam()->addGold(-info.cost);
-                                    }
+                                    destroyEntity(id);
                                 }
                             }
-                        }break;
-                        case FuncIds::IdRequestDestroyEntity :
-                        {
-                            packet::RequestDestroyEntity* event = static_cast<packet::RequestDestroyEntity*>(msg);
-                            unsigned int id = event->getId();
-
-                            if(entities.isValid(id))
-                            {
-                                sf::Lock gameGuard(_teamMutex);
-                                Entity& e = entities.get(id);
-                                CompTeam::Handle team = entities.getComponent<CompTeam>(id);
-                                if(team.isValid())
-                                {
-                                    if(team->_team->id() == client->getTeam()->id())
-                                    {
-                                        destroyEntity(id);
-                                    }
-                                }
-                            }
-                        }break;
-                        default : break;
-                    }
+                        }
+                    }break;
+                    default : break;
                 }
             }
         }
+    }
+    void Game::sendUpdates()
+    {
 
         if(_onHit.size() > 0)
         {
@@ -518,12 +519,7 @@ namespace book
     void Game::update(sf::Time deltaTime)
     {
         Application::update(deltaTime);
-
-        /*
-         * onSpawn
-            IdHittedEntity, //server
-            IdHitEntity, //server
-        */
+        sendUpdates();
     }
 
     void Game::sendToAll(sf::Packet& packet)
