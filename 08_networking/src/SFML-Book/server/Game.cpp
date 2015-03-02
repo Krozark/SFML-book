@@ -397,7 +397,6 @@ namespace book
                         if(entities.isValid(id))
                         {
                             sf::Lock gameGuard(_teamMutex);
-                            Entity& e = entities.get(id);
                             CompTeam::Handle team = entities.getComponent<CompTeam>(id);
                             if(team.isValid())
                             {

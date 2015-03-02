@@ -175,8 +175,7 @@ namespace book
 
     bool GameMenu::processEvent(sf::Event& event)
     {
-        bool res = false;
-        res = _infoBar.processEvent(event);
+        bool res = _infoBar.processEvent(event);
         if(not res)
         {
             switch (_status)

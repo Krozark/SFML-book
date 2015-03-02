@@ -293,7 +293,7 @@ end_search: //exit nesteed loops
 
                         for(int i=0;i<AI->_number;++i)
                         {
-                            Entity& newEntity = this->_game.createEntity(coord,team->_team,AI->_makeAs);
+                            this->_game.createEntity(coord,team->_team,AI->_makeAs);
                         }
                     }
                 }

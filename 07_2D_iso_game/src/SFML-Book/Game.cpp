@@ -106,7 +106,7 @@ namespace book
                 if(_team[_team_id])
                     used = _team[_team_id]->gui.processEvent(event);
                 if(_level and not used)
-                    used = _level->processEvent(event);
+                    _level->processEvent(event);
             }
         }
         if(_team[_team_id])
