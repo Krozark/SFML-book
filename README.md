@@ -35,4 +35,5 @@ Chapter 7:
 
 Chapter 8:
 ----------
-<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter8.png" alt="Chapter 8" height="450px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter8a.png" alt="Chapter 8" height="350px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter8b.png" alt="Chapter 8" height="450px">
