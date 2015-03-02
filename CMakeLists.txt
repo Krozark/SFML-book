@@ -36,7 +36,7 @@ set_option(BOOK_BUILD_CHAPTER_7 TRUE BOOL "Build chapter 7. Required SFML-utils"
 set_option(BOOK_BUILD_CHAPTER_8 TRUE BOOL "Build chapter 8. Required SFML-utils")
 
 set(WARNING "-Wall")
-set(FLAGS "-g -std=c++0x")
+set(FLAGS "-o3 -std=c++11")
 set(CMAKE_CXX_FLAGS "${DEFINES} ${WARNING} ${FLAGS}")
 
 set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )
