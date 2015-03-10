@@ -35,7 +35,7 @@ namespace book
                 float x = getPosition().x - entity_ptr->getPosition().x;
                 float y = getPosition().y - entity_ptr->getPosition().y;
 
-                float dist = std::sqrt(x*x - y*y);
+                float dist = std::sqrt(x*x + y*y);
                 if(dist < near_distance)
                 {
                     near_distance = dist;
