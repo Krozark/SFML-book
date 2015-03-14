@@ -71,8 +71,8 @@ namespace book
         {
             b2AABB aabb;
 
-            aabb.lowerBound = b2Vec2(converter::pixel_to_meters<double>(0),converter::pixel_to_meters<double>((y+0.49)*BOOK_BOX_SIZE));
-            aabb.upperBound = b2Vec2(converter::pixel_to_meters<double>(_x*BOOK_BOX_SIZE),converter::pixel_to_meters<double>((y+0.51)*BOOK_BOX_SIZE));
+            aabb.lowerBound = b2Vec2(converter::pixelsToMeters<double>(0),converter::pixelsToMeters<double>((y+0.49)*BOOK_BOX_SIZE));
+            aabb.upperBound = b2Vec2(converter::pixelsToMeters<double>(_x*BOOK_BOX_SIZE),converter::pixelsToMeters<double>((y+0.51)*BOOK_BOX_SIZE));
 
             _physical_world.QueryAABB(&callback,aabb);
 
@@ -176,12 +176,12 @@ namespace book
     void World::create_wall(int pos_x, int pos_y,int size_x,int size_y)
     {
         b2BodyDef bodyDef;
-        bodyDef.position.Set(converter::pixel_to_meters<double>(pos_x),converter::pixel_to_meters<double>(pos_y));
+        bodyDef.position.Set(converter::pixelsToMeters<double>(pos_x),converter::pixelsToMeters<double>(pos_y));
         bodyDef.type = b2_staticBody;
 
         b2PolygonShape b2shape;
-        double sx = converter::pixel_to_meters<double>(size_x)/2.0;
-        double sy = converter::pixel_to_meters<double>(size_y)/2.0;
+        double sx = converter::pixelsToMeters<double>(size_x)/2.0;
+        double sy = converter::pixelsToMeters<double>(size_y)/2.0;
         b2shape.SetAsBox(sx,sy
                          ,b2Vec2(sx,sy),0);
 

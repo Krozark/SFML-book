@@ -21,9 +21,9 @@ namespace book
     {
         b2BodyDef bodyDef;
 
-        bodyDef.position.Set(book::converter::pixel_to_meters<double>(pos_x),book::converter::pixel_to_meters<double>(pos_y));
+        bodyDef.position.Set(book::converter::pixelsToMeters<double>(pos_x),book::converter::pixelsToMeters<double>(pos_y));
         bodyDef.type = b2_dynamicBody;
-        bodyDef.angle = converter::deg_to_rad(rotation);
+        bodyDef.angle = converter::degToRad(rotation);
 
         _body = world.CreateBody(&bodyDef);
 
@@ -102,8 +102,8 @@ namespace book
         b2PolygonShape b2shape;
         
 
-        b2shape.SetAsBox(converter::pixel_to_meters<double>(BOOK_BOX_SIZE_2),converter::pixel_to_meters<double>(BOOK_BOX_SIZE_2)
-                         ,b2Vec2(converter::pixel_to_meters<double>(BOOK_BOX_SIZE_2+(pos_x*BOOK_BOX_SIZE)),converter::pixel_to_meters<double>(BOOK_BOX_SIZE_2+(pos_y*BOOK_BOX_SIZE))),0);
+        b2shape.SetAsBox(converter::pixelsToMeters<double>(BOOK_BOX_SIZE_2),converter::pixelsToMeters<double>(BOOK_BOX_SIZE_2)
+                         ,b2Vec2(converter::pixelsToMeters<double>(BOOK_BOX_SIZE_2+(pos_x*BOOK_BOX_SIZE)),converter::pixelsToMeters<double>(BOOK_BOX_SIZE_2+(pos_y*BOOK_BOX_SIZE))),0);
 
         b2FixtureDef fixtureDef;
         fixtureDef.density = 1.0;
@@ -136,21 +136,20 @@ namespace book
             for(uint32 i=0;i<count;++i)
             {
                 b2Vec2 vertex = b2Mul(xf,b2shape->m_vertices[i]);
-                shape->setPoint(i,sf::Vector2f(converter::meters_to_pixels(vertex.x),
-                                                converter::meters_to_pixels(vertex.y)));
+                shape->setPoint(i,sf::Vector2f(converter::metersToPixels(vertex.x),
+                                                converter::metersToPixels(vertex.y)));
             }
         } 
     }
 
     void Piece::rotate(float angle)
     {
-        _body->ApplyTorque((float32)converter::deg_to_rad(angle),true);
-        //_body->SetAngularVelocity((float32)converter::deg_to_rad(angle));
+        _body->ApplyTorque((float32)converter::degToRad(angle),true);
     }
 
     void Piece::moveX(int direction)
     {
-        _body->ApplyForceToCenter(b2Vec2(converter::pixel_to_meters(direction),0),true);
+        _body->ApplyForceToCenter(b2Vec2(converter::pixelsToMeters(direction),0),true);
     }
 
     b2Body* Piece::getBody()const

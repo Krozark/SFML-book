@@ -110,7 +110,7 @@ namespace book
             if(_nextSaucer < sf::Time::Zero)
             {
                 Saucer::newSaucer(_world);
-                _nextSaucer = sf::seconds(book::random(5.f,60.f - Configuration::level*2));
+                _nextSaucer = sf::seconds(book::random(5.f,10.f - Configuration::level*2));
             }
 
             if(_world.size() <= 1)
