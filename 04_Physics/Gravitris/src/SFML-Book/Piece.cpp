@@ -7,7 +7,7 @@
 
 namespace book
 {
-    const sf::Color Piece::Tetrimino_colors[Piece::Tetrimino_Types::SIZE]= {
+    const sf::Color Piece::TetriminoColors[Piece::TetriminoTypes::SIZE]= {
         sf::Color::Blue,
         sf::Color::Red,
         sf::Color::Green,
@@ -17,7 +17,7 @@ namespace book
         sf::Color(195,132,58)
     };
     
-    Piece::Piece(b2World& world,int pos_x,int pos_y,Tetrimino_Types type,float rotation) : _world(world)
+    Piece::Piece(b2World& world,int pos_x,int pos_y,TetriminoTypes type,float rotation) : _world(world)
     {
         b2BodyDef bodyDef;
 
@@ -29,54 +29,54 @@ namespace book
 
         switch(type)
         {
-            case Tetrimino_Types::O :
+            case TetriminoTypes::O :
             {
-                create_part(0,0,type);
-                create_part(0,1,type);
-                create_part(1,0,type);
-                create_part(1,1,type);
+                createPart(0,0,type);
+                createPart(0,1,type);
+                createPart(1,0,type);
+                createPart(1,1,type);
             }break;
-            case Tetrimino_Types::I :
+            case TetriminoTypes::I :
             {
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(2,0,type);
-                create_part(3,0,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(2,0,type);
+                createPart(3,0,type);
             }break;
-            case Tetrimino_Types::S :
+            case TetriminoTypes::S :
             {
-                create_part(0,1,type);
-                create_part(1,1,type);
-                create_part(1,0,type);
-                create_part(2,0,type);
+                createPart(0,1,type);
+                createPart(1,1,type);
+                createPart(1,0,type);
+                createPart(2,0,type);
             }break;
-            case Tetrimino_Types::Z :
+            case TetriminoTypes::Z :
             {
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(1,1,type);
-                create_part(2,1,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(1,1,type);
+                createPart(2,1,type);
             }break;
-            case Tetrimino_Types::L :
+            case TetriminoTypes::L :
             {
-                create_part(0,1,type);
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(2,0,type);
+                createPart(0,1,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(2,0,type);
             }break;
-            case Tetrimino_Types::J :
+            case TetriminoTypes::J :
             {
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(2,0,type);
-                create_part(2,1,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(2,0,type);
+                createPart(2,1,type);
             }break;
-            case Tetrimino_Types::T :
+            case TetriminoTypes::T :
             {
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(1,1,type);
-                create_part(2,0,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(1,1,type);
+                createPart(2,0,type);
             }break;
             default:break;
         }
@@ -97,7 +97,7 @@ namespace book
         _world.DestroyBody(_body);
     }
 
-    b2Fixture* Piece::create_part(int pos_x,int pos_y,Tetrimino_Types type)
+    b2Fixture* Piece::createPart(int pos_x,int pos_y,TetriminoTypes type)
     {
         b2PolygonShape b2shape;
         
@@ -114,7 +114,7 @@ namespace book
         b2Fixture* fixture = _body->CreateFixture(&fixtureDef);
 
         sf::ConvexShape* shape = new sf::ConvexShape((unsigned int)b2shape.GetVertexCount());
-        shape->setFillColor(Tetrimino_colors[type]);
+        shape->setFillColor(TetriminoColors[type]);
         shape->setOutlineThickness(1.0f);
         shape->setOutlineColor(sf::Color(128,128,128));
 

@@ -4,31 +4,31 @@
 
 namespace book
 {
-    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"04_Gravitris"),_current_piece(nullptr), _world(word_x,word_y)
+    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::playerInputs), _window(sf::VideoMode(X,Y),"04_Gravitris"),_currentPiece(nullptr), _world(word_x,word_y)
     {
         bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){        
-             _current_piece = _world.newPiece();
+             _currentPiece = _world.newPiece();
              timeSinceLastFall = sf::Time::Zero;
         });
 
         bind(Configuration::PlayerInputs::TurnLeft,[this](const sf::Event&){
-             _rotate_direction-=1;
+             _rotateDirection-=1;
         });
         bind(Configuration::PlayerInputs::TurnRight,[this](const sf::Event&){        
-             _rotate_direction+=1;
+             _rotateDirection+=1;
         });
 
         bind(Configuration::PlayerInputs::MoveLeft,[this](const sf::Event&){        
-             _move_direction-=1;
+             _moveDirection-=1;
         });
 
         bind(Configuration::PlayerInputs::MoveRight,[this](const sf::Event&){        
-             _move_direction+=1;
+             _moveDirection+=1;
         });
 
         _stats.setPosition(BOOK_BOX_SIZE*(word_x+3),BOOK_BOX_SIZE);
 
-        _current_piece = _world.newPiece();
+        _currentPiece = _world.newPiece();
     }
 
     void Game::run(int minimum_frame_per_seconds, int physics_frame_per_seconds)
@@ -61,22 +61,22 @@ namespace book
 
         if(timeSinceLastUpdate > timePerFrame)
         {
-            if(_current_piece != nullptr)
+            if(_currentPiece != nullptr)
             {
-                _current_piece->rotate(_rotate_direction*3000);
-                _current_piece->moveX(_move_direction*5000);
+                _currentPiece->rotate(_rotateDirection*3000);
+                _currentPiece->moveX(_moveDirection*5000);
 
                 bool new_piece;
                 {
                     int old_level =_stats.getLevel();
-                    _stats.addLines(_world.clearLines(new_piece,*_current_piece));
+                    _stats.addLines(_world.clearLines(new_piece,*_currentPiece));
                     if(_stats.getLevel() != old_level)
                         _world.add(Configuration::Sounds::LevelUp);
                 }
 
                 if(new_piece or timeSinceLastFall.asSeconds() > std::max(1.0,10-_stats.getLevel()*0.2))
                 {
-                    _current_piece = _world.newPiece();
+                    _currentPiece = _world.newPiece();
                     timeSinceLastFall = sf::Time::Zero;
                 }
             }
@@ -84,8 +84,8 @@ namespace book
             _stats.setGameOver(_world.isGameOver());
             timeSinceLastUpdate = sf::Time::Zero;
         }
-        _rotate_direction=0;
-        _move_direction=0;
+        _rotateDirection=0;
+        _moveDirection=0;
     }
 
     void Game::update_physics(const sf::Time& deltaTime,const sf::Time& timePerFrame)

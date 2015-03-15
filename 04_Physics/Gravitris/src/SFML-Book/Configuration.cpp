@@ -7,7 +7,7 @@ namespace book
     ResourceManager<sf::Music,int> Configuration::musics;
     ResourceManager<sf::SoundBuffer,int> Configuration::sounds;
 
-    ActionMap<int> Configuration::player_inputs;
+    ActionMap<int> Configuration::playerInputs;
 
     void Configuration::initialize()
     {
@@ -47,10 +47,10 @@ namespace book
 
     void Configuration::initPlayerInputs()
     {
-        player_inputs.map(PlayerInputs::TurnRight,Action(sf::Keyboard::Up));
-        player_inputs.map(PlayerInputs::TurnLeft,Action(sf::Keyboard::Down));
-        player_inputs.map(PlayerInputs::MoveLeft,Action(sf::Keyboard::Left));
-        player_inputs.map(PlayerInputs::MoveRight,Action(sf::Keyboard::Right));
-        player_inputs.map(PlayerInputs::HardDrop,Action(sf::Keyboard::Space,Action::Type::Released));
+        playerInputs.map(PlayerInputs::TurnRight,Action(sf::Keyboard::Up));
+        playerInputs.map(PlayerInputs::TurnLeft,Action(sf::Keyboard::Down));
+        playerInputs.map(PlayerInputs::MoveLeft,Action(sf::Keyboard::Left));
+        playerInputs.map(PlayerInputs::MoveRight,Action(sf::Keyboard::Right));
+        playerInputs.map(PlayerInputs::HardDrop,Action(sf::Keyboard::Space,Action::Type::Released));
     }
 }

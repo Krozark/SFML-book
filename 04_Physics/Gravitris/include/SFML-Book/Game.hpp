@@ -30,10 +30,10 @@ namespace book
 
             sf::RenderWindow _window; //< the window use to display the game
 
-            int _move_direction;
-            int _rotate_direction;
+            int _moveDirection;
+            int _rotateDirection;
             
-            Piece* _current_piece;
+            Piece* _currentPiece;
 
             World _world;
 

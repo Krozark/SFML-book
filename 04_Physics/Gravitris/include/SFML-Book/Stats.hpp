@@ -21,16 +21,16 @@ namespace book
         private:
             virtual void draw(sf::RenderTarget& target,sf::RenderStates states=sf::RenderStates::Default) const override; //< draw override from Drawable
 
-            unsigned int _nb_rows;
-            unsigned int _nb_score;
-            unsigned int _nb_lvl;
+            unsigned int _nbRows;
+            unsigned int _nbScore;
+            unsigned int _nbLvl;
 
-            bool _is_game_over;
+            bool _isGameOver;
 
-            sf::Text _text_rows;
-            sf::Text _text_score;
-            sf::Text _text_lvl;
-            sf::Text _text_game_over;
+            sf::Text _textRows;
+            sf::Text _textScore;
+            sf::Text _textLvl;
+            sf::Text _textGameOver;
     };
 }
 #endif

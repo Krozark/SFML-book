@@ -28,6 +28,7 @@ namespace book
                 MoveRight,
                 HardDrop,
             };
+            static ActionMap<int> playerInputs;
 
             enum Sounds : int {
                 Spawn,
@@ -42,7 +43,6 @@ namespace book
             };
             static ResourceManager<sf::Music,int> musics;
 
-            static ActionMap<int> player_inputs;
 
             static void initialize();
 

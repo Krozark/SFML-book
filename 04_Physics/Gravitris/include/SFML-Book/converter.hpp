@@ -13,19 +13,19 @@ namespace book
         constexpr T pixelsToMeters(const T& x)
         {
             return x/PIXELS_PER_METERS;
-        };
+        }
 
         template<typename T>
         constexpr T metersToPixels(const T& x)
         {
             return x*PIXELS_PER_METERS;
-        };
+        }
 
         template<typename T>
         constexpr T degToRad(const T& x)
         {
             return PI*x/180.0;
-        };
+        }
 
         template<typename T>
         constexpr T radToDeg(const T& x)

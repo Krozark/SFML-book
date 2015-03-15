@@ -48,7 +48,7 @@ namespace book
 
     }
 
-    class __AABB_callback : public b2QueryCallback
+    class _AABB_callback : public b2QueryCallback
     {
         public :
             std::list<b2Fixture*> fixtures;
@@ -64,7 +64,7 @@ namespace book
     int World::clearLines(bool& del,const Piece& current)
     {
         int nb_lines = 0;
-        __AABB_callback callback;
+        _AABB_callback callback;
         del = false;
 
         for(int y=0;y<=_y;++y)
@@ -144,7 +144,7 @@ namespace book
     Piece* World::newPiece()
     {
         add(Configuration::Sounds::Spawn);
-        return new Piece(_physical_world,_x/2*BOOK_BOX_SIZE,BOOK_BOX_SIZE,static_cast<Piece::Tetrimino_Types>(random(0,Piece::Tetrimino_Types::SIZE-1)),random(0.f,360.f));
+        return new Piece(_physical_world,_x/2*BOOK_BOX_SIZE,BOOK_BOX_SIZE,static_cast<Piece::TetriminoTypes>(random(0,Piece::TetriminoTypes::SIZE-1)),random(0.f,360.f));
     }
 
     void World::draw(sf::RenderTarget& target, sf::RenderStates states) const
