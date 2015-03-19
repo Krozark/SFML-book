@@ -1,7 +1,7 @@
 #include <SFML-Book/Stats.hpp>
 #include <SFML-Book/Configuration.hpp>
 
-#define FONT_SIZE   24
+#define FONtSIZE   24
 
 namespace book
 {
@@ -13,52 +13,52 @@ Stats::Stats()
 
 void Stats::reset()
 {
-    _nb_rows = 0;
-    _nb_score = 0;
-    _nb_lvl = 0;
-    _is_game_over = false;
-    _initial_lvl = 0;
+    _nbRows = 0;
+    _nbScore = 0;
+    _nbLvl = 0;
+    _isGameOver = false;
+    _initialLvl = 0;
 
-    _text_rows.setFont(Configuration::fonts.get(Configuration::Fonts::Gui));
-    _text_rows.setString("rows : 0");
-    _text_rows.setCharacterSize(FONT_SIZE);
-    _text_rows.setPosition(0,0);
+    _textRows.setFont(Configuration::fonts.get(Configuration::Fonts::Gui));
+    _textRows.setString("rows : 0");
+    _textRows.setCharacterSize(FONtSIZE);
+    _textRows.setPosition(0,0);
 
-    _text_score.setFont(Configuration::fonts.get(Configuration::Gui));
-    _text_score.setString("score : 0");
-    _text_score.setCharacterSize(FONT_SIZE);
-    _text_score.setPosition(0,FONT_SIZE + 1);
+    _textScore.setFont(Configuration::fonts.get(Configuration::Gui));
+    _textScore.setString("score : 0");
+    _textScore.setCharacterSize(FONtSIZE);
+    _textScore.setPosition(0,FONtSIZE + 1);
 
-    _text_lvl.setFont(Configuration::fonts.get(Configuration::Gui));
-    _text_lvl.setCharacterSize(FONT_SIZE);
-    _text_lvl.setPosition(0,(FONT_SIZE + 1)*2);
+    _textLvl.setFont(Configuration::fonts.get(Configuration::Gui));
+    _textLvl.setCharacterSize(FONtSIZE);
+    _textLvl.setPosition(0,(FONtSIZE + 1)*2);
     setLevel(0);
 
-    _text_game_over.setFont(Configuration::fonts.get(Configuration::Gui));
-    _text_game_over.setString("Game Over");
-    _text_game_over.setCharacterSize(72);
-    _text_game_over.setPosition(0,0);
+    _textGameOver.setFont(Configuration::fonts.get(Configuration::Gui));
+    _textGameOver.setString("Game Over");
+    _textGameOver.setCharacterSize(72);
+    _textGameOver.setPosition(0,0);
 }
 
 bool Stats::isGameOver()const
 {
-    return _is_game_over;
+    return _isGameOver;
 }
 
 void Stats::setGameOver(bool g)
 {
-    _is_game_over = g;
+    _isGameOver = g;
 }
 
 void Stats::setLevel(int lvl)
 {
-    _initial_lvl = lvl;
-    _text_lvl.setString("lvl : "+std::to_string(lvl));
+    _initialLvl = lvl;
+    _textLvl.setString("lvl : "+std::to_string(lvl));
 }
 
 int Stats::getLevel()const
 {
-    return _initial_lvl + _nb_lvl;
+    return _initialLvl + _nbLvl;
 }
 
 void Stats::addLines(int lines)
@@ -66,46 +66,46 @@ void Stats::addLines(int lines)
     if(lines > 0)
     {
         //update number of lines
-        _nb_rows += lines;
-        _text_rows.setString("rows : "+std::to_string(_nb_rows));
+        _nbRows += lines;
+        _textRows.setString("rows : "+std::to_string(_nbRows));
 
         //update the score
-        _text_score.setString("score : "+std::to_string(_nb_score));
+        _textScore.setString("score : "+std::to_string(_nbScore));
         
         switch (lines)
         {
-            case 1 : _nb_score += 40 * ( _initial_lvl+_nb_lvl+1);break;
-            case 2 : _nb_score += 100 * ( _initial_lvl+_nb_lvl+1);break;
-            case 3 : _nb_score += 300 * ( _initial_lvl+_nb_lvl+1);break;
-            default : _nb_score += 1200 * ( _initial_lvl+_nb_lvl+1);break;
+            case 1 : _nbScore += 40 * ( _initialLvl+_nbLvl+1);break;
+            case 2 : _nbScore += 100 * ( _initialLvl+_nbLvl+1);break;
+            case 3 : _nbScore += 300 * ( _initialLvl+_nbLvl+1);break;
+            default : _nbScore += 1200 * ( _initialLvl+_nbLvl+1);break;
         }
 
-        _nb_lvl = _initial_lvl + (_nb_rows / 10);
+        _nbLvl = _initialLvl + (_nbRows / 10);
 
         //update the lvl
-        _text_lvl.setString("lvl : "+std::to_string(_nb_lvl));
+        _textLvl.setString("lvl : "+std::to_string(_nbLvl));
     }
 }
 
 unsigned int Stats::getLvl()const
 {
-    return _nb_lvl;
+    return _nbLvl;
 }
 
 void Stats::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    if(not _is_game_over)
+    if(not _isGameOver)
     {
         //make states
         states.transform *= getTransform();
         
         //draw
-        target.draw(_text_rows,states);
-        target.draw(_text_score,states);
-        target.draw(_text_lvl,states);
+        target.draw(_textRows,states);
+        target.draw(_textScore,states);
+        target.draw(_textLvl,states);
     }
     else
-        target.draw(_text_game_over,states);
+        target.draw(_textGameOver,states);
 }
 
 }

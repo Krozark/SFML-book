@@ -6,26 +6,26 @@
 
 namespace book
 {
-    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::player_inputs), _window(sf::VideoMode(X,Y),"05_GUI"),_current_piece(nullptr), _world(word_x,word_y), _mainMenu(_window),_configurationMenu(_window),_pauseMenu(_window),_status(Status::StatusMainMenu)
+    Game::Game(int X, int Y,int word_x,int word_y) : ActionTarget(Configuration::playerInputs), _window(sf::VideoMode(X,Y),"05_GUI"),_currentPiece(nullptr), _world(word_x,word_y), _mainMenu(_window),_configurationMenu(_window),_pauseMenu(_window),_status(Status::StatusMainMenu)
     {
         bind(Configuration::PlayerInputs::HardDrop,[this](const sf::Event&){        
-             _current_piece = _world.newPiece();
+             _currentPiece = _world.newPiece();
              timeSinceLastFall = sf::Time::Zero;
         });
 
         bind(Configuration::PlayerInputs::TurnLeft,[this](const sf::Event&){
-             _rotate_direction-=1;
+             _rotateDirection-=1;
         });
         bind(Configuration::PlayerInputs::TurnRight,[this](const sf::Event&){        
-             _rotate_direction+=1;
+             _rotateDirection+=1;
         });
 
         bind(Configuration::PlayerInputs::MoveLeft,[this](const sf::Event&){        
-             _move_direction-=1;
+             _moveDirection-=1;
         });
 
         bind(Configuration::PlayerInputs::MoveRight,[this](const sf::Event&){        
-             _move_direction+=1;
+             _moveDirection+=1;
         });
 
 
@@ -35,11 +35,11 @@ namespace book
 
     }
 
-    void Game::run(int minimum_frame_per_seconds, int physics_frame_per_seconds)
+    void Game::run(int minimum_framePer_seconds, int physics_framePer_seconds)
     {
         sf::Clock clock;
-        const sf::Time timePerFrame = sf::seconds(1.f/minimum_frame_per_seconds);
-        const sf::Time timePerFramePhysics = sf::seconds(1.f/physics_frame_per_seconds);
+        const sf::Time timePerFrame = sf::seconds(1.f/minimum_framePer_seconds);
+        const sf::Time timePerFramePhysics = sf::seconds(1.f/physics_framePer_seconds);
 
         while (_window.isOpen())
         {
@@ -49,7 +49,7 @@ namespace book
 
             if(_status == StatusGame and not _stats.isGameOver())
             {
-                update_physics(time,timePerFramePhysics);
+                updatePhysics(time,timePerFramePhysics);
                 update(time,timePerFrame);
             }
 
@@ -65,22 +65,22 @@ namespace book
 
         if(timeSinceLastUpdate > timePerFrame)
         {
-            if(_current_piece != nullptr)
+            if(_currentPiece != nullptr)
             {
-                _current_piece->rotate(_rotate_direction*3000);
-                _current_piece->moveX(_move_direction*5000);
+                _currentPiece->rotate(_rotateDirection*3000);
+                _currentPiece->moveX(_moveDirection*5000);
 
                 bool new_piece;
                 {
                     int old_level =_stats.getLevel();
-                    _stats.addLines(_world.clearLines(new_piece,*_current_piece));
+                    _stats.addLines(_world.clearLines(new_piece,*_currentPiece));
                     if(_stats.getLevel() != old_level)
                         _world.add(Configuration::Sounds::LevelUp);
                 }
 
                 if(new_piece or timeSinceLastFall.asSeconds() > std::max(1.0,10-_stats.getLevel()*0.2))
                 {
-                    _current_piece = _world.newPiece();
+                    _currentPiece = _world.newPiece();
                     timeSinceLastFall = sf::Time::Zero;
                 }
             }
@@ -88,11 +88,11 @@ namespace book
             _stats.setGameOver(_world.isGameOver());
             timeSinceLastUpdate = sf::Time::Zero;
         }
-        _rotate_direction=0;
-        _move_direction=0;
+        _rotateDirection=0;
+        _moveDirection=0;
     }
 
-    void Game::update_physics(const sf::Time& deltaTime,const sf::Time& timePerFrame)
+    void Game::updatePhysics(const sf::Time& deltaTime,const sf::Time& timePerFrame)
     {
         static sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
@@ -102,7 +102,7 @@ namespace book
 
         while (timeSinceLastUpdate > timePerFrame)
         {
-            _world.update_physics(timePerFrame);
+            _world.updatePhysics(timePerFrame);
             timeSinceLastUpdate -= timePerFrame;
         }
     }
@@ -115,20 +115,20 @@ namespace book
             layout->setSpace(25);
 
             book::gui::TextButton* newGame = new book::gui::TextButton("New Game");
-            newGame->on_click = [this](const sf::Event&, book::gui::Button& button){
+            newGame->onClick = [this](const sf::Event&, book::gui::Button& button){
                 initGame();
                 _status = Status::StatusGame;
             };
             layout->add(newGame);
 
             book::gui::TextButton* configuration = new book::gui::TextButton("Configuration");
-            configuration->on_click = [this](const sf::Event&, book::gui::Button& button){
+            configuration->onClick = [this](const sf::Event&, book::gui::Button& button){
                 _status = Status::StatusConfiguration;
             };
             layout->add(configuration);
 
             book::gui::TextButton* exit = new book::gui::TextButton("Exit");
-            exit->on_click = [this](const sf::Event&, book::gui::Button& button){
+            exit->onClick = [this](const sf::Event&, book::gui::Button& button){
                 _window.close();
             };
             layout->add(exit);
@@ -149,7 +149,7 @@ namespace book
             layout->add(pause);
 
             book::gui::TextButton* exit = new book::gui::TextButton("Exit");
-            exit->on_click = [this](const sf::Event&, book::gui::Button& button){
+            exit->onClick = [this](const sf::Event&, book::gui::Button& button){
                 _status = StatusMainMenu;
             };
             layout->add(exit);
@@ -195,7 +195,7 @@ namespace book
             table->SetAllocation(sf::FloatRect((_window.getSize().x-300)/2,
                                                 (_window.getSize().y-200)/2,
                                                 300,200));
-            _sfg_desktop.Add(table);
+            _sfgDesktop.Add(table);
 
             _configurationMenu.bind(Configuration::GuiInputs::Escape,[this](const sf::Event& event){
                 _status = StatusMainMenu;
@@ -210,7 +210,7 @@ namespace book
         _stats.reset();
         _world.reset();
 
-        _current_piece = _world.newPiece();
+        _currentPiece = _world.newPiece();
     }
 
     void Game::processEvents()
@@ -241,7 +241,7 @@ namespace book
                     case StatusConfiguration :
                     {
                         _configurationMenu.processEvent(event);
-                        _sfg_desktop.HandleEvent(event);
+                        _sfgDesktop.HandleEvent(event);
                     }break;
                     case StatusPaused :
                     {
@@ -296,7 +296,7 @@ namespace book
             }break;
             case StatusConfiguration:
             {
-                _sfg_desktop.Update(0.0);
+                _sfgDesktop.Update(0.0);
                 _sfgui.Display(_window);
                 _window.draw(_configurationMenu);
             }break;

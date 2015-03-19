@@ -6,7 +6,7 @@ namespace book
     {
         Button::FuncType Button::defaultFunc = [](const sf::Event&,Button&)->void{};
 
-        Button::Button(Widget* parent) : Widget(parent), on_click(defaultFunc)
+        Button::Button(Widget* parent) : Widget(parent), onClick(defaultFunc),_status(Status::None)
         {
         }
 
@@ -30,7 +30,7 @@ namespace book
 
                 if(rect.contains(event.mouseButton.x,event.mouseButton.y))
                 {
-                    on_click(event,*this);
+                    onClick(event,*this);
                     res = true;
                 }
             }
@@ -46,7 +46,7 @@ namespace book
                 rect.height = size.y;
 
                 int old_status = _status;
-                _status = 0;
+                _status = Status::None;
 
                 const sf::Vector2f mouse_pos(event.mouseMove.x,event.mouseMove.y);
                 if(rect.contains(mouse_pos))

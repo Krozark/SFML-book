@@ -6,7 +6,7 @@ namespace book
 {
     namespace gui
     {
-        Frame::Frame(sf::RenderWindow& window) : Container(nullptr), ActionTarget(Configuration::gui_inputs), _window(window)
+        Frame::Frame(sf::RenderWindow& window) : Container(nullptr), ActionTarget(Configuration::guiInputs), _window(window)
         {
         }
 

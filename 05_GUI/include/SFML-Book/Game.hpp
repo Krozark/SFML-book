@@ -29,7 +29,7 @@ namespace book
 
             void processEvents();//< Process events
             void update(const sf::Time& deltaTime,const sf::Time& timePerFrame);
-            void update_physics(const sf::Time& deltaTime,const sf::Time& timePerFrame); //< do some updates
+            void updatePhysics(const sf::Time& deltaTime,const sf::Time& timePerFrame); //< do some updates
             void initGui();
             void initGame();
 
@@ -37,10 +37,10 @@ namespace book
 
             sf::RenderWindow _window; //< the window use to display the game
 
-            int _move_direction;
-            int _rotate_direction;
+            int _moveDirection;
+            int _rotateDirection;
             
-            Piece* _current_piece;
+            Piece* _currentPiece;
 
             World _world;
 
@@ -62,7 +62,7 @@ namespace book
 
             sfg::SFGUI _sfgui;
 
-            sfg::Desktop _sfg_desktop;
+            sfg::Desktop _sfgDesktop;
     };
 }
 

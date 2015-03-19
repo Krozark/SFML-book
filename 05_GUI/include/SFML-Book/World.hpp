@@ -23,7 +23,7 @@ namespace book
             ~World();
 
             void update(sf::Time deltaTime);
-            void update_physics(sf::Time deltaTime);
+            void updatePhysics(sf::Time deltaTime);
 
             Piece* newPiece();
 
@@ -46,7 +46,7 @@ namespace book
             DebugDraw _debugDraw;
 #endif
 
-            void create_wall(int pos_x, int pos_y, int size_x, int size_y);
+            void createWall(int pos_x, int pos_y, int size_x, int size_y);
 
             const int _x;
             const int _y;

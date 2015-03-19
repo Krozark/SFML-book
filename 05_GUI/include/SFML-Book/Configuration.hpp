@@ -28,12 +28,12 @@ namespace book
                 MoveRight,
                 HardDrop,
             };
-            static ActionMap<int> player_inputs;
+            static ActionMap<int> playerInputs;
 
             enum GuiInputs : int {
                 Escape,
             };
-            static ActionMap<int> gui_inputs;
+            static ActionMap<int> guiInputs;
 
             enum Sounds : int {
                 Spawn,

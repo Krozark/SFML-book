@@ -10,9 +10,9 @@ namespace book
     World::World(int size_x,int size_y) : _physical_world(b2Vec2(0.f, 1.5f)),_x(size_x), _y(size_y)
     {
         
-        create_wall(0,0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
-        create_wall(BOOK_BOX_SIZE*(_x+1.2),0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
-        create_wall(0,BOOK_BOX_SIZE*_y,BOOK_BOX_SIZE*(_x+2.2),BOOK_BOX_SIZE);
+        createWall(0,0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
+        createWall(BOOK_BOX_SIZE*(_x+1.2),0,BOOK_BOX_SIZE,_y*BOOK_BOX_SIZE);
+        createWall(0,BOOK_BOX_SIZE*_y,BOOK_BOX_SIZE*(_x+2.2),BOOK_BOX_SIZE);
 
 #ifdef BOOK_DEBUG
         _physical_world.SetDebugDraw(&_debugDraw);
@@ -71,8 +71,8 @@ namespace book
         {
             b2AABB aabb;
 
-            aabb.lowerBound = b2Vec2(converter::pixel_to_meters<double>(0),converter::pixel_to_meters<double>((y+0.49)*BOOK_BOX_SIZE));
-            aabb.upperBound = b2Vec2(converter::pixel_to_meters<double>(_x*BOOK_BOX_SIZE),converter::pixel_to_meters<double>((y+0.51)*BOOK_BOX_SIZE));
+            aabb.lowerBound = b2Vec2(converter::pixelsToMeters<double>(0),converter::pixelsToMeters<double>((y+0.49)*BOOK_BOX_SIZE));
+            aabb.upperBound = b2Vec2(converter::pixelsToMeters<double>(_x*BOOK_BOX_SIZE),converter::pixelsToMeters<double>((y+0.51)*BOOK_BOX_SIZE));
 
             _physical_world.QueryAABB(&callback,aabb);
 
@@ -141,7 +141,7 @@ namespace book
         }
     }
 
-    void World::update_physics(sf::Time deltaTime)
+    void World::updatePhysics(sf::Time deltaTime)
     {
         float seconds = deltaTime.asSeconds();
 
@@ -153,7 +153,7 @@ namespace book
     Piece* World::newPiece()
     {
         add(Configuration::Sounds::Spawn);
-        return new Piece(_physical_world,_x/2*BOOK_BOX_SIZE,BOOK_BOX_SIZE,static_cast<Piece::Tetrimino_Types>(random(0,Piece::Tetrimino_Types::SIZE-1)),random(0.f,360.f));
+        return new Piece(_physical_world,_x/2*BOOK_BOX_SIZE,BOOK_BOX_SIZE,static_cast<Piece::TetriminoTypes>(random(0,Piece::TetriminoTypes::SIZE-1)),random(0.f,360.f));
     }
 
     void World::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -182,15 +182,15 @@ namespace book
     }
 #endif
 
-    void World::create_wall(int pos_x, int pos_y,int size_x,int size_y)
+    void World::createWall(int pos_x, int pos_y,int size_x,int size_y)
     {
         b2BodyDef bodyDef;
-        bodyDef.position.Set(converter::pixel_to_meters<double>(pos_x),converter::pixel_to_meters<double>(pos_y));
+        bodyDef.position.Set(converter::pixelsToMeters<double>(pos_x),converter::pixelsToMeters<double>(pos_y));
         bodyDef.type = b2_staticBody;
 
         b2PolygonShape b2shape;
-        double sx = converter::pixel_to_meters<double>(size_x)/2.0;
-        double sy = converter::pixel_to_meters<double>(size_y)/2.0;
+        double sx = converter::pixelsToMeters<double>(size_x)/2.0;
+        double sy = converter::pixelsToMeters<double>(size_y)/2.0;
         b2shape.SetAsBox(sx,sy
                          ,b2Vec2(sx,sy),0);
 

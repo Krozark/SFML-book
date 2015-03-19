@@ -20,7 +20,7 @@ namespace book
                 Button(Widget* parent=nullptr);
                 virtual ~Button();
 
-                FuncType on_click;
+                FuncType onClick;
 
             protected:
                 virtual bool processEvent(const sf::Event& event,const sf::Vector2f& parent_pos)override;
@@ -31,7 +31,8 @@ namespace book
             private:
 
                 enum Status {
-                    Hover = 1
+                    None = 0,
+                    Hover
                 };
                 int _status;
         };

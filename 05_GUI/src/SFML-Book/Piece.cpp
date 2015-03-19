@@ -7,7 +7,7 @@
 
 namespace book
 {
-    const sf::Color Piece::Tetrimino_colors[Piece::Tetrimino_Types::SIZE]= {
+    const sf::Color Piece::TetriminoColors[Piece::TetriminoTypes::SIZE]= {
         sf::Color::Blue,
         sf::Color::Red,
         sf::Color::Green,
@@ -17,66 +17,66 @@ namespace book
         sf::Color(195,132,58)
     };
     
-    Piece::Piece(b2World& world,int pos_x,int pos_y,Tetrimino_Types type,float rotation) : _world(world)
+    Piece::Piece(b2World& world,int pos_x,int pos_y,TetriminoTypes type,float rotation) : _world(world)
     {
         b2BodyDef bodyDef;
 
-        bodyDef.position.Set(book::converter::pixel_to_meters<double>(pos_x),book::converter::pixel_to_meters<double>(pos_y));
+        bodyDef.position.Set(book::converter::pixelsToMeters<double>(pos_x),book::converter::pixelsToMeters<double>(pos_y));
         bodyDef.type = b2_dynamicBody;
-        bodyDef.angle = converter::deg_to_rad(rotation);
+        bodyDef.angle = converter::degToRad(rotation);
 
         _body = world.CreateBody(&bodyDef);
 
         switch(type)
         {
-            case Tetrimino_Types::O :
+            case TetriminoTypes::O :
             {
-                create_part(0,0,type);
-                create_part(0,1,type);
-                create_part(1,0,type);
-                create_part(1,1,type);
+                createPart(0,0,type);
+                createPart(0,1,type);
+                createPart(1,0,type);
+                createPart(1,1,type);
             }break;
-            case Tetrimino_Types::I :
+            case TetriminoTypes::I :
             {
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(2,0,type);
-                create_part(3,0,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(2,0,type);
+                createPart(3,0,type);
             }break;
-            case Tetrimino_Types::S :
+            case TetriminoTypes::S :
             {
-                create_part(0,1,type);
-                create_part(1,1,type);
-                create_part(1,0,type);
-                create_part(2,0,type);
+                createPart(0,1,type);
+                createPart(1,1,type);
+                createPart(1,0,type);
+                createPart(2,0,type);
             }break;
-            case Tetrimino_Types::Z :
+            case TetriminoTypes::Z :
             {
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(1,1,type);
-                create_part(2,1,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(1,1,type);
+                createPart(2,1,type);
             }break;
-            case Tetrimino_Types::L :
+            case TetriminoTypes::L :
             {
-                create_part(0,1,type);
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(2,0,type);
+                createPart(0,1,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(2,0,type);
             }break;
-            case Tetrimino_Types::J :
+            case TetriminoTypes::J :
             {
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(2,0,type);
-                create_part(2,1,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(2,0,type);
+                createPart(2,1,type);
             }break;
-            case Tetrimino_Types::T :
+            case TetriminoTypes::T :
             {
-                create_part(0,0,type);
-                create_part(1,0,type);
-                create_part(1,1,type);
-                create_part(2,0,type);
+                createPart(0,0,type);
+                createPart(1,0,type);
+                createPart(1,1,type);
+                createPart(2,0,type);
             }break;
             default:break;
         }
@@ -97,13 +97,13 @@ namespace book
         _world.DestroyBody(_body);
     }
 
-    b2Fixture* Piece::create_part(int pos_x,int pos_y,Tetrimino_Types type)
+    b2Fixture* Piece::createPart(int pos_x,int pos_y,TetriminoTypes type)
     {
         b2PolygonShape b2shape;
         
 
-        b2shape.SetAsBox(converter::pixel_to_meters<double>(BOOK_BOX_SIZE_2),converter::pixel_to_meters<double>(BOOK_BOX_SIZE_2)
-                         ,b2Vec2(converter::pixel_to_meters<double>(BOOK_BOX_SIZE_2+(pos_x*BOOK_BOX_SIZE)),converter::pixel_to_meters<double>(BOOK_BOX_SIZE_2+(pos_y*BOOK_BOX_SIZE))),0);
+        b2shape.SetAsBox(converter::pixelsToMeters<double>(BOOK_BOX_SIZE_2),converter::pixelsToMeters<double>(BOOK_BOX_SIZE_2)
+                         ,b2Vec2(converter::pixelsToMeters<double>(BOOK_BOX_SIZE_2+(pos_x*BOOK_BOX_SIZE)),converter::pixelsToMeters<double>(BOOK_BOX_SIZE_2+(pos_y*BOOK_BOX_SIZE))),0);
 
         b2FixtureDef fixtureDef;
         fixtureDef.density = 1.0;
@@ -114,7 +114,7 @@ namespace book
         b2Fixture* fixture = _body->CreateFixture(&fixtureDef);
 
         sf::ConvexShape* shape = new sf::ConvexShape((unsigned int)b2shape.GetVertexCount());
-        shape->setFillColor(Tetrimino_colors[type]);
+        shape->setFillColor(TetriminoColors[type]);
         shape->setOutlineThickness(1.0f);
         shape->setOutlineColor(sf::Color(128,128,128));
 
@@ -136,21 +136,21 @@ namespace book
             for(uint32 i=0;i<count;++i)
             {
                 b2Vec2 vertex = b2Mul(xf,b2shape->m_vertices[i]);
-                shape->setPoint(i,sf::Vector2f(converter::meters_to_pixels(vertex.x),
-                                                converter::meters_to_pixels(vertex.y)));
+                shape->setPoint(i,sf::Vector2f(converter::metersToPixels(vertex.x),
+                                                converter::metersToPixels(vertex.y)));
             }
         } 
     }
 
     void Piece::rotate(float angle)
     {
-        _body->ApplyTorque((float32)converter::deg_to_rad(angle),true);
-        //_body->SetAngularVelocity((float32)converter::deg_to_rad(angle));
+        _body->ApplyTorque((float32)converter::degToRad(angle),true);
+        //_body->SetAngularVelocity((float32)converter::degToRad(angle));
     }
 
     void Piece::moveX(int direction)
     {
-        _body->ApplyForceToCenter(b2Vec2(converter::pixel_to_meters(direction),0),true);
+        _body->ApplyForceToCenter(b2Vec2(converter::pixelsToMeters(direction),0),true);
     }
 
     b2Body* Piece::getBody()const
