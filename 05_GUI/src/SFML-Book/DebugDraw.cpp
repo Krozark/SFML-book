@@ -19,8 +19,8 @@ namespace book
         for (int32 i=0; i<vertexCount;++i)
         {
             const b2Vec2& vertex = vertices[i];
-            polygon.setPoint(i,sf::Vector2f(converter::meters_to_pixels(vertex.x),
-                             converter::meters_to_pixels(vertex.y)));
+            polygon.setPoint(i,sf::Vector2f(converter::metersToPixels(vertex.x),
+                             converter::metersToPixels(vertex.y)));
         }
         polygon.setFillColor(sf::Color::Transparent);
         polygon.setOutlineThickness(-1.0f);
@@ -34,8 +34,8 @@ namespace book
         for (int32 i=0; i<vertexCount;++i)
         {
             const b2Vec2& vertex = vertices[i];
-            polygon.setPoint(i,sf::Vector2f(converter::meters_to_pixels(vertex.x),
-                             converter::meters_to_pixels(vertex.y)));
+            polygon.setPoint(i,sf::Vector2f(converter::metersToPixels(vertex.x),
+                             converter::metersToPixels(vertex.y)));
         }
         polygon.setFillColor(_b2ToSf(color,50));
         polygon.setOutlineThickness(1.0f);
@@ -45,9 +45,9 @@ namespace book
 
     void DebugDraw::DrawCircle(const b2Vec2& center,float32 radius,const b2Color& color)
     {
-        sf::CircleShape circle(converter::meters_to_pixels(radius),30);
-        circle.setOrigin(converter::meters_to_pixels(radius),converter::meters_to_pixels(radius));
-        circle.setPosition(converter::meters_to_pixels(center.x),converter::meters_to_pixels(center.y));
+        sf::CircleShape circle(converter::metersToPixels(radius),30);
+        circle.setOrigin(converter::metersToPixels(radius),converter::metersToPixels(radius));
+        circle.setPosition(converter::metersToPixels(center.x),converter::metersToPixels(center.y));
 
         circle.setFillColor(sf::Color::Transparent);
         circle.setOutlineThickness(-1.0f);
@@ -57,9 +57,9 @@ namespace book
 
     void DebugDraw::DrawSolidCircle(const b2Vec2& center,float32 radius,const b2Vec2& axis,const b2Color& color)
     {
-        sf::CircleShape circle(converter::meters_to_pixels(radius),30);
-        circle.setOrigin(converter::meters_to_pixels(radius),converter::meters_to_pixels(radius));
-        circle.setPosition(converter::meters_to_pixels(center.x),converter::meters_to_pixels(center.y));
+        sf::CircleShape circle(converter::metersToPixels(radius),30);
+        circle.setOrigin(converter::metersToPixels(radius),converter::metersToPixels(radius));
+        circle.setPosition(converter::metersToPixels(center.x),converter::metersToPixels(center.y));
 
         circle.setFillColor(_b2ToSf(color,50));
         circle.setOutlineThickness(1.0f);
@@ -73,8 +73,8 @@ namespace book
     void DebugDraw::DrawSegment(const b2Vec2& p1,const b2Vec2& p2,const b2Color& color)
     {
         sf::VertexArray line(sf::Lines,2);
-        line[0] = sf::Vertex(sf::Vector2f(converter::meters_to_pixels(p1.x),converter::meters_to_pixels(p1.y)),_b2ToSf(color));
-        line[1] = sf::Vertex(sf::Vector2f(converter::meters_to_pixels(p2.x),converter::meters_to_pixels(p2.y)),_b2ToSf(color));
+        line[0] = sf::Vertex(sf::Vector2f(converter::metersToPixels(p1.x),converter::metersToPixels(p1.y)),_b2ToSf(color));
+        line[1] = sf::Vertex(sf::Vector2f(converter::metersToPixels(p2.x),converter::metersToPixels(p2.y)),_b2ToSf(color));
         _render.draw(line);
     }
 
@@ -85,13 +85,13 @@ namespace book
         b2Vec2 p = xf.p + lineLength*xf.q.GetYAxis();
 
         sf::VertexArray line(sf::Lines,2);
-        line[0] = sf::Vertex(sf::Vector2f(converter::meters_to_pixels(xf.p.x),converter::meters_to_pixels(xf.p.y)),sf::Color::Red);
-        line[1] = sf::Vertex(sf::Vector2f(converter::meters_to_pixels(p.x),converter::meters_to_pixels(p.y)),sf::Color::Red);
+        line[0] = sf::Vertex(sf::Vector2f(converter::metersToPixels(xf.p.x),converter::metersToPixels(xf.p.y)),sf::Color::Red);
+        line[1] = sf::Vertex(sf::Vector2f(converter::metersToPixels(p.x),converter::metersToPixels(p.y)),sf::Color::Red);
         _render.draw(line);
 
         p = xf.p + lineLength * xf.q.GetYAxis();
-        line[0] = sf::Vertex(sf::Vector2f(converter::meters_to_pixels(xf.p.x),converter::meters_to_pixels(xf.p.y)),sf::Color::Green);
-        line[1] = sf::Vertex(sf::Vector2f(converter::meters_to_pixels(p.x),converter::meters_to_pixels(p.y)),sf::Color::Green);
+        line[0] = sf::Vertex(sf::Vector2f(converter::metersToPixels(xf.p.x),converter::metersToPixels(xf.p.y)),sf::Color::Green);
+        line[1] = sf::Vertex(sf::Vector2f(converter::metersToPixels(p.x),converter::metersToPixels(p.y)),sf::Color::Green);
         _render.draw(line);
     }
 
