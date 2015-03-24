@@ -16,38 +16,57 @@ set(VERSION_MAJOR 0)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 1)
 
+
+#find SFML
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    set_option(SFML_ROOT ${CMAKE_INSTALL_PREFIX}/../SFML PATH "The SFML root installation")
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    set_option(SFML_ROOT ${CMAKE_INSTALL_PREFIX}/SFML PATH "The SFML root installation")
+else()
+    set_option(SFML_ROOT ${CMAKE_INSTALL_PREFIX}/SFML PATH "The SFML root installation")
+endif()
+
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules;${CMAKE_SOURCE_DIR}")
 
-set_option(SFML_ROOT ${CMAKE_INSTALL_PREFIX}/../SFML PATH "The SFML root installation")
 find_package(SFML 2 COMPONENTS system graphics window audio network)
 if(NOT SFML_FOUND)
 	message(FATAL_ERROR "SFML Modules not find. Please set the SFML_ROOT variable to your SFML root installation directory and retry")
 endif()
-include_directories(${SFML_INCLUDE_DIR})
 
+#add SFML
+include_directories(${SFML_INCLUDE_DIR})
 set(LIBS ${SFML_LIBRARIES})
 
+#choose chapters
 set_option(BOOK_BUILD_CHAPTER_1 FALSE BOOL "Build chapter 1")
 set_option(BOOK_BUILD_CHAPTER_2 FALSE BOOL "Build chapter 2")
 set_option(BOOK_BUILD_CHAPTER_3 FALSE BOOL "Build chapter 3")
-set_option(BOOK_BUILD_CHAPTER_4 TRUE BOOL "Build chapter 4. Require Box2D")
-set_option(BOOK_BUILD_CHAPTER_5 FALSE BOOL "Build chapter 5. Require Box2D and SFGUI")
+set_option(BOOK_BUILD_CHAPTER_4 FALSE BOOL "Build chapter 4. Require Box2D")
+set_option(BOOK_BUILD_CHAPTER_5 TRUE BOOL "Build chapter 5. Require Box2D and SFGUI")
 set_option(BOOK_BUILD_CHAPTER_6 FALSE BOOL "Build chapter 6. Require Box2D and SFGUI")
 set_option(BOOK_BUILD_CHAPTER_7 FALSE BOOL "Build chapter 7. Required SFML-utils")
 set_option(BOOK_BUILD_CHAPTER_8 FALSE BOOL "Build chapter 8. Required SFML-utils")
 
+#custom compiler flags
 add_definitions(-D_USE_MATH_DEFINES)
-
 set(WARNING "-Wall")
 set(FLAGS "-o3 -std=c++11")
 set(CMAKE_CXX_FLAGS "${WARNING} ${FLAGS}")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1 )
 
+#set output dirs
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(LIB_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
+
+#extlibs
+add_subdirectory(extlibs/Box2D)
+add_subdirectory(extlibs/SFGUI)
+include_directories(${CMAKE_SOURCE_DIR}/extlibs)
+include_directories(${CMAKE_SOURCE_DIR}/extlibs/SFGUI/include)
 
 # add the subdirectories
 if(BOOK_BUILD_CHAPTER_1)
@@ -64,17 +83,19 @@ endif()
 
 #Box2D
 if(BOOK_BUILD_CHAPTER_4)
-	add_subdirectory(extlibs/Box2D)
+    set(LIBS ${LIBS} Box2D)
     add_subdirectory(04_Physics)
 endif()
 
 #Box2D, SFGUI
 if(BOOK_BUILD_CHAPTER_5)
+    set(LIBS ${LIBS} Box2D sfgui)
     add_subdirectory(05_GUI)
 endif()
 
 #Box2D, SFGUI
 if(BOOK_BUILD_CHAPTER_6)
+    set(LIBS ${LIBS} Box2D sfgui)
     add_subdirectory(06_Multithreading)
 endif()
 

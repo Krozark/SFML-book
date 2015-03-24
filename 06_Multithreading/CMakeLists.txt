@@ -1,10 +1,6 @@
 set(INCROOT ${CMAKE_CURRENT_SOURCE_DIR}/include/${CMAKE_PROJECT_NAME})
 set(SRCROOT ${CMAKE_CURRENT_SOURCE_DIR}/src/${CMAKE_PROJECT_NAME})
 
-find_library(LIB_BOX2D Box2D)
-find_library(LIB_SFGUI sfgui)
-set(LIBS ${LIBS} ${LIB_BOX2D} ${LIB_SFGUI})
-
 # add the  header path
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
