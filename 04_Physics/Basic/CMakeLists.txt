@@ -15,6 +15,5 @@ set(FILES_SRC
     ${SRCROOT}/main.cpp
 )
 
-
 add_executable(${CHAPTER_NAME} ${FILES_HEADER} ${FILES_SRC})
 target_link_libraries(${CHAPTER_NAME} ${LIBS})

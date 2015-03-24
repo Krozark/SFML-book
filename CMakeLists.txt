@@ -16,7 +16,7 @@ set(VERSION_MAJOR 0)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 1)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules;${CMAKE_SOURCE_DIR}")
 
 set_option(SFML_ROOT ${CMAKE_INSTALL_PREFIX}/../SFML PATH "The SFML root installation")
 find_package(SFML 2 COMPONENTS system graphics window audio network)
@@ -27,19 +27,20 @@ include_directories(${SFML_INCLUDE_DIR})
 
 set(LIBS ${SFML_LIBRARIES})
 
-set_option(BOOK_BUILD_CHAPTER_1 TRUE BOOL "Build chapter 1")
-set_option(BOOK_BUILD_CHAPTER_2 TRUE BOOL "Build chapter 2")
-set_option(BOOK_BUILD_CHAPTER_3 TRUE BOOL "Build chapter 3")
+set_option(BOOK_BUILD_CHAPTER_1 FALSE BOOL "Build chapter 1")
+set_option(BOOK_BUILD_CHAPTER_2 FALSE BOOL "Build chapter 2")
+set_option(BOOK_BUILD_CHAPTER_3 FALSE BOOL "Build chapter 3")
 set_option(BOOK_BUILD_CHAPTER_4 TRUE BOOL "Build chapter 4. Require Box2D")
-set_option(BOOK_BUILD_CHAPTER_5 TRUE BOOL "Build chapter 5. Require Box2D and SFGUI")
-set_option(BOOK_BUILD_CHAPTER_6 TRUE BOOL "Build chapter 6. Require Box2D and SFGUI")
-set_option(BOOK_BUILD_CHAPTER_7 TRUE BOOL "Build chapter 7. Required SFML-utils")
-set_option(BOOK_BUILD_CHAPTER_8 TRUE BOOL "Build chapter 8. Required SFML-utils")
+set_option(BOOK_BUILD_CHAPTER_5 FALSE BOOL "Build chapter 5. Require Box2D and SFGUI")
+set_option(BOOK_BUILD_CHAPTER_6 FALSE BOOL "Build chapter 6. Require Box2D and SFGUI")
+set_option(BOOK_BUILD_CHAPTER_7 FALSE BOOL "Build chapter 7. Required SFML-utils")
+set_option(BOOK_BUILD_CHAPTER_8 FALSE BOOL "Build chapter 8. Required SFML-utils")
 
-set(DEFINES "-D_USE_MATH_DEFINES")
+add_definitions(-D_USE_MATH_DEFINES)
+
 set(WARNING "-Wall")
 set(FLAGS "-o3 -std=c++11")
-set(CMAKE_CXX_FLAGS "${DEFINES} ${WARNING} ${FLAGS}")
+set(CMAKE_CXX_FLAGS "${WARNING} ${FLAGS}")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1 )
 

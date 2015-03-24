@@ -1,4 +1,6 @@
-project(Box2D)
+cmake_minimum_required(VERSION 2.6)
+
+#project(Box2D)
 set(BOX2D_VERSION 2.3.0)
 
 set(BOX2D_Collision_SRCS
@@ -150,9 +152,7 @@ set_target_properties(Box2D PROPERTIES
 )
 install(TARGETS Box2D
 	DESTINATION lib
-	EXPORT Box2DTargets
 )
-install(EXPORT Box2DTargets DESTINATION lib/cmake/Box2D)
 
 # These are used to create visual studio folders.
 source_group(Collision FILES ${BOX2D_Collision_SRCS} ${BOX2D_Collision_HDRS})
