@@ -43,9 +43,9 @@ namespace book
     void Configuration::reset()
     {
         level = 1;
-        lives = 30;
+        lives = 3;
 
-        _score = 100000;
+        _score = 0;
         _txt_score.setString("0");
     }
 

@@ -16,31 +16,32 @@ set(VERSION_MAJOR 0)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 1)
 
-set(DEFINES "")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-find_library(LIB_SFML_SYSTEM sfml-system)
-find_library(LIB_SFML_GRAPHICS sfml-graphics)
-find_library(LIB_SFML_WINDOW sfml-window)
-find_library(LIB_SFML_AUDIO sfml-audio)
-find_library(LIB_SFML_NETWORK sfml-network)
+set_option(SFML_ROOT ${CMAKE_INSTALL_PREFIX}/../SFML PATH "The SFML root installation")
+find_package(SFML 2 COMPONENTS system graphics window audio network)
+if(NOT SFML_FOUND)
+	message(FATAL_ERROR "SFML Modules not find. Please set the SFML_ROOT variable to your SFML root installation directory and retry")
+endif()
+include_directories(${SFML_INCLUDE_DIR})
 
-set(LIBS ${LIB_SFML_SYSTEM} ${LIB_SFML_GRAPHICS} ${LIB_SFML_WINDOW} ${LIB_SFML_AUDIO} ${LIB_SFML_NETWORK})
+set(LIBS ${SFML_LIBRARIES})
 
 set_option(BOOK_BUILD_CHAPTER_1 TRUE BOOL "Build chapter 1")
 set_option(BOOK_BUILD_CHAPTER_2 TRUE BOOL "Build chapter 2")
 set_option(BOOK_BUILD_CHAPTER_3 TRUE BOOL "Build chapter 3")
 set_option(BOOK_BUILD_CHAPTER_4 TRUE BOOL "Build chapter 4. Require Box2d")
 set_option(BOOK_BUILD_CHAPTER_5 TRUE BOOL "Build chapter 5. Require Box2d and SFGUI")
-set_option(BOOK_BUILD_CHAPTER_6 TRUE BOOL "Build chapter 6. Require Box2d ans SFGUI")
+set_option(BOOK_BUILD_CHAPTER_6 TRUE BOOL "Build chapter 6. Require Box2d and SFGUI")
 set_option(BOOK_BUILD_CHAPTER_7 TRUE BOOL "Build chapter 7. Required SFML-utils")
 set_option(BOOK_BUILD_CHAPTER_8 TRUE BOOL "Build chapter 8. Required SFML-utils")
 
+set(DEFINES "-D_USE_MATH_DEFINES")
 set(WARNING "-Wall")
 set(FLAGS "-o3 -std=c++11")
 set(CMAKE_CXX_FLAGS "${DEFINES} ${WARNING} ${FLAGS}")
 
-set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1 )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
