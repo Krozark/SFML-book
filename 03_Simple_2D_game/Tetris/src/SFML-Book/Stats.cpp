@@ -24,6 +24,12 @@ Stats::Stats() : _nbRows(0), _nbScore(0), _nbLvl(0), _isGameOver(false)
     _textLvl.setCharacterSize(FONT_SIZE);
     _textLvl.setPosition(0,(FONT_SIZE + 1)*2);
 
+    _textInformation.setFont(_font);
+    _textInformation.setString("Use arrow keys to move\n\tS and D to rotate");
+    _textInformation.setColor(sf::Color(0,255,0));
+    _textInformation.setCharacterSize(FONT_SIZE);
+    _textInformation.setPosition(0,(FONT_SIZE + 1)*4);
+
     _textGameOver.setFont(_font);
     _textGameOver.setString("Game Over");
     _textGameOver.setCharacterSize(72);
@@ -45,7 +51,7 @@ void Stats::addLines(int lines)
 
         //update the score
         _textScore.setString("score : "+std::to_string(_nbScore));
-        
+
         switch (lines)
         {
             case 1 : _nbScore += 40 * (_nbLvl+1);break;
@@ -73,11 +79,12 @@ void Stats::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         //make states
         states.transform *= getTransform();
-        
+
         //draw
         target.draw(_textRows,states);
         target.draw(_textScore,states);
         target.draw(_textLvl,states);
+        target.draw(_textInformation,states);
     }
     else
         target.draw(_textGameOver,states);

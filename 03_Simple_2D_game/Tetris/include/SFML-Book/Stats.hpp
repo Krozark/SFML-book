@@ -29,6 +29,8 @@ namespace book
             sf::Text _textLvl;
             sf::Text _textGameOver;
 
+            sf::Text _textInformation;
+
             sf::Font _font;
     };
 }
