@@ -61,7 +61,7 @@ namespace book
         {
 
             std::stringstream ss;
-            ss<<"Game ["<<game.id<<"] Palyers: "<<game.nbPlayers<<"/"<<game.nbTeams;
+            ss<<"Game ["<<game.id<<"] Players: "<<game.nbPlayers<<"/"<<game.nbTeams;
 
             sfutils::TextButton* button = new sfutils::TextButton(ss.str());
             button->setCharacterSize(20);
