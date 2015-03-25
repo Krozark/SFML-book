@@ -1,0 +1,3 @@
+[submodule "extlibs/SFML-utils"]
+	path = extlibs/SFML-utils
+	url = https://github.com/Krozark/SFML-utils.git

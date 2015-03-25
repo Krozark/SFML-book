@@ -4,8 +4,7 @@ set(SRCROOT ${CMAKE_CURRENT_SOURCE_DIR})
 set(INCROOT_COMMON ${INCROOT}/../common)
 set(SRCROOT_COMMON ${SRCROOT}/../common)
 
-find_library(LIB_UTILS_JSON utils-json)
-set(LIBS ${LIBS} ${LIB_UTILS_JSON})
+set(LIBS ${LIBS} utils-json)
 
 #FILES
 set(FILES_HEADER
