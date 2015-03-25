@@ -1,0 +1,61 @@
+from "f.cpp" import print as p
+print p //function
+show p //type : function, return: ???, param: ???
+
+from "f.cpp" import int print(int) as p
+print p //function
+show p //type : function, return: int, param: (int)
+
+from "f.cpp" import int print(int*)
+from "f.cpp" import int print(const string&)
+from "f.cpp" import int print(int**)
+from "f.cpp" import int print(int***)
+from "f.cpp" import int print(int&&)
+from "f.cpp" import int print(int,char,string)
+
+print "end test import"
+print "end test import","blah"
+print "blah",p,"blah"
+
+char c = 'c'
+bool b = true
+int i = 42
+float f = 43.2
+double d = 44.5
+string s = "string_test"
+
+auto test = 68
+
+print test //68
+show test //type : int, value : 68
+
+run p(42) //synchon
+run p(i) //synchon
+run p(test) //synchon
+run p(1) as thread_p //asynchone
+
+thread_p.join() //synchonisation
+
+run p(2) as thread_p //asynchone
+thread_p.detach() //relase it
+
+delete thread_p
+
+run p(3) detached //asynchone
+run p(4) detached as thread_p //syntaxe error detached thread can't be stored
+
+compile "f.cpp" as libf
+from libf import int print
+
+compile "f.cpp", "f.cpp" as libf2
+
+compile "f.cpp", "f.cpp" with flags("o3","Wall") as libf3
+
+compile "f.cpp", "f.cpp" with flags("o3","Wall") link(p) as libf4
+
+wget "127.0.0.1:8000/test.cpp" as wget_file
+
+source "file.icpp"
+
+
+exit

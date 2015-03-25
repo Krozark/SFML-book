@@ -64,14 +64,16 @@ set(LIB_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 
 #extlibs
-add_subdirectory(extlibs/Box2D)
-add_subdirectory(extlibs/SFGUI)
-add_subdirectory(extlibs/SFML-utils)
-
 include_directories(${CMAKE_SOURCE_DIR}/extlibs)
 include_directories(${CMAKE_SOURCE_DIR}/extlibs/SFGUI/include)
+include_directories(${CMAKE_SOURCE_DIR}/extlibs/cpp-utils/include)
 include_directories(${CMAKE_SOURCE_DIR}/extlibs/SFML-utils/include)
-include_directories(${CMAKE_SOURCE_DIR}/extlibs/SFML-utils/extlibs/cpp-utils/include)
+
+add_subdirectory(extlibs/Box2D)
+add_subdirectory(extlibs/SFGUI)
+add_subdirectory(extlibs/cpp-utils)
+add_subdirectory(extlibs/SFML-utils)
+
 
 # add the subdirectories
 if(BOOK_BUILD_CHAPTER_1)
