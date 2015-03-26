@@ -28,9 +28,7 @@ Installation
 * press "configure" and "generate"
 * your file is now generated in the path/to/SFML-Book/build/ directory. You can use it to build the entire book projects.
 * notice that for windows user, you will have to copy the dll of the externals libraries to your system path
- * SFML-book\extlibs\SFML-utils\extlibs\cpp-utils\examples\*.dll
- * SFML-book\extlibs\SFML-utils\examples\*.dll
-
+ * lib
 	 
 
 
