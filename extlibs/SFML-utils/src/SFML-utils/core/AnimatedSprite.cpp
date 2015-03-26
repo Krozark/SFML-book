@@ -1,5 +1,6 @@
 #include <SFML-utils/core/AnimatedSprite.hpp>
 #include <SFML-utils/core/Animation.hpp>
+#include <cassert>
 
 namespace sfutils
 {
@@ -78,11 +79,9 @@ namespace sfutils
 
     void AnimatedSprite::setFrame(size_t index)
     {
-        if(_animation)
-        {
-            _currentFrame = index % _animation->size();
-            setFrame(_currentFrame,true);
-        }
+        assert(_animation);
+        _currentFrame = index % _animation->size();
+        setFrame(_currentFrame,true);
     }
 
     void AnimatedSprite::setColor(const sf::Color& color)
