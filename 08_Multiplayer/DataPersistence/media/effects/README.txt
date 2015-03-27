@@ -1,0 +1,2 @@
+Blood Animation Pack 1 created by Pow Studios (http://powstudios.com) and distributed under an Attribution Creative Commons License (http://creativecommons.org/licenses/by/3.0/).
+You are free to use the assets in this pack for any purpose as long as "Pow Studios" is given credit.

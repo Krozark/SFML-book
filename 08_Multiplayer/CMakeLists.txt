@@ -1,0 +1,2 @@
+add_subdirectory(Networking)
+add_subdirectory(DataPersistence)

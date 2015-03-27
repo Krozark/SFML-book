@@ -110,6 +110,6 @@ endif()
 
 #SFML-utils
 if(BOOK_BUILD_CHAPTER_8)
-    add_subdirectory(08_networking)
+    add_subdirectory(08_Multiplayer)
 endif()
 
