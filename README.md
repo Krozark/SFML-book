@@ -6,9 +6,9 @@ The code for the SFML book I write
 Videos
 ------
 
-chapter 3 : 
-* https://www.youtube.com/watch?v=R3QeqhO2P1c
-* https://youtu.be/EpZT4FGFGu0
+chapter 3 : https://youtu.be/EpZT4FGFGu0
+
+chapter 4: https://www.youtube.com/watch?v=R3QeqhO2P1c
 
 chapter 7 : https://www.youtube.com/watch?v=urs6nvBl6G8
 
