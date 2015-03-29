@@ -41,6 +41,7 @@ namespace book
     using MakeAs = std::function<void(Entity& entity,Team* team,Game& game)>;
 
     MakeAs getMakeAs(int id);
+    int getType(MakeAs func);
 
     void makeAsMain(Entity& entity,Team* team,Game& game);
     void makeAsEye(Entity& entity,Team* team,Game& game);

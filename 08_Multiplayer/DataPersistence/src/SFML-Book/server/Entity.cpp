@@ -59,6 +59,24 @@ namespace book
         }
     }
 
+    int getType(MakeAs func)
+    {
+        int res = -1;
+        if(func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsMain)
+            res = EntityType::IdMain;
+        else if(func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsEye)
+            res = EntityType::IdEye;
+        else if(func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsWormEgg)
+            res = EntityType::IdWormEgg;
+        else if(func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsWorm)
+            res = EntityType::IdWorm;
+        else if (func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsCarnivor)
+            res =  EntityType::IdCarnivor;
+
+        return res;
+        
+    }
+
     void makeAsMain(Entity& entity,Team* team,Game& game)
     {
         entity.setType(EntityType::IdMain);
