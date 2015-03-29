@@ -21,9 +21,9 @@ You need to have a valid clone of the SFML 2.2 or newer library (https://github.
 Installation
 ============
 
-* Clone this repo recursivly to get dependencies
+* Clone this repo
 
-     git clone --recursive https://github.com/Krozark/SFML-book.git
+     git clone https://github.com/Krozark/SFML-book.git
 	
 * Once it's done, use Cmake to build the project.
 	
