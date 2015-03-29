@@ -3,6 +3,15 @@ SFML-book
 
 The code for the SFML book I write
 
+Videos
+------
+
+chapitre 3 : https://www.youtube.com/watch?v=R3QeqhO2P1c
+https://youtu.be/EpZT4FGFGu0
+chapter 7 : https://www.youtube.com/watch?v=urs6nvBl6G8
+chapter 8 : https://youtu.be/n8G1FpdjY1g
+
+
 Requirements
 ============
 
