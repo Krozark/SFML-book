@@ -8,8 +8,6 @@ Videos
 
 chapter 3 : https://youtu.be/EpZT4FGFGu0
 
-chapter 4: https://www.youtube.com/watch?v=R3QeqhO2P1c
-
 chapter 7 : https://www.youtube.com/watch?v=urs6nvBl6G8
 
 chapter 8 : https://youtu.be/n8G1FpdjY1g
