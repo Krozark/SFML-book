@@ -1,3 +1,9 @@
+#include <ORM/backends/Sqlite3.hpp>
+orm::Sqlite3DB def("./08_dataPersistence.db");
+
+orm::DB& orm::DB::Default = def;
+
+
 #include <SFML-Book/server/Server.hpp>
 
 #include <iostream>

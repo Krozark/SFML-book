@@ -6,6 +6,7 @@ set(SRCROOT_COMMON ${SRCROOT}/../common)
 
 
 set(LIBS ${LIBS} utils-json)
+set(LIBS ${LIBS} orm-shared)
 
 
 #FILES

@@ -1,10 +1,13 @@
 #ifndef BOOK_COMPONENT_HPP
 #define BOOK_COMPONENT_HPP
 
+#include <unordered_map>
+
 #include <SFML-utils/ES.hpp>
 #include <SFML-utils/Core.hpp>
 
-#include <unordered_map>
+#include <ORM/fields.hpp>
+#include <ORM/models/SqlObject.hpp>
 
 #include <SFML-Book/server/Entity.hpp>
 
@@ -12,18 +15,31 @@ namespace book
 {
     class Team;
     class Game;
+}
 
-    //add some gold periodicly
-    struct CompAIMain : sfutils::Component<CompAIMain,Entity>
+    class CompAIMain : public sfutils::Component<CompAIMain,book::Entity>, public orm::SqlObject<CompAIMain>
     {
-        explicit CompAIMain(int gold,const sf::Time& timeDelta);
+        public:
+            CompAIMain();
+            explicit CompAIMain(int gold,const sf::Time& timeDelta);
 
-        const int _gold_amount;
-        const sf::Time _delta;
-        sf::Time _elapsed;
+            virtual void after_load() override;
+            virtual void before_save() override;
+            virtual void before_update() override;
+
+            orm::IntegerField _gold_amount;
+
+            sf::Time _delta;
+            orm::DoubleField _deltaAsDOuble;
+
+            sf::Time _elapsed;
+            orm::DoubleField _elapsedAsDouble;
+
+            MAKE_STATIC_COLUMN(_gold_amount,_deltaAsDOuble,_elapsedAsDouble)
     };
+    
 
-    struct CompAIWarrior : sfutils::Component<CompAIWarrior,Entity>
+    struct CompAIWarrior : sfutils::Component<CompAIWarrior,book::Entity>
     {
         explicit CompAIWarrior(int hitPoint,const sf::Time& timeDelta,int range);
 
@@ -34,7 +50,7 @@ namespace book
         std::uint32_t _enemyId;
     };
 
-    struct CompAIDefender : sfutils::Component<CompAIDefender,Entity>
+    struct CompAIDefender : sfutils::Component<CompAIDefender,book::Entity>
     {
         explicit CompAIDefender(int hitPoint,const sf::Time& timeDelta,int range);
 
@@ -44,9 +60,9 @@ namespace book
         const int _range;
     };
 
-    struct CompAISpawner : sfutils::Component<CompAISpawner,Entity>
+    struct CompAISpawner : sfutils::Component<CompAISpawner,book::Entity>
     {
-        using FuncType = std::function<void(Entity& entity,Team* team,Game& game)>;
+        using FuncType = std::function<void(book::Entity& entity,book::Team* team,book::Game& game)>;
 
         explicit CompAISpawner(FuncType makeAs,int number,const sf::Time& timeDelta);
         
@@ -56,7 +72,7 @@ namespace book
         sf::Time _elapsed;
     };
 
-    struct CompAIWalker : sfutils::Component<CompAIWalker,Entity>
+    struct CompAIWalker : sfutils::Component<CompAIWalker,book::Entity>
     {
         explicit CompAIWalker(float speed);
 
@@ -64,7 +80,7 @@ namespace book
         sf::Vector2i _pathToTake;
     };
 
-    struct CompAIFlyer : sfutils::Component<CompAIFlyer,Entity>
+    struct CompAIFlyer : sfutils::Component<CompAIFlyer,book::Entity>
     {
         explicit CompAIFlyer(float speed);
 
@@ -72,13 +88,13 @@ namespace book
         sf::Vector2i _pathToTake;
     };
 
-    struct CompTeam : sfutils::Component<CompTeam,Entity>
+    struct CompTeam : sfutils::Component<CompTeam,book::Entity>
     {
-        explicit CompTeam(Team* team);
-        Team* _team;
+        explicit CompTeam(book::Team* team);
+        book::Team* _team;
     };
 
-    struct CompSkin : sfutils::Component<CompSkin,Entity>
+    struct CompSkin : sfutils::Component<CompSkin,book::Entity>
     {
         enum AnimationId : int{
             Stand = 0,
@@ -94,7 +110,7 @@ namespace book
         short int _animationId;
     };
 
-    struct CompHp : sfutils::Component<CompHp,Entity>
+    struct CompHp : sfutils::Component<CompHp,book::Entity>
     {
         explicit CompHp(int hp);
 
@@ -103,8 +119,4 @@ namespace book
     };
 
 
-    struct CompUpgradable : sfutils::Component<CompUpgradable,Entity>
-    {
-    };
-}
 #endif

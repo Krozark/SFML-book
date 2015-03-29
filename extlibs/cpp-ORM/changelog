@@ -1,0 +1,49 @@
+0.4.0
+=====
+
+Fields
+------
+
+* Update DateTimeFiled for windows support
+
+Backends
+--------
+
+* Remove extarnals dependencies for sqlite3
+
+Cmake
+-----
+
+* Add option for each backends such as
+ * BUILD_SUPPORT_SQLITE3
+ * BUILD_SUPPORT_MYSQL
+
+0.3.5
+=====
+
+Fields
+-------
+
+* Add DateTimeField
+* Add AutoDateTimeField
+* Add AutoNowDateTimeField
+
+Add [before/after]_[save/update] methods
+
+You can now add some logical befor/after a BD query is made 
+
+SqlObjectBase
+-------------
+
+Add [before/after]_[save/update] methods
+
+You can now add some logical befor/after a BD query is made 
+
+
+
+
+0.3.4:
+======
+
+Add M2MRegister
+Add M2MFilter

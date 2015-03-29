@@ -1,10 +1,37 @@
 #include <SFML-Book/server/Component.hpp>
 
-namespace book
-{
-    CompAIMain::CompAIMain(int gold,const sf::Time& timeDelta) :_gold_amount(gold),_delta(timeDelta), _elapsed(sf::Time::Zero)
+
+/////////// CompAIMain ///////////////
+
+    REGISTER_AND_CONSTRUCT(CompAIMain,"CompAIMain",\
+                           _gold_amount,"gold_amount",\
+                           _deltaAsDOuble,"deltaAsDOuble",\
+                           _elapsedAsDouble,"elapsedAsDouble")
+
+
+    CompAIMain::CompAIMain(int gold,const sf::Time& timeDelta) :CompAIMain()
     {
+        _gold_amount = gold;
+        _delta = timeDelta;
+        _elapsed = sf::Time::Zero;
     }
+
+    void CompAIMain::after_load()
+    {
+        _delta = sf::seconds(_deltaAsDOuble);
+        _elapsed = sf::seconds(_elapsedAsDouble);
+    }
+
+    void CompAIMain::before_save()
+    {
+        _deltaAsDOuble = _delta.asSeconds();
+        _elapsedAsDouble = _elapsed.asSeconds();
+    }
+
+    void CompAIMain::before_update()
+    {
+        before_save(); 
+    }   
 
     CompAIWarrior::CompAIWarrior(int hitPoint,const sf::Time& timeDelta,int range) : _hitPoint(hitPoint), _delta(timeDelta), _elapsed(sf::Time::Zero), _range(range), _enemyId(-1)
     {
@@ -26,7 +53,7 @@ namespace book
     {
     }
 
-    CompTeam::CompTeam(Team* team) : _team(team)
+    CompTeam::CompTeam(book::Team* team) : _team(team)
     {
     }
 
@@ -38,4 +65,3 @@ namespace book
     {
     }
 
-}
