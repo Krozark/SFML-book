@@ -16,7 +16,11 @@
 /**
  * \brief make string name for attrs
  **/
-#define _MAKE_NAME(name)  _ ## name
+//#ifndef ORM_COLUMN_CHAR
+//#define ORM_COLUMN_CHAR $
+//#endif
+
+#define ORM_MAKE_NAME(name)  $ ## name
 
 #define _MAKE_NAME_VALUE(klass,value)  value
 
@@ -24,38 +28,38 @@
  * \brief make string initialisation for attrs
  **/
 #define _MAKE_STRING_0(klass)
-#define _MAKE_STRING_2(klass,name,value) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value);
-#define _MAKE_STRING_4(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_2(klass,__VA_ARGS__)
-#define _MAKE_STRING_6(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_4(klass,__VA_ARGS__)
-#define _MAKE_STRING_8(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_6(klass,__VA_ARGS__)
-#define _MAKE_STRING_10(klass,name,value,...) const std::string klass::_MAKE_NAME(name)  = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_8(klass,__VA_ARGS__)
-#define _MAKE_STRING_12(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_10(klass,__VA_ARGS__)
-#define _MAKE_STRING_14(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_12(klass,__VA_ARGS__)
-#define _MAKE_STRING_16(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_14(klass,__VA_ARGS__)
-#define _MAKE_STRING_18(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_16(klass,__VA_ARGS__)
-#define _MAKE_STRING_20(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_18(klass,__VA_ARGS__)
-#define _MAKE_STRING_22(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_20(klass,__VA_ARGS__)
-#define _MAKE_STRING_24(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_22(klass,__VA_ARGS__)
-#define _MAKE_STRING_26(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_24(klass,__VA_ARGS__)
-#define _MAKE_STRING_28(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_26(klass,__VA_ARGS__)
-#define _MAKE_STRING_30(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_28(klass,__VA_ARGS__)
-#define _MAKE_STRING_32(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_30(klass,__VA_ARGS__)
-#define _MAKE_STRING_34(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_32(klass,__VA_ARGS__)
-#define _MAKE_STRING_36(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_34(klass,__VA_ARGS__)
-#define _MAKE_STRING_38(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_36(klass,__VA_ARGS__)
-#define _MAKE_STRING_40(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_38(klass,__VA_ARGS__)
-#define _MAKE_STRING_42(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_40(klass,__VA_ARGS__)
-#define _MAKE_STRING_44(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_42(klass,__VA_ARGS__)
-#define _MAKE_STRING_46(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_44(klass,__VA_ARGS__)
-#define _MAKE_STRING_48(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_46(klass,__VA_ARGS__)
-#define _MAKE_STRING_50(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_48(klass,__VA_ARGS__)
-#define _MAKE_STRING_52(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_50(klass,__VA_ARGS__)
-#define _MAKE_STRING_54(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_52(klass,__VA_ARGS__)
-#define _MAKE_STRING_56(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_54(klass,__VA_ARGS__)
-#define _MAKE_STRING_58(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_56(klass,__VA_ARGS__)
-#define _MAKE_STRING_60(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_58(klass,__VA_ARGS__)
-#define _MAKE_STRING_62(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_60(klass,__VA_ARGS__)
-#define _MAKE_STRING_64(klass,name,value,...) const std::string klass::_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_62(klass,__VA_ARGS__)
+#define _MAKE_STRING_2(klass,name,value) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value);
+#define _MAKE_STRING_4(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_2(klass,__VA_ARGS__)
+#define _MAKE_STRING_6(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_4(klass,__VA_ARGS__)
+#define _MAKE_STRING_8(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_6(klass,__VA_ARGS__)
+#define _MAKE_STRING_10(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name)  = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_8(klass,__VA_ARGS__)
+#define _MAKE_STRING_12(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_10(klass,__VA_ARGS__)
+#define _MAKE_STRING_14(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_12(klass,__VA_ARGS__)
+#define _MAKE_STRING_16(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_14(klass,__VA_ARGS__)
+#define _MAKE_STRING_18(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_16(klass,__VA_ARGS__)
+#define _MAKE_STRING_20(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_18(klass,__VA_ARGS__)
+#define _MAKE_STRING_22(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_20(klass,__VA_ARGS__)
+#define _MAKE_STRING_24(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_22(klass,__VA_ARGS__)
+#define _MAKE_STRING_26(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_24(klass,__VA_ARGS__)
+#define _MAKE_STRING_28(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_26(klass,__VA_ARGS__)
+#define _MAKE_STRING_30(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_28(klass,__VA_ARGS__)
+#define _MAKE_STRING_32(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_30(klass,__VA_ARGS__)
+#define _MAKE_STRING_34(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_32(klass,__VA_ARGS__)
+#define _MAKE_STRING_36(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_34(klass,__VA_ARGS__)
+#define _MAKE_STRING_38(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_36(klass,__VA_ARGS__)
+#define _MAKE_STRING_40(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_38(klass,__VA_ARGS__)
+#define _MAKE_STRING_42(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_40(klass,__VA_ARGS__)
+#define _MAKE_STRING_44(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_42(klass,__VA_ARGS__)
+#define _MAKE_STRING_46(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_44(klass,__VA_ARGS__)
+#define _MAKE_STRING_48(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_46(klass,__VA_ARGS__)
+#define _MAKE_STRING_50(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_48(klass,__VA_ARGS__)
+#define _MAKE_STRING_52(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_50(klass,__VA_ARGS__)
+#define _MAKE_STRING_54(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_52(klass,__VA_ARGS__)
+#define _MAKE_STRING_56(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_54(klass,__VA_ARGS__)
+#define _MAKE_STRING_58(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_56(klass,__VA_ARGS__)
+#define _MAKE_STRING_60(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_58(klass,__VA_ARGS__)
+#define _MAKE_STRING_62(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_60(klass,__VA_ARGS__)
+#define _MAKE_STRING_64(klass,name,value,...) const std::string klass::ORM_MAKE_NAME(name) = _MAKE_NAME_VALUE(klass,value); _MAKE_STRING_62(klass,__VA_ARGS__)
 /**
  * \brief init call
  **/
@@ -66,38 +70,38 @@
  * \brief make static const std::string param_name
  **/
 #define _MAKE_STATIC_COLUMN_0
-#define _MAKE_STATIC_COLUMN_1(name) static const std::string _MAKE_NAME(name);
-#define _MAKE_STATIC_COLUMN_2(name,...)  static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_1(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_3(name,...)  static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_2(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_4(name,...)  static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_3(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_5(name,...)  static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_4(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_6(name,...)  static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_5(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_7(name,...)  static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_6(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_8(name,...)  static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_7(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_9(name,...)  static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_8(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_10(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_9(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_11(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_10(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_12(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_11(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_13(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_12(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_14(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_13(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_15(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_14(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_16(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_15(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_17(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_16(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_18(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_17(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_19(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_18(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_20(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_19(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_21(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_20(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_22(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_21(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_23(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_22(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_24(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_23(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_25(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_24(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_26(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_25(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_27(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_26(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_28(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_27(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_29(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_28(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_30(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_30(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_31(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_31(__VA_ARGS__)
-#define _MAKE_STATIC_COLUMN_32(name,...) static const std::string _MAKE_NAME(name); _MAKE_STATIC_COLUMN_32(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_1(name) static const std::string ORM_MAKE_NAME(name);
+#define _MAKE_STATIC_COLUMN_2(name,...)  static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_1(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_3(name,...)  static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_2(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_4(name,...)  static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_3(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_5(name,...)  static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_4(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_6(name,...)  static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_5(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_7(name,...)  static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_6(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_8(name,...)  static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_7(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_9(name,...)  static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_8(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_10(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_9(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_11(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_10(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_12(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_11(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_13(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_12(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_14(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_13(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_15(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_14(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_16(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_15(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_17(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_16(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_18(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_17(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_19(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_18(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_20(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_19(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_21(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_20(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_22(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_21(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_23(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_22(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_24(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_23(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_25(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_24(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_26(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_25(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_27(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_26(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_28(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_27(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_29(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_28(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_30(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_30(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_31(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_31(__VA_ARGS__)
+#define _MAKE_STATIC_COLUMN_32(name,...) static const std::string ORM_MAKE_NAME(name); _MAKE_STATIC_COLUMN_32(__VA_ARGS__)
 /**
  * \brief init call
  **/
@@ -115,38 +119,38 @@
  * \brief call Attr constructor
  **/
 #define _MAKE_ATTR_0()
-#define _MAKE_ATTR_2(name,value) name(_MAKE_NAME(name))
-#define _MAKE_ATTR_4(name,value,...)  name(_MAKE_NAME(name)), _MAKE_ATTR_2(__VA_ARGS__)
-#define _MAKE_ATTR_6(name,value,...)  name(_MAKE_NAME(name)), _MAKE_ATTR_4(__VA_ARGS__)
-#define _MAKE_ATTR_8(name,value,...)  name(_MAKE_NAME(name)), _MAKE_ATTR_6(__VA_ARGS__)
-#define _MAKE_ATTR_10(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_8(__VA_ARGS__)
-#define _MAKE_ATTR_12(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_10(__VA_ARGS__)
-#define _MAKE_ATTR_14(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_12(__VA_ARGS__)
-#define _MAKE_ATTR_16(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_14(__VA_ARGS__)
-#define _MAKE_ATTR_18(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_16(__VA_ARGS__)
-#define _MAKE_ATTR_20(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_18(__VA_ARGS__)
-#define _MAKE_ATTR_22(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_20(__VA_ARGS__)
-#define _MAKE_ATTR_24(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_22(__VA_ARGS__)
-#define _MAKE_ATTR_26(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_24(__VA_ARGS__)
-#define _MAKE_ATTR_28(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_26(__VA_ARGS__)
-#define _MAKE_ATTR_30(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_28(__VA_ARGS__)
-#define _MAKE_ATTR_32(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_30(__VA_ARGS__)
-#define _MAKE_ATTR_34(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_32(__VA_ARGS__)
-#define _MAKE_ATTR_36(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_34(__VA_ARGS__)
-#define _MAKE_ATTR_38(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_36(__VA_ARGS__)
-#define _MAKE_ATTR_40(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_38(__VA_ARGS__)
-#define _MAKE_ATTR_42(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_40(__VA_ARGS__)
-#define _MAKE_ATTR_44(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_42(__VA_ARGS__)
-#define _MAKE_ATTR_46(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_44(__VA_ARGS__)
-#define _MAKE_ATTR_48(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_46(__VA_ARGS__)
-#define _MAKE_ATTR_50(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_48(__VA_ARGS__)
-#define _MAKE_ATTR_52(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_50(__VA_ARGS__)
-#define _MAKE_ATTR_54(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_52(__VA_ARGS__)
-#define _MAKE_ATTR_56(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_54(__VA_ARGS__)
-#define _MAKE_ATTR_58(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_56(__VA_ARGS__)
-#define _MAKE_ATTR_60(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_58(__VA_ARGS__)
-#define _MAKE_ATTR_62(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_60(__VA_ARGS__)
-#define _MAKE_ATTR_64(name,value,...) name(_MAKE_NAME(name)), _MAKE_ATTR_62(__VA_ARGS__)
+#define _MAKE_ATTR_2(name,value) name(ORM_MAKE_NAME(name))
+#define _MAKE_ATTR_4(name,value,...)  name(ORM_MAKE_NAME(name)), _MAKE_ATTR_2(__VA_ARGS__)
+#define _MAKE_ATTR_6(name,value,...)  name(ORM_MAKE_NAME(name)), _MAKE_ATTR_4(__VA_ARGS__)
+#define _MAKE_ATTR_8(name,value,...)  name(ORM_MAKE_NAME(name)), _MAKE_ATTR_6(__VA_ARGS__)
+#define _MAKE_ATTR_10(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_8(__VA_ARGS__)
+#define _MAKE_ATTR_12(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_10(__VA_ARGS__)
+#define _MAKE_ATTR_14(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_12(__VA_ARGS__)
+#define _MAKE_ATTR_16(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_14(__VA_ARGS__)
+#define _MAKE_ATTR_18(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_16(__VA_ARGS__)
+#define _MAKE_ATTR_20(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_18(__VA_ARGS__)
+#define _MAKE_ATTR_22(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_20(__VA_ARGS__)
+#define _MAKE_ATTR_24(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_22(__VA_ARGS__)
+#define _MAKE_ATTR_26(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_24(__VA_ARGS__)
+#define _MAKE_ATTR_28(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_26(__VA_ARGS__)
+#define _MAKE_ATTR_30(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_28(__VA_ARGS__)
+#define _MAKE_ATTR_32(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_30(__VA_ARGS__)
+#define _MAKE_ATTR_34(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_32(__VA_ARGS__)
+#define _MAKE_ATTR_36(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_34(__VA_ARGS__)
+#define _MAKE_ATTR_38(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_36(__VA_ARGS__)
+#define _MAKE_ATTR_40(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_38(__VA_ARGS__)
+#define _MAKE_ATTR_42(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_40(__VA_ARGS__)
+#define _MAKE_ATTR_44(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_42(__VA_ARGS__)
+#define _MAKE_ATTR_46(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_44(__VA_ARGS__)
+#define _MAKE_ATTR_48(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_46(__VA_ARGS__)
+#define _MAKE_ATTR_50(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_48(__VA_ARGS__)
+#define _MAKE_ATTR_52(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_50(__VA_ARGS__)
+#define _MAKE_ATTR_54(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_52(__VA_ARGS__)
+#define _MAKE_ATTR_56(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_54(__VA_ARGS__)
+#define _MAKE_ATTR_58(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_56(__VA_ARGS__)
+#define _MAKE_ATTR_60(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_58(__VA_ARGS__)
+#define _MAKE_ATTR_62(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_60(__VA_ARGS__)
+#define _MAKE_ATTR_64(name,value,...) name(ORM_MAKE_NAME(name)), _MAKE_ATTR_62(__VA_ARGS__)
 /**
  * \brief init call
  **/
@@ -274,9 +278,9 @@
 
 #define M2M_REGISTER(klass,m2m,T_linked,table_name,owner_column,linked_column) \
     template<> const std::string orm::ManyToMany<klass,T_linked>::table = table_name;\
-    template<> const std::string orm::ManyToMany<klass,T_linked>::_owner = owner_column;\
-    template<> const std::string orm::ManyToMany<klass,T_linked>::_linked = linked_column;\
-    template<> const std::string orm::ManyToMany<klass,T_linked>::_related = JOIN_ALIAS(table_name,linked_column);\
+    template<> const std::string orm::ManyToMany<klass,T_linked>::ORM_MAKE_NAME(owner) = owner_column;\
+    template<> const std::string orm::ManyToMany<klass,T_linked>::ORM_MAKE_NAME(linked) = linked_column;\
+    template<> const std::string orm::ManyToMany<klass,T_linked>::ORM_MAKE_NAME(related) = JOIN_ALIAS(table_name,linked_column);\
     template<> orm::DB* orm::ManyToMany<klass,T_linked>::default_connection = &orm::DB::Default;\
     template<> orm::M2MRegister<klass,T_linked> orm::ManyToMany<klass,T_linked>::_register = orm::M2MRegister<klass,T_linked>();
 

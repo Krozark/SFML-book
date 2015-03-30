@@ -106,7 +106,7 @@ namespace orm
         std::string res = mysql_escape(colunm_name)+" INTEGER";
         if(not nullable)
             res+= " NOT NULL";
-        res+= " REFERENCES " + mysql_escape(table) + "(`id`)";
+        res+= " REFERENCES " + mysql_escape(table) + "(`pk`)";
         return res;
     }
 

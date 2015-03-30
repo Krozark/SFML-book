@@ -31,27 +31,28 @@ namespace orm
     template<typename T>
     const SqlObjectBase& FKBase<T>::getObject(DB& db,int max_depth)
     {
-        return *getObjectT_ptr(db,max_depth);
+        setObjectT_ptr(db,max_depth);
+        return *value_ptr;
     };
 
     template<typename T>
-    T* FKBase<T>::getObjectT_ptr(DB& db,int max_depth)
+    void FKBase<T>::setObjectT_ptr(DB& db,int max_depth)
     {
-        if (not loaded)
+        //if (not loaded)
+        if (not value_ptr.get())
         {
             if(fk>0)
             {
                 const unsigned int id = fk;
                 value_ptr = T::cache.getOrCreate(id,db,max_depth);
-                loaded = modify = true;
+                /*loaded =*/ modify = true;
             }
             else
             {
                 value_ptr.reset(new T());
-                loaded = modify = true;
+                /*loaded =*/ modify = true;
             }
         }
-        return value_ptr.get();
     };
 
     template<typename T>
@@ -65,7 +66,7 @@ namespace orm
             {
                 const unsigned int id = fk;
                 value_ptr = T::cache.getOrCreate(id,query,prefix,max_depth);
-                loaded = true;
+                //loaded = true;
             }
             else
             {
@@ -83,7 +84,8 @@ namespace orm
     template<typename T>
     std::ostream& FKBase<T>::print_value(std::ostream& output)const
     {
-        if(loaded)
+        //if(loaded)
+        if(value_ptr.get())
             output<<(*value_ptr);
         else
             output<<"{\"pk\":\""<<fk<<"\",\"_data_\" = null}";
@@ -96,28 +98,43 @@ namespace orm
         /*if (not nullable)
         {
             if(not loaded)
-                getObjectT_ptr();
+                setObjectT_ptr();
             return query.set(fk,column);
         }
         return query.setNull(fk,column);
         */
-        if(loaded)
+        //if(loaded)
+        if(value_ptr.get())
             return query.set(fk,column);
         return query.setNull(fk,column);
     };
 
     template<typename T>
-    T* FKBase<T>::operator->()
+    typename T::type_ptr FKBase<T>::operator->()
     {
         modify = true;
-        return getObjectT_ptr(*T::default_connection);
+        setObjectT_ptr(*T::default_connection);
+        return value_ptr;
     };
 
     template<typename T>
     T& FKBase<T>::operator*()
     {
-        return *getObjectT_ptr(*T::default_connection);
+        setObjectT_ptr(*T::default_connection);
+        return *value_ptr;
     };
+
+    template<typename T>
+    FKBase<T>::operator typename T::type_ptr() const
+    {
+        return value_ptr;
+    }
+
+    template<typename T>
+    FKBase<T>::operator bool()const
+    {
+        return value_ptr.get();
+    }
 
     template<typename T>
     FKBase<T>& FKBase<T>::operator=(const FKBase<T>& other)
@@ -125,7 +142,7 @@ namespace orm
         modify = true;
         fk = other.fk;
         value_ptr = other.value_ptr;
-        loaded = other.loaded;
+        //loaded = other.loaded;
         return *this;
     }
 
@@ -135,7 +152,7 @@ namespace orm
         modify = true;
         fk = other->pk;
         value_ptr = other;
-        loaded = true;
+        //loaded = true;
         return *this;
     }
 
@@ -146,7 +163,7 @@ namespace orm
 
         if(not nullable)
         {
-            getObjectT_ptr(db);
+            setObjectT_ptr(db);
         }
         if(modify)
         {
@@ -165,7 +182,8 @@ namespace orm
     bool FKBase<T>::del(bool recursive,DB& db)
     {
         bool res = false;
-        if(loaded)
+        //if(loaded)
+        if(value_ptr.get())
         {
             res = value_ptr->del(recursive,db);
             fk = value_ptr->pk;

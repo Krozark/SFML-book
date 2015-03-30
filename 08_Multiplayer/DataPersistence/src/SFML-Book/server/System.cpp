@@ -22,7 +22,7 @@ namespace book
         auto end = view.end();
         for(auto begin = view.begin();begin != end;++begin)
         {
-            if(team->_team != nullptr)
+            if(team->_team)
             {
                 AI->_elapsed += dt;
                 while(AI->_elapsed > AI->_delta)
@@ -35,7 +35,7 @@ namespace book
     }
 
     ///////////////////// SYS AI WARRIOR ///////////////////////
-    bool isEnemy(const std::vector<Team*>& enemies,Team* t)
+    bool isEnemy(const std::vector<Team::type_ptr>& enemies,Team::type_ptr t)
     {
         size_t size = enemies.size();
         for(size_t i=0;i<size;++i)
@@ -65,7 +65,7 @@ namespace book
             if(AI->_elapsed < AI->_delta)
                 continue;
 
-            std::vector<Team*> teamEnemies = team->_team->getEnemies();
+            std::vector<Team::type_ptr> teamEnemies = team->_team->getEnemies();
 
             //if no enemies
             if(teamEnemies.size() <=0)
@@ -99,7 +99,7 @@ namespace book
                     {
                         if(e->has<CompTeam>() and e->has<CompHp>()) //check its team
                         {
-                            Team* t = e->component<CompTeam>()->_team;
+                            Team::type_ptr t = e->component<CompTeam>()->_team;
                             if( isEnemy(teamEnemies,t))
                             {
                                 AI->_enemyId = e->id();
@@ -186,7 +186,7 @@ end_search: //exit nesteed loops
             if(AI->_elapsed < AI->_delta)
                 continue;
 
-            std::vector<Team*> teamEnemies = team->_team->getEnemies();
+            std::vector<Team::type_ptr> teamEnemies = team->_team->getEnemies();
 
             //if no enemies
             if(teamEnemies.size() <=0)
@@ -210,7 +210,7 @@ end_search: //exit nesteed loops
                     {
                         if(e->has<CompTeam>() and e->has<CompHp>()) //check its team
                         {
-                            Team* t = e->component<CompTeam>()->_team;
+                            Team::type_ptr t = e->component<CompTeam>()->_team;
                             if( isEnemy(teamEnemies,t))
                             {
                                 id = e->id();
@@ -263,7 +263,7 @@ end_search: //exit nesteed loops
         auto end = view.end();
         for(auto begin = view.begin();begin != end;++begin)
         {
-            if(team->_team != nullptr)
+            if(team->_team)
             {
                 AI->_elapsed += dt;
                 const Entity& e = **begin;

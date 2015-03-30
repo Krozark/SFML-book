@@ -3,21 +3,21 @@ namespace orm
     template<typename T>
     Cache<T>::Cache()
     {
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         #if ORM_DEBUG & ORM_DEBUG_REGISTER
         std::cerr<<MAGENTA<<"[Register] Cache of "<<T::table<<BLANC<<std::endl;
         #endif
-#endif
+        #endif
     };
 
     template<typename T>
     Cache<T>::~Cache()
     {
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         #if ORM_DEBUG & ORM_DEBUG_REGISTER
         std::cerr<<MAGENTA<<"[Delete] Cache of "<<T::table<<BLANC<<std::endl;
         #endif
-#endif
+        #endif
     }
 
     template<typename T>
@@ -25,28 +25,28 @@ namespace orm
     {
         //std::lock_guard<std::mutex> lock(_mutex);//lock
         //already existe
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         const auto& res= map.find(pk);
         if(res != map.end())
             return res->second;
-#endif
+        #endif
 
         T* ptr = T::_get_ptr(pk,db,max_depth);
         if(ptr == nullptr)
             ptr = new T();
             
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         map[pk].reset(ptr);
         return map[pk];
-#else
+        #else
         return type_ptr(ptr);
-#endif
+        #endif
     }
     
     template<typename T>
     typename Cache<T>::type_ptr Cache<T>::getOrCreate(const unsigned int& pk,const Query& query,int& prefix,int max_depth)
     {
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         const auto& res= map.find(pk);
         if(res != map.end())
         {
@@ -55,9 +55,9 @@ namespace orm
         }
         type_ptr& r= map[pk];
         r.reset(T::createFromDB(query,prefix,max_depth));
-#else
+        #else
         type_ptr r(T::createFromDB(query,prefix,max_depth));
-#endif
+        #endif
         return r;
     }
 
@@ -68,15 +68,15 @@ namespace orm
         int index = query.db.getInitialGetcolumnNumber();
         query.get(pk,index);
         
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         const auto& res= map.find(pk);
         if(res != map.end())
             return res->second;
         type_ptr& r= map[pk];
         r.reset(T::createFromDB(query,--index,max_depth));
-#else
+        #else
         type_ptr r(T::createFromDB(query,--index,max_depth));
-#endif
+        #endif
         return r;
     }
 
@@ -85,16 +85,16 @@ namespace orm
     template<typename T>
     void Cache<T>::__print__()
     {
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         for(auto& i : map)
             std::cerr<<*i.second<<std::endl;
-#endif
+        #endif
     }
 
     template<typename T>
     void Cache<T>::clear(bool reset_pk)
     {
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         if(reset_pk)
         {
             for(auto& i : map)
@@ -102,7 +102,7 @@ namespace orm
                 
         }
         map.clear();
-#endif
+        #endif
     }
 
 /////////////////// PRIVATE ////////////////////
@@ -110,14 +110,14 @@ namespace orm
     template<typename T>
     typename Cache<T>::type_ptr& Cache<T>::add(typename Cache<T>::type_ptr& obj)
     {
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         const auto& res=map.find(obj->pk);
         if(res != map.end())
         {
             return res->second;
         }
         map[obj->pk] = obj;
-#endif
+        #endif
         return obj;
     }
 
@@ -135,7 +135,7 @@ namespace orm
         return r;
     }*/
 
-#ifdef ORM_USE_CACHE
+    #ifdef ORM_USE_CACHE
     template<typename T>
     typename Cache<T>::type_ptr& Cache<T>::getOrCreate(T* tmp)
     {
@@ -149,16 +149,16 @@ namespace orm
         r.reset(tmp);
         return r;
     }
-#endif
+    #endif
 
 
 
     template<typename T>
     void Cache<T>::del(const unsigned int& pk)
     {
-#ifdef ORM_USE_CACHE
+        #ifdef ORM_USE_CACHE
         map.erase(pk);
-#endif
+        #endif
     }
 
 

@@ -15,13 +15,13 @@
 #include <SFML-utils/Map.hpp>
 
 #include <SFML-Book/server/Entity.hpp>
+#include <SFML-Book/server/Team.hpp>
 
 #include <SFML-Book/common/Packet.hpp>
 #include <SFML-Book/common/std_hash.hpp>
 
 namespace book
 {
-    class Team;
     class Client;
 
     class Game : private sfutils::Application<Entity>
@@ -43,7 +43,7 @@ namespace book
             void run();
             void stop();
 
-            Entity& createEntity(const sf::Vector2i& coord,Team* team,MakeAs makeAs);
+            Entity& createEntity(const sf::Vector2i& coord,Team::type_ptr team,MakeAs makeAs);
             void markEntityUpdated(std::uint32_t id);
             void markEntityHit(std::uint32_t id,std::uint32_t enemyId);
             void markEntityHitted(std::uint32_t id,std::uint32_t enemyId);
@@ -85,7 +85,7 @@ namespace book
             sf::Vector2i _maxCoord;
             
             sf::Mutex _teamMutex;
-            std::vector<Team*> _teams;
+            std::vector<Team::type_ptr> _teams;
 
             sf::Mutex _clientsMutex;
             std::vector<Client*> _clients;

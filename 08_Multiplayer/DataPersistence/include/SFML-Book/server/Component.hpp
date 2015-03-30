@@ -10,10 +10,10 @@
 #include <ORM/models/SqlObject.hpp>
 
 #include <SFML-Book/server/Entity.hpp>
+#include <SFML-Book/server/Team.hpp>
 
 namespace book
 {
-    class Team;
     class Game;
 }
 
@@ -89,16 +89,15 @@ class CompAIDefender : public sfutils::Component<CompAIDefender,book::Entity>, p
 class CompAISpawner : public sfutils::Component<CompAISpawner,book::Entity>, public orm::SqlObject<CompAISpawner>
 {
     public:
-        using FuncType = std::function<void(book::Entity& entity,book::Team* team,book::Game& game)>;
 
         CompAISpawner();
-        explicit CompAISpawner(FuncType makeAs,int number,const sf::Time& timeDelta);
+        explicit CompAISpawner(book::MakeAs makeAs,int number,const sf::Time& timeDelta);
 
         virtual void after_load() override;
         virtual void before_save() override;
         virtual void before_update() override;
     
-        FuncType _makeAs;
+        book::MakeAs _makeAs;
         orm::IntegerField _makeAsTypeId;
 
         orm::IntegerField _number;
@@ -150,10 +149,17 @@ class CompAIFlyer : public sfutils::Component<CompAIFlyer,book::Entity>, public 
         MAKE_STATIC_COLUMN(_speed,_pathToTakeX,_pathToTakeY)
 };
 
-struct CompTeam : sfutils::Component<CompTeam,book::Entity>
+class CompTeam : public sfutils::Component<CompTeam,book::Entity>, public orm::SqlObject<CompTeam>
 {
-    explicit CompTeam(book::Team* team);
-    book::Team* _team;
+    public:
+        CompTeam();
+        explicit CompTeam(Team::type_ptr team);
+
+        //book::Team* _team;
+
+        orm::FK<Team> _team;
+        
+        MAKE_STATIC_COLUMN(_team)
 };
 
 struct CompSkin : sfutils::Component<CompSkin,book::Entity>

@@ -5,11 +5,11 @@
 
 #include <SFML-utils/ES.hpp>
 #include <SFML-utils/Core.hpp>
+#include <SFML-Book/server/Team.hpp>
 
 namespace book
 {
     class Game;
-    class Team;
     
     class Entity : public sfutils::Entity<Entity>
     {
@@ -38,16 +38,16 @@ namespace book
             short int _type;
     };
 
-    using MakeAs = std::function<void(Entity& entity,Team* team,Game& game)>;
+    using MakeAs = std::function<void(Entity& entity,Team::type_ptr team,Game& game)>;
 
     MakeAs getMakeAs(int id);
     int getType(MakeAs func);
 
-    void makeAsMain(Entity& entity,Team* team,Game& game);
-    void makeAsEye(Entity& entity,Team* team,Game& game);
-    void makeAsWormEgg(Entity& entity,Team* team,Game& game);
-    void makeAsWorm(Entity& entity,Team* team,Game& game);
-    void makeAsCarnivor(Entity& entity,Team* team,Game& game);
+    void makeAsMain(Entity& entity,Team::type_ptr team,Game& game);
+    void makeAsEye(Entity& entity,Team::type_ptr team,Game& game);
+    void makeAsWormEgg(Entity& entity,Team::type_ptr team,Game& game);
+    void makeAsWorm(Entity& entity,Team::type_ptr team,Game& game);
+    void makeAsCarnivor(Entity& entity,Team::type_ptr team,Game& game);
 
 
 }

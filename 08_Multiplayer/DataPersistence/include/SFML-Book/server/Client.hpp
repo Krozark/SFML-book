@@ -2,11 +2,10 @@
 #define BOOK_CLIENT_HPP
 
 #include <SFML-Book/common/Connection.hpp>
-
+#include <SFML-Book/server/Team.hpp>
 
 namespace book
 {
-    class Team;
     class Client : public Connection
     {
         public:
@@ -16,15 +15,15 @@ namespace book
             Client();
             ~Client();
 
-            void setTeam(Team* team);
-            Team* getTeam()const;
+            void setTeam(Team::type_ptr team);
+            Team::type_ptr getTeam()const;
 
             bool connect();
             virtual sf::IpAddress getRemoteAddress()const;
 
             sf::TcpSocket& getSockIn();
         private:
-        Team* _team;
+            Team::type_ptr _team;
 
     };
 }

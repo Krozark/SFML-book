@@ -22,7 +22,7 @@ namespace orm
     };
 
     template<typename T>
-    typename Cache<T>::type_ptr SqlObject<T>::get(const unsigned int& id,DB& db,int max_depth)
+    typename SqlObject<T>::type_ptr SqlObject<T>::get(const unsigned int& id,DB& db,int max_depth)
     {
         return cache.getOrCreate(id,db,max_depth);
     }
@@ -41,7 +41,7 @@ namespace orm
 
         q_str+=" \nWHERE ("
         +db.escapeColumn(table)+"."
-        +db.escapeColumn("id")
+        +db.escapeColumn("pk")
         +" = "+std::to_string(id)
         +") ";
 
@@ -61,9 +61,9 @@ namespace orm
     };
 
     template<typename T>
-    std::list<typename Cache<T>::type_ptr> SqlObject<T>::all(DB& db,int max_depth)
+    typename SqlObject<T>::result_type SqlObject<T>::all(DB& db,int max_depth)
     {
-        std::list<typename Cache<T>::type_ptr> results;
+        result_type results;
         query(db).get(results,max_depth);
         return results;
     };
@@ -163,7 +163,7 @@ namespace orm
     template<typename T>
     void SqlObject<T>::nameAttrs(std::string& q_str,const std::string& prefix,int max_depth,DB& db)
     {
-        q_str+= db.escapeColumn(prefix)+"."+db.escapeColumn("id")+" AS "+JOIN_ALIAS(prefix,"id");
+        q_str+= db.escapeColumn(prefix)+"."+db.escapeColumn("pk")+" AS "+JOIN_ALIAS(prefix,"pk");
         
         const int size = column_attrs.size();
 
@@ -202,7 +202,7 @@ namespace orm
             q_str+= "\nLEFT JOIN "+object.getTable()+" AS "+table_alias
                 +" ON ("
                 +db.escapeColumn(prefix)+"."+db.escapeColumn(col)
-                +" = "+db.escapeColumn(table_alias)+"."+db.escapeColumn("id")
+                +" = "+db.escapeColumn(table_alias)+"."+db.escapeColumn("pk")
                 +")";
 
             if(max_depth>=0)

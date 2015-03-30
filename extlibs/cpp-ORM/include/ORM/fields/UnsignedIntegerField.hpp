@@ -53,11 +53,11 @@ namespace orm
             using Attr<unsigned int>::operator%=;
             using Attr<unsigned int>::operator unsigned int;
 
-        protected:
+        private:
             /**
              * \brief create the attr column
              */
-            virtual std::string create(const DB& db) const;
+            virtual std::string create(const DB& db) const override;
     };
 }
 #endif

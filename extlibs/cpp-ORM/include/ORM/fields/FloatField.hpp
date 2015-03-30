@@ -50,11 +50,11 @@ namespace orm
             using Attr<float>::operator%=;
             using Attr<float>::operator float;
 
-        protected:
+        private:
             /**
              * \brief create the attr column
              */
-            virtual std::string create(const DB& db) const;
+            virtual std::string create(const DB& db) const override;
     };
 }
 #endif

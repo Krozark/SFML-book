@@ -32,7 +32,7 @@ namespace orm
              *
              * \return false if fail
              **/
-            virtual bool save(bool recursive=false,DB& db=*T::default_connection);
+            virtual bool save(bool recursive=false,DB& db=*T::default_connection) override;
 
             /**
              * \brief Delete the object from the db and cache
@@ -43,14 +43,14 @@ namespace orm
              *
              * \return fale if fail
              **/
-            virtual bool del(bool recursive=false,DB& db=*T::default_connection);
+            virtual bool del(bool recursive=false,DB& db=*T::default_connection) override;
 
             typedef T type; ///< Type of stored object
 
             /**
              * \brief assessor operator to the stored object
              **/
-            T* operator->();
+            typename T::type_ptr operator->();
 
             /**
              * \brief cast operator
@@ -58,6 +58,16 @@ namespace orm
              * \cast this in value
              **/
             T& operator*();
+
+            /**
+             * \brief convertion operator
+             */
+            operator typename T::type_ptr() const;
+
+            /**
+             * \brief Test if a value is stared
+             */
+            operator bool()const;
 
             /**
              * \brief Copy operator
@@ -80,7 +90,7 @@ namespace orm
              **/
             FKBase(const std::string& column,const bool nullable=true);
 
-            std::shared_ptr<T> value_ptr; ///< the stored object
+            typename T::type_ptr value_ptr; ///< the stored object
 
             /**
              * \brief Set the fk value to the query
@@ -111,7 +121,7 @@ namespace orm
              *
              * \return The new object
              **/
-            T* getObjectT_ptr(DB& db,int max_depth = ORM_DEFAULT_MAX_DEPTH);
+            void setObjectT_ptr(DB& db,int max_depth = ORM_DEFAULT_MAX_DEPTH);
 
             /**
              * \brief make the attrs colum name

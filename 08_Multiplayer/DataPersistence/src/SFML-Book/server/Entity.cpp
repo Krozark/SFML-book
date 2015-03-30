@@ -62,22 +62,22 @@ namespace book
     int getType(MakeAs func)
     {
         int res = -1;
-        if(func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsMain)
+        if(func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsMain)
             res = EntityType::IdMain;
-        else if(func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsEye)
+        else if(func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsEye)
             res = EntityType::IdEye;
-        else if(func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsWormEgg)
+        else if(func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsWormEgg)
             res = EntityType::IdWormEgg;
-        else if(func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsWorm)
+        else if(func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsWorm)
             res = EntityType::IdWorm;
-        else if (func.target<void(Entity& entity,Team* team,Game& game)>() == makeAsCarnivor)
+        else if (func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsCarnivor)
             res =  EntityType::IdCarnivor;
 
         return res;
         
     }
 
-    void makeAsMain(Entity& entity,Team* team,Game& game)
+    void makeAsMain(Entity& entity,Team::type_ptr team,Game& game)
     {
         entity.setType(EntityType::IdMain);
         entity.add<CompTeam>(team);
@@ -92,7 +92,7 @@ namespace book
 
     }
 
-    void makeAsEye(Entity& entity,Team* team,Game& game)
+    void makeAsEye(Entity& entity,Team::type_ptr team,Game& game)
     {
         entity.setType(EntityType::IdEye);
         entity.add<CompTeam>(team);
@@ -104,7 +104,7 @@ namespace book
 
     }
 
-    void makeAsWormEgg(Entity& entity,Team* team,Game& game)
+    void makeAsWormEgg(Entity& entity,Team::type_ptr team,Game& game)
     {
         entity.setType(EntityType::IdWormEgg);
         entity.add<CompTeam>(team);
@@ -115,7 +115,7 @@ namespace book
 
     }
 
-    void makeAsWorm(Entity& entity,Team* team,Game& game)
+    void makeAsWorm(Entity& entity,Team::type_ptr team,Game& game)
     {
         entity.setType(EntityType::IdWorm);
         entity.add<CompTeam>(team);
@@ -127,7 +127,7 @@ namespace book
 
     }
 
-    void makeAsCarnivor(Entity& entity,Team* team,Game& game)
+    void makeAsCarnivor(Entity& entity,Team::type_ptr team,Game& game)
     {
         entity.setType(EntityType::IdCarnivor);
         entity.add<CompTeam>(team);

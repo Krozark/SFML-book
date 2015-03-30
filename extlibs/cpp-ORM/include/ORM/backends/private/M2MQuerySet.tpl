@@ -6,7 +6,7 @@ namespace orm
     template <typename OWNER, typename RELATED>
     M2MQuerySet<OWNER,RELATED>::M2MQuerySet(const ManyToMany<OWNER,RELATED>& m2m,DB& db): limit_skip(0), limit_count(-1), db(db), m2m(m2m)
     {
-        filters.emplace_back(Q<ManyToMany<OWNER,RELATED>>(m2m.owner.pk,op::exact,m2m._owner));
+        filters.emplace_back(Q<ManyToMany<OWNER,RELATED>>(m2m.owner.pk,op::exact,m2m.ORM_MAKE_NAME(owner)));
     }
 
     template <typename OWNER, typename RELATED>
@@ -19,7 +19,7 @@ namespace orm
     template <typename T,typename ... Args>
     M2MQuerySet<OWNER,RELATED>& M2MQuerySet<OWNER,RELATED>::filter(T&& v,const std::string& op,Args&& ... args)
     {
-        filters.emplace_back(Q<ManyToMany<OWNER,RELATED>>(std::forward<T>(v),op,m2m._linked,std::forward<Args>(args)...));
+        filters.emplace_back(Q<ManyToMany<OWNER,RELATED>>(std::forward<T>(v),op,m2m.ORM_MAKE_NAME(linked),std::forward<Args>(args)...));
         return *this;
     };
 

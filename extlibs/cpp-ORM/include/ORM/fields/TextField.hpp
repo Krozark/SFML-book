@@ -40,11 +40,11 @@ namespace orm
             using Attr<std::string>::operator+=;
             using Attr<std::string>::operator std::string;
 
-        protected:
+        private:
             /**
              * \brief create the attr column
              */
-            virtual std::string create(const DB& db) const;
+            virtual std::string create(const DB& db) const override;
     };
 }
 #endif

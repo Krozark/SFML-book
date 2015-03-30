@@ -111,7 +111,7 @@ REGISTER_AND_CONSTRUCT(CompAISpawner,"CompAISpawner",\
                        _elapsedAsDouble,"elapsedAsDouble")
                        
                        
-CompAISpawner::CompAISpawner(CompAISpawner::FuncType makeAs,int number,const sf::Time& timeDelta) : CompAISpawner()
+CompAISpawner::CompAISpawner(book::MakeAs makeAs,int number,const sf::Time& timeDelta) : CompAISpawner()
 {
     _makeAs = makeAs;
     _number = number;
@@ -198,9 +198,16 @@ void CompAIFlyer::before_update()
 
 ////////////// CompTeam ////////////////
 
-CompTeam::CompTeam(book::Team* team) : _team(team)
+REGISTER_AND_CONSTRUCT(CompTeam,"CompTeam",\
+                       _team,"team")
+
+CompTeam::CompTeam(Team::type_ptr team) : CompTeam()
 {
+    _team = team;
 }
+
+
+///////////////// CompSkin /////////////////
 
 CompSkin::CompSkin(short int animation) : _animationId(animation)
 {

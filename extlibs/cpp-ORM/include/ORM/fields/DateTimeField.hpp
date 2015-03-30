@@ -88,15 +88,14 @@ namespace orm
              */
             static struct tm normalize(struct tm&& time);
 
-        protected:
-            
-            virtual struct tm prepare_to_db(const struct tm& value);///< convert t to real time (add +1900 y and +1 month)
-
-            virtual struct tm prepare_from_db(const struct tm& value); ///< convert DB to tm
-
-            virtual std::string create(const DB& db) const; ///< get creator
-
         private:
+            
+            virtual struct tm prepare_to_db(const struct tm& value) override;///< convert t to real time (add +1900 y and +1 month)
+
+            virtual struct tm prepare_from_db(const struct tm& value) override; ///< convert DB to tm
+
+            virtual std::string create(const DB& db) const override; ///< get creator
+
     };
 
     /**

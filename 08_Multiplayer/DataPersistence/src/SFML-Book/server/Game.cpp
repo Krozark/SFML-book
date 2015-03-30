@@ -1,7 +1,6 @@
 #include <SFML-Book/server/Game.hpp>
 
 #include <SFML-Book/server/Client.hpp>
-#include <SFML-Book/server/Team.hpp>
 #include <SFML-Book/server/Component.hpp>
 #include <SFML-Book/server/System.hpp>
 
@@ -57,12 +56,12 @@ namespace book
         
         for(unsigned int i = 0; i<spawns.size();++i)
         {
-            Team* team = new Team(i,sf::Color(random(110,225),
+            Team::type_ptr team(new Team(i,sf::Color(random(110,225),
                                               random(110,225),
                                               random(110,225)
                                              ),
                                   initialGold,
-                                  *this);
+                                  this));
 
             createEntity(spawns[i],team,makeAsMain);
             _teams.emplace_back(team);
@@ -94,8 +93,6 @@ namespace book
         for(Client* client: _clients)
             delete client;
 
-        for(Team* team : _teams)
-            delete team;
     }
 
     int Game::getTeamCount()
@@ -118,8 +115,8 @@ namespace book
     bool Game::addClient(Client* client)
     {
         sf::Lock guard(_teamMutex);
-        Team* clientTeam = nullptr;
-        for(Team* team : _teams)
+        Team::type_ptr clientTeam = nullptr;
+        for(Team::type_ptr team : _teams)
         {
             if(team->getClients().size() == 0 and team->isGameOver())
             {
@@ -136,7 +133,7 @@ namespace book
             std::string content((std::istreambuf_iterator<char>(file)),(std::istreambuf_iterator<char>()));
 
             packet::JoinGameConfirmation conf(content,clientTeam->id());
-            for(Team* team : _teams)
+            for(Team::type_ptr team : _teams)
             {
                 packet::JoinGameConfirmation::Data data;
                 data.team = team->id();
@@ -191,7 +188,7 @@ namespace book
         _isRunning = false;
     }
 
-    Entity& Game::createEntity(const sf::Vector2i& coord,Team* team,MakeAs makeAs)
+    Entity& Game::createEntity(const sf::Vector2i& coord,Team::type_ptr team,MakeAs makeAs)
     {
         std::uint32_t id = entities.create();
         Entity& e = entities.get(id);

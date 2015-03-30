@@ -21,8 +21,11 @@ namespace orm
 
             FK(const FK&) = delete;
 
-            using FKBase<T>::operator=;
+            using FKBase<T>::operator->;
             using FKBase<T>::operator*;
+            using FKBase<T>::operator bool;
+            using FKBase<T>::operator typename T::type_ptr;
+            using FKBase<T>::operator=;
     };
 }
 

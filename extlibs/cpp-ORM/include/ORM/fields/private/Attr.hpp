@@ -396,11 +396,17 @@ namespace orm
              *
              * \return output
              **/
-            virtual std::ostream& print_value(std::ostream& output)const;
+            virtual std::ostream& print_value(std::ostream& output)const override;
 
             const T& value()const;
 
+
         protected:
+            inline T& getValue();
+            bool prepared;
+
+        private:
+            virtual T prepare_to_db(const T& value);
             /**
              * \brief Set the value in the query (use for dispatch
              *
@@ -409,9 +415,8 @@ namespace orm
              *
              * \return false if fail
              */
-            virtual bool set(Query& query,const unsigned int& column);
+            virtual bool set(Query& query,const unsigned int& column) override final;
 
-            virtual T prepare_to_db(const T& value);
 
             /**
              * \brief Extract the value from the query row
@@ -422,13 +427,10 @@ namespace orm
              *
              * \return false if fail
              **/
-            virtual bool get(const Query& query,int& prefix,int max_depth) final;
+            virtual bool get(const Query& query,int& prefix,int max_depth) override final;
 
             virtual T prepare_from_db(const T& value);
 
-            bool prepared;
-            inline T& getValue();
-        private:
             inline void setValue(const T& v);
     };
 

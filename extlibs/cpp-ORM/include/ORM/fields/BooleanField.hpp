@@ -47,11 +47,11 @@ namespace orm
             using Attr<bool>::operator-=;
             using Attr<bool>::operator bool;
 
-        protected:
+        private:
             /**
              * \brief create the attr column
              */
-            virtual std::string create(const DB& db) const;
+            virtual std::string create(const DB& db) const override;
     };
 }
 #endif

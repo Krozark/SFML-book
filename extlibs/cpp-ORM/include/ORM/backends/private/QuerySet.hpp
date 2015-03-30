@@ -21,9 +21,12 @@ namespace orm
     class QuerySet
     {
         public:
+            using result_type = std::list<typename Cache<T>::type_ptr>;
+
             
             QuerySet(QuerySet<T>&&) = default;
             QuerySet& operator=(QuerySet<T>&&) = default;
+
 
             /**
              * \brief Destructor
@@ -124,7 +127,7 @@ namespace orm
              *
              * \return Number of objects
              **/
-            int get(typename std::list<std::shared_ptr<T>>& obj,int max_depth=ORM_DEFAULT_MAX_DEPTH);
+            int get(result_type& obj,int max_depth=ORM_DEFAULT_MAX_DEPTH);
 
             /**
              * \brief Print the content of the filter for debug help

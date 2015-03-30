@@ -2,7 +2,6 @@
 
 #include <SFML-Book/common/FuncIds.hpp>
 
-#include <SFML-Book/server/Team.hpp>
 
 #include <iostream>
 
@@ -19,7 +18,7 @@ namespace book
             _team->remove(this);
     }
 
-    void Client::setTeam(Team* team)
+    void Client::setTeam(Team::type_ptr team)
     {
         if(_team)
             _team->remove(this);
@@ -28,7 +27,7 @@ namespace book
             _team->add(this);
     }
 
-    Team* Client::getTeam()const
+    Team::type_ptr Client::getTeam()const
     {
         return _team;
     }

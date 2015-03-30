@@ -89,6 +89,7 @@ namespace orm
              * Note : do nothing by default.
              */
             virtual void after_update();
+        private:
 
             /**
              * \brief set the value to the query
@@ -115,7 +116,6 @@ namespace orm
              */
             virtual std::string create(const DB& db) const = 0;
 
-        private:
             /**
              * \brief make the colum alias
              *

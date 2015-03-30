@@ -61,7 +61,7 @@ namespace orm
             template<typename T> friend class SqlObject;
 
             int fk; ///< the fk value (if fk <=0 => null)
-            bool loaded; ///< as a loaded object
+            //bool loaded; ///< as a loaded object
             const bool nullable; ///< is nullable
 
             /**
