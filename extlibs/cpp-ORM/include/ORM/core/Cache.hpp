@@ -129,7 +129,7 @@ namespace orm
              *
              * \return a shared_ptr to tho object stored in cache
              **/
-            type_ptr& getOrCreate(T* tmp);
+            //type_ptr& getOrCreate(T* tmp);
 #endif
 
             /**

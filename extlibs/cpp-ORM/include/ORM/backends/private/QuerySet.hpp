@@ -5,7 +5,10 @@
 #include <ORM/backends/private/FilterSet.hpp>
 #include <ORM/core/Cache.hpp>
 #include <ORM/backends/op.hpp>
+
 #include <memory>
+#include <list>
+#include <vector>
 
 namespace orm
 {
@@ -21,7 +24,7 @@ namespace orm
     class QuerySet
     {
         public:
-            using result_type = std::list<typename Cache<T>::type_ptr>;
+            using result_type = std::vector<typename Cache<T>::type_ptr>;
 
             
             QuerySet(QuerySet<T>&&) = default;

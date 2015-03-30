@@ -67,7 +67,7 @@ namespace orm
             /**
              * \brief Test if a value is stared
              */
-            operator bool()const;
+            explicit operator bool()const;
 
             /**
              * \brief Copy operator

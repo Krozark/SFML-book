@@ -105,7 +105,7 @@ namespace orm
         std::string res = sqlite3_escape(colunm_name)+" INTEGER";
         if(not nullable)
             res+= " NOT NULL";
-        res+= " REFERENCES " + sqlite3_escape(table) + "(\"fk\")";
+        res+= " REFERENCES " + sqlite3_escape(table) + "(\"pk\")";
         return res;
     }
 

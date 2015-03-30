@@ -65,6 +65,7 @@ namespace book
 
             createEntity(spawns[i],team,makeAsMain);
             _teams.emplace_back(team);
+            team->save();
         }
 
         //add enemies

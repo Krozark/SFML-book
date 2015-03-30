@@ -6,7 +6,6 @@
 #include <ORM/backends/private/M2MQuerySet.hpp>
 #include <ORM/core/M2MRegister.hpp>
 #include <string>
-#include <list>
 #include <memory>
 
 namespace orm
@@ -36,7 +35,7 @@ namespace orm
             *
             * \return all the objects T
             **/
-            std::list<typename Cache<RELATED>::type_ptr> all(DB& db=*default_connection,int max_depth=ORM_DEFAULT_MAX_DEPTH)const;
+            typename RELATED::result_type all(DB& db=*default_connection,int max_depth=ORM_DEFAULT_MAX_DEPTH);
             
             /**
              * \brief add a object in the relation
@@ -45,7 +44,7 @@ namespace orm
              * \param db the db to fetch
              * Note : the object must have be save in database.
              **/
-            void add(const RELATED& obj,DB& db=*default_connection);
+            bool add(const RELATED& obj,DB& db=*default_connection);
 
             /**
              * \brief add a object in the relation
@@ -54,7 +53,7 @@ namespace orm
              * \param db the db to fetch
              * Note : the object must have be save in database.
              **/
-            void add(const typename Cache<RELATED>::type_ptr& obj,DB& db=*default_connection);
+            bool add(const typename RELATED::type_ptr& obj,DB& db=*default_connection);
 
             /**
              * \brief remove a object in the relation
@@ -72,7 +71,7 @@ namespace orm
              * \param db the db to fetch
              * Note : the object must have be save in database.
              **/
-            void remove(const typename Cache<RELATED>::type_ptr& obj,DB& db=*default_connection);
+            void remove(const typename RELATED::type_ptr& obj,DB& db=*default_connection);
 
             /**
              * \brief create the table
@@ -136,6 +135,11 @@ namespace orm
 
         private:
             static M2MRegister<OWNER,RELATED> _register;
+
+#ifdef ORM_USE_CACHE
+            typename RELATED::result_type _cache;
+            bool _adds;
+#endif
 
     };
 

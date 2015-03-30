@@ -5,6 +5,7 @@
 #include <ORM/core/Cache.hpp>
 #include <ORM/backends/op.hpp>
 #include <memory>
+#include <list>
 
 namespace orm
 {
@@ -110,7 +111,7 @@ namespace orm
              *
              * \return Number of objects
              **/
-            int get(typename std::list<std::shared_ptr<RELATED>>& obj,int max_depth=ORM_DEFAULT_MAX_DEPTH);
+            int get(typename RELATED::result_type& obj,int max_depth=ORM_DEFAULT_MAX_DEPTH);
 
             /**
              * \brief Print the content of the filter for debug help

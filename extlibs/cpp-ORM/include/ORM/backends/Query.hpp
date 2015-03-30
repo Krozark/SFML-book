@@ -4,7 +4,6 @@
 #include <ORM/backends/DB.hpp>
 
 #include <string>
-#include <list>
 #include <ostream>
 #include <memory>
 
@@ -193,7 +192,7 @@ namespace orm
              * \return the number of object created
              **/
             template<typename T>
-            int getObj(std::list<std::shared_ptr<T>>& objs,int max_depth);
+            int getObj(std::vector<std::shared_ptr<T>>& objs,int max_depth);
 
             /**
              * \brief Print the content of the query for debug help

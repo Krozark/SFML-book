@@ -14,7 +14,7 @@ namespace orm
     };
 
     template<typename T>
-    int Query::getObj(std::list<std::shared_ptr<T> >& objs,int max_depth)
+    int Query::getObj(std::vector<std::shared_ptr<T>>& objs,int max_depth)
     {
         if(not executed)
             execute();

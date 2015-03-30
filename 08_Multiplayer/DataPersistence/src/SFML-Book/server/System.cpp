@@ -35,12 +35,11 @@ namespace book
     }
 
     ///////////////////// SYS AI WARRIOR ///////////////////////
-    bool isEnemy(const std::vector<Team::type_ptr>& enemies,Team::type_ptr t)
+    bool isEnemy(const Team::result_type& enemies,Team::type_ptr t)
     {
-        size_t size = enemies.size();
-        for(size_t i=0;i<size;++i)
+        for(Team::type_ptr it : enemies)
         {
-            if(enemies[i] == t)
+            if(it == t)
                 return true;
         }
         return false;
@@ -65,7 +64,7 @@ namespace book
             if(AI->_elapsed < AI->_delta)
                 continue;
 
-            std::vector<Team::type_ptr> teamEnemies = team->_team->getEnemies();
+            Team::result_type teamEnemies = team->_team->getEnemies();
 
             //if no enemies
             if(teamEnemies.size() <=0)
@@ -186,7 +185,7 @@ end_search: //exit nesteed loops
             if(AI->_elapsed < AI->_delta)
                 continue;
 
-            std::vector<Team::type_ptr> teamEnemies = team->_team->getEnemies();
+            Team::result_type teamEnemies = team->_team->getEnemies();
 
             //if no enemies
             if(teamEnemies.size() <=0)

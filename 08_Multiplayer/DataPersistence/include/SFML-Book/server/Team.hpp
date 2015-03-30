@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <ORM/fields.hpp>
+#include <ORM/fields/ManyToMany.hpp>
 #include <ORM/models/SqlObject.hpp>
 
 namespace book
@@ -30,7 +31,7 @@ class Team : public orm::SqlObject<Team>
         int getGold()const;
 
         void addEnemy(Team::type_ptr team);
-        const std::vector<Team::type_ptr>& getEnemies()const;
+        const Team::result_type getEnemies();
 
         void  addQgId(std::uint32_t);
         const std::vector<std::uint32_t>& getQgIds()const;
@@ -56,9 +57,13 @@ class Team : public orm::SqlObject<Team>
 
         std::vector<std::uint32_t> _QGId;
         sf::Color _color;
+
+
         book::Game* _game;
 
-        std::vector<Team::type_ptr> _enemies;
+        orm::ManyToMany<Team,Team> _enemies;
+
+        //std::vector<Team::type_ptr> _enemies;
         std::list<book::Client*> _clients;
 
 

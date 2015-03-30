@@ -99,6 +99,8 @@ namespace orm
 
             before_save();
             res = db.save(table,pk,attrs);
+            type_ptr ptr = this->as_type_ptr();
+            cache.add(ptr);
             after_save();
         }
         else
@@ -130,6 +132,12 @@ namespace orm
         }
         return false;
     };
+
+    template<typename T>
+    typename SqlObject<T>::type_ptr SqlObject<T>::as_type_ptr()
+    {
+        return this->shared_from_this();
+    }
 
     template<typename T>
     bool SqlObject<T>::create(DB& db)

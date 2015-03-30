@@ -1,7 +1,7 @@
 namespace orm
 {
     template<typename T,typename U>
-    ManyToMany<T,U>::ManyToMany(T& o) : owner(o)
+    ManyToMany<T,U>::ManyToMany(T& o) : owner(o), _adds(true)
     {
     }
 
@@ -12,11 +12,21 @@ namespace orm
     }
 
     template<typename T,typename U>
-    std::list<typename Cache<U>::type_ptr> ManyToMany<T,U>::all(DB& db,int max_depth) const
+    typename U::result_type ManyToMany<T,U>::all(DB& db,int max_depth)
     {
-        std::list<typename Cache<U>::type_ptr> results;
+#ifdef ORM_USE_CACHE
+        if(_adds)
+        {
+            _cache.clear();
+            query(db).get(_cache,max_depth);
+            _adds = false;
+        }
+        return _cache;
+#else
+        typename U::result_type results;
         query(db).get(results,max_depth);
         return results;
+#endif
     };
 
     template<typename T,typename U>
@@ -52,23 +62,31 @@ namespace orm
     }
 
     template<typename T,typename U>
-    void ManyToMany<T,U>::add(const typename Cache<U>::type_ptr& obj,DB& db)
+    bool ManyToMany<T,U>::add(const typename U::type_ptr& obj,DB& db)
     {
-        add(*obj,db);
+        bool res = add(*obj,db);
+#ifdef ORM_USE_CACHE
+        if(res)
+        {
+            _adds = true;
+            _cache.emplace_back(obj);
+        }
+#endif
+        return res;
     }
 
     template<typename T,typename U>
-    void ManyToMany<T,U>::add(const U& obj,DB& db)
+    bool ManyToMany<T,U>::add(const U& obj,DB& db)
     {
         if(owner.pk <=0)
         {
             ORM_PRINT_ERROR("The M2M owner as not be saved")
-            return;
+            return false;
         }
         if(obj.pk<=0)
         {
             ORM_PRINT_ERROR("The object must be save to be add in a M2M")
-            return;
+            return false;
         }
         
         std::string q_str = "INSERT INTO "+db.escapeColumn(table)
@@ -85,10 +103,11 @@ namespace orm
         q.execute();
         q.next();
         delete &q;
+        return true;
     };
 
     template<typename T,typename U>
-    void ManyToMany<T,U>::remove(const typename Cache<U>::type_ptr& obj,DB& db)
+    void ManyToMany<T,U>::remove(const typename U::type_ptr& obj,DB& db)
     {
         remove(*obj,db);
     }

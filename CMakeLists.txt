@@ -50,6 +50,8 @@ set_option(BOOK_BUILD_CHAPTER_8 TRUE BOOL "Build chapter 8. Required SFML-utils"
 
 #custom compiler flags
 add_definitions(-D_USE_MATH_DEFINES)
+add_definitions(-DORM_USE_CACHE)
+
 set(WARNING "-Wall")
 set(FLAGS "-o3 -std=c++11")
 set(CMAKE_CXX_FLAGS "${WARNING} ${FLAGS}")

@@ -24,7 +24,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_option(ORM_BUILD_SUPPORT_SQLITE3 TRUE BOOL "TRUE to build support for sqlite3 backends, FALSE to ignore them")
 set_option(ORM_BUILD_SUPPORT_MYSQL FALSE BOOL "TRUE to build support for Mysql backends, FALSE to ignore them")
 
-set_option(ORM_USE_CACHE FALSE BOOL "TRUE to buid a cache for database query, FALSE to ignore it")
+set_option(ORM_USE_CACHE TRUE BOOL "TRUE to buid a cache for database query, FALSE to ignore it")
 
 set_option(ORM_BUILD_EXAMPLES FALSE BOOL "TRUE to build the examples, FALSE to ignore them")
 set_option(ORM_BUILD_DOC FALSE BOOL "TRUE to generate the API documentation, FALSE to ignore it")
@@ -50,7 +50,7 @@ endif()
 
 
 set(WARNING "-Wall")
-set(FLAGS "-o3")
+set(FLAGS "-o3 -DORM_USE_CACHE")
 set(CMAKE_CXX_FLAGS "${WARNING} ${FLAGS} -std=c++11")
 set(CMAKE_C_FLAGS "${WARNING} ${FLAGS}")
 

@@ -75,7 +75,7 @@ namespace orm
 
 
     template <typename OWNER, typename RELATED>
-    int M2MQuerySet<OWNER,RELATED>::get(typename std::list<std::shared_ptr<RELATED>>& objs,int max_depth)
+    int M2MQuerySet<OWNER,RELATED>::get(typename RELATED::result_type& objs,int max_depth)
     {
         Query* q = makeQuery(max_depth);
         int res = q->getObj(objs,max_depth);

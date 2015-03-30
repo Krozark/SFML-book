@@ -30,7 +30,7 @@ namespace orm
     * \endcode
     **/
     template<typename T>
-    class SqlObject : public SqlObjectBase
+    class SqlObject : public SqlObjectBase, public std::enable_shared_from_this<T>
     {
         public:
             using result_type = typename QuerySet<T>::result_type;
@@ -98,6 +98,9 @@ namespace orm
             * \return false if fail
             **/
             virtual bool del(bool recursive=false,DB& db = *default_connection) final;
+
+
+            type_ptr as_type_ptr();
 
 
             /**

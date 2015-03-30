@@ -3,6 +3,8 @@ orm::Sqlite3DB def("./08_dataPersistence.db");
 
 orm::DB& orm::DB::Default = def;
 
+#include <ORM/core/Tables.hpp>
+
 
 #include <SFML-Book/server/Server.hpp>
 
@@ -18,7 +20,11 @@ int main(int argc, char* argv[])
     if(argc >1 )
         port = std::atoi(argv[1]);
 
+
     std::cout<<"Server start on port "<<port<<std::endl;
+
+    orm::DB::Default.connect();
+    orm::Tables::create();
 
     book::Server server(port);
     server.run();
