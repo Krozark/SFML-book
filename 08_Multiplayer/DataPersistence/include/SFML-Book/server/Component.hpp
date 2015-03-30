@@ -12,12 +12,9 @@
 #include <SFML-Book/server/Entity.hpp>
 #include <SFML-Book/server/Team.hpp>
 
-namespace book
-{
-    class Game;
-}
+class Game;
 
-class CompAIMain : public sfutils::Component<CompAIMain,book::Entity>, public orm::SqlObject<CompAIMain>
+class CompAIMain : public sfutils::Component<CompAIMain,Entity>, public orm::SqlObject<CompAIMain>
 {
     public:
         CompAIMain();
@@ -39,7 +36,7 @@ class CompAIMain : public sfutils::Component<CompAIMain,book::Entity>, public or
 };
 
 
-class CompAIWarrior : public sfutils::Component<CompAIWarrior,book::Entity>, public orm::SqlObject<CompAIWarrior>
+class CompAIWarrior : public sfutils::Component<CompAIWarrior,Entity>, public orm::SqlObject<CompAIWarrior>
 {
     public:
         CompAIWarrior();
@@ -63,7 +60,7 @@ class CompAIWarrior : public sfutils::Component<CompAIWarrior,book::Entity>, pub
         MAKE_STATIC_COLUMN(_hitPoint,_deltaAsDouble,_elapsedAsDouble,_range,_enemyId)
 };
 
-class CompAIDefender : public sfutils::Component<CompAIDefender,book::Entity>, public orm::SqlObject<CompAIDefender>
+class CompAIDefender : public sfutils::Component<CompAIDefender,Entity>, public orm::SqlObject<CompAIDefender>
 {
     public:
         CompAIDefender();
@@ -86,7 +83,7 @@ class CompAIDefender : public sfutils::Component<CompAIDefender,book::Entity>, p
         MAKE_STATIC_COLUMN(_hitPoint,_deltaAsDouble,_elapsedAsDouble,_range)
 };
 
-class CompAISpawner : public sfutils::Component<CompAISpawner,book::Entity>, public orm::SqlObject<CompAISpawner>
+class CompAISpawner : public sfutils::Component<CompAISpawner,Entity>, public orm::SqlObject<CompAISpawner>
 {
     public:
 
@@ -111,7 +108,7 @@ class CompAISpawner : public sfutils::Component<CompAISpawner,book::Entity>, pub
         MAKE_STATIC_COLUMN(_makeAsTypeId,_number,_deltaAsDouble,_elapsedAsDouble)
 };
 
-class CompAIWalker : public sfutils::Component<CompAIWalker,book::Entity>, public orm::SqlObject<CompAIWalker>
+class CompAIWalker : public sfutils::Component<CompAIWalker,Entity>, public orm::SqlObject<CompAIWalker>
 {
     public:
         CompAIWalker();
@@ -130,7 +127,7 @@ class CompAIWalker : public sfutils::Component<CompAIWalker,book::Entity>, publi
         MAKE_STATIC_COLUMN(_speed,_pathToTakeX,_pathToTakeY)
 };
 
-class CompAIFlyer : public sfutils::Component<CompAIFlyer,book::Entity>, public orm::SqlObject<CompAIFlyer>
+class CompAIFlyer : public sfutils::Component<CompAIFlyer,Entity>, public orm::SqlObject<CompAIFlyer>
 {
     public:
         CompAIFlyer();
@@ -149,7 +146,7 @@ class CompAIFlyer : public sfutils::Component<CompAIFlyer,book::Entity>, public 
         MAKE_STATIC_COLUMN(_speed,_pathToTakeX,_pathToTakeY)
 };
 
-class CompTeam : public sfutils::Component<CompTeam,book::Entity>, public orm::SqlObject<CompTeam>
+class CompTeam : public sfutils::Component<CompTeam,Entity>, public orm::SqlObject<CompTeam>
 {
     public:
         CompTeam();
@@ -162,7 +159,7 @@ class CompTeam : public sfutils::Component<CompTeam,book::Entity>, public orm::S
         MAKE_STATIC_COLUMN(_team)
 };
 
-struct CompSkin : sfutils::Component<CompSkin,book::Entity>
+struct CompSkin : sfutils::Component<CompSkin,Entity>
 {
     enum AnimationId : int{
         Stand = 0,
@@ -178,7 +175,7 @@ struct CompSkin : sfutils::Component<CompSkin,book::Entity>
     short int _animationId;
 };
 
-struct CompHp : sfutils::Component<CompHp,book::Entity>
+struct CompHp : sfutils::Component<CompHp,Entity>
 {
     explicit CompHp(int hp);
 

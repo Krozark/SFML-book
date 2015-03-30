@@ -5,9 +5,10 @@
 
 #include <SFML-Book/server/Entity.hpp>
 
+class Game;
+
 namespace book
 {
-    class Game;
     
     struct SysAIMain : sfutils::System<SysAIMain,Entity>
     {

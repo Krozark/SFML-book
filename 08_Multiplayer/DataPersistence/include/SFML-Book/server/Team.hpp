@@ -14,8 +14,8 @@
 namespace book
 {
     class Client;
-    class Game;
 }
+class Game;
 
 class Team : public orm::SqlObject<Team>
 {
@@ -25,7 +25,7 @@ class Team : public orm::SqlObject<Team>
 
         Team();
 
-        Team(int id,const sf::Color& color,int gold,book::Game* game);
+        Team(int id,const sf::Color& color,int gold,Game* game);
 
         void addGold(int amount);
         int getGold()const;
@@ -59,7 +59,7 @@ class Team : public orm::SqlObject<Team>
         sf::Color _color;
 
 
-        book::Game* _game;
+        Game* _game;
 
         orm::ManyToMany<Team,Team> _enemies;
 

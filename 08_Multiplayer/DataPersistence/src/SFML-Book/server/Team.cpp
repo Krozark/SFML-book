@@ -21,7 +21,7 @@ Team::Team() : _isAlive(Team::$_isAlive),
     std::cout<<"Team() "<<this<<std::endl;
 }
 
-Team::Team(int id,const sf::Color& color,int gold,book::Game* game) : Team()
+Team::Team(int id,const sf::Color& color,int gold,Game* game) : Team()
 {
     _isAlive = true;
     _id = id;

@@ -6,11 +6,11 @@
 
 #include <list>
 
+class Game;
 
 namespace book
 {
     class Client;
-    class Game;
 
     class Server
     {
