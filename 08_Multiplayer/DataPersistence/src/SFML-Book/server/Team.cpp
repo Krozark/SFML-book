@@ -3,7 +3,9 @@
 #include <SFML-Book/server/Game.hpp>
 
 REGISTER_AND_CONSTRUCT(Team,"Team",\
-                       _id,"id")
+                       _isAlive,"isAlive",\
+                       _id,"id",\
+                       _gold,"gold")
 
 Team::Team(int id,const sf::Color& color,int gold,book::Game* game) : Team()
 {
@@ -22,7 +24,7 @@ void Team::addGold(int amount)
 
 int Team::getGold()const
 {
-    return _gold;
+    return _gold.value();
 }
 
 void Team::addEnemy(Team::type_ptr team)
@@ -89,6 +91,6 @@ const std::list<book::Client*>& Team::getClients()const
 
 bool Team::isGameOver()const
 {
-    return _isAlive;
+    return _isAlive.value();
 }
 
