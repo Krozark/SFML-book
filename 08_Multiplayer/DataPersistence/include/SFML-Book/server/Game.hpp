@@ -20,17 +20,21 @@
 #include <SFML-Book/common/Packet.hpp>
 #include <SFML-Book/common/std_hash.hpp>
 
+#include <ORM/fields.hpp>
+#include <ORM/models/SqlObject.hpp>
+
 namespace book
 {
     class Client;
 }
 
-class Game : private sfutils::Application<Entity>
+class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
 {
     public:
         Game(const Game&) = delete;
         Game& operator=(const Game&) = delete;
 
+        Game();
         Game(const std::string& mapFileName);
         ~Game();
         
@@ -66,6 +70,8 @@ class Game : private sfutils::Application<Entity>
         using FuncType = std::function<void(book::Client*)>;
         FuncType onLogOut;
 
+        MAKE_STATIC_COLUMN(_id,_mapFileName)
+
 
     private:
         bool _isRunning;
@@ -97,12 +103,12 @@ class Game : private sfutils::Application<Entity>
         std::queue<sf::Packet> _outgoing;
 
 
-        const int _id;
+        orm::IntegerField _id;
         static int _numberOfCreations;
 
         void _run();
 
-        std::string _mapFileName;
+        orm::CharField<255> _mapFileName;
 
         void processNetworkEvents();
         void sendUpdates();
@@ -116,5 +122,8 @@ class Game : private sfutils::Application<Entity>
         // Helpers
         void addUpdate(book::packet::UpdateEntity& packet,unsigned int id);
         void addCreate(book::packet::CreateEntity& packet,unsigned int id);
+
+        virtual void after_load() override;
+        void load(bool init);
 };
 #endif

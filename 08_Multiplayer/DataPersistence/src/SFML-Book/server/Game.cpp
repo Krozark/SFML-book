@@ -15,77 +15,29 @@
 
 int Game::_numberOfCreations = 0;
 
-Game::Game(const std::string& mapFileName) :
+REGISTER(Game,"Game",\
+         _id,"id",\
+         _mapFileName,"_mapFileName")
+
+Game::Game(): 
     _isRunning(false),
     _gameThread(&Game::_run,this),
-    _map(sfutils::VMap::createMapFromFile(mapFileName)),
+    _map(nullptr),
     _sendThread(&Game::_send,this),
-    _id(++_numberOfCreations),
-    _mapFileName(mapFileName)
+    _id(Game::$_id),
+    _mapFileName(Game::$_mapFileName)
 {
-    if(_map == nullptr)
-        throw std::runtime_error("Impossible to load file map");
-    _map->clear();//we just need the geometry here
-
-    int initialGold = 0;
-    std::vector<sf::Vector2i> spawns;
-    {
-        utils::json::Value* rootPtr = utils::json::Driver::parse_file(mapFileName);
-
-        utils::json::Object& root = *rootPtr;
-        const utils::json::Object& size = root["size"];
-        const utils::json::Object& min = size["min"];
-        const utils::json::Object& max = size["max"];
-
-        _minCoord.x = min["x"].as_int();
-        _minCoord.y = min["y"].as_int();
-
-        _maxCoord.x = max["x"].as_int();
-        _maxCoord.y = max["y"].as_int();
-
-        const utils::json::Object& players = root["players"];
-        const utils::json::Array& spawn = players["spawn"];
-
-        for(const utils::json::Object& value : spawn)
-            spawns.emplace_back(value["x"].as_int(),value["y"].as_int());
-
-        initialGold = players["gold"].as_int();
-    }
-    
-    for(unsigned int i = 0; i<spawns.size();++i)
-    {
-        Team::type_ptr team(new Team(i,sf::Color(book::random(110,225),
-                                          book::random(110,225),
-                                          book::random(110,225)
-                                         ),
-                              initialGold,
-                              this));
-
-        createEntity(spawns[i],team,book::makeAsMain);
-        _teams.emplace_back(team);
-        team->save();
-    }
-
-    //add enemies
-    for(unsigned int i=0; i<spawns.size();++i)
-    {
-        for(unsigned int j=0; j<spawns.size();++j)
-        {
-            if(i!=j)
-            {
-                _teams[i]->addEnemy(_teams[j]);
-            }
-        }
-    }
-
-    systems.add<book::SysAIMain>(*this);
-    systems.add<book::SysAIWarrior>(*this);
-    systems.add<book::SysAIDefender>(*this);
-    systems.add<book::SysAISpawner>(*this);
-    systems.add<book::SysAIWalker>(*this);
-    systems.add<book::SysAIFlyer>(*this);
-    systems.add<book::SysHp>(*this);
+    _id.registerAttr(*this);
+    _mapFileName.registerAttr(*this);
 }
+
+Game::Game(const std::string& mapFileName) : Game()
+{
+    _id = ++_numberOfCreations;
+    _mapFileName = mapFileName;
+    load(true);
+}
+
 
 Game::~Game()
 {
@@ -108,7 +60,7 @@ int Game::getPalyersCount()
 
 int Game::id()const
 {
-    return _id;
+    return _id.value();
 }
 
 bool Game::addClient(book::Client* client)
@@ -555,4 +507,82 @@ void Game::addCreate(book::packet::CreateEntity& packet,unsigned int id)
     update.hp = entities.getComponent<CompHp>(id)->_hp;
 
     packet.add(std::move(update));
+}
+
+void Game::load(bool init)
+{
+
+    _map = sfutils::VMap::createMapFromFile(_mapFileName);
+    if(_map == nullptr)
+        throw std::runtime_error("Impossible to load file map");
+    _map->clear();//we just need the geometry here
+
+    int initialGold = 0;
+    std::vector<sf::Vector2i> spawns;
+    {
+        utils::json::Value* rootPtr = utils::json::Driver::parse_file(_mapFileName);
+
+        utils::json::Object& root = *rootPtr;
+        const utils::json::Object& size = root["size"];
+        const utils::json::Object& min = size["min"];
+        const utils::json::Object& max = size["max"];
+
+        _minCoord.x = min["x"].as_int();
+        _minCoord.y = min["y"].as_int();
+
+        _maxCoord.x = max["x"].as_int();
+        _maxCoord.y = max["y"].as_int();
+
+        const utils::json::Object& players = root["players"];
+        const utils::json::Array& spawn = players["spawn"];
+
+        for(const utils::json::Object& value : spawn)
+            spawns.emplace_back(value["x"].as_int(),value["y"].as_int());
+
+        initialGold = players["gold"].as_int();
+    }
+    
+    if(init)
+    {
+        for(unsigned int i = 0; i<spawns.size();++i)
+        {
+            Team::type_ptr team(new Team(i,sf::Color(book::random(110,225),
+                                              book::random(110,225),
+                                              book::random(110,225)
+                                             ),
+                                  initialGold,
+                                  this));
+
+            createEntity(spawns[i],team,book::makeAsMain);
+            _teams.emplace_back(team);
+            team->save();
+        }
+
+        //add enemies
+        for(unsigned int i=0; i<spawns.size();++i)
+        {
+            for(unsigned int j=0; j<spawns.size();++j)
+            {
+                if(i!=j)
+                {
+                    _teams[i]->addEnemy(_teams[j]);
+                }
+            }
+        }
+    }
+
+    systems.add<book::SysAIMain>(*this);
+    systems.add<book::SysAIWarrior>(*this);
+    systems.add<book::SysAIDefender>(*this);
+    systems.add<book::SysAISpawner>(*this);
+    systems.add<book::SysAIWalker>(*this);
+    systems.add<book::SysAIFlyer>(*this);
+    systems.add<book::SysHp>(*this);
+}
+
+void Game::after_load()
+{
+    if(_id > _numberOfCreations)
+        _numberOfCreations = _id;
+    load(false);
 }
