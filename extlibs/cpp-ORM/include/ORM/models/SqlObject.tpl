@@ -84,7 +84,6 @@ namespace orm
     template<typename T>
     bool SqlObject<T>::save(bool recursive,DB& db)
     {
-		std::cout<<"save() "<<*this<<" Recurcive? "<<recursive<<std::endl;
         bool res = true;
         if(recursive)//save all FK
         {

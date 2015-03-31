@@ -7,16 +7,19 @@ REGISTER(Team,"Team",\
          _isAlive,"isAlive",\
          _id,"id",\
          _gold,"gold",\
+         _colorChar,"color",\
          _game,"game_id")
 Team::Team() : _isAlive(Team::$_isAlive),
     _id(Team::$_id),
     _gold(Team::$_gold),
+    _colorChar(Team::$_colorChar),
     _game(Team::$_game),
     _enemies(*this)
 {
     _isAlive.registerAttr(*this);
     _id.registerAttr(*this);
     _gold.registerAttr(*this);
+    _colorChar.registerAttr(*this);
     _game.registerAttr(*this);
 }
 
@@ -110,5 +113,26 @@ const std::list<book::Client*>& Team::getClients()const
 bool Team::isGameOver()const
 {
     return _isAlive.value();
+}
+
+void Team::after_load()
+{
+    std::string c = _colorChar.value().c_str();
+    _color.r = c[0];
+    _color.g = c[1];
+    _color.b = c[2];
+    _color.a = c[3];
+    
+}
+
+void Team::before_save()
+{
+    unsigned char c[4] = {_color.r,_color.g,_color.b,_color.a};
+    _colorChar = (char*)c;
+}
+
+void Team::before_update()
+{
+    before_save();
 }
 

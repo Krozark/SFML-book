@@ -104,7 +104,6 @@ namespace orm
         return query.setNull(fk,column);
         */
         //if(loaded)
-		std::cout<<"set() fk: "<<fk<<" "<<value_ptr.get()<<std::endl;
         if(value_ptr.get() and fk>0)
             return query.set(fk,column);
         return query.setNull(fk,column);
@@ -167,16 +166,16 @@ namespace orm
             setObjectT_ptr(db);
         }
 		
-		std::cout<<T::table<<" fk: "<<fk<<" pk:"<<value_ptr->pk<<" modify: "<<modify<<std::endl;
 		
         if(modify)
         {
-            modify = false;
+            modify = false; //avoid loop cause by user callbacks
             res = value_ptr->save(recursive,db);
             if(fk<=0)
             {
                 value_ptr = T::cache.add(value_ptr);
             }
+            modify = value_ptr->pk != fk;
             fk = value_ptr->pk;
         }
         return res;

@@ -555,7 +555,7 @@ void Game::load(bool init)
 
             createEntity(spawns[i],team,book::makeAsMain);
             _teams.emplace_back(team);
-            team->save();
+            team->save(true);
         }
 
         //add enemies
@@ -584,6 +584,11 @@ void Game::after_load()
 {
     if(_id > _numberOfCreations)
         _numberOfCreations = _id;
+
+    Team::query()
+        .filter(this->getPk(),orm::op::exact,Team::$_game)
+        .get(_teams);
+
     load(false);
 }
 

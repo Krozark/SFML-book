@@ -71,11 +71,9 @@ namespace orm
             template<typename T> friend class Register;
             template<typename T> friend class SqlObject;
             template<typename T,typename U> friend class M2MQuerySet;
+            template<typename T,typename U> friend class ManyToMany;
             template<typename U> friend class Cache;
 
-            int pk; ///< the object pf
-            std::vector<VAttr*> attrs; ///< the object attrs
-            std::vector<VFK*> fks; ///< the object FK
 
             /**
              * \brief prepare the object before save it in DB (new object only)
@@ -143,6 +141,11 @@ namespace orm
              * \param max_depth maximun depth of constrution
              **/
         private:
+
+            int pk; ///< the object pf
+            std::vector<VAttr*> attrs; ///< the object attrs
+            std::vector<VFK*> fks; ///< the object FK
+
             virtual void _nameAttrs(std::string& q_str,const std::string& prefix,int max_depth,DB& db)const =0;
 
             /**

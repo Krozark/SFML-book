@@ -48,13 +48,14 @@ class Team : public orm::SqlObject<Team>
 
         bool isGameOver()const;
 
-        MAKE_STATIC_COLUMN(_id,_isAlive,_gold,_game)
+        MAKE_STATIC_COLUMN(_id,_isAlive,_gold,_game,_colorChar)
 
 
     private:
         orm::BooleanField _isAlive;
         orm::IntegerField _id;
         orm::IntegerField _gold;
+        orm::CharField<4> _colorChar; 
 
         std::vector<std::uint32_t> _QGId;
         sf::Color _color;
@@ -64,6 +65,10 @@ class Team : public orm::SqlObject<Team>
         orm::ManyToMany<Team,Team> _enemies;
 
         std::list<book::Client*> _clients;
+        
+        virtual void after_load() override;
+        virtual void before_save() override;
+        virtual void before_update() override;
 
 
 };

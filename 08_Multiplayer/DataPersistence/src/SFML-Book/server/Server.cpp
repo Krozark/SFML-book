@@ -61,6 +61,13 @@ namespace book
     void Server::runGame()
     {
         std::cout<<"Start Game service"<<std::endl;
+
+        {
+            Game::result_type games = Game::all();
+            for(Game::type_ptr g: games)
+                _games.emplace_back(std::move(g));
+        }
+
         while(!stop)
         {
             sf::Lock guard(_clientMutex);
