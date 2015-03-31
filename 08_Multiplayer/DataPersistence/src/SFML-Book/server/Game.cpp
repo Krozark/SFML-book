@@ -36,7 +36,6 @@ Game::Game(const std::string& mapFileName) : Game()
 {
     _id = ++_numberOfCreations;
     _mapFileName = mapFileName;
-    load(true);
 }
 
 
@@ -552,7 +551,7 @@ void Game::load(bool init)
                                               book::random(110,225)
                                              ),
                                   initialGold,
-                                  this));
+                                  this->as_type_ptr()));
 
             createEntity(spawns[i],team,book::makeAsMain);
             _teams.emplace_back(team);

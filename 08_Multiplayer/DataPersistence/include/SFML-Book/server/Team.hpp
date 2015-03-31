@@ -26,7 +26,7 @@ class Team : public orm::SqlObject<Team>
 
         Team();
 
-        Team(int id,const sf::Color& color,int gold,Game* game);
+        Team(int id,const sf::Color& color,int gold,Game::type_ptr game);
 
         void addGold(int amount);
         int getGold()const;

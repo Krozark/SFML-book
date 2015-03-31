@@ -30,7 +30,7 @@ namespace orm
     * \endcode
     **/
     template<typename T>
-    class SqlObject : public SqlObjectBase, public std::enable_shared_from_this<T>
+    class SqlObject : public std::enable_shared_from_this<T>, public SqlObjectBase
     {
         public:
             using result_type = typename QuerySet<T>::result_type;

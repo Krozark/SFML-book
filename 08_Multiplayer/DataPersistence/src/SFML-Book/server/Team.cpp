@@ -23,13 +23,13 @@ Team::Team() : _isAlive(Team::$_isAlive),
     std::cout<<"Team() "<<this<<std::endl;
 }
 
-Team::Team(int id,const sf::Color& color,int gold,Game* game) : Team()
+Team::Team(int id,const sf::Color& color,int gold,Game::type_ptr game) : Team()
 {
     _isAlive = true;
     _id = id;
     _gold = gold;
     _color = color;
-    //_game = game;
+    _game = game;
 
     std::cout<<"Team() "<<this<<" id "<<_id<<_game<<" "<<*game<<std::endl;
 }

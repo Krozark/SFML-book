@@ -71,6 +71,7 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
 
         MAKE_STATIC_COLUMN(_id,_mapFileName)
 
+        void load(bool init);
 
     private:
         bool _isRunning;
@@ -123,6 +124,5 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
         void addCreate(book::packet::CreateEntity& packet,unsigned int id);
 
         virtual void after_load() override;
-        void load(bool init);
 };
 #endif

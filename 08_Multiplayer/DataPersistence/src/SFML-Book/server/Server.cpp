@@ -92,6 +92,8 @@ namespace book
                             packet::SetListGame list;
                             sf::Lock guard(_gameMutex);
                             _games.emplace_back(new Game("./media/map.json"));
+                            _games.back()->load(true);
+
                             for(auto game : _games)
                             {
                                 list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
