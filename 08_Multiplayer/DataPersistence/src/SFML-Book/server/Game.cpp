@@ -20,7 +20,7 @@ REGISTER(Game,"Game",\
          _id,"id",\
          _mapFileName,"_mapFileName")
 
-Game::Game(): 
+Game::Game():
     _isRunning(false),
     _gameThread(&Game::_run,this),
     _map(nullptr),
@@ -241,7 +241,7 @@ int Game::getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const
 
 void Game::_run()
 {
-    sf::Clock clock;        
+    sf::Clock clock;
     sf::Time timeSinceLastUpdate;
 
     sf::Time TimePerFrame = sf::seconds(1.f/120);
@@ -308,7 +308,7 @@ void Game::processNetworkEvents()
                     it = _clients.erase(it);
                     --it;
                     client->getTeam()->remove(client);
-                    
+
                     onLogOut(client);
                     client = nullptr;
                 }break;
@@ -405,7 +405,7 @@ void Game::sendUpdates()
 
         _onSpawn.clear();
     }
-    
+
     if(_destroyEntityId.size() > 0)
     {
         book::packet::DestroyEntity update;
@@ -427,7 +427,7 @@ void Game::sendUpdates()
 
         _createEntities.clear();
     }
-    
+
     if(_updateEntitiesId.size() > 0)
     {
         book::packet::UpdateEntity update;
@@ -496,7 +496,7 @@ void Game::addCreate(book::packet::CreateEntity& packet,unsigned int id)
 {
     Entity& e = entities.get(id);
     book::packet::CreateEntity::Data update;
-    
+
     update.entityId = id;
     update.entityType = e.getType();
     update.entityTeam = entities.getComponent<CompTeam>(id)->_team->id();
@@ -541,7 +541,7 @@ void Game::load(bool init)
 
         initialGold = players["gold"].as_int();
     }
-    
+
     if(init)
     {
         for(unsigned int i = 0; i<spawns.size();++i)
@@ -585,4 +585,14 @@ void Game::after_load()
     if(_id > _numberOfCreations)
         _numberOfCreations = _id;
     load(false);
+}
+
+void Game::after_save()
+{
+    for(Team::type_ptr team : _teams)
+        team->save(true);
+}
+void Game::after_update()
+{
+    after_save();
 }

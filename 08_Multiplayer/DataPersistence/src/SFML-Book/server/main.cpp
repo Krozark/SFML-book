@@ -1,5 +1,5 @@
 #include <ORM/backends/Sqlite3.hpp>
-orm::Sqlite3DB def("./08_dataPersistence.db");
+orm::Sqlite3DB def("./08_dataPersistence.sqlite");
 
 orm::DB& orm::DB::Default = def;
 

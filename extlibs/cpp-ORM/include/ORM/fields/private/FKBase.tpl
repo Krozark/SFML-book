@@ -104,7 +104,8 @@ namespace orm
         return query.setNull(fk,column);
         */
         //if(loaded)
-        if(value_ptr.get())
+		std::cout<<"set() fk: "<<fk<<" "<<value_ptr.get()<<std::endl;
+        if(value_ptr.get() and fk>0)
             return query.set(fk,column);
         return query.setNull(fk,column);
     };
@@ -159,12 +160,15 @@ namespace orm
     template<typename T>
     bool FKBase<T>::save(bool recursive,DB& db)
     {
-        bool res = true;
+        bool res = false;
 
         if(not nullable)
         {
             setObjectT_ptr(db);
         }
+		
+		std::cout<<T::table<<" fk: "<<fk<<" pk:"<<value_ptr->pk<<" modify: "<<modify<<std::endl;
+		
         if(modify)
         {
             modify = false;

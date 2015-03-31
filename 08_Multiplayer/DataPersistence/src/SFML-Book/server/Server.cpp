@@ -11,6 +11,7 @@
 #include <SFML-Book/common/random.hpp>
 
 
+
 namespace book
 {
     sig_atomic_t stop = false;
@@ -23,7 +24,7 @@ namespace book
 
     Server::Server(int port) : _port(port),_gameThread(&Server::runGame,this), _listenThread(&Server::listen,this)
     {
-        rand_init();        
+        rand_init();
         _currentClient = nullptr;
     }
 
@@ -125,7 +126,7 @@ namespace book
                                     break;
                                 }
                             }
-                            
+
                         }break;
 
                         case FuncIds::IdDisconnected :
@@ -140,6 +141,7 @@ namespace book
                 }
             }
         }
+        saveToDb();
         std::cout<<"Stop Game service"<<std::endl;
     }
 
@@ -180,6 +182,14 @@ namespace book
         }
 
         std::cout<<"Stop Network service"<<std::endl;
+    }
+
+    void Server::saveToDb()
+    {
+        for(auto game : _games)
+        {
+            game->save();
+        }
     }
 
 }

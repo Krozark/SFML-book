@@ -59,7 +59,6 @@ class Team : public orm::SqlObject<Team>
         std::vector<std::uint32_t> _QGId;
         sf::Color _color;
 
-
         orm::FK<Game> _game;
 
         orm::ManyToMany<Team,Team> _enemies;

@@ -37,12 +37,11 @@ namespace book
             sf::Mutex _clientMutex;
             std::list<Client*> _clients;
 
-
             sf::Thread _listenThread;
             sf::TcpListener _socketListener;
             Client* _currentClient;
 
-
+            void saveToDb();
     };
 }
 #endif

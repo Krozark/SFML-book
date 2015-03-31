@@ -36,7 +36,7 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
         Game();
         Game(const std::string& mapFileName);
         ~Game();
-        
+
         int getTeamCount();
         int getPalyersCount();
 
@@ -85,12 +85,12 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
         std::list<book::packet::OnHittedEntity::Data> _onHitted;
         std::list<book::packet::OnHitEntity::Data> _onHit;
         std::set<std::uint32_t> _onSpawn;
-        
+
         book::packet::CreateEntity _createEntities;
-        
+
         sf::Vector2i _minCoord;
         sf::Vector2i _maxCoord;
-        
+
         sf::Mutex _teamMutex;
         std::vector<std::shared_ptr<Team>> _teams;
 
@@ -124,5 +124,7 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
         void addCreate(book::packet::CreateEntity& packet,unsigned int id);
 
         virtual void after_load() override;
+        virtual void after_save() override;
+        virtual void after_update() override;
 };
 #endif
