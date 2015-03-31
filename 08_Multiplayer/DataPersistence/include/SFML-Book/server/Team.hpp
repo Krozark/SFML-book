@@ -64,7 +64,6 @@ class Team : public orm::SqlObject<Team>
 
         orm::ManyToMany<Team,Team> _enemies;
 
-        //std::vector<Team::type_ptr> _enemies;
         std::list<book::Client*> _clients;
 
 

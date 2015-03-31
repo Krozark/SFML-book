@@ -152,8 +152,6 @@ class CompTeam : public sfutils::Component<CompTeam,Entity>, public orm::SqlObje
         CompTeam();
         explicit CompTeam(Team::type_ptr team);
 
-        //book::Team* _team;
-
         orm::FK<Team> _team;
         
         MAKE_STATIC_COLUMN(_team)

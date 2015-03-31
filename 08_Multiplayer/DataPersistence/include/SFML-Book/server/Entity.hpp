@@ -37,6 +37,7 @@ class Entity : public sfutils::Entity<Entity>
         short int _type;
 };
 
+
 namespace book
 {
 

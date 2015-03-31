@@ -37,6 +37,7 @@ void Entity::setPosition(const sf::Vector2f& pos, const sf::Vector2i& coord)
 }
 
 
+
     /************* Helpers *****************/
 namespace book
 {
