@@ -6,10 +6,14 @@
 
 #include <SFML-Book/server/Component.hpp>
 
+class Entity;
+
 class EntityData : public orm::SqlObject<EntityData>
 {
     public:
         EntityData();
+
+        createFromEntity(Entity& entity)
 
         orm::FloatField _coordX;
         orm::FloatField _coordY;
@@ -22,8 +26,8 @@ class EntityData : public orm::SqlObject<EntityData>
         orm::FK<CompAIWalker> _AIWalker;
         orm::FK<CompAIFlyer> _AIFlyer;
         orm::FK<CompTeam> _team;
-            //CompSkin
-            //CompHp
+        orm::FK<CompSkin> _skin;
+        orm::FK<CompHp> _hp;
 
         virtual void after_load() override;
         virtual void before_save() override;
@@ -32,7 +36,7 @@ class EntityData : public orm::SqlObject<EntityData>
         MAKE_STATIC_COLUMN(_coordX,_coordY,_type,\
                            _AIMain,_AIWarrior,_AIDefender,\
                            _AISpawner,_AIWalker,_AIFlyer,\
-                           _team)
+                           _team,_skin,_hp)
 
 };
 

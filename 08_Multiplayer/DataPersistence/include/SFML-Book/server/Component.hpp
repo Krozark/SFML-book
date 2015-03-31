@@ -41,7 +41,7 @@ class CompAIWarrior : public sfutils::Component<CompAIWarrior,Entity>, public or
     public:
         CompAIWarrior();
         explicit CompAIWarrior(int hitPoint,const sf::Time& timeDelta,int range);
-    
+
         virtual void after_load() override;
         virtual void before_save() override;
         virtual void before_update() override;
@@ -93,7 +93,7 @@ class CompAISpawner : public sfutils::Component<CompAISpawner,Entity>, public or
         virtual void after_load() override;
         virtual void before_save() override;
         virtual void before_update() override;
-    
+
         book::MakeAs _makeAs;
         orm::IntegerField _makeAsTypeId;
 
@@ -153,32 +153,40 @@ class CompTeam : public sfutils::Component<CompTeam,Entity>, public orm::SqlObje
         explicit CompTeam(Team::type_ptr team);
 
         orm::FK<Team> _team;
-        
+
         MAKE_STATIC_COLUMN(_team)
 };
 
-struct CompSkin : sfutils::Component<CompSkin,Entity>
+class CompSkin : public sfutils::Component<CompSkin,Entity>, public orm::SqlObject<CompSkin>
 {
-    enum AnimationId : int{
-        Stand = 0,
-        Spawn,
-        MoveLeft,
-        MoveRight,
-        HitLeft,
-        HitRight
-    };
+    public:
+        enum AnimationId : int{
+            Stand = 0,
+            Spawn,
+            MoveLeft,
+            MoveRight,
+            HitLeft,
+            HitRight
+        };
 
-    explicit CompSkin(short int animation);
-    
-    short int _animationId;
+        CompSkin();
+        explicit CompSkin(short int animation);
+
+        orm::IntegerField _animationId;
+
+        MAKE_STATIC_COLUMN(_animationId);
 };
 
-struct CompHp : sfutils::Component<CompHp,Entity>
+class CompHp : public sfutils::Component<CompHp,Entity>, public orm::SqlObject<CompHp>
 {
-    explicit CompHp(int hp);
+    public:
+        CompHp();
+        explicit CompHp(int hp);
 
-    int _hp;
-    const int _maxHp;
+        orm::IntegerField _hp;
+        orm::IntegerField _maxHp;
+
+        MAKE_STATIC_COLUMN(_hp,_maxHp);
 };
 
 

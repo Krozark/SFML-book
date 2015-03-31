@@ -48,7 +48,7 @@ namespace book
     SysAIWarrior::SysAIWarrior(Game& game) : _game(game)
     {
     }
-    
+
     void SysAIWarrior::update(sfutils::EntityManager<Entity>& manager,const sf::Time& dt)
     {
         CompAIWarrior::Handle AI;
@@ -56,7 +56,7 @@ namespace book
         CompSkin::Handle skin;
         auto view = manager.getByComponents(AI,team,skin);
         auto end = view.end();
-        
+
         for(auto begin = view.begin();begin != end;++begin)
         {
             AI->_elapsed += dt;
@@ -126,7 +126,7 @@ end_search: //exit nesteed loops
                 //shoot it
                 AI->_elapsed = sf::Time::Zero;
                 CompHp::Handle hp = enemy.component<CompHp>();
-                hp->_hp -= AI->_hitPoint;
+                hp->_hp -= AI->_hitPoint.value();
 
                 Entity& me = **begin;
 
@@ -178,7 +178,7 @@ end_search: //exit nesteed loops
         CompSkin::Handle skin;
         auto view = manager.getByComponents(AI,team,skin);
         auto end = view.end();
-        
+
         for(auto begin = view.begin();begin != end;++begin)
         {
             AI->_elapsed += dt;
@@ -231,7 +231,7 @@ end_search: //exit nesteed loops
             //shoot it
             AI->_elapsed = sf::Time::Zero;
             CompHp::Handle hp = enemy.component<CompHp>();
-            hp->_hp -= AI->_hitPoint;
+            hp->_hp -= AI->_hitPoint.value();
 
             Entity& me = **begin;
 
@@ -405,7 +405,7 @@ end_search: //exit nesteed loops
             }
         }
     }
-    
+
     ///////////////////// SYS AI HP ///////////////////////
     SysHp::SysHp(Game& game) : _game(game)
     {

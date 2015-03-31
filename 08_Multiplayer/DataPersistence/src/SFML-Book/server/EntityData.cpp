@@ -11,7 +11,9 @@ REGISTER_AND_CONSTRUCT(EntityData,"EntityData",\
          _AISpawner,"AISpawner",\
          _AIWalker,"AIWalker",\
          _AIFlyer,"AIFlyer",\
-         _team,"team")
+         _team,"team",\
+         _skin,"skin",\
+         _hp,"hp")
 
 void EntityData::after_load()
 {

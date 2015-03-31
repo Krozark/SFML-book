@@ -31,8 +31,8 @@ void CompAIMain::before_save()
 
 void CompAIMain::before_update()
 {
-    before_save(); 
-}   
+    before_save();
+}
 
 ///////////////////// CompAIWarrior //////////////////////////
 
@@ -66,8 +66,8 @@ void CompAIWarrior::before_save()
 
 void CompAIWarrior::before_update()
 {
-    before_save(); 
-}   
+    before_save();
+}
 
 ///////////////// CompAIDefender //////////////
 REGISTER_AND_CONSTRUCT(CompAIDefender,"CompAIDefender",\
@@ -99,8 +99,8 @@ void CompAIDefender::before_save()
 
 void CompAIDefender::before_update()
 {
-    before_save(); 
-}   
+    before_save();
+}
 
 //////////////////////////// CompAISpawner /////////////////////
 
@@ -109,8 +109,8 @@ REGISTER_AND_CONSTRUCT(CompAISpawner,"CompAISpawner",\
                        _number,"number",\
                        _deltaAsDouble,"deltaAsDouble",\
                        _elapsedAsDouble,"elapsedAsDouble")
-                       
-                       
+
+
 CompAISpawner::CompAISpawner(book::MakeAs makeAs,int number,const sf::Time& timeDelta) : CompAISpawner()
 {
     _makeAs = makeAs;
@@ -135,8 +135,8 @@ void CompAISpawner::before_save()
 
 void CompAISpawner::before_update()
 {
-    before_save(); 
-}   
+    before_save();
+}
 
 ////////////////////////////// CompAIWalker ////////////////////
 
@@ -209,11 +209,23 @@ CompTeam::CompTeam(Team::type_ptr team) : CompTeam()
 
 ///////////////// CompSkin /////////////////
 
-CompSkin::CompSkin(short int animation) : _animationId(animation)
+REGISTER_AND_CONSTRUCT(CompSkin,"CompSkin",\
+                       _animationId,"animationId")
+
+CompSkin::CompSkin(short int animation) : CompSkin()
 {
+    _animationId = animation;
 }
 
-CompHp::CompHp(int hp) : _hp(hp), _maxHp(hp)
+/////////////////// CompHp ///////////////////////
+
+REGISTER_AND_CONSTRUCT(CompHp,"CompHp",\
+                       _hp,"hp",\
+                       _maxHp,"maxHp")
+
+CompHp::CompHp(int hp) : CompHp()
 {
+    _hp = hp;
+    _maxHp = hp;
 }
 
