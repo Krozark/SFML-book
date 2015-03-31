@@ -15,7 +15,6 @@
 #include <SFML-utils/Map.hpp>
 
 #include <SFML-Book/server/Entity.hpp>
-#include <SFML-Book/server/Team.hpp>
 
 #include <SFML-Book/common/Packet.hpp>
 #include <SFML-Book/common/std_hash.hpp>
@@ -48,7 +47,7 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
         void run();
         void stop();
 
-        Entity& createEntity(const sf::Vector2i& coord,Team::type_ptr team,book::MakeAs makeAs);
+        Entity& createEntity(const sf::Vector2i& coord,std::shared_ptr<Team> team,book::MakeAs makeAs);
         void markEntityUpdated(std::uint32_t id);
         void markEntityHit(std::uint32_t id,std::uint32_t enemyId);
         void markEntityHitted(std::uint32_t id,std::uint32_t enemyId);
@@ -92,7 +91,7 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
         sf::Vector2i _maxCoord;
         
         sf::Mutex _teamMutex;
-        std::vector<Team::type_ptr> _teams;
+        std::vector<std::shared_ptr<Team>> _teams;
 
         sf::Mutex _clientsMutex;
         std::vector<book::Client*> _clients;

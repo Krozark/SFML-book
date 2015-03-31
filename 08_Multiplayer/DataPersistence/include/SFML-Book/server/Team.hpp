@@ -11,11 +11,12 @@
 #include <ORM/fields/ManyToMany.hpp>
 #include <ORM/models/SqlObject.hpp>
 
+#include <SFML-Book/server/Game.hpp>
+
 namespace book
 {
     class Client;
 }
-class Game;
 
 class Team : public orm::SqlObject<Team>
 {
@@ -47,7 +48,7 @@ class Team : public orm::SqlObject<Team>
 
         bool isGameOver()const;
 
-        MAKE_STATIC_COLUMN(_id,_isAlive,_gold)
+        MAKE_STATIC_COLUMN(_id,_isAlive,_gold,_game)
 
 
     private:
@@ -59,7 +60,7 @@ class Team : public orm::SqlObject<Team>
         sf::Color _color;
 
 
-        Game* _game;
+        orm::FK<Game> _game;
 
         orm::ManyToMany<Team,Team> _enemies;
 

@@ -3,6 +3,7 @@
 #include <SFML-Book/server/Client.hpp>
 #include <SFML-Book/server/Component.hpp>
 #include <SFML-Book/server/System.hpp>
+#include <SFML-Book/server/Team.hpp>
 
 #include <SFML-Book/common/random.hpp>
 

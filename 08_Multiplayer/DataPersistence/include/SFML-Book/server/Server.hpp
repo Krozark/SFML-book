@@ -5,6 +5,7 @@
 #include <SFML/Network.hpp>
 
 #include <list>
+#include <memory>
 
 class Game;
 
@@ -32,7 +33,7 @@ namespace book
 
             sf::Thread _gameThread;
             sf::Mutex _gameMutex;
-            std::list<Game*> _games;
+            std::list<std::shared_ptr<Game>> _games;
             sf::Mutex _clientMutex;
             std::list<Client*> _clients;
 

@@ -30,11 +30,6 @@ namespace book
     Server::~Server()
     {
         _gameMutex.lock();
-        for(Game* game : _games)
-        {
-            game->stop();
-            delete game;
-        }
         _gameMutex.unlock();
 
         _clientMutex.lock();
@@ -83,7 +78,7 @@ namespace book
                             sf::Packet response;
                             packet::SetListGame list;
                             sf::Lock guard(_gameMutex);
-                            for(Game* game : _games)
+                            for(auto game : _games)
                             {
                                 list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
                             }
@@ -97,7 +92,7 @@ namespace book
                             packet::SetListGame list;
                             sf::Lock guard(_gameMutex);
                             _games.emplace_back(new Game("./media/map.json"));
-                            for(Game* game : _games)
+                            for(auto game : _games)
                             {
                                 list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
                             }
@@ -115,7 +110,7 @@ namespace book
                         {
                             int gameId = static_cast<packet::JoinGame*>(msg)->gameId();
                             sf::Lock guard(_gameMutex);
-                            for(Game* game : _games)
+                            for(auto game : _games)
                             {
                                 if(game->id() == gameId)
                                 {
