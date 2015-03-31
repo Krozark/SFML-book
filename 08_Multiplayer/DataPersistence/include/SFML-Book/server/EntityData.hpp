@@ -13,7 +13,7 @@ class EntityData : public orm::SqlObject<EntityData>
     public:
         EntityData();
 
-        createFromEntity(Entity& entity)
+        static EntityData::type_ptr createFromEntity(Entity& entity);
 
         orm::FloatField _coordX;
         orm::FloatField _coordY;

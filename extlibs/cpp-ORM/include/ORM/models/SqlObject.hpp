@@ -35,14 +35,18 @@ namespace orm
         public:
             using result_type = typename QuerySet<T>::result_type;
             using type_ptr = typename Cache<T>::type_ptr;
+
+
+            SqlObject(const SqlObject&) = delete;
+            SqlObject& operator=(const SqlObject&) = delete;
+            
             /**
             * \brief make a SqlObject
             **/
             SqlObject();
 
-
-            SqlObject(const SqlObject&) = delete;
-            SqlObject& operator=(const SqlObject&) = delete;
+            template<typename ... Args>
+            static type_ptr create(Args&& ... args);
 
             /**
             * \brief create a new object from query
@@ -108,21 +112,21 @@ namespace orm
              * \todo
              * \return true if success
              */
-            static bool create(DB& db = *default_connection);
+            static bool createTable(DB& db = *default_connection);
 
             /**
              * \brief drop the table
              * \todo
              * \return true if success
              */
-            static bool drop(DB& db = *default_connection);
+            static bool dropTable(DB& db = *default_connection);
 
             /**
              * \brief truncate the table
              * \todo
              * \return true if success
              */
-            static bool clear(DB& db = *default_connection);
+            static bool clearTable(DB& db = *default_connection);
 
             static  DB* default_connection; ///< db use to stor the object
 
@@ -225,6 +229,7 @@ namespace orm
             * \brief use by the cache to increment depth
             **/
             static void incDepth(int& depth,int max_depth);
+
     };
 };
 

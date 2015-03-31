@@ -196,7 +196,7 @@ int main(int argc,char* argv[])
 
         lis.clear();
         TestTypes::query()
-            .filter(orm::Q<TestTypes>(test2.datetimeField.value(),orm::op::gt,TestTypes::_datetimeField))
+            .filter(orm::Q<TestTypes>(test2.datetimeField.value(),orm::op::gt,TestTypes::datetimeField))
             .get(lis);
         //.__print__();
         for(auto u : lis)

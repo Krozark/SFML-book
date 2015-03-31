@@ -1,4 +1,5 @@
 #include <SFML-Book/server/EntityData.hpp>
+#include <SFML-Book/server/Entity.hpp>
 
 
 REGISTER_AND_CONSTRUCT(EntityData,"EntityData",\
@@ -15,6 +16,28 @@ REGISTER_AND_CONSTRUCT(EntityData,"EntityData",\
          _skin,"skin",\
          _hp,"hp")
 
+EntityData::type_ptr EntityData::createFromEntity(Entity& entity)
+{
+    sf::Vector2i coords = entity.getCoord();
+
+
+    EntityData::type_ptr e = EntityData::get(entity.id());
+
+    e->_coordX = coords.x;
+    e->_coordY = coords.y;
+    e->_type = entity.getType();
+
+    if(entity.has<CompAIMain>())
+    {
+        CompAIMain* comp_raw_ptr = entity.component<CompAIMain>().get();
+        CompAIMain::type_ptr comp_ptr = comp_raw_ptr->as_type_ptr();
+
+        e->_AIMain = comp_ptr;
+    }
+
+    return e;
+}
+
 void EntityData::after_load()
 {
 
@@ -25,6 +48,7 @@ void EntityData::after_load()
 
 void EntityData::before_save()
 {
+
 }
 
 void EntityData::before_update()

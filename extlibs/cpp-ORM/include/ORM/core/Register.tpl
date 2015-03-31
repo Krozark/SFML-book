@@ -26,19 +26,19 @@ namespace orm
 
         Tables::_create.push_back(
                                  []()->bool{
-                                    return SqlObject<T>::create();
+                                    return SqlObject<T>::createTable();
                                  }
                                 );
 
         Tables::_drop.push_back(
                                []()->bool{
-                                return SqlObject<T>::drop();
+                                return SqlObject<T>::dropTable();
                                 }
                             );
 
         Tables::_clear.push_back(
                                    []()->bool{
-                                    return SqlObject<T>::clear();
+                                    return SqlObject<T>::clearTable();
                                     }
                                 );
 

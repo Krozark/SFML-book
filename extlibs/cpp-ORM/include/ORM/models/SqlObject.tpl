@@ -1,13 +1,19 @@
 #include <ORM/backends/DB.hpp>
 #include <ORM/backends/private/QuerySet.hpp>
 
-
 namespace orm
 {
     template<typename T>
     SqlObject<T>::SqlObject()
     {
     };
+
+    template<typename T>
+    template<typename ... Args>
+    typename SqlObject<T>::type_ptr SqlObject<T>::create(Args&& ... args)
+    {
+        return std::make_shared<T>(std::forward<Args>(args)...);
+    }
 
     template<typename T>
     T* SqlObject<T>::createFromDB(const Query& query,int& prefix, int max_depth)
@@ -140,7 +146,7 @@ namespace orm
     }
 
     template<typename T>
-    bool SqlObject<T>::create(DB& db)
+    bool SqlObject<T>::createTable(DB& db)
     {
         #if ORM_DEBUG & ORM_DEBUG_CREATE_TABLE
         std::cerr<<MAGENTA<<"[CREATE] create table "<<table<<BLANC<<std::endl;
@@ -149,7 +155,7 @@ namespace orm
     }
 
     template<typename T>
-    bool SqlObject<T>::drop(DB& db)
+    bool SqlObject<T>::dropTable(DB& db)
     {
         #if ORM_DEBUG & ORM_DEBUG_DROP_TABLE
         std::cerr<<MAGENTA<<"[DROP] drop table "<<table<<BLANC<<std::endl;
@@ -159,7 +165,7 @@ namespace orm
     }
 
     template<typename T>
-    bool SqlObject<T>::clear(DB& db)
+    bool SqlObject<T>::clearTable(DB& db)
     {
         #if ORM_DEBUG & ORM_DEBUG_TRUNCATE_TABLE
         std::cerr<<MAGENTA<<"[TRUNCATE] truncate table "<<table<<BLANC<<std::endl;
@@ -245,4 +251,5 @@ namespace orm
         for(int i=0;i<_size;++i)
             column_fks[i]->incDepth(depth,max_depth);
     }
+    
 };
