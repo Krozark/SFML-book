@@ -6,6 +6,7 @@
 
 ES_INIT_ENTITY(Entity);
 
+
 Entity::Entity(sfutils::EntityManager<Entity>* manager,std::uint32_t id) : sfutils::Entity<Entity>(manager,id)
 {
 }

@@ -5,6 +5,7 @@
 #include <ORM/models/SqlObject.hpp>
 
 #include <SFML-Book/server/Component.hpp>
+#include <SFML-Book/server/Game.hpp>
 
 class Entity;
 
@@ -15,6 +16,7 @@ class EntityData : public orm::SqlObject<EntityData>
 
         static EntityData::type_ptr createFromEntity(Entity& entity);
 
+        orm::FK<Game> _game;
         orm::FloatField _coordX;
         orm::FloatField _coordY;
         orm::IntegerField _type;
@@ -33,7 +35,7 @@ class EntityData : public orm::SqlObject<EntityData>
         virtual void before_save() override;
         virtual void before_update() override;
 
-        MAKE_STATIC_COLUMN(_coordX,_coordY,_type,\
+        MAKE_STATIC_COLUMN(_game,_coordX,_coordY,_type,\
                            _AIMain,_AIWarrior,_AIDefender,\
                            _AISpawner,_AIWalker,_AIFlyer,\
                            _team,_skin,_hp)

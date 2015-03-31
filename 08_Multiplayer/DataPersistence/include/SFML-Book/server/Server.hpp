@@ -42,6 +42,7 @@ namespace book
             Client* _currentClient;
 
             void saveToDb();
+            void loadFromDb();
     };
 }
 #endif

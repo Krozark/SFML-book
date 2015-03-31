@@ -3,6 +3,7 @@
 
 
 REGISTER_AND_CONSTRUCT(EntityData,"EntityData",\
+         _game,"game_id",\
          _coordX,"coordX",\
          _coordY,"coordY",\
          _type,"type",\
@@ -21,8 +22,9 @@ EntityData::type_ptr EntityData::createFromEntity(Entity& entity)
     sf::Vector2i coords = entity.getCoord();
 
 
-    EntityData::type_ptr e = EntityData::get(entity.id());
+    EntityData::type_ptr e = EntityData::create();
 
+    //e->_game = game;
     e->_coordX = coords.x;
     e->_coordY = coords.y;
     e->_type = entity.getType();
@@ -30,9 +32,10 @@ EntityData::type_ptr EntityData::createFromEntity(Entity& entity)
     if(entity.has<CompAIMain>())
     {
         CompAIMain* comp_raw_ptr = entity.component<CompAIMain>().get();
-        CompAIMain::type_ptr comp_ptr = comp_raw_ptr->as_type_ptr();
+        comp_raw_ptr->save();
+        //CompAIMain::type_ptr comp_ptr = CompAIMain::get(comp_raw_ptr->getPk());//as_type_ptr();
 
-        e->_AIMain = comp_ptr;
+        //e->_AIMain = comp_ptr;
     }
 
     return e;

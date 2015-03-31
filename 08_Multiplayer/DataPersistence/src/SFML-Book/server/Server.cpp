@@ -5,6 +5,7 @@
 
 #include <SFML-Book/server/Client.hpp>
 #include <SFML-Book/server/Game.hpp>
+#include <SFML-Book/server/EntityData.hpp>
 
 #include <SFML-Book/common/FuncIds.hpp>
 #include <SFML-Book/common/Packet.hpp>
@@ -62,12 +63,7 @@ namespace book
     {
         std::cout<<"Start Game service"<<std::endl;
 
-        {
-            Game::result_type games = Game::all();
-            for(Game::type_ptr g: games)
-                _games.emplace_back(std::move(g));
-        }
-
+        loadFromDb();
         while(!stop)
         {
             sf::Lock guard(_clientMutex);
@@ -88,7 +84,7 @@ namespace book
                             sf::Lock guard(_gameMutex);
                             for(auto game : _games)
                             {
-                                list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
+                                list.add(game->id(),game->getPlayersCount(),game->getTeamCount());
                             }
 
                             response<<list;
@@ -104,7 +100,7 @@ namespace book
 
                             for(auto game : _games)
                             {
-                                list.add(game->id(),game->getPalyersCount(),game->getTeamCount());
+                                list.add(game->id(),game->getPlayersCount(),game->getTeamCount());
                             }
                             _games.back()->onLogOut = [this](Client* client){
                                 _clients.emplace_back(client);
@@ -197,6 +193,15 @@ namespace book
         {
             game->save();
         }
+    }
+
+    void Server::loadFromDb()
+    {
+        Game::result_type games = Game::all();
+        for(Game::type_ptr g: games)
+            _games.emplace_back(std::move(g));
+
+        EntityData::clearTable();
     }
 
 }

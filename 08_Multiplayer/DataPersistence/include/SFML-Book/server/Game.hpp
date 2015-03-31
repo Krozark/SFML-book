@@ -38,7 +38,7 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
         ~Game();
 
         int getTeamCount();
-        int getPalyersCount();
+        int getPlayersCount();
 
         int id()const;
 

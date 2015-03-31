@@ -46,8 +46,6 @@ int Team::getGold()const
 
 void Team::addEnemy(Team::type_ptr team)
 {
-    this->save();
-    team->save();
     _enemies.add(team);
 }
 

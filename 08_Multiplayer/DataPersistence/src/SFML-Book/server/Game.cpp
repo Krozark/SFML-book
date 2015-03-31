@@ -4,6 +4,7 @@
 #include <SFML-Book/server/Component.hpp>
 #include <SFML-Book/server/System.hpp>
 #include <SFML-Book/server/Team.hpp>
+#include <SFML-Book/server/EntityData.hpp>
 
 #include <SFML-Book/common/random.hpp>
 
@@ -52,7 +53,7 @@ int Game::getTeamCount()
     return _teams.size();
 }
 
-int Game::getPalyersCount()
+int Game::getPlayersCount()
 {
     sf::Lock guard(_clientsMutex);
     return _clients.size();
@@ -589,6 +590,16 @@ void Game::after_load()
         .filter(this->getPk(),orm::op::exact,Team::$_game)
         .get(_teams);
 
+    EntityData::result_type l;
+    EntityData::query()
+        .filter(this->getPk(),orm::op::exact,Team::$_game)
+        .get(l);
+
+    for(EntityData::type_ptr e : l)
+    {
+        
+    }
+
     load(false);
 }
 
@@ -596,6 +607,15 @@ void Game::after_save()
 {
     for(Team::type_ptr team : _teams)
         team->save(true);
+
+    //save entities
+    for(auto id : entities)
+    {
+        std::cout<<"Save id "<<id<<std::endl;
+        Entity& e = entities.get(id);
+        EntityData::type_ptr tmp = EntityData::createFromEntity(e);
+        tmp->save();
+    }
 }
 void Game::after_update()
 {
