@@ -1,8 +1,6 @@
 
 #include <SFML-Book/server/Team.hpp>
 
-#include <iostream>
-
 
 M2M_REGISTER(Team,_enemies,Team,"Team_enemies","team_id","enemi_id")
 REGISTER(Team,"Team",\
@@ -20,7 +18,6 @@ Team::Team() : _isAlive(Team::$_isAlive),
     _id.registerAttr(*this);
     _gold.registerAttr(*this);
     _game.registerAttr(*this);
-    std::cout<<"Team() "<<this<<std::endl;
 }
 
 Team::Team(int id,const sf::Color& color,int gold,Game::type_ptr game) : Team()
@@ -31,7 +28,6 @@ Team::Team(int id,const sf::Color& color,int gold,Game::type_ptr game) : Team()
     _color = color;
     _game = game;
 
-    std::cout<<"Team() "<<this<<" id "<<_id<<_game<<" "<<*game<<std::endl;
 }
 
 void Team::addGold(int amount)
