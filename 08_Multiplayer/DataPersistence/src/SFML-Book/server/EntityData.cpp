@@ -32,10 +32,11 @@ EntityData::type_ptr EntityData::createFromEntity(Entity& entity)
     if(entity.has<CompAIMain>())
     {
         CompAIMain* comp_raw_ptr = entity.component<CompAIMain>().get();
-        comp_raw_ptr->save();
+        std::shared_ptr<CompAIMain> comp_ptr(comp_raw_ptr);
+        comp_ptr->save();
         //CompAIMain::type_ptr comp_ptr = CompAIMain::get(comp_raw_ptr->getPk());//as_type_ptr();
 
-        //e->_AIMain = comp_ptr;
+        e->_AIMain = comp_ptr;
     }
 
     return e;

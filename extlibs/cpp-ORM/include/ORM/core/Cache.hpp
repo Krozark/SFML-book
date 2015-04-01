@@ -121,15 +121,7 @@ namespace orm
             //type_ptr& add(T& obj);
 
 #ifdef ORM_USE_CACHE
-
             std::unordered_map<int,type_ptr> map; ///< store all the objects
-
-            /**
-             * \brief if tmp->pk in cache, return cache[pk] and delete tmp, else make tmp as type_ptr
-             *
-             * \return a shared_ptr to tho object stored in cache
-             **/
-            //type_ptr& getOrCreate(T* tmp);
 #endif
 
             /**

@@ -16,7 +16,7 @@ namespace orm
     }
 
     template<typename T>
-    T* SqlObject<T>::createFromDB(const Query& query,int& prefix, int max_depth)
+    typename SqlObject<T>::type_ptr SqlObject<T>::createFromDB(const Query& query,int& prefix, int max_depth)
     {
         T* res = new T();
         if(not res->loadFromDB(query,prefix,max_depth))
@@ -24,7 +24,8 @@ namespace orm
             delete res;
             res = nullptr;
         }
-        return res;
+		
+        return SqlObject<T>::type_ptr(res);
     };
 
     template<typename T>
@@ -32,16 +33,16 @@ namespace orm
     {
         return cache.getOrCreate(id,db,max_depth);
     }
-    
+
     template<typename T>
-    T* SqlObject<T>::_get_ptr(const unsigned int id,DB& db,int max_depth)
+    typename SqlObject<T>::type_ptr SqlObject<T>::_get_ptr(const unsigned int id,DB& db,int max_depth)
     {
         if(max_depth <0)
             return 0;
 
         std::string q_str ="SELECT ";
         nameAttrs(q_str,table,max_depth,db);
-                                    
+
         q_str+="\nFROM ";
         nameTables(q_str,"",max_depth,db);
 
@@ -51,7 +52,7 @@ namespace orm
         +" = "+std::to_string(id)
         +") ";
 
-        Query* q = db.query(q_str);
+        std::unique_ptr<Query> q(db.query(q_str));
 
         T* res = new T();
         if(not q->getObj(*res,max_depth))
@@ -62,8 +63,7 @@ namespace orm
             delete res;
             res = nullptr;
         }
-        delete q;
-        return res;
+        return std::shared_ptr<T>(res);
     };
 
     template<typename T>
@@ -178,7 +178,7 @@ namespace orm
     void SqlObject<T>::nameAttrs(std::string& q_str,const std::string& prefix,int max_depth,DB& db)
     {
         q_str+= db.escapeColumn(prefix)+"."+db.escapeColumn("pk")+" AS "+JOIN_ALIAS(prefix,"pk");
-        
+
         const int size = column_attrs.size();
 
         for(int i=0;i<size;++i)
@@ -251,5 +251,5 @@ namespace orm
         for(int i=0;i<_size;++i)
             column_fks[i]->incDepth(depth,max_depth);
     }
-    
+
 };

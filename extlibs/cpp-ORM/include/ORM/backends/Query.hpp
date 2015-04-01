@@ -15,6 +15,12 @@ namespace orm
      **/
     class Query
     {
+        public:
+             /**
+             * \brief Destructor
+             **/
+            virtual ~Query();
+
         protected:
             friend class DB;
             friend class MySqlDB;
@@ -48,10 +54,6 @@ namespace orm
             Query(const Query&) = delete;
             Query& operator=(const Query&) = delete;
 
-            /**
-             * \brief Destructor
-             **/
-            virtual ~Query();
 
             /**
              * \brief Count the number of object returned by the batabase
@@ -61,7 +63,7 @@ namespace orm
             virtual int count()const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column the extract
              * \param value Where the value will be stored
@@ -71,7 +73,7 @@ namespace orm
             virtual bool get(bool& value,const int& column)const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -92,7 +94,7 @@ namespace orm
             virtual bool getPk(int& value, const int& column)const=0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -102,7 +104,7 @@ namespace orm
             virtual bool get(unsigned int& value,const int& column)const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -112,7 +114,7 @@ namespace orm
             virtual bool get(long long int& value,const int& column)const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -122,7 +124,7 @@ namespace orm
             virtual bool get(long long unsigned int& value,const int& column)const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -132,7 +134,7 @@ namespace orm
             virtual bool get(float& value,const int& column)const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -142,7 +144,7 @@ namespace orm
             virtual bool get(double& value,const int& column)const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -152,7 +154,7 @@ namespace orm
             virtual bool get(long double& value,const int& column)const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -162,7 +164,7 @@ namespace orm
             virtual bool get(std::string& value,const int& column)const = 0;
 
             /**
-             * \brief Get a value of a column, and store it 
+             * \brief Get a value of a column, and store it
              *
              * \param colun The column to extract
              * \param value Where the value will be stored
@@ -206,10 +208,10 @@ namespace orm
             /**
              * \brief Whene the query have been execute, for loop in results
              *
-             * \results fals if fail 
+             * \results fals if fail
              **/
             virtual bool next() = 0;
-            
+
             /**
              * \brief For prepared query only, set the column value
              *
@@ -330,7 +332,7 @@ namespace orm
             bool prepared; ///< is the query is a prepared one?
             std::string query; ///<query as string
             DB& db; ///< database where the query will be executed
-    
+
 
         private:
             /**

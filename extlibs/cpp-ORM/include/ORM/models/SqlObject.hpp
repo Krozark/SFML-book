@@ -57,7 +57,7 @@ namespace orm
             *
             * \return the new object (need to delete it by hand)
             **/
-            static T* createFromDB(const Query& query,int& prefix,int max_depth);
+            static type_ptr createFromDB(const Query& query,int& prefix,int max_depth);
 
             /**
             * \brief shortcut for T::query().filter(id,"exact","id").get(obj)
@@ -223,7 +223,7 @@ namespace orm
             *
             * \return the objet (delete it by hand)
             **/
-            static T* _get_ptr(const unsigned int id,DB& db,int max_depth);
+            static type_ptr _get_ptr(const unsigned int id,DB& db,int max_depth);
 
             /**
             * \brief use by the cache to increment depth

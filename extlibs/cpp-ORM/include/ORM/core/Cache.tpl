@@ -31,18 +31,18 @@ namespace orm
             return res->second;
         #endif
 
-        T* ptr = T::_get_ptr(pk,db,max_depth);
-        if(ptr == nullptr)
-            ptr = new T();
-            
+        type_ptr ptr = T::_get_ptr(pk,db,max_depth);
+        if(ptr.get() == nullptr)
+            ptr = T::create();
+
         #ifdef ORM_USE_CACHE
-        map[pk].reset(ptr);
+        map[pk] = ptr;
         return map[pk];
         #else
         return type_ptr(ptr);
         #endif
     }
-    
+
     template<typename T>
     typename Cache<T>::type_ptr Cache<T>::getOrCreate(const unsigned int& pk,const Query& query,int& prefix,int max_depth)
     {
@@ -54,9 +54,9 @@ namespace orm
             return res->second;
         }
         type_ptr& r= map[pk];
-        r.reset(T::createFromDB(query,prefix,max_depth));
+        r = T::createFromDB(query,prefix,max_depth);
         #else
-        type_ptr r(T::createFromDB(query,prefix,max_depth));
+        type_ptr r = T::createFromDB(query,prefix,max_depth);
         #endif
         return r;
     }
@@ -67,7 +67,7 @@ namespace orm
         int pk = -1;
         int index = query.db.getInitialGetcolumnNumber();
         query.get(pk,index);
-        
+
         #ifdef ORM_USE_CACHE
         const auto& res= map.find(pk);
 
@@ -75,10 +75,10 @@ namespace orm
             return res->second;
 
         type_ptr& r= map[pk];
-        r.reset(T::createFromDB(query,--index,max_depth));
+        r = T::createFromDB(query,--index,max_depth);
 
         #else
-        type_ptr r(T::createFromDB(query,--index,max_depth));
+        type_ptr r = T::createFromDB(query,--index,max_depth);
         #endif
         return r;
     }
@@ -102,7 +102,7 @@ namespace orm
         {
             for(auto& i : map)
                 i.second->pk = -1;
-                
+
         }
         map.clear();
         #endif
@@ -123,38 +123,6 @@ namespace orm
         #endif
         return obj;
     }
-
-
-    /*template<typename T>
-    typename Cache<T>::type_ptr& Cache<T>::add(T& obj)
-    {
-        const auto& res=map.find(obj.pk);
-        if(res != map.end())
-        {
-            return res->second;
-        }
-        type_ptr& r = map[obj.pk];
-        r.reset(&obj);
-        return r;
-    }*/
-
-    #ifdef ORM_USE_CACHE
-   /* template<typename T>
-    typename Cache<T>::type_ptr& Cache<T>::getOrCreate(T* tmp)
-    {
-        const auto& res=map.find(tmp->pk);
-        if(res != map.end())
-        {
-            delete tmp;
-            return res->second;
-        }
-        type_ptr& r = map[tmp->pk];
-        r.reset(tmp);
-        return r;
-    }*/
-    #endif
-
-
 
     template<typename T>
     void Cache<T>::del(const unsigned int& pk)

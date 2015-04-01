@@ -11,6 +11,10 @@ orm::DB& orm::DB::Default = def;
 #include <iostream>
 #include <cstdlib>
 
+#include <ORM/fields.hpp>
+#include <ORM/models/SqlObject.hpp>
+
+
 int main(int argc, char* argv[])
 {
     int port = 5678;
@@ -31,3 +35,4 @@ int main(int argc, char* argv[])
 
     return 0;
 }
+

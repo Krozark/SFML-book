@@ -15,7 +15,6 @@ namespace orm
     template<typename T>
     FKBase<T>::FKBase(const std::string& column,bool nullable) : VFK(column,nullable)/*, value_ptr(0)*/
     {
-        //value_ptr.reset(new T());
     }
 
     template<typename T>
@@ -49,7 +48,7 @@ namespace orm
             }
             else
             {
-                value_ptr.reset(new T());
+                value_ptr = T::create();
                 /*loaded =*/ modify = true;
             }
         }
