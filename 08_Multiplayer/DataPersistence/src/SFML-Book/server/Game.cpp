@@ -619,7 +619,7 @@ void Game::after_save()
     //save entities
     for(auto id : entities)
     {
-        std::cout<<"Save id "<<id<<std::endl;
+        std::cout<<"Save entity of id "<<id<<std::endl;
         Entity& e = entities.get(id);
         EntityData::type_ptr tmp = EntityData::createFromEntity(e,self);
         tmp->save(true);

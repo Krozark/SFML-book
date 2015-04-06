@@ -135,7 +135,7 @@ namespace book
         entity.add<CompTeam>(team);
         entity.add<CompSkin>(CompSkin::Stand);
 
-        entity.add<CompAIWarrior>(120,sf::seconds(0.9),1);
+        entity.add<CompAIDefender>(120,sf::seconds(0.9),1);
         entity.add<CompHp>(500);
     }
 

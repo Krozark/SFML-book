@@ -100,7 +100,7 @@ namespace orm
 
             pk = getLastInsertPk();
             #if ORM_DEBUG & ORM_DEBUG_SQL
-            std::cerr<<"new PK: "<<pk<<BLANC<<std::endl;
+            std::cerr<<JAUNE<<"new PK: "<<pk<<" in table "<<table<<BLANC<<std::endl;
             #endif
 
             return true;

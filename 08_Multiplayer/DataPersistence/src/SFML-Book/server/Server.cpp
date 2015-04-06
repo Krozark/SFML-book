@@ -143,16 +143,17 @@ namespace book
             }
         }
 
+        std::cout<<"Stop Game service"<<std::endl;
         {
             sf::Lock guard(_gameMutex);
             for(auto& game : _games)
             {
+                std::cout<<"Stop Game "<<game->id()<<std::endl;
                 game->stop();
                 game->wait();
             }
             saveToDb();
         }
-        std::cout<<"Stop Game service"<<std::endl;
     }
 
     void Server::listen()
@@ -198,6 +199,7 @@ namespace book
     {
         for(auto game : _games)
         {
+            std::cout<<"Saving game "<<game->id()<<std::endl;
             game->save();
         }
     }

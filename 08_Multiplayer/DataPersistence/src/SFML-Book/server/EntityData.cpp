@@ -33,9 +33,63 @@ EntityData::type_ptr EntityData::createFromEntity(Entity& entity,Game::type_ptr 
     {
         CompAIMain* comp_raw_ptr = entity.component<CompAIMain>().get();
         std::shared_ptr<CompAIMain> comp_ptr(comp_raw_ptr);
-        //comp_ptr->save();
-
         e->_AIMain = comp_ptr;
+    }
+
+    if(entity.has<CompAIWarrior>())
+    {
+        CompAIWarrior* comp_raw_ptr = entity.component<CompAIWarrior>().get();
+        std::shared_ptr<CompAIWarrior> comp_ptr(comp_raw_ptr);
+        e->_AIWarrior = comp_ptr;
+    }
+
+    if(entity.has<CompAIDefender>())
+    {
+        CompAIDefender* comp_raw_ptr = entity.component<CompAIDefender>().get();
+        std::shared_ptr<CompAIDefender> comp_ptr(comp_raw_ptr);
+        e->_AIDefender = comp_ptr;
+    }
+
+    if(entity.has<CompAISpawner>())
+    {
+        CompAISpawner* comp_raw_ptr = entity.component<CompAISpawner>().get();
+        std::shared_ptr<CompAISpawner> comp_ptr(comp_raw_ptr);
+        e->_AISpawner = comp_ptr;
+    }
+
+    if(entity.has<CompAIWalker>())
+    {
+        CompAIWalker* comp_raw_ptr = entity.component<CompAIWalker>().get();
+        std::shared_ptr<CompAIWalker> comp_ptr(comp_raw_ptr);
+        e->_AIWalker = comp_ptr;
+    }
+
+    if(entity.has<CompAIFlyer>())
+    {
+        CompAIFlyer* comp_raw_ptr = entity.component<CompAIFlyer>().get();
+        std::shared_ptr<CompAIFlyer> comp_ptr(comp_raw_ptr);
+        e->_AIFlyer = comp_ptr;
+    }
+
+    if(entity.has<CompTeam>())
+    {
+        CompTeam* comp_raw_ptr = entity.component<CompTeam>().get();
+        std::shared_ptr<CompTeam> comp_ptr(comp_raw_ptr);
+        e->_team = comp_ptr;
+    }
+
+    if(entity.has<CompSkin>())
+    {
+        CompSkin* comp_raw_ptr = entity.component<CompSkin>().get();
+        std::shared_ptr<CompSkin> comp_ptr(comp_raw_ptr);
+        e->_skin = comp_ptr;
+    }
+
+    if(entity.has<CompHp>())
+    {
+        CompHp* comp_raw_ptr = entity.component<CompHp>().get();
+        std::shared_ptr<CompHp> comp_ptr(comp_raw_ptr);
+        e->_hp = comp_ptr;
     }
 
     return e;
