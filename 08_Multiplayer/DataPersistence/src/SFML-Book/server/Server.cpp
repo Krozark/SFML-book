@@ -210,7 +210,7 @@ namespace book
         for(Game::type_ptr g: games)
             _games.emplace_back(std::move(g));
 
-        EntityData::clearTable();
+        //EntityData::clearTable();
     }
 
 }

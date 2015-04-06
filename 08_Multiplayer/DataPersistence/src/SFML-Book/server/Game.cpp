@@ -601,9 +601,10 @@ void Game::after_load()
         .filter(this->getPk(),orm::op::exact,Team::$_game)
         .get(l);
 
+    int i=1;
     for(EntityData::type_ptr e : l)
     {
-        
+        std::cout<<"Loading entity "<<(i++)<<"/"<<l.size()<<std::endl;
     }
 
     load(false);
@@ -619,7 +620,7 @@ void Game::after_save()
     //save entities
     for(auto id : entities)
     {
-        std::cout<<"Save entity of id "<<id<<std::endl;
+        std::cout<<"Save entity "<<id<<std::endl;
         Entity& e = entities.get(id);
         EntityData::type_ptr tmp = EntityData::createFromEntity(e,self);
         tmp->save(true);
