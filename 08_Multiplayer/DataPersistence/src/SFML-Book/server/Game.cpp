@@ -614,14 +614,16 @@ void Game::after_save()
     for(Team::type_ptr team : _teams)
         team->save();
 
+    auto self = this->as_type_ptr();
+
     //save entities
-    /*for(auto id : entities)
+    for(auto id : entities)
     {
         std::cout<<"Save id "<<id<<std::endl;
         Entity& e = entities.get(id);
-        EntityData::type_ptr tmp = EntityData::createFromEntity(e);
-        tmp->save();
-    }*/
+        EntityData::type_ptr tmp = EntityData::createFromEntity(e,self);
+        tmp->save(true);
+    }
 }
 void Game::after_update()
 {

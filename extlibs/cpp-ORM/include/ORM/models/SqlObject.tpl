@@ -105,15 +105,19 @@ namespace orm
 
             before_save();
             res = db.save(table,pk,attrs);
-            type_ptr ptr = this->as_type_ptr();
-            cache.add(ptr);
-            after_save();
+            if(res)
+            {
+                type_ptr ptr = this->as_type_ptr();
+                cache.add(ptr);
+                after_save();
+            }
         }
         else
         {
             before_update();
             res= db.update(table,pk,attrs);
-            after_update();
+            if(res)
+                after_update();
         }
         return res;
     }

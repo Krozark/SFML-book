@@ -17,14 +17,14 @@ REGISTER_AND_CONSTRUCT(EntityData,"EntityData",\
          _skin,"skin",\
          _hp,"hp")
 
-EntityData::type_ptr EntityData::createFromEntity(Entity& entity)
+EntityData::type_ptr EntityData::createFromEntity(Entity& entity,Game::type_ptr game)
 {
     sf::Vector2i coords = entity.getCoord();
 
 
     EntityData::type_ptr e = EntityData::create();
 
-    //e->_game = game;
+    e->_game = game;
     e->_coordX = coords.x;
     e->_coordY = coords.y;
     e->_type = entity.getType();
@@ -33,8 +33,7 @@ EntityData::type_ptr EntityData::createFromEntity(Entity& entity)
     {
         CompAIMain* comp_raw_ptr = entity.component<CompAIMain>().get();
         std::shared_ptr<CompAIMain> comp_ptr(comp_raw_ptr);
-        comp_ptr->save();
-        //CompAIMain::type_ptr comp_ptr = CompAIMain::get(comp_raw_ptr->getPk());//as_type_ptr();
+        //comp_ptr->save();
 
         e->_AIMain = comp_ptr;
     }

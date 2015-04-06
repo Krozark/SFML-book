@@ -141,7 +141,7 @@ namespace orm
                 std::cerr<<BLEU2<<"[Sql:update] "<<str_q<<"\nNo Update needed, exit"<<BLANC<<std::endl;
                 #endif
 
-                return true;
+                return false;
             }
 
             #if ORM_DEBUG & ORM_DEBUG_SQL
