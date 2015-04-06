@@ -103,8 +103,13 @@ namespace orm
         return query.setNull(fk,column);
         */
         //if(loaded)
-        if(value_ptr.get() and fk>0)
-            return query.set(fk,column);
+        if(value_ptr.get())
+        {
+            if(fk<=0)
+                fk = value_ptr->pk;
+            if(fk>0)
+                return query.set(fk,column);
+        }
         return query.setNull(fk,column);
     };
 

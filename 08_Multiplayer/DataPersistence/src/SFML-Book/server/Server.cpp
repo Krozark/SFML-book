@@ -31,8 +31,6 @@ namespace book
 
     Server::~Server()
     {
-        _gameMutex.lock();
-        _gameMutex.unlock();
 
         _clientMutex.lock();
         for(Client* client : _clients)
@@ -144,7 +142,16 @@ namespace book
                 }
             }
         }
-        saveToDb();
+
+        {
+            sf::Lock guard(_gameMutex);
+            for(auto& game : _games)
+            {
+                game->stop();
+                game->wait();
+            }
+            saveToDb();
+        }
         std::cout<<"Stop Game service"<<std::endl;
     }
 

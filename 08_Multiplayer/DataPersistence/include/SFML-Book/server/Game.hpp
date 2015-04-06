@@ -46,6 +46,7 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
 
         void run();
         void stop();
+        void wait();
 
         Entity& createEntity(const sf::Vector2i& coord,std::shared_ptr<Team> team,book::MakeAs makeAs);
         void markEntityUpdated(std::uint32_t id);

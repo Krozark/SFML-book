@@ -92,7 +92,7 @@ namespace orm
             *
             * \return false if fail
             **/
-            virtual bool save(bool recursive=false,DB& db = *default_connection) final;
+            virtual bool save(bool recursive=false,DB& db = *default_connection) override final;
 
             /**
             * \brief delete the object from de data base
@@ -101,7 +101,7 @@ namespace orm
             * \param recursive recursive?
             * \return false if fail
             **/
-            virtual bool del(bool recursive=false,DB& db = *default_connection) final;
+            virtual bool del(bool recursive=false,DB& db = *default_connection) override final;
 
 
             type_ptr as_type_ptr();
@@ -137,7 +137,7 @@ namespace orm
             /**
             * \return the table name
             **/
-            virtual const std::string& getTable()const {return table;};
+            virtual const std::string& getTable()const override {return table;};
             
             /**
              * \brief make the attrs columns alias
@@ -147,7 +147,7 @@ namespace orm
              * \param prefix prefix column name
              * \param max_depth maximun depth of constrution
              **/
-            virtual void _nameAttrs(std::string& q_str,const std::string& prefix,int max_depth,DB& db)const;
+            virtual void _nameAttrs(std::string& q_str,const std::string& prefix,int max_depth,DB& db)const override;
 
             /**
              * \brief make the table alias
@@ -157,7 +157,7 @@ namespace orm
              * \param prefix prefix column name
              * \param max_depth maximun depth of constrution
              **/
-            virtual void _nameTables(std::string& q_str,const std::string& prefix,int max_depth,DB& db)const;
+            virtual void _nameTables(std::string& q_str,const std::string& prefix,int max_depth,DB& db)const override;
 
             /**
              * \brief make the table alias of fk with join
@@ -167,7 +167,7 @@ namespace orm
              * \param prefix prefix column name
              * \param max_depth maximun depth of constrution
              **/
-            virtual void _makeJoin(std::string& q_str,const std::string& prefix,int max_depth,DB& db)const;
+            virtual void _makeJoin(std::string& q_str,const std::string& prefix,int max_depth,DB& db)const override;
 
         private:
 

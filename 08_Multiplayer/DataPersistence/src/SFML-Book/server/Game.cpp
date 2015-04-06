@@ -140,6 +140,12 @@ void Game::stop()
     _isRunning = false;
 }
 
+void Game::wait()
+{
+    _gameThread.wait();
+    _sendThread.wait();
+}
+
 Entity& Game::createEntity(const sf::Vector2i& coord,Team::type_ptr team,book::MakeAs makeAs)
 {
     std::uint32_t id = entities.create();
@@ -556,7 +562,7 @@ void Game::load(bool init)
 
             createEntity(spawns[i],team,book::makeAsMain);
             _teams.emplace_back(team);
-            team->save(true);
+            team->save();
         }
 
         //add enemies
@@ -606,16 +612,16 @@ void Game::after_load()
 void Game::after_save()
 {
     for(Team::type_ptr team : _teams)
-        team->save(true);
+        team->save();
 
     //save entities
-    for(auto id : entities)
+    /*for(auto id : entities)
     {
         std::cout<<"Save id "<<id<<std::endl;
         Entity& e = entities.get(id);
         EntityData::type_ptr tmp = EntityData::createFromEntity(e);
         tmp->save();
-    }
+    }*/
 }
 void Game::after_update()
 {

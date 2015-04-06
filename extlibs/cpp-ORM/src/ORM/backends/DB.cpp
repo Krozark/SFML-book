@@ -125,7 +125,7 @@ namespace orm
                 if(attrs[i]->modify)
                 {
                     if(not first)
-                        str_q+=",";
+                        str_q+=", ";
                     first = false;
                     str_q+=attrs[i]->column+"=(?)";
 
