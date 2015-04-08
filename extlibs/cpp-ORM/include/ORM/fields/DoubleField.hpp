@@ -24,7 +24,6 @@ namespace orm
             DoubleField(const std::string& column);
 
             DoubleField(const DoubleField&) = delete;
-            DoubleField& operator=(const DoubleField&) = delete;
 
             using Attr<double>::operator=;
 

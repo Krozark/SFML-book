@@ -24,7 +24,6 @@ namespace orm
             IntegerField(const std::string& column);
 
             IntegerField(const IntegerField&) = delete;
-            IntegerField& operator=(const IntegerField&) = delete;
 
             using Attr<int>::operator=;
 

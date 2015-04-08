@@ -25,7 +25,6 @@ namespace orm
             BooleanField(const std::string& column);
 
             BooleanField(const BooleanField&) = delete;
-            BooleanField& operator=(const BooleanField&) = delete;
 
             using Attr<bool>::operator=;
 

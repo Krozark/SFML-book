@@ -56,6 +56,8 @@ namespace orm
              */
             inline int getFk()const{return fk;}
 
+            virtual bool test() const = 0;
+
 
         protected:
             template<typename T> friend class SqlObject;

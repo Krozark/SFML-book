@@ -24,7 +24,6 @@ namespace orm
             UnsignedIntegerField(const std::string& column);
 
             UnsignedIntegerField(const UnsignedIntegerField&) = delete;
-            UnsignedIntegerField& operator=(const UnsignedIntegerField&) = delete;
 
             using Attr<unsigned int>::operator=;
 

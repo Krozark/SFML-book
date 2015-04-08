@@ -26,7 +26,6 @@ namespace orm
             CharField(const std::string& column);
 
             CharField(const CharField&) = delete;
-            CharField& operator=(const CharField&) = delete;
             
             using Attr<std::string>::operator std::string;
 

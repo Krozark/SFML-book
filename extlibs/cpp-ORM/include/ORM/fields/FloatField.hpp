@@ -24,7 +24,6 @@ namespace orm
             FloatField(const std::string& column);
 
             FloatField(const FloatField&) = delete;
-            FloatField& operator=(const FloatField&) = delete;
 
             using Attr<float>::operator=;
 

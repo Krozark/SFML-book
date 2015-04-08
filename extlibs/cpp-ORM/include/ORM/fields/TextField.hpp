@@ -24,7 +24,6 @@ namespace orm
             TextField(const std::string& column);
 
             TextField(const TextField&) = delete;
-            TextField& operator=(const TextField&) = delete;
 
             using Attr<std::string>::operator=;
 

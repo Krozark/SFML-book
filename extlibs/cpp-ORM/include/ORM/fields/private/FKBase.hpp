@@ -81,6 +81,8 @@ namespace orm
 
             virtual std::ostream& print_value(std::ostream& output)const;
 
+            virtual bool test() const override;
+
         protected:
             /**
              * \brief Construct a FK

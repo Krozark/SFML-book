@@ -92,6 +92,12 @@ namespace orm
     }
 
     template<typename T>
+    bool FKBase<T>::test()const
+    {
+        return value_ptr.get();
+    }
+
+    template<typename T>
     bool FKBase<T>::set(Query& query,const unsigned int& column)
     {
         /*if (not nullable)

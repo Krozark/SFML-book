@@ -29,7 +29,6 @@ namespace orm
             AutoField(const std::string& column);
 
             AutoField(const AutoField&) = delete;
-            AutoField& operator=(const AutoField&) = delete;
             
             using Attr<int>::operator=;
 
