@@ -611,6 +611,8 @@ void Game::after_load()
         std::cout<<"Create entity of id "<<id<<std::endl;
         
     }
+    
+    _id = _id; //to force after_* callback to be called modifying the object.
 
 }
 
