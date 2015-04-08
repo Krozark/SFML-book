@@ -19,6 +19,7 @@ class CompAIMain : public sfutils::Component<CompAIMain,Entity>, public orm::Sql
     public:
         CompAIMain();
         explicit CompAIMain(int gold,const sf::Time& timeDelta);
+        CompAIMain& operator=(const CompAIMain& other);
 
         virtual void after_load() override;
         virtual void before_save() override;

@@ -14,7 +14,9 @@ class EntityData : public orm::SqlObject<EntityData>
     public:
         EntityData();
 
-        static EntityData::type_ptr createFromEntity(Entity& entity,Game::type_ptr gamae);
+        static EntityData::type_ptr createFromEntity(Entity& entity,Game::type_ptr game);
+        
+        std::uint32_t convertToEntity(Game& game);
 
         orm::FK<Game> _game;
         orm::FloatField _coordX;

@@ -75,6 +75,8 @@ class Game : private sfutils::Application<Entity>, public orm::SqlObject<Game>
         void load(bool init);
 
     private:
+        friend class EntityData;
+
         bool _isRunning;
         sf::Thread _gameThread;
         sf::Mutex _gameMutex;

@@ -16,6 +16,17 @@ CompAIMain::CompAIMain(int gold,const sf::Time& timeDelta) :CompAIMain()
     _delta = timeDelta;
     _elapsed = sf::Time::Zero;
 }
+CompAIMain& CompAIMain::operator=(const CompAIMain& other)
+{
+    _gold_amount = other._gold_amount;
+
+    _delta = other._delta;
+    _deltaAsDouble = other._deltaAsDouble;
+
+    _elapsed = other._elapsed;
+    _elapsedAsDouble = other._elapsedAsDouble;
+    return *this;
+}
 
 void CompAIMain::after_load()
 {

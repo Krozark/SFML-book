@@ -95,6 +95,90 @@ EntityData::type_ptr EntityData::createFromEntity(Entity& entity,Game::type_ptr 
     return e;
 }
 
+std::uint32_t EntityData::convertToEntity(Game& game)
+{
+
+    sf::Vector2i coord(_coordX,_coordY);
+    sf::Vector2f pos = game.mapCoordsToPixel(coord);
+
+    auto id = game.entities.create();
+    Entity& e = game.entities.get(id);
+
+    e._type = _type;
+    game.setPosition(e,sf::Vector2i(0,0),sf::Vector2f(0,0),coord,pos);
+
+
+    if(this->_AIMain)
+    {
+        e.add<CompAIMain>();
+        auto comp = e.component<CompAIMain>();
+
+        *comp.get() = *_AIMain;
+    }
+
+    std::cout<<*this<<std::endl;
+
+   /* if(this->_AIWarrior)
+    {
+        CompAIWarrior* comp_raw_ptr = entity.component<CompAIWarrior>().get();
+        std::shared_ptr<CompAIWarrior> comp_ptr(comp_raw_ptr);
+        e->_AIWarrior = comp_ptr;
+    }
+
+    if(this->_AIDefender)
+    {
+        CompAIDefender* comp_raw_ptr = entity.component<CompAIDefender>().get();
+        std::shared_ptr<CompAIDefender> comp_ptr(comp_raw_ptr);
+        e->_AIDefender = comp_ptr;
+    }
+
+    if(this->_AISpawner)
+    {
+        CompAISpawner* comp_raw_ptr = entity.component<CompAISpawner>().get();
+        std::shared_ptr<CompAISpawner> comp_ptr(comp_raw_ptr);
+        e->_AISpawner = comp_ptr;
+    }
+
+    if(this->_AIWalker)
+    {
+        CompAIWalker* comp_raw_ptr = entity.component<CompAIWalker>().get();
+        std::shared_ptr<CompAIWalker> comp_ptr(comp_raw_ptr);
+        e->_AIWalker = comp_ptr;
+    }
+
+    if(this->_AIFlyer)
+    {
+        CompAIFlyer* comp_raw_ptr = entity.component<CompAIFlyer>().get();
+        std::shared_ptr<CompAIFlyer> comp_ptr(comp_raw_ptr);
+        e->_AIFlyer = comp_ptr;
+    }
+
+    if(this->_team)
+    {
+        CompTeam* comp_raw_ptr = entity.component<CompTeam>().get();
+        std::shared_ptr<CompTeam> comp_ptr(comp_raw_ptr);
+        e->_team = comp_ptr;
+    }
+
+    if(this->_skin)
+    {
+        CompSkin* comp_raw_ptr = entity.component<CompSkin>().get();
+        std::shared_ptr<CompSkin> comp_ptr(comp_raw_ptr);
+        e->_skin = comp_ptr;
+    }
+
+    if(this->_hp)
+    {
+        CompHp* comp_raw_ptr = entity.component<CompHp>().get();
+        std::shared_ptr<CompHp> comp_ptr(comp_raw_ptr);
+        e->_hp = comp_ptr;
+    }*/
+
+
+
+    return id;
+}
+
 void EntityData::after_load()
 {
 

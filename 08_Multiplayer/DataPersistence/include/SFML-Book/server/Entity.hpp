@@ -29,6 +29,7 @@ class Entity : public sfutils::Entity<Entity>
 
     private:
         friend class Game;
+        friend class EntityData;
 
         void setPosition(const sf::Vector2f& pos,const sf::Vector2i& coord);
 

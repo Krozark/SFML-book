@@ -592,6 +592,8 @@ void Game::after_load()
     if(_id > _numberOfCreations)
         _numberOfCreations = _id;
 
+    load(false);
+
     Team::query()
         .filter(this->getPk(),orm::op::exact,Team::$_game)
         .get(_teams);
@@ -605,9 +607,11 @@ void Game::after_load()
     for(EntityData::type_ptr e : l)
     {
         std::cout<<"Loading entity "<<(i++)<<"/"<<l.size()<<std::endl;
+        auto id = e->convertToEntity(*this);
+        std::cout<<"Create entity of id "<<id<<std::endl;
+        
     }
 
-    load(false);
 }
 
 void Game::after_save()
