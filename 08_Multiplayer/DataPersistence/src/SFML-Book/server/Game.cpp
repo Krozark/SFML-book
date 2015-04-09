@@ -607,9 +607,8 @@ void Game::after_load()
     for(EntityData::type_ptr e : l)
     {
         std::cout<<"Loading entity "<<(i++)<<"/"<<l.size()<<std::endl;
-        auto id = e->convertToEntity(*this);
-        std::cout<<"Create entity of id "<<id<<std::endl;
-        
+        e->convertToEntity(*this);
+        e->del();
     }
     
     _id = _id; //to force after_* callback to be called modifying the object.
@@ -626,7 +625,7 @@ void Game::after_save()
     //save entities
     for(auto id : entities)
     {
-        std::cout<<"Save entity "<<id<<std::endl;
+        std::cout<<"Save entity "<<id<<"/"<<entities.size()<<std::endl;
         Entity& e = entities.get(id);
         EntityData::type_ptr tmp = EntityData::createFromEntity(e,self);
         tmp->save(true);

@@ -41,6 +41,9 @@ namespace book
             sf::TcpListener _socketListener;
             Client* _currentClient;
 
+            using FuncType = std::function<void(book::Client*)>;
+            FuncType onLogOut;
+
             void saveToDb();
             void loadFromDb();
     };

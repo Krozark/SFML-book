@@ -27,6 +27,10 @@ namespace book
     {
         rand_init();
         _currentClient = nullptr;
+
+        onLogOut = [this](Client* client){
+            _clients.emplace_back(client);
+        };
     }
 
     Server::~Server()
@@ -100,9 +104,7 @@ namespace book
                             {
                                 list.add(game->id(),game->getPlayersCount(),game->getTeamCount());
                             }
-                            _games.back()->onLogOut = [this](Client* client){
-                                _clients.emplace_back(client);
-                            };
+                            _games.back()->onLogOut = onLogOut;
                             _games.back()->run();
 
                             response<<list;
@@ -197,18 +199,28 @@ namespace book
 
     void Server::saveToDb()
     {
+        std::cout<<"Saving Games"<<std::endl;
         for(auto game : _games)
         {
             std::cout<<"Saving game "<<game->id()<<std::endl;
             game->save();
         }
+        std::cout<<"Done"<<std::endl;
     }
 
     void Server::loadFromDb()
     {
+        std::cout<<"Loading Games"<<std::endl;
         Game::result_type games = Game::all();
         for(Game::type_ptr g: games)
+        {
+            g->onLogOut = onLogOut;
+            g->run();
             _games.emplace_back(std::move(g));
+
+        }
+
+        std::cout<<"Done"<<std::endl;
 
         //EntityData::clearTable();
     }

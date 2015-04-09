@@ -114,6 +114,9 @@ std::uint32_t EntityData::convertToEntity(Game& game)
         auto comp = e.component<CompAIMain>();
 
         *comp.get() = *_AIMain;
+
+        if(this->_team)
+            _team->_team->addQgId(e.id());
     }
 
     if(this->_AIWarrior)
@@ -189,8 +192,6 @@ void EntityData::after_load()
 {
 
     sf::Vector2i coords(_coordX,_coordY);
-
-    book::MakeAs makAs = book::getMakeAs(_type);
 }
 
 void EntityData::before_save()

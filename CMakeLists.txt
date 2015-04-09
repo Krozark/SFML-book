@@ -53,7 +53,7 @@ add_definitions(-D_USE_MATH_DEFINES)
 add_definitions(-DORM_USE_CACHE)
 
 set(WARNING "-Wall")
-set(FLAGS "-g -std=c++11")
+set(FLAGS "-o3 -std=c++11")
 set(CMAKE_CXX_FLAGS "${WARNING} ${FLAGS}")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1 )

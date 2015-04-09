@@ -158,6 +158,7 @@ CompAISpawner& CompAISpawner::operator=(const CompAISpawner& other)
 {
     _makeAs = other._makeAs;
     _makeAsTypeId = other._makeAsTypeId;
+    _number = other._number;
     _delta = other._delta;
     _deltaAsDouble = other._deltaAsDouble;
     _elapsed = other._elapsed;
@@ -168,16 +169,16 @@ CompAISpawner& CompAISpawner::operator=(const CompAISpawner& other)
 
 void CompAISpawner::after_load()
 {
+    _makeAs = book::getMakeAs(_makeAsTypeId);
     _delta = sf::seconds(_deltaAsDouble);
     _elapsed = sf::seconds(_elapsedAsDouble);
-    _makeAs = book::getMakeAs(_makeAsTypeId);
 }
 
 void CompAISpawner::before_save()
 {
+    _makeAsTypeId = book::getType(_makeAs);
     _deltaAsDouble = _delta.asSeconds();
     _elapsedAsDouble = _elapsed.asSeconds();
-    _makeAsTypeId = book::getType(_makeAs);
 }
 
 void CompAISpawner::before_update()

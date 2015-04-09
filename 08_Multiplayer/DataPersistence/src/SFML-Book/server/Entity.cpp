@@ -64,15 +64,20 @@ namespace book
     int getType(MakeAs func)
     {
         int res = -1;
-        if(func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsMain)
+        
+        void (*const*f)(Entity& entity,std::shared_ptr<Team> team,Game& game) = func.target<void(*)(Entity& entity,std::shared_ptr<Team> team,Game& game)>();
+
+        assert(f);
+
+        if(*f == makeAsMain)
             res = EntityType::IdMain;
-        else if(func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsEye)
+        else if(*f == makeAsEye)
             res = EntityType::IdEye;
-        else if(func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsWormEgg)
+        else if(*f == makeAsWormEgg)
             res = EntityType::IdWormEgg;
-        else if(func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsWorm)
+        else if(*f == makeAsWorm)
             res = EntityType::IdWorm;
-        else if (func.target<void(Entity& entity,Team::type_ptr team,Game& game)>() == makeAsCarnivor)
+        else if (*f == makeAsCarnivor)
             res =  EntityType::IdCarnivor;
 
         return res;
