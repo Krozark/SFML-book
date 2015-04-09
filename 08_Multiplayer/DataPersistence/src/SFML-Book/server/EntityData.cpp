@@ -175,9 +175,9 @@ std::uint32_t EntityData::convertToEntity(Game& game)
     if(this->_hp)
     {
         e.add<CompHp>();
-        auto comp = e.comp<CompHp>();
+        auto comp = e.component<CompHp>();
 
-        *comp.get() =*_hp;
+        *comp.get() = *_hp;
     }
 
 
