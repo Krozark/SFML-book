@@ -42,6 +42,7 @@ class CompAIWarrior : public sfutils::Component<CompAIWarrior,Entity>, public or
     public:
         CompAIWarrior();
         explicit CompAIWarrior(int hitPoint,const sf::Time& timeDelta,int range);
+        CompAIWarrior& operator=(const CompAIWarrior& other);
 
         virtual void after_load() override;
         virtual void before_save() override;
@@ -66,6 +67,7 @@ class CompAIDefender : public sfutils::Component<CompAIDefender,Entity>, public 
     public:
         CompAIDefender();
         explicit CompAIDefender(int hitPoint,const sf::Time& timeDelta,int range);
+        CompAIDefender& operator=(const CompAIDefender& other);
 
         virtual void after_load() override;
         virtual void before_save() override;
@@ -90,6 +92,7 @@ class CompAISpawner : public sfutils::Component<CompAISpawner,Entity>, public or
 
         CompAISpawner();
         explicit CompAISpawner(book::MakeAs makeAs,int number,const sf::Time& timeDelta);
+        CompAISpawner& operator=(const CompAISpawner& other);
 
         virtual void after_load() override;
         virtual void before_save() override;
@@ -114,6 +117,7 @@ class CompAIWalker : public sfutils::Component<CompAIWalker,Entity>, public orm:
     public:
         CompAIWalker();
         explicit CompAIWalker(float speed);
+        CompAIWalker& operator=(const CompAIWalker& other);
 
         virtual void after_load() override;
         virtual void before_save() override;
@@ -133,6 +137,7 @@ class CompAIFlyer : public sfutils::Component<CompAIFlyer,Entity>, public orm::S
     public:
         CompAIFlyer();
         explicit CompAIFlyer(float speed);
+        CompAIFlyer& operator=(const CompAIFlyer& other);
 
         virtual void after_load() override;
         virtual void before_save() override;
@@ -152,6 +157,7 @@ class CompTeam : public sfutils::Component<CompTeam,Entity>, public orm::SqlObje
     public:
         CompTeam();
         explicit CompTeam(Team::type_ptr team);
+        CompTeam& operator=(const CompTeam& other);
 
         orm::FK<Team> _team;
 
@@ -172,6 +178,7 @@ class CompSkin : public sfutils::Component<CompSkin,Entity>, public orm::SqlObje
 
         CompSkin();
         explicit CompSkin(short int animation);
+        CompSkin& operator=(const CompSkin& other);
 
         orm::IntegerField _animationId;
 
@@ -183,6 +190,7 @@ class CompHp : public sfutils::Component<CompHp,Entity>, public orm::SqlObject<C
     public:
         CompHp();
         explicit CompHp(int hp);
+        CompHp& operator=(const CompHp& other);
 
         orm::IntegerField _hp;
         orm::IntegerField _maxHp;

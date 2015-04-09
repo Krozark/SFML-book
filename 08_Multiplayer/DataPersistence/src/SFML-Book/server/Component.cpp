@@ -62,6 +62,18 @@ CompAIWarrior::CompAIWarrior(int hitPoint,const sf::Time& timeDelta,int range) :
     _range = range;
     _enemyId = -1;
 }
+CompAIWarrior& CompAIWarrior::operator=(const CompAIWarrior& other)
+{
+    _hitPoint = other._hitPoint;
+    _delta = other._delta;
+    _deltaAsDouble = other._deltaAsDouble;
+    _elapsed = other._elapsed;
+    _elapsedAsDouble = other._elapsedAsDouble;
+    _range = other._range;
+    _enemyId = other._enemyId;
+
+    return *this;
+}
 
 void CompAIWarrior::after_load()
 {
@@ -94,6 +106,18 @@ CompAIDefender::CompAIDefender(int hitPoint,const sf::Time& timeDelta,int range)
     _delta = timeDelta;
     _elapsed = sf::Time::Zero;
     _range = range;
+}
+
+CompAIDefender& CompAIDefender::operator=(const CompAIDefender& other)
+{
+    _hitPoint = other._hitPoint;
+    _delta = other._delta;
+    _deltaAsDouble = other._deltaAsDouble;
+    _elapsed = other._elapsed;
+    _elapsedAsDouble = other._elapsedAsDouble;
+    _range = other._range;
+
+    return *this;
 }
 
 void CompAIDefender::after_load()
@@ -130,6 +154,18 @@ CompAISpawner::CompAISpawner(book::MakeAs makeAs,int number,const sf::Time& time
     _elapsed = sf::Time::Zero;
 }
 
+CompAISpawner& CompAISpawner::operator=(const CompAISpawner& other)
+{
+    _makeAs = other._makeAs;
+    _makeAsTypeId = other._makeAsTypeId;
+    _delta = other._delta;
+    _deltaAsDouble = other._deltaAsDouble;
+    _elapsed = other._elapsed;
+    _elapsedAsDouble = other._elapsedAsDouble;
+
+    return *this;
+}
+
 void CompAISpawner::after_load()
 {
     _delta = sf::seconds(_deltaAsDouble);
@@ -161,6 +197,16 @@ CompAIWalker::CompAIWalker(float speed) : CompAIWalker()
     _speed = speed;
 }
 
+CompAIWalker& CompAIWalker::operator=(const CompAIWalker& other)
+{
+    _speed = other._speed;
+    _pathToTake = other._pathToTake;
+    _pathToTakeX = other._pathToTakeX;
+    _pathToTakeY = other._pathToTakeY;
+
+    return *this;
+}
+
 void CompAIWalker::after_load()
 {
     _pathToTake.x = _pathToTakeX;
@@ -190,6 +236,16 @@ CompAIFlyer::CompAIFlyer(float speed) : CompAIFlyer()
     _speed = speed;
 }
 
+CompAIFlyer& CompAIFlyer::operator=(const CompAIFlyer& other)
+{
+    _speed = other._speed;
+    _pathToTake = other._pathToTake;
+    _pathToTakeX = other._pathToTakeX;
+    _pathToTakeY = other._pathToTakeY;
+
+    return *this;
+}
+
 void CompAIFlyer::after_load()
 {
     _pathToTake.x = _pathToTakeX;
@@ -217,6 +273,12 @@ CompTeam::CompTeam(Team::type_ptr team) : CompTeam()
     _team = team;
 }
 
+CompTeam& CompTeam::operator=(const CompTeam& other)
+{
+    _team = other._team;
+    return *this;
+}
+
 
 ///////////////// CompSkin /////////////////
 
@@ -226,6 +288,12 @@ REGISTER_AND_CONSTRUCT(CompSkin,"CompSkin",\
 CompSkin::CompSkin(short int animation) : CompSkin()
 {
     _animationId = animation;
+}
+
+CompSkin& CompSkin::operator=(const CompSkin& other)
+{
+    _animationId = other._animationId;
+    return *this;
 }
 
 /////////////////// CompHp ///////////////////////
@@ -238,5 +306,12 @@ CompHp::CompHp(int hp) : CompHp()
 {
     _hp = hp;
     _maxHp = hp;
+}
+
+CompHp& CompHp::operator=(const CompHp& other)
+{
+    _hp = other._hp;
+    _maxHp = other._maxHp;
+    return *this;
 }
 
