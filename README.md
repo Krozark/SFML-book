@@ -54,7 +54,7 @@ Chapter 2: Create a player and game loop
 
 <img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter2.png" alt="Chapter 2" height="250px">
 
-Chapter 3: Create tow games : Asteroid and Teris clone
+Chapter 3: Create two games : Asteroid and Teris clone
 --------------------------
 <img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter3a.png" alt="Chapter 3" height="350px">
 <img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter3b.png" alt="Chapter 3" height="350px">
