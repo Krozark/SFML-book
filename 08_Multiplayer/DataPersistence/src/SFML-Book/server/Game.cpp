@@ -611,7 +611,7 @@ void Game::after_load()
         e->del();
     }
     
-    _id = _id; //to force after_* callback to be called modifying the object.
+    _id = _id; //to force after_[save/load] callback to be called modifying the object.
 
 }
 

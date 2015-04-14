@@ -46,10 +46,7 @@ namespace book
             sf::Time getTimeSinceLastMove()const;
 
 
-
         private:
-            //friend class Board;
-
             const Tetrimino_Types _type; //< the piece type
             short int _rotation; //< the piece rotaton
 

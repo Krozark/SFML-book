@@ -145,7 +145,6 @@ namespace book
     void Piece::rotate(float angle)
     {
         _body->ApplyTorque((float32)converter::deg_to_rad(angle),true);
-        //_body->SetAngularVelocity((float32)converter::deg_to_rad(angle));
     }
 
     void Piece::moveX(int direction)

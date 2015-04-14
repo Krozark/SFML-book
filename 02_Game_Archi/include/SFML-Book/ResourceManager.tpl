@@ -21,7 +21,6 @@ namespace book
     }
 
     //sf::Music special case
-
     template<typename IDENTIFIER>
     template<typename ... Args>
     void ResourceManager<sf::Music,IDENTIFIER>::load(const IDENTIFIER& id,Args&& ... args)

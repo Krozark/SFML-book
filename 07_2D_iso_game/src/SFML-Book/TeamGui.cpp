@@ -422,7 +422,7 @@ namespace book
         {
             sf::Vector2f initPos = skin->_sprite.getPosition();
             sf::Vector2i initCoords = _level->mapPixelToCoords(initPos);
-            pos_set_not_allow.emplace(initCoords); //romove all already used tile
+            pos_set_not_allow.emplace(initCoords); //remove all already used tile
 
             if(team->_team->id() == _team.id() and area->_range > 0)
             {

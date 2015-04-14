@@ -286,7 +286,6 @@ end_search: //exit nesteed loops
                             sf::Vector2i coord = this->_level.mapPixelToCoords(pos);
                             for(int i=0;i<AI->_number;++i)
                             {
-                                //TODO update coord 
                                 Entity& newEntity = this->_level.createEntity(coord);
                                 //init with callback
                                 AI->_makeAs(newEntity,team->_team,this->_level);

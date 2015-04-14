@@ -93,7 +93,6 @@ namespace book
 
     Level::~Level()
     {
-        //entities.reset();
         for(Effect* effect : _effects)
             delete effect;
 

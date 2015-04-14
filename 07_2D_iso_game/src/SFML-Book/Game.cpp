@@ -11,8 +11,6 @@ namespace book
         _cursor(Configuration::textures.get(Configuration::TexCursor)),
         _level(nullptr)
     {
-        //_window.setFramerateLimit(65);
-
         onPickup = [this](Level::Param& param){
             if(param.entity.has<CompTeam>())
             {

@@ -22,9 +22,6 @@ namespace book
                 TexWormEgg,
                 TexWormEggBirth,
                 TexWorm,
-                //Worm2,
-                //Worm3,
-                //EyeEgg,
                 TexEye,
                 TexCarnivor,
                 //effects

@@ -221,8 +221,6 @@ namespace book
         }
 
         std::cout<<"Done"<<std::endl;
-
-        //EntityData::clearTable();
     }
 
 }

@@ -53,10 +53,6 @@ namespace book
         textures.load(TexEye,"media/skins/eye.png");
 
         textures.load(TexCarnivor,"media/skins/carnivor.png");
-        //Worm2,
-        //Worm3,
-        //EyeEgg,
-        
         //effects
         textures.load(TexBlood1,"media/effects/blood1.png");
         textures.load(TexBlood2,"media/effects/blood2.png");
@@ -113,16 +109,10 @@ namespace book
         sounds.load(SoundHitEye,"media/sounds/HitEye.ogg");
         sounds.load(SoundHittedEye,"media/sounds/HittedEye.ogg");
         sounds.load(SoundSpawnEye,"media/sounds/SpawnEye.ogg");
-        
-        //sounds.load(SoundGold,"media/sounds/Gold.flac");
     }
 
     void Configuration::initGuiConfiguration()
     { 
-        //setGuiColor(sf::Color(170,200,80));
-        //sfutils::gui::Configuration::Colors::lighting = 1.4;
-        //unsigned int Configuration::Sizes::button_outline_thickness = 5;
-        //unsigned int Configuration::Sizes::layout_spacing = 10;
     }
 
     void Configuration::initEvents()

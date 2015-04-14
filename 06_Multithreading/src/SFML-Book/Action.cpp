@@ -15,11 +15,6 @@ namespace book
         return *this;
     }
 
-    /*Action::Action(const sf::Event::EventType& event,int type) : _type(type)
-    {
-        _event.type = event;
-    }*/
-
     Action::Action(const sf::Keyboard::Key& key,int type) : _type(type)
     {
         _event.type = sf::Event::EventType::KeyPressed;
@@ -38,16 +33,6 @@ namespace book
 
         switch(event.type)
         {
-            /*case sf::Event::EventType::TextEntered:
-            {
-                if(_event.type == sf::Event::EventType::TextEntered)
-                    res = event.text.unicode == _event.text.unicode;
-            }break;
-            case sf::Event::EventType::MouseWheelMoved:
-            {
-                if(_event.type == sf::Event::EventType::MouseWheelMoved)
-                    res = event.mouseWheel.delta == _event.mouseWheel.delta;
-            }break;*/
             case sf::Event::EventType::KeyPressed:
             {
                 if(_type & Type::Pressed and _event.type == sf::Event::EventType::KeyPressed)
@@ -68,20 +53,7 @@ namespace book
                 if(_type & Type::Released and _event.type == sf::Event::EventType::MouseButtonPressed)
                     res = event.mouseButton.button == _event.mouseButton.button;
             }break;
-            /*case sf::Event::EventType::JoystickButtonPressed:
-            {
-                if(_type & Type::Pressed and _event.type == sf::Event::EventType::JoystickButtonPressed)
-                    res = event.joystickButton.button == _event.joystickButton.button;
-            }break;
-            case sf::Event::EventType::JoystickButtonReleased:
-            {
-                if(_type & Type::Releaseed and _event.type == sf::Event::EventType::JoystickButtonPressed)
-                    res = event.joystickButton.button == _event.joystickButton.button;
-            }break;*/
             default: break;
-            /*{
-                res = event.type == _event.type;
-            }break;*/
         }
         return res;
     }
@@ -104,11 +76,6 @@ namespace book
             if(_type & Type::Pressed)
                 res = sf::Mouse::isButtonPressed(_event.mouseButton.button);
         }
-        /*else if (_event.type == sf::Event::EventType::JoystickButtonPressed)
-        {
-            if(_type & Type::Pressed)
-                res = sf::Joystick::isButtonPressed(0,_event.joystickButton.button);
-        }*/
         return res;
     }
 }

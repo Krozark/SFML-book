@@ -51,7 +51,6 @@ namespace book
         entity.add<CompAIWarrior>(50,sf::seconds(0.7),1);
         entity.add<CompHp>(500);
         entity.add<CompAIFlyer>(200);
-        //entity.component<CompAIFlyer>->_pathToTake = 
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
             lvl.createSound(Configuration::SoundHittedEye,myCoord);
@@ -118,12 +117,11 @@ namespace book
         entity.add<CompBuildArea>(2);
 
         entity.onHitted = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
-            //lvl.createSound(Configuration::SoundHittedWorm,myCoord);
             makeAsBloodEffect(lvl.createEntity(myCoord));
         };
 
         entity.onHit = [](Entity& self,const sf::Vector2i& myCoord,Entity& enemi,const sf::Vector2i& enemyCoord,Level& lvl){
-            //lvl.createSound(Configuration::SoundHitWorm,myCoord);
+            lvl.createSound(Configuration::SoundHitWorm,myCoord);
         };
 
         entity.name = "Carnivor";

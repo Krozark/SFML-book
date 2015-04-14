@@ -226,7 +226,7 @@ namespace book
         return _byCoords[coord];
     }
 
-    //TODO A* or dijtra
+    //A* or dijtra is better
     std::list<sf::Vector2i> Level::getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const
     {
         return _map->getPath(origin,dest);

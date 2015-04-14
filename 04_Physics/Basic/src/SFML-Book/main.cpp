@@ -70,31 +70,6 @@ int main(int argc,char* argv[])
 
     bodies.emplace_back(book::create_box(world,400,590,800,20,b2_staticBody));
 
-    /*b2BodyDef bodyDef;
-    bodyDef.position.Set(book::converter::pixel_to_meters<double>(100),book::converter::pixel_to_meters<double>(100));
-    bodyDef.type = b2_dynamicBody;
-
-
-    b2PolygonShape b2shape;
-    b2shape.SetAsBox(book::converter::pixel_to_meters<double>(16),book::converter::pixel_to_meters<double>(16),
-                     b2Vec2(book::converter::pixel_to_meters<double>(16),book::converter::pixel_to_meters<double>(16)),0);
-
-    b2Body* res = world.CreateBody(&bodyDef);
-    res->CreateFixture(&b2shape,1);
-
-    b2PolygonShape b2shape1;
-    b2shape1.SetAsBox(book::converter::pixel_to_meters<double>(16),book::converter::pixel_to_meters<double>(16),
-                      b2Vec2(book::converter::pixel_to_meters<double>(48),book::converter::pixel_to_meters<double>(16)),0);
-    res->CreateFixture(&b2shape1,1);
-
-    sf::Shape* shape = new sf::RectangleShape(sf::Vector2f(32*2,32));
-    //shape->setOrigin(16,16);
-    shape->setPosition(sf::Vector2f(100,100));
-
-    shape->setFillColor(sf::Color::Red);
-
-    res->SetUserData(shape);*/
-
 
     while(window.isOpen())
     {

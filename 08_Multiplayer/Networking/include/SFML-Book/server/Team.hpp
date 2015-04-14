@@ -51,9 +51,6 @@ namespace book
 
             std::vector<Team*> _enemies;
             std::list<Client*> _clients;
-
-
-
     };
 }
 #endif

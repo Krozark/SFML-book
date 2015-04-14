@@ -204,7 +204,7 @@ namespace book
                             }break;
                             case FuncIds::IdJoinGameReject :
                             {
-                               //TODO 
+                               //print a message or whatever
                             }break;
                             default : break;
                         }
@@ -213,14 +213,6 @@ namespace book
                     {
                         _gameMenu.processNetworkEvent(msg);
                         _level->processNetworkEvent(msg);
-                        
-                        /*
-                        IdDestroyEntity
-                        IdUpdateEntity
-                        IdHittedEntity
-                        IdHitEntity
-                        */
-
                         
                     }break;
                     case StatusDisconnected :

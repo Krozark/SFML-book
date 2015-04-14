@@ -507,8 +507,6 @@ namespace book
 
         _status = Status::Building;
         
-        //_makeAs = -1;
-
         CompBuildArea::Handle area;
         CompTeam::Handle team;
         CompSkin::Handle skin;

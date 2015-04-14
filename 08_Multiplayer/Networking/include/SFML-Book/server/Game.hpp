@@ -58,7 +58,6 @@ namespace book
 
 
             std::list<Entity*> getByCoords(const sf::Vector2i& coord);
-            //std::list<sf::Vector2i> getPath(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             sf::Vector2i getPath1(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
             int getDistance(const sf::Vector2i& origin,const sf::Vector2i& dest)const;
 
