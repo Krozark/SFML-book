@@ -1,20 +1,7 @@
 #include <SFML-Book/Action.hpp>
 
-#include <cstring> //memcpy
-
 namespace book
 {
-    Action::Action(const Action& other) : _type(other._type)
-    {
-        std::memcpy(&_event,&other._event,sizeof(sf::Event));
-    }
-    Action& Action::operator=(const Action& other)
-    {
-        std::memcpy(&_event,&other._event,sizeof(sf::Event));
-        _type = other._type;
-        return *this;
-    }
-
     Action::Action(const sf::Keyboard::Key& key,int type) : _type(type)
     {
         _event.type = sf::Event::EventType::KeyPressed;
@@ -24,7 +11,7 @@ namespace book
     Action::Action(const sf::Mouse::Button& button,int type) : _type(type)
     {
         _event.type = sf::Event::EventType::MouseButtonPressed;
-        std::memcpy(&_event.mouseButton,&button,sizeof(sf::Mouse::Button));
+        _event.mouseButton.button = button;
     }
 
     bool Action::operator==(const sf::Event& event)const
