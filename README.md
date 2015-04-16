@@ -16,7 +16,8 @@ chapter 8 : https://youtu.be/n8G1FpdjY1g
 Requirements
 ============
 
-You need to have a valid clone of the SFML 2.2 or newer library (https://github.com/LaurentGomila/SFML/releases/tag/2.2) and need to build it.
+* You need to have a valid clone of the SFML 2.2 or newer library (https://github.com/LaurentGomila/SFML/releases/tag/2.2) and need to build it.
+* A C++11 compiler (avoid Visual studio and prefer mingw for windows users)
 
 Installation
 ============
