@@ -49,6 +49,7 @@ namespace sfutils
 
                 static VMap* createMapFromFile(const std::string& filename);
                 static VMap* createMapFromStream(std::istream& in);
+                static VMap* createMapFromJson(utils::json::Object& root);
 
 
             protected:
@@ -61,6 +62,7 @@ namespace sfutils
                 friend class MapViewer;
                 void draw(sf::RenderTarget& target, sf::RenderStates states,const sf::FloatRect& viewport) const;
                 std::vector<VLayer*> _layers;
+
         };
 
     }

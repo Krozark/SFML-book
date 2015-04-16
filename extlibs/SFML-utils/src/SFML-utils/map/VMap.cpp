@@ -1,7 +1,11 @@
 #include <SFML-utils/map/VMap.hpp>
 
 #include <SFML-utils/map/Map.hpp>
-#include <SFML-utils/map/HexaIso.hpp>
+
+#include <SFML-utils/map/tileShapes/HexaIso.hpp>
+#include <SFML-utils/map/tileShapes/Hexa.hpp>
+#include <SFML-utils/map/tileShapes/Square.hpp>
+#include <SFML-utils/map/tileShapes/SquareIso.hpp>
 
 #include <algorithm>
 
@@ -130,16 +134,7 @@ namespace sfutils
             utils::json::Value* value = utils::json::Driver::parse_file(filename);
             if(value)
             {
-                utils::json::Object& root = *value;
-                utils::json::Object& geometry = root["geometry"];
-                std::string geometry_name = geometry["name"].as_string();
-                float size = geometry["size"].as_float();
-
-                if(geometry_name == "HexaIso")
-                {
-                    res = new Map<geometry::HexaIso>(size);
-                    res->loadFromJson(root);
-                }
+                res = createMapFromJson(value->as_object());
                 delete value;
             }
             return res;
@@ -151,18 +146,45 @@ namespace sfutils
             utils::json::Value* value = utils::json::Driver::parse(in);
             if(value)
             {
-                utils::json::Object& root = *value;
-                utils::json::Object& geometry = root["geometry"];
-                std::string geometry_name = geometry["name"].as_string();
-                float size = geometry["size"].as_float();
-
-                if(geometry_name == "HexaIso")
-                {
-                    res = new Map<geometry::HexaIso>(size);
-                    res->loadFromJson(root);
-                }
+                res = createMapFromJson(value->as_object());
                 delete value;
             }
+            return res;
+        }
+
+        VMap* VMap::createMapFromJson(utils::json::Object& root)
+        {
+            VMap* res = nullptr;
+
+            utils::json::Object& geometry = root["geometry"];
+            std::string geometry_name = geometry["name"].as_string();
+            float size = geometry["size"].as_float();
+
+            if(geometry_name == "Hexa")
+            {
+                res = new Map<geometry::Hexa>(size);
+                res->loadFromJson(root);
+            }
+            else if(geometry_name == "HexaIso")
+            {
+                res = new Map<geometry::HexaIso>(size);
+                res->loadFromJson(root);
+            }
+            else if(geometry_name == "Square")
+            {
+                res = new Map<geometry::Square>(size);
+                res->loadFromJson(root);
+            }
+            else if(geometry_name == "SquareIso")
+            {
+                res = new Map<geometry::SquareIso>(size);
+                res->loadFromJson(root);
+            }
+            else
+            {
+                std::cerr<<"Unknow geometry '"<<geometry_name<<"'"<<std::endl;
+            }
+
             return res;
         }
     }

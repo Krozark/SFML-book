@@ -29,7 +29,7 @@ namespace sfutils
                 if(content == "tile")
                 {
                     auto current_layer = new Layer<Tile<GEOMETRY>>(content,z,isStatic);
-                    const utils::json::Array& textures = layer["texture"];
+                    const utils::json::Array& textures = layer["datas"];
                     for(const utils::json::Object& texture : textures)
                     {
                         int tex_x = texture["x"];

@@ -11,7 +11,7 @@
             "content" : "tile",
             "z" : 1,
             "static" : true,
-            "texture" : 
+            "datas" : 
             [
                 {
                     "img" :"media/img/ground.png",

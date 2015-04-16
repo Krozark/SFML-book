@@ -1,5 +1,6 @@
 #include <SFML-utils/core/AnimatedSprite.hpp>
 #include <SFML-utils/core/Animation.hpp>
+
 #include <cassert>
 
 namespace sfutils

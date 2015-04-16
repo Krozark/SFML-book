@@ -6,6 +6,12 @@
 #include <SFML-utils/map/Layer.hpp>
 #include <SFML-utils/map/Tile.hpp>
 
+/**
+ * TODO
+ * Add alpha = 255
+ * Add replace = false
+ */
+
 
 namespace sfutils
 {

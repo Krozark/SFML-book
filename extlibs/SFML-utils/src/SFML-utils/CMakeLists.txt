@@ -5,6 +5,7 @@ add_subdirectory(core)
 add_subdirectory(es)
 add_subdirectory(gui)
 add_subdirectory(map)
+#add_subdirectory(map-editor)
 
 if(SFML_UTILS_BUILD_BOX2D)
     add_subdirectory(box2D)

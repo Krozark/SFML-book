@@ -1,19 +1,7 @@
 #include <SFML-utils/core/Action.hpp>
 
-#include <cstring> //memcpy
-
 namespace sfutils
 {
-    Action::Action(const Action& other) : _type(other._type)
-    {
-        std::memcpy(&_event,&other._event,sizeof(sf::Event));
-    }
-    Action& Action::operator=(const Action& other)
-    {
-        std::memcpy(&_event,&other._event,sizeof(sf::Event));
-        _type = other._type;
-        return *this;
-    }
 
     Action::Action(const sf::Event::EventType& event) : _type(Type::Pressed)
     {
@@ -29,7 +17,7 @@ namespace sfutils
     Action::Action(const sf::Mouse::Button& button,int type) : _type(type)
     {
         _event.type = sf::Event::EventType::MouseButtonPressed;
-        std::memcpy(&_event.mouseButton,&button,sizeof(sf::Mouse::Button));
+        _event.mouseButton.button = button;
     }
 
     Action::Action(int joyID,unsigned int button,int type) : _type(type)

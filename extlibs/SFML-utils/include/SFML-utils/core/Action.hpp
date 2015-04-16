@@ -15,9 +15,6 @@ namespace sfutils
                 Released=1<<2
             };
             
-            Action(const Action& other);
-            Action& operator=(const Action& other);
-
             /*Action(const sf::Event& event,int type=Type::RealTime);
             Action(sf::Event&& event,int type=Type::RealTime);*/
 
