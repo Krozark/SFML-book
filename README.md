@@ -23,19 +23,19 @@ Installation
 ============
 
 * Clone this repo
-
-
+    
+```
     git clone https://github.com/Krozark/SFML-book.git
-	
+```	
 	
 * Once it's done, use Cmake to build the project.
 
-	
+```	
     cd path/to/SFML-Book
     mkdir build
     cd build
     cmake-gui ..
-	
+```	
 	
 * You will need to set the variable
  * GLEW_INCLUDE_DIR to path/to/SFML/extlibs/headers
