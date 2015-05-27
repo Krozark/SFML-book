@@ -1,7 +1,8 @@
 SFML-book
 =========
 
-The code for the SFML book I write
+The code for the SFML book I write : "Sfml Blueprints" 
+https://www.packtpub.com/game-development/sfml-blueprints
 
 Videos
 ------
