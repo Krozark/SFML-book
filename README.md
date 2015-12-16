@@ -83,4 +83,4 @@ Chapter 7: Create a Hybrid RTS/tower defence from sratch
 Chapter 8: Play with networking, and turn to a multiplayer our game
 ----------
 <img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter8a.png" alt="Chapter 8" height="350px">
-<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter8b.png" alt="Chapter 8" height="450px">
+<img src="https://raw.githubusercontent.com/Krozark/SFML-book/master/screen/Chapter8b-min.png" alt="Chapter 8" height="450px">
