@@ -10,7 +10,7 @@ namespace book
         public:
             Shoot(const Shoot&) = delete;
             Shoot& operator=(const Shoot&) = delete;
-
+            Shoot(Configuration::Textures textures, World& world);
             using Entity::Entity;
 
             virtual void update(sf::Time deltaTime);
