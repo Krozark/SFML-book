@@ -21,7 +21,10 @@ namespace book
         if(_duration < sf::Time::Zero)
             _alive = false;
     }
-    
+    Shoot::Shoot(Configuration::Textures textures, World& world) :Entity(textures, world){
+		float angle = Utils::random(0.f, 2.f* M_PI);
+		_impulse = sf::Vector2f(std::cos(angle), std::sin(angle));
+	}
     /************* ShootPlayer ******************/
 
     ShootPlayer::ShootPlayer(Player& from) : Shoot(Configuration::Textures::ShootPlayer,from._world)
