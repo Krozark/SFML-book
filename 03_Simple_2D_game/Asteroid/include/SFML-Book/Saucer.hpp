@@ -10,7 +10,7 @@ namespace book
         public:
             Saucer(const Saucer&) = delete;
             Saucer& operator=(const Saucer&) = delete;
-            Saucer::Saucer(Configuration::Textures t, World& world);
+            Saucer(Configuration::Textures t, World& world);
             
             using Enemy::Enemy;
 
