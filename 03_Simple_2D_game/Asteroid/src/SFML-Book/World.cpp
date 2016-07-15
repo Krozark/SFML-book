@@ -68,7 +68,7 @@ namespace book
     void World::update(sf::Time deltaTime)
     {
         if(_entitiesTmp.size() > 0)
-            _entities.merge(_entitiesTmp);
+            _entities.splice(_entities.end(),_entitiesTmp);
 
         for(Entity* entity_ptr : _entities)
         {
