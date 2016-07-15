@@ -68,8 +68,11 @@ namespace book
     void World::update(sf::Time deltaTime)
     {
         if(_entitiesTmp.size() > 0)
+        {
+            _entities.sort();
+			_entitiesTemp.sort();
             _entities.merge(_entitiesTmp);
-
+        }
         for(Entity* entity_ptr : _entities)
         {
             Entity& entity = *entity_ptr;
