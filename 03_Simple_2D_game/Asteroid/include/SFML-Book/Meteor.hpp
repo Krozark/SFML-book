@@ -10,7 +10,8 @@ namespace book
         public:
             Meteor(const Meteor&) = delete;
             Meteor& operator=(const Meteor&) = delete;
-
+            Meteor(Configuration::Textures textures, World& world);
+            
             using Enemy::Enemy;
 
             virtual bool isCollide(const Entity& other)const;

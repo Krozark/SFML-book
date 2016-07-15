@@ -10,7 +10,8 @@ namespace book
         public:
             Saucer(const Saucer&) = delete;
             Saucer& operator=(const Saucer&) = delete;
-
+            Saucer(Configuration::Textures textures, World& world);
+            
             using Enemy::Enemy;
 
             virtual bool isCollide(const Entity& other)const;
