@@ -1,7 +1,7 @@
 SFML-book
 =========
 
-Thee code of the book I wrote "Sfml Blueprints" available here : 
+The code of the book I wrote "Sfml Blueprints" available here : 
 https://www.packtpub.com/game-development/sfml-blueprints
 
 Videos
