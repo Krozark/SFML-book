@@ -23,8 +23,8 @@ Requirements
 Tested on
 =========
 
-- [x] Ubuntu x64 14+ 
-- [x] Windows x64 8
+- [x] Ubuntu x64 14.04, 16.04 (gcc, clang)
+- [x] Windows x64 8, 8.1 (mingw)
 - [ ] Os X
 
 Installation
