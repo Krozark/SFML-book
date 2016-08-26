@@ -23,9 +23,9 @@ Requirements
 Tested on
 =========
 
-[x] Ubuntu x64 14+ 
-[x] Windows x64 8
-[ ] Os X
+- [x] Ubuntu x64 14+ 
+- [x] Windows x64 8
+- [ ] Os X
 
 Installation
 ============
