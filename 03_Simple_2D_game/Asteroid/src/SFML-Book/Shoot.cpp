@@ -22,7 +22,7 @@ namespace book
             _alive = false;
     }
     Shoot::Shoot(Configuration::Textures textures, World& world) :Entity(textures, world){
-		float angle = Utils::random(0.f, 2.f* M_PI);
+		float angle = book::random(0.f, 2.f* M_PI);
 		_impulse = sf::Vector2f(std::cos(angle), std::sin(angle));
 	}
     /************* ShootPlayer ******************/
