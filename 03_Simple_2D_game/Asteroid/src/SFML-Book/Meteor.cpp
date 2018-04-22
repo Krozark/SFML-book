@@ -15,7 +15,8 @@ namespace book
         return false;
     }
 
-    Meteor::Meteor(Configuration::Textures textures, World& world) :Enemy(textures, world){
+    Meteor::Meteor(Configuration::Textures textures, World& world) :Enemy(textures, world)
+    {
 
 	}
 	

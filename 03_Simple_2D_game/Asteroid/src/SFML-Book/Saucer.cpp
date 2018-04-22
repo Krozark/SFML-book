@@ -19,7 +19,8 @@ namespace book
         }
         return false;
     }
-    Saucer::Saucer(Configuration::Textures textures, World& world) :Enemy(textures, world){
+    Saucer::Saucer(Configuration::Textures textures, World& world) :Enemy(textures, world)
+    {
 
 	}
 
