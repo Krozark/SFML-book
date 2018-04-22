@@ -1,7 +1,7 @@
 SFML-book
 =========
 
-The code for the SFML book I write : "Sfml Blueprints" 
+The code of the book I wrote "Sfml Blueprints" available here : 
 https://www.packtpub.com/game-development/sfml-blueprints
 
 Videos
@@ -19,6 +19,13 @@ Requirements
 
 * You need to have a valid clone of the SFML 2.2.x (https://github.com/LaurentGomila/SFML/releases/tag/2.2) and need to build it.
 * A C++11 compiler (avoid Visual studio and prefer [mingw](http://freefr.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/4.9.1/threads-posix/seh/x86_64-4.9.1-release-posix-seh-rt_v3-rev3.7z) for windows users)
+
+Tested on
+=========
+
+- [x] Ubuntu x64 14.04, 16.04 (gcc, clang)
+- [x] Windows x64 8, 8.1 (mingw)
+- [ ] Os X
 
 Installation
 ============
