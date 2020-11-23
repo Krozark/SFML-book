@@ -126,8 +126,8 @@ namespace sfutils
             {
                 if(_componentsEntities[i] != nullptr)
                 {
-                    for(size_t i = 0;i<_entitiesIndex.size();++i)
-                        _componentsEntities[i]->erase<VComponent<ENTITY>>(i);
+                    for(size_t j = 0;j<_entitiesIndex.size();++j)
+                        _componentsEntities[i]->erase<VComponent<ENTITY>>(j);
                     delete _componentsEntities[i];
                 }
             }
